@@ -1,0 +1,211 @@
+---
+title: "Preparación de datos"
+date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
+output: 
+  html_document: 
+    toc: yes
+    toc_float:
+      collapsed: yes
+      smooth_scroll: no
+      number_sections: yes
+    code_folding: show  
+    number_sections: yes
+editor_options: 
+  chunk_output_type: console
+---
+
+# Setup
+
+```{r setup}
+knitr::opts_chunk$set(warning = FALSE, 
+                      message = FALSE, 
+                      echo = TRUE 
+                      )
+options(scipen=9999) # desactivar notacion cientifica
+```
+
+```{css, echo=FALSE}
+# /* expandir el espacio del documento*/
+body .main-container {
+      max-width: 1600px !important;
+      width: 1600px !important;
+    }
+#/* expandir width de la TOC*/
+div.tocify {
+    width: 22% !important;
+    max-width: 331px !important;
+    max-height: 102% !important;
+}
+```
+
+## Librerías
+
+```{r}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+                            # cargar librerias
+pacman::p_load(dplyr,       # Manipulacion de datos 
+               haven,       # importar datos en .dta o .sav
+               car,         # recodificar variables
+               sjlabelled,  # etiquetado de variables
+               sjmisc,      # descriptivos y frecuencias
+               sjPlot,      # tablas, plots y descriptivos
+               summarytools,# resumen de dataframe
+               )
+```
+
+## Datos
+
+Para este ejemplo se va utilizar una base de datos proveniente del paquete `carData`: 
+
+> The Chile data frame has 2700 rows and 8 columns. The data are from a national survey conducted in April and May of 1988 by FLACSO/Chile. There are some missing data.
+
+```{r echo=TRUE}
+df<- carData::Chile
+df1 <- df %>% select(zona=region,
+                     poblacion=population,
+                     sexo=sex,
+                     edad=age,
+                     educ=education,
+                     statusquo)
+```
+
+# Preparación
+
+En esta sección se realizará la preparación de datos. Se sugiere seguir los siguientes pasos para cada variable:
+
+| Paso                      | Función                         |
+|---------------------------|---------------------------------|
+| 1. Descriptivo inicial    | sjmisc::frq() o sjmisc::descr() |
+| 2. Recodificación         | car::recode()                   |
+| 3. Etiquetado de valores  | sjlabelled::set_labels()        |
+| 4. Etiquetado de variable | sjlabelled::set_label()         |
+| 5. Descriptivo final      | sjmisc::frq o sjmisc::descr()   |
+
+## Variables individuales
+
+### Edad 
+```{r edad}
+sjmisc::descr(df1$edad)
+df1$edadcat <- car::recode(var = df1$edad,
+                           recodes = "18:24=1;25:44=2;45:64=3;65:70=4",
+                           as.factor = T) 
+df1$edadcat <- set_labels(x = df1$edadcat,
+                          labels = c("18 a 24 años" = 1,
+                                     "25 a 44 años" = 2,
+                                     "45 a 65 años" = 3,
+                                     "65 años o más" = 4))
+df1$edadcat <- set_label(df1$edadcat,label = "Tramos de edad")
+sjmisc::frq(df1$edadcat,out = "txt")
+```
+
+### Sexo 
+```{r sexo}
+sjmisc::frq(df1$sexo)
+df1$mujer <- car::recode(var = df1$sexo,
+                           recodes = "'F'=1;'M'=0",
+                           as.factor = T) 
+
+df1$mujer <- set_labels(x = df1$mujer,
+                          labels = c("Hombre" = 0,
+                                     "Mujer" = 1))
+df1$mujer <- set_label(df1$mujer,label = "Sexo entrevistado")
+sjmisc::frq(df1$mujer,out = "txt")
+```
+
+### Nivel educacional
+
+```{r}
+sjmisc::frq(df1$educ)
+df1$educ <- car::recode(df1$educ,
+                        recodes = "'P'=1;'S'=2;'PS'=3",
+                        as.factor = T)
+
+df1$educ <- set_labels(df1$educ,labels = c("Primaria"=1,
+                                           "Secundaria"=2,
+                                           "Post-secundaria"=3))
+df1$educ <- set_label(df1$educ,label = "Nivel educacional")
+sjmisc::frq(df1$educ)
+```
+
+### Apoyo statusquo
+
+```{r}
+sjmisc::descr(df1$statusquo)
+df1$statusquo <- set_label(df1$statusquo,label = "Escala de apoyo al status-quo")
+sjmisc::descr(df1$statusquo)
+```
+
+## Variables contextuales
+
+### Zona
+
+```{r zona}
+sjmisc::frq(df1$zona)
+df1$zona <- set_labels(x = df1$zona,
+                          labels = c("Centro" = "C",
+                                     "Metropolitana Santiago" = "M",
+                                     "Norte"="N",
+                                     "Sur"="S",
+                                     "Santiago ciudad"='SA'))
+df1$zona <- set_label(df1$zona,label = "Zona geográfica")
+sjmisc::frq(df1$zona,out = "txt")
+```
+
+### Proporcion de mujeres x zona
+```{r}
+tab_xtab(var.row = df1$zona, # Filas= zona
+         var.col = df1$mujer,# columna= sexo 
+         show.obs = FALSE,   
+         show.row.prc = T)
+df1 %>% group_by(zona) %>% summarise(propmuj=mean(as.numeric(mujer))-1) 
+
+prop.muj<- df1 %>%
+  group_by(zona, mujer) %>%
+  summarise(n = n()) %>%
+  mutate(propmuj = n / sum(n)) %>%
+  filter(mujer==1) %>% 
+  ungroup() %>% 
+  select(zona,propmuj)
+
+df1 <- left_join(df1,prop.muj,by="zona")
+df1$propmuj <- set_label(df1$propmuj,label = "Proporción de mujeres por zona geográfica")
+sjmisc::descr(df1$propmuj)
+```
+
+### Población por zona
+
+```{r poblacion}
+sjmisc::frq(df1$poblacion)
+df1$poblacion <- set_label(df1$poblacion,label = "Población por zona geofráfica")
+sjmisc::frq(df1$poblacion,out = "txt")
+```
+
+# Seleccionar variables
+
+```{r}
+df_final<- df1 %>%
+  select(zona,
+         poblacion,
+         mujer,
+         edadcat,
+         educ,
+         statusquo)
+```
+
+# Resumen 
+
+```{r,results='asis', echo=FALSE}
+st_css() # esto configura el css de dfsummary
+print(dfSummary(df_final),
+      method = "render")
+view_df(df_final)
+```
+
+# Guardar datos
+
+```{r}
+save(df_final,file = "../input/data/proc/df_final.Rdata")
+```
+
+
+

@@ -1,0 +1,205 @@
+---
+title: "Lorem ipsum dolor sit amet"
+css: "input/css/custom.css" # custom CSS para html
+linestretch: '1.5'          # interlineado 
+link-citations: yes         # citas linkeadas
+author:
+- name: Duke A Caboom
+  affiliation: University of Tuktoyaktuk
+  email: dtholmes@mail.ubc.ca
+  number: 1
+- name: Justin d'Ottawa
+  affiliation: University of Ottawa
+  number: 2
+- name: Pedro Torres
+  number: 1,2 
+# Nota: Autores que comparten filiacion, poner el mismo number y declarar filiación una sola vez.  
+abstract: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do *eiusmod tempor* incididunt ut labore et dolore magna aliqua. Ut enimad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+output:
+  bookdown::pdf_document2:
+    template: null
+    toc: false
+    keep_tex: false
+    pandoc_args:
+      - --template=input/mytemplate.tex #custom template para usar autores con afiliacion  
+  bookdown::html_document2:
+    number_sections: false
+linkcolor: blue                         # enlaces y citas en color azul
+bibliography: input/bib/library.bib     # bibliografia en bibtex
+editor_options:
+  chunk_output_type: console            # en RStudio, mostrar output en consola
+geometry: "left=2cm,right=2cm,top=3cm,bottom=3cm" # márgenes de página
+header-includes:
+  - \usepackage{times}           # Times New Roman
+  - \usepackage{caption}
+  - \captionsetup[figure, table]{labelfont={bf},labelformat={default},labelsep=period}
+  - \usepackage{graphicx}
+  - \usepackage{float}
+  - \usepackage{booktabs}
+  - \usepackage{longtable}
+  - \usepackage{array}
+  - \usepackage{multirow}
+  - \usepackage{wrapfig}
+  - \usepackage{float}
+  - \usepackage{colortbl}
+  - \usepackage{pdflscape}
+  - \usepackage{tabu}
+  - \usepackage{threeparttable}
+---
+
+```{r setup, include=FALSE}
+if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
+if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
+pacman::p_load(knitr, kableExtra, dplyr, ggplot2,sjmisc,texreg) # librerias
+knitr::opts_chunk$set(warning = FALSE,  # mensaje de warning
+                      message = FALSE,  # mensajes/avisos de librerias  
+                      cache = FALSE,    # cache de los chunks,usar analisis pesados
+                      out.width = '85%',# largo de imagen en %
+                      fig.pos= "H",     # posicion figuras H = HERE
+                      echo = FALSE      # incluir chunk en output
+                      )
+options(scipen=999) # notacion cientifica
+rm(list=ls())       # limpiar workspace
+options(knitr.kable.NA = '') # NA en kable = ''
+
+table_format = if(is_html_output()) { # Usar en argumento "format=" de kable
+  "html"
+} else if(is_latex_output()) {
+  "latex"
+}
+
+fwidth = if(is_html_output()) { #Usar en argumento "full_width" de kableExtra
+  T
+} else if(is_latex_output()) {
+  F
+}
+```
+
+# Introducción
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+
+Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
+## Hipótesis
+
+$H_{1}$: Individuos con mayor percepción de Estatus Social para su familia de origen tenderían a percibir más meritocracia
+
+$H_{2}$: Una posición superior en la distribución de ingresos se asocia positivamente con la percepción de meritocracia.
+
+$H_{3}$: Pertenecer a grupos con mayor logro educativo, se asocia con una mayor percepción de meritocracia
+
+## Datos
+
+* Descripción de la muestra
+
+## Variables
+
+* Variable(s) dependiente(s)
+* Variables independientes
+
+* Descriptivos
+* Bivariados
+
+## Métodos
+
+# Resultados
+
+
+> Para referencias una imagen generada en ggplot2 debemos fijar un label en el chunk: ` ```{r biscuits}` Luego, en el texto, usamos el tag `\@ref(fig:label)` como en el ejemplo:
+
+```{r biscuits, echo=FALSE, fig.cap = "Relación entre biscuits y tea", fig.align='center',fig.width=10,fig.height=8,out.width='50%'}
+tea <- rnorm(100)
+biscuits <- tea + rnorm(100, 0, 1.3)
+data <- data.frame(tea, biscuits) 
+p <- ggplot(data, aes(x = tea, y = biscuits)) +
+    geom_point() + 
+    geom_smooth(method = "lm") + 
+    labs(x = "Tea", y = "Biscuits") + theme_bw() 
+print(p)
+```
+
+Como podemos ver la correlación en la Figura \@ref(fig:biscuits) 
+
+> Para referencias una tabla generada en `knitr::kable()` debemos fijar un label en las opciones del chunk : ` ```{r modelo1}`. Luego, en el texto, usamos el tag `\@ref(tab:label)` como en el ejemplo:
+
+```{r modelo01, echo=FALSE}
+data(efc) # Cargar datos
+efc <- to_factor(efc, c161sex, e42dep, c172code) # convertir variables a factor
+m   <- lm(neg_c_7 ~ pos_v_4 + c12hour + e42dep + c172code, data = efc)# Modelo 1
+m2   <- lm(neg_c_7 ~ pos_v_4 + c12hour + e42dep , data = efc)         # Modelo 2
+broom::tidy(m) %>%                      # resumen de modelo en formato tidy
+  kable(format = table_format,          # formato de tabla ("html" o "latex")
+        caption = "Tabla de regresión", # Título de tabla
+        digits = 2,                     # decimales
+        booktabs= TRUE,                 # lineas horizontales de tabla
+        col.names = c("Variable","Coef.","SE","t","p")) %>% # etiquetas columnas
+  kable_styling(full_width = fwidth,                        # ancho de tabla
+                latex_options = c("HOLD_position")          # opciones de tabla pdf
+                )   
+```
+
+
+La Tabla \@ref(tab:modelo01) muestra los resultados del modelo de regresión. @Brady2014 lo enuncia. 
+
+
+
+> En tablas que **NO SON** generadas con `knitr::kable()` debemos usar otro método:
+En este caso usamos: `paste("(\\#tab:model2)",cap)`, donde previamente definimos el objeto `cap` y luego usamos `paste0()` para unir ambos vectores de caracteres lo cual se debería ver así: `"(\\#tab:model2) Modelos de regresión para autos y sus partes."`
+
+
+```{r results='asis'}
+cap <- "Modelos de regresión para autos y sus partes." # Titulo de tabla
+custom.coef.names = c( # Custom names para coeficientes:                                                     
+  "Intercept",
+  "Positive value with 4 items",
+  "average number of hours of care per week",
+  "slightly dependent", "moderately dependent", "severely dependent",
+  "intermediate level of education","high level of education"
+  )
+# Custom footnote de tabla: 
+custom.note = "$^{***}$p < 0,001;$^{**}$p < 0,01;$^{*}$p < 0,05. Errores estándar robustos entre paréntesis (HC2)"
+# texreg::knitreg() decide si usar formato tabla html o latex según corresponda. 
+knitreg(list(m,m2),                            # Modelos 1 y 2
+       caption = paste("(\\#tab:model2)",cap), # Label para crossref + titulo  
+       caption.above = T,                      # Titulo de tabla arriba
+       custom.coef.names=custom.coef.names,    # Definir custom names para coeficientes
+       custom.note = custom.note,              # Definir footnote de tabla
+       booktabs = TRUE,                        # Usar líneas horizontales en tabla
+       scalebox = 0.75,                         # tamaño de tabla a .75
+       float.pos = "hp!"
+       )                        
+```
+
+
+Table \@ref(tab:model2) contrasta el Modelo 1 saturado, versus el Modelo 2 simplificado. 
+
+# Conclusiones
+
+# References
+
+<div id="refs"> </div>  <!-- Aunque <div> es tag HTML, este método funciona para otros formatos de salida como el PDF. -->
+
+# (APPENDIX) Appendix {-} 
+
+`r if (knitr::is_latex_output()){ '\\appendix'}`          <!-- Si documento es latex, se genera sección de Anexos -->
+`r if (knitr::is_latex_output()){ '\\section{Appendix}'}` <!-- Si documento es latex, se genera titulo de Anexos -->
+
+
+|                     | Sample  |   CEP  |
+|---------------------|:-------:|:------:|
+| __Gender__          |         |        |
+| Men                 | 49,82%  | 50,52% |
+| Women               | 50.18%  | 49,47% |
+| __Age__             |         |        |
+| 18 - 24             | 18,55%  | 18,17% |
+| 25 - 34             | 18,86%  | 17,48% |
+| 35 - 44             | 19.09%  | 19,98% |
+| 45 - 54             | 17,96%  | 19,23% |
+| 55 - or more        | 25,54%  | 25.11% |
+| __Education__       |         |        |
+| Primary  or less    | 2,93%   | 15,88% |
+| High school          | 43,23%  | 37,04% |
+| Non university      | 32,63%  | 28,93% |
+| university or more  | 21,21%  | 18,13% |
+Table: `r as.character(paste("(\\#tab:rep-samp)", "Representativeness of the sample"))`. <!-- Label+titulo de tabla en syntax Markdown pura -->

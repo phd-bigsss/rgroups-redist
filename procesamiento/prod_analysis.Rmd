@@ -1,0 +1,72 @@
+---
+title: "Análisis de datos"
+date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
+output: 
+  html_document: 
+    toc: yes
+    code_folding: hide
+    toc_float: 
+      collapsed: true
+      smooth_scroll: false
+      number_sections: true
+editor_options: 
+  chunk_output_type: console
+---
+
+# Setup
+
+```{r setup}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+options(scipen=9999) # desactivar notacion cientifica
+```
+
+```{css, echo=FALSE}
+# /* expandir el espacio del documento*/
+body .main-container {
+      max-width: 1600px !important;
+      width: 1600px !important;
+    }
+
+#/* expandir width de la TOC*/
+div.tocify {
+    width: 22% !important;
+    max-width: 331px !important;
+    max-height: 102% !important;
+}
+```
+
+
+## Librerías
+
+```{r}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(dplyr,       # Manipulacion de datos 
+               haven,       # importar datos en .dta o .sav
+               sjmisc,      # descriptivos y frecuencias
+               sjPlot,      # tablas, plots y descriptivos
+               summarytools,# resumen de dataframe
+               texreg,      # tablas de regresion
+               knitr,       # tablas kable
+               kableExtra,  # tablas kable personalizadas
+               ggplot2,     # plots
+               corrplot     # plot correlacion
+               )
+```
+
+## Datos
+```{r}
+load(file = "../input/data/proc/df_final.Rdata" )
+```
+
+# Análisis
+
+## Descriptivos univariados
+
+## Descriptivos bivariadas
+
+## Estimaciones - modelos
+
+
+
+
+
