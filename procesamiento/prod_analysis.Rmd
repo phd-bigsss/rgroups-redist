@@ -20,53 +20,74 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 options(scipen=9999) # desactivar notacion cientifica
 ```
 
-```{css, echo=FALSE}
-# /* expandir el espacio del documento*/
-body .main-container {
-      max-width: 1600px !important;
-      width: 1600px !important;
-    }
+```{r}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(dplyr,sjmisc,GGally,ggplot2)
+load(here::here("input/data/proc/study1.RData"))
 
-#/* expandir width de la TOC*/
-div.tocify {
-    width: 22% !important;
-    max-width: 331px !important;
-    max-height: 102% !important;
-}
+df1$country2 <- sjlabelled::to_character(df1$country) 
+percentage_data <- df1 %>%
+  group_by(country2, class5) %>%
+  summarise(count = n()) %>%
+  group_by(country2) %>%
+  na.omit() %>% 
+  mutate(percentage = count / sum(count)) %>% 
+  arrange(country2,class5,percentage)
+
+percentage_data$class5 <- forcats::fct_rev(percentage_data$class5)
+
+order <- 
+percentage_data %>% 
+  filter(class5=="Non-skilled manual workers (VIIa+b)") %>% 
+  arrange(percentage) %>% 
+  select(country2)
+
+order$orden <- 1:30
+ggplot(percentage_data, aes(x=country2,y=percentage,fill=class5,group=class5))+
+  geom_bar(stat = 'identity')+
+  # geom_text(aes(label=number_of_errors),position = position_stack(0.5))+
+  scale_y_continuous(labels = NULL) +
+  scale_x_discrete(limits=order$country2) +  
+  scale_fill_ordinal() +
+  theme_classic() +
+  theme(legend.position = 'bottom')  +
+  coord_flip()
 ```
 
-
-## Librerías
 
 ```{r}
 if (!require("pacman")) install.packages("pacman") # instalar pacman
-pacman::p_load(dplyr,       # Manipulacion de datos 
-               haven,       # importar datos en .dta o .sav
-               sjmisc,      # descriptivos y frecuencias
-               sjPlot,      # tablas, plots y descriptivos
-               summarytools,# resumen de dataframe
-               texreg,      # tablas de regresion
-               knitr,       # tablas kable
-               kableExtra,  # tablas kable personalizadas
-               ggplot2,     # plots
-               corrplot     # plot correlacion
-               )
+pacman::p_load(dplyr,sjmisc,GGally,ggplot2)
+load(here::here("input/data/proc/study1.RData"))
+
+df1$country2 <- sjlabelled::to_character(df1$country) 
+percentage_data <- df1 %>%
+  group_by(country2, class3) %>%
+  summarise(count = n()) %>%
+  group_by(country2) %>%
+  na.omit() %>% 
+  mutate(percentage = count / sum(count)) %>% 
+  arrange(country2,class3,percentage)
+
+percentage_data$class3 <- forcats::fct_rev(percentage_data$class3)
+
+order <- 
+percentage_data %>% 
+  filter(class3=="Intermediate class (III+IV)") %>% 
+  arrange(percentage) %>% 
+  select(country2)
+
+order$orden <- 1:30
+ggplot(percentage_data, aes(x=country2,y=percentage,fill=class3,group=class3))+
+  geom_bar(stat = 'identity')+
+  # geom_text(aes(label=number_of_errors),position = position_stack(0.5))+
+  scale_y_continuous(labels = NULL) +
+  scale_x_discrete(limits=order$country2) +  
+  scale_fill_ordinal() +
+  theme_classic() +
+  theme(legend.position = 'bottom')  +
+  coord_flip()
 ```
-
-## Datos
-```{r}
-load(file = "../input/data/proc/df_final.Rdata" )
-```
-
-# Análisis
-
-## Descriptivos univariados
-
-## Descriptivos bivariadas
-
-## Estimaciones - modelos
-
-
 
 
 

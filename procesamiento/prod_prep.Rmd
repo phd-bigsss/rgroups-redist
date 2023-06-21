@@ -1,5 +1,5 @@
 ---
-title: "Preparación de datos"
+title: "Data preparation"
 date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
 output: 
   html_document: 
@@ -24,188 +24,385 @@ knitr::opts_chunk$set(warning = FALSE,
 options(scipen=9999) # desactivar notacion cientifica
 ```
 
-```{css, echo=FALSE}
-# /* expandir el espacio del documento*/
-body .main-container {
-      max-width: 1600px !important;
-      width: 1600px !important;
-    }
-#/* expandir width de la TOC*/
-div.tocify {
-    width: 22% !important;
-    max-width: 331px !important;
-    max-height: 102% !important;
-}
-```
-
-## Librerías
 
 ```{r}
 if (!require("pacman")) install.packages("pacman") # instalar pacman
-                            # cargar librerias
-pacman::p_load(dplyr,       # Manipulacion de datos 
-               haven,       # importar datos en .dta o .sav
-               car,         # recodificar variables
-               sjlabelled,  # etiquetado de variables
-               sjmisc,      # descriptivos y frecuencias
-               sjPlot,      # tablas, plots y descriptivos
-               summarytools,# resumen de dataframe
-               )
+pacman::p_load(dplyr,sjmisc,GGally)
+df1 <- haven::read_dta(here::here("input/data/original/ZA6980_v2-0-0.dta"))
 ```
 
-## Datos
 
-Para este ejemplo se va utilizar una base de datos proveniente del paquete `carData`: 
+```{r generador}
+ocupations <- names(dplyr::select(df1,v1:v10))
 
-> The Chile data frame has 2700 rows and 8 columns. The data are from a national survey conducted in April and May of 1988 by FLACSO/Chile. There are some missing data.
+for (i in ocupations) {
+  df1[[i]] <- car::recode(df1[[i]],"c(8,9)=NA")
+  df1[[i]] <- sjlabelled::set_na(df1[[i]],na = c(8,9))
+}
 
-```{r echo=TRUE}
-df<- carData::Chile
-df1 <- df %>% select(zona=region,
-                     poblacion=population,
-                     sexo=sex,
-                     edad=age,
-                     educ=education,
-                     statusquo)
+frq(df1$v1)
+df1$busdriver <- as.numeric(car::recode(df1$v1,"1:3=1;4=0")) 
+sjlabelled::set_label(df1$busdriver) <- "Know: bus/lorry driver" 
+frq(df1$busdriver)
+
+frq(df1$v2)
+df1$ceo <- as.numeric(car::recode(df1$v2,"1:3=1;4=0")) 
+sjlabelled::set_label(df1$ceo) <- "Know: CEO large company" 
+frq(df1$ceo)
+
+frq(df1$v3)
+df1$cleaner <- as.numeric(car::recode(df1$v3,"1:3=1;4=0")) 
+sjlabelled::set_label(df1$cleaner) <- "Know: home or office cleaner" 
+frq(df1$cleaner)
+
+frq(df1$v4)
+df1$hairbarber <- as.numeric(car::recode(df1$v4,"1:3=1;4=0")) 
+sjlabelled::set_label(df1$hairbarber) <- "Know: hairdresser/barber" 
+frq(df1$hairbarber)
+
+frq(df1$v5)
+df1$hrmanager <- as.numeric(car::recode(df1$v5,"1:3=1;4=0")) 
+sjlabelled::set_label(df1$hrmanager) <- "Know: human resource manager" 
+frq(df1$hrmanager)
+
+frq(df1$v6)
+df1$lawyer <- as.numeric(car::recode(df1$v6,"1:3=1;4=0")) 
+sjlabelled::set_label(df1$lawyer) <- "Know: lawyer" 
+frq(df1$lawyer)
+
+frq(df1$v7)
+df1$mechanic <- as.numeric(car::recode(df1$v7,"1:3=1;4=0")) 
+sjlabelled::set_label(df1$mechanic) <- "Know: car mechanic" 
+frq(df1$mechanic)
+
+frq(df1$v8)
+df1$nurse <- as.numeric(car::recode(df1$v8,"1:3=1;4=0")) 
+sjlabelled::set_label(df1$nurse) <- "Know: nurse" 
+frq(df1$mechanic)
+
+frq(df1$v9)
+df1$police <- as.numeric(car::recode(df1$v9,"1:3=1;4=0")) 
+sjlabelled::set_label(df1$police) <- "Know: police officer" 
+frq(df1$police)
+
+frq(df1$v10)
+df1$teacher <- as.numeric(car::recode(df1$v10,"1:3=1;4=0")) 
+sjlabelled::set_label(df1$teacher) <- "Know: school teacher" 
+frq(df1$teacher)
+
+# Total of known occupations
+isei_ocupnames<- names(select(df1,busdriver:teacher))
+df1$know_total <- rowSums(x = select(df1,isei_ocupnames),na.rm = T)
+summary(df1$know_total)
+sjlabelled::set_label(df1$know_total) <- 'Total of known occupations'
+sjPlot::plot_frq(df1$know_total,type = 'density')
 ```
 
-# Preparación
+```{r isei-generador}
+df1$isei_busdriver <- as.numeric(ifelse(df1$busdriver ==1,37,NA)) 
+sjlabelled::set_label(df1$isei_busdriver) <- "ISEI: bus/lorry driver" 
+frq(df1$isei_busdriver)
 
-En esta sección se realizará la preparación de datos. Se sugiere seguir los siguientes pasos para cada variable:
+df1$isei_ceo <- as.numeric(ifelse(df1$ceo==1,70,NA)) 
+sjlabelled::set_label(df1$isei_ceo) <- "ISEI: CEO large company" 
+frq(df1$isei_ceo)
 
-| Paso                      | Función                         |
-|---------------------------|---------------------------------|
-| 1. Descriptivo inicial    | sjmisc::frq() o sjmisc::descr() |
-| 2. Recodificación         | car::recode()                   |
-| 3. Etiquetado de valores  | sjlabelled::set_labels()        |
-| 4. Etiquetado de variable | sjlabelled::set_label()         |
-| 5. Descriptivo final      | sjmisc::frq o sjmisc::descr()   |
+df1$isei_cleaner <- as.numeric(ifelse(df1$cleaner==1,17,NA)) 
+sjlabelled::set_label(df1$isei_cleaner) <- "ISEI: home or office cleaner" 
+frq(df1$isei_cleaner)
 
-## Variables individuales
+df1$isei_hairbarber <- as.numeric(ifelse(df1$hairbarber==1,32,NA)) 
+sjlabelled::set_label(df1$isei_hairbarber) <- "ISEI: hairdresser/barber" 
+frq(df1$isei_hairbarber)
 
-### Edad 
-```{r edad}
-sjmisc::descr(df1$edad)
-df1$edadcat <- car::recode(var = df1$edad,
-                           recodes = "18:24=1;25:44=2;45:64=3;65:70=4",
-                           as.factor = T) 
-df1$edadcat <- set_labels(x = df1$edadcat,
-                          labels = c("18 a 24 años" = 1,
-                                     "25 a 44 años" = 2,
-                                     "45 a 65 años" = 3,
-                                     "65 años o más" = 4))
-df1$edadcat <- set_label(df1$edadcat,label = "Tramos de edad")
-sjmisc::frq(df1$edadcat,out = "txt")
+df1$isei_hrmanager <- as.numeric(ifelse(df1$hrmanager==1,68,NA)) 
+sjlabelled::set_label(df1$isei_hrmanager) <- "ISEI: human resource manager" 
+frq(df1$isei_hrmanager)
+
+df1$isei_lawyer <- as.numeric(ifelse(df1$lawyer==1,85,NA)) 
+sjlabelled::set_label(df1$isei_lawyer) <- "ISEI: lawyer" 
+frq(df1$isei_lawyer)
+
+df1$isei_mechanic <- as.numeric(ifelse(df1$mechanic==1,38,NA)) 
+sjlabelled::set_label(df1$isei_mechanic) <- "ISEI: car mechanic" 
+frq(df1$isei_mechanic)
+
+df1$isei_nurse <- as.numeric(ifelse(df1$nurse==1,48,NA)) 
+sjlabelled::set_label(df1$isei_nurse) <- "ISEI: nurse" 
+frq(df1$isei_nurse)
+
+df1$isei_police <- as.numeric(ifelse(df1$police==1,53,NA)) 
+sjlabelled::set_label(df1$isei_police) <- "ISEI: police officer" 
+frq(df1$isei_police)
+
+df1$isei_teacher <- as.numeric(ifelse(df1$teacher==1,63,NA)) 
+sjlabelled::set_label(df1$isei_teacher) <- "ISEI: school teacher" 
+frq(df1$isei_teacher)
 ```
 
-### Sexo 
-```{r sexo}
-sjmisc::frq(df1$sexo)
-df1$mujer <- car::recode(var = df1$sexo,
-                           recodes = "'F'=1;'M'=0",
-                           as.factor = T) 
 
-df1$mujer <- set_labels(x = df1$mujer,
-                          labels = c("Hombre" = 0,
-                                     "Mujer" = 1))
-df1$mujer <- set_label(df1$mujer,label = "Sexo entrevistado")
-sjmisc::frq(df1$mujer,out = "txt")
+```{r social-capital}
+# Social capital measures
+isei_ocupnames<- names(select(df1,starts_with("isei_")))
+
+# number of high status contacts
+df1$n_high <- 
+  rowSums(x = select(df1,c("lawyer","hrmanager","ceo")),na.rm = T)
+sjlabelled::set_label(df1$n_high) <- 'Number of high status contacts'
+sjPlot::plot_frq(df1$n_high,type = 'density')
+
+# percentage of high status contacts
+
+df1$pct_high <- (df1$n_high/df1$know_total)*100
+sjlabelled::set_label(df1$df1$pct_high ) <- 'Percentage of high status contacts'
+sjPlot::plot_frq(df1$pct_high,type = 'density')
+
+# number of middle status contacts
+df1$n_middle <-
+  rowSums(x = select(df1,c("teacher","police","nurse")),na.rm = T)
+sjlabelled::set_label(df1$n_middle) <- 'Number of middle status contacts'
+sjPlot::plot_frq(df1$n_middle,type = 'density')
+
+# percentage of middle status contacts
+df1$pct_middle <- (df1$n_middle/df1$know_total)*100
+sjlabelled::set_label(df1$pct_middle) <- 'Percentage of middle status contacts'
+sjPlot::plot_frq(df1$pct_middle,type = 'density')
+
+# number of low status contacts
+# df1$n_low <- 
+#   rowSums(x = select(df1,c("n_waiter","n_carmech","n_taxi","n_stvend","n_cleaner")),na.rm = T)
+df1$n_low <- 
+  rowSums(x = select(df1,c("mechanic","busdriver","hairbarber","cleaner")),na.rm = T)
+sjlabelled::set_label(df1$n_low) <- 'Number of low status contacts'
+sjPlot::plot_frq(df1$n_low,type = 'density')
+
+# percentage of low status contacts
+df1$pct_low <- (df1$n_low/df1$know_total)*100
+sjlabelled::set_label(df1$pct_low) <- 'Percentage of low status contacts'
+sjPlot::plot_frq(df1$pct_low,type = 'density')
+
+# Average ISEI 
+df1$isei_avg <- rowMeans(x = select(df1,isei_ocupnames),na.rm = T) #REVISAR NO DEBERIA CONTENER 0
+sjlabelled::set_label(df1$isei_avg) <- 'Average contact prestige'
+summary(df1$isei_avg)
+
+sjPlot::plot_frq(df1$isei_avg,type = 'density')
+
+# Total ISEI 
+df1$isei_tot <- rowSums(x = select(df1,isei_ocupnames),na.rm = T)
+sjlabelled::set_label(df1$isei_tot) <- 'Total contact prestige'
+summary(df1$isei_tot)
+sjPlot::plot_frq(df1$isei_tot,type = 'density')
+
+# skimr::skim(df1$isei_tot/df1$n_total)
+# skimr::skim(df1$isei_tot/df1$know_total)
+# skimr::skim(df1$isei_avg)
+
+
+# max ISEI 
+df1 <- df1 %>% 
+mutate(isei_max = do.call(pmax, c(select(., isei_ocupnames), na.rm = TRUE)))
+sjlabelled::set_label(df1$isei_max) <- 'Maximum contact prestige'
+sjmisc::frq(df1$isei_max)
+sjPlot::plot_frq(df1$isei_max)
+
+# min ISEI
+df1 <- df1 %>% 
+mutate(isei_min = do.call(pmin, c(select(., isei_ocupnames), na.rm = TRUE)))
+sjlabelled::set_label(df1$isei_min) <- 'Minimum contact prestige'
+sjmisc::frq(df1$isei_min)
+sjPlot::plot_frq(df1$isei_min)
+
+# range ISEI
+table(df1$know_total>=2)
+df1$isei_range <- ifelse(df1$know_total>=2,(df1$isei_max - df1$isei_min),no = NA)
+
+sjlabelled::set_label(df1$isei_range) <- 'Range contact prestige'
+sjmisc::frq(df1$isei_range)
+# sjPlot::plot_frq(df1$isei_range)
+# df1 %>% select(starts_with("isei_")) %>%View
+
+# ggpairs(df1[,c("isei_avg","isei_max","isei_range",
+#                  "know_total","n_high","n_middle","n_low",
+#                  "pct_high","pct_middle","pct_low")],
+#         title="Social capital measures")
+
+
 ```
 
-### Nivel educacional
+# Occupational status
+
+```{r isei}
+df1$ISCO08[df1$ISCO08 %in% c(9998,9999)] <- NA
+df1$isei08 <- occupar::isco08toISEI08(isco08 = df1$ISCO08,display.nas = T)
+summary(df1$isei08)
+
+frq(df1$SPISCO08)
+df1$SPISCO08[df1$SPISCO08 %in% c(9998,9999)] <- NA
+df1$isei08sp <- occupar::isco08toISEI08(isco08 = df1$SPISCO08,display.nas = T)
+summary(df1$isei08sp)
+```
+
+# Class scheme
+
+```{r class}
+## Ocupación
+# Ocupación u oficio actual ISCO 08
+frq(df1$SPISCO08) # isco08 
+# Recode CIUO_encuestado desde ISCO 2008 a ISCO 1988
+df1$isco88spo <- occupar::isco08to88(df1$SPISCO08)
+sjmisc::frq(df1$isco88spo)
+
+#Relación de Empleo encuestado
+sjmisc::frq(df1$SPEMPREL)
+
+df1$sempspo <- df1$SPEMPREL
+df1$sempspo <- as.numeric(car::recode(df1$sempspo, "c(2,3,4,5)=1;c(1)=2;c(0,8,9)=NA"))
+sjmisc::frq(df1$sempspo)
+
+df1$sempspo <- sjlabelled::set_labels(x = df1$sempspo,labels=c('Self-employed','Employee'))
+sjmisc::frq(df1$sempspo)
+
+# superivison
+sjmisc::frq(df1$SPWRKSUP) #supervision spouse
+df1$supvisspo <- as.numeric(car::recode(df1$SPWRKSUP,"c(0,2)=0;1=9;c(8,9)=NA"))
+sjmisc::frq(df1$supvisspo)
+
+## Ocupación
+# Ocupación u oficio actual ISCO 08
+frq(df1$ISCO08) # isco08 
+# Recode CIUO_encuestado desde ISCO 2008 a ISCO 1988
+df1$isco88r <- occupar::isco08to88(df1$ISCO08)
+sjmisc::frq(df1$isco88r)
+
+#Note: the package generate identical recodes as my own manual recoding
+
+#Employment relation encuestado
+sjmisc::frq(df1$EMPREL)
+sjmisc::frq(df1$WORK)
+df1$semp <- df1$EMPREL
+df1$semp <- as.numeric(car::recode(df1$semp, "c(2,3,4)=1;c(1)=2;c(0,8,9)=NA"))
+sjmisc::frq(df1$semp)
+df1$semp <- sjlabelled::set_labels(x = df1$semp,labels=c('Self-employed','Employee'))
+sjmisc::frq(df1$semp)
+
+# superivison
+sjmisc::frq(df1$NEMPLOY) #supervision respondent
+df1$supvis <- as.numeric(car::recode(df1$NEMPLOY,"c(9998,9999)=NA"))
+sjmisc::frq(df1$supvis)
+# save the occupational variables for using them in stata-----------------------
+df1$id <- NULL
+df1 <- tibble::rowid_to_column(df1, "id")
+haven::write_dta(data = df1[c("id","isco88r","semp","supvis",
+                              "isco88spo","sempspo","supvisspo")],
+                 path = "input/data/proc/ocup_respondent-spouse.dta")
+
+# Load the data created in stata------------------------------------------------
+df_class <- haven::read_dta(file = here::here("input/data/proc/class_respondent-spouse.dta"))
+df1 <- left_join(df1,df_class,by='id')
+
+
+df1$class10 <- car::recode(df1$class10, "7=8; 8=9; 9=10; 10=11; 11=7")
+df1$class10 <- sjlabelled::set_labels(df1$class10, levels = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11),
+                        labels = c("I", "II", "IIIa", "IIIb", "IVa", "IVb", "IVc", "V", "VI", "VIIa", "VIIb"))
+
+sjlabelled::set_label(df1$class10) <- "Social Class - respondent"
+
+frq(df1$class10)
+
+df1$class10spo <- car::recode(df1$class10spo, "7=8; 8=9; 9=10; 10=11; 11=7")
+df1$class10spo <- sjlabelled::set_labels(df1$class10spo, levels = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11),
+                        labels = c("I", "II", "IIIa", "IIIb", "IVa", "IVb", "IVc", "V", "VI", "VIIa", "VIIb"))
+
+sjlabelled::set_label(df1$class10spo) <- "Social Class - spouse"
+
+frq(df1$class10spo)
+
+#if NA in class of respondent, replace with household
+
+sjmisc::frq(df1$class10)
+sjmisc::frq(df1$class10spo)
+
+df1$class11 <- ifelse(is.na(df1$class10),df1$class10spo,df1$class10)
+sjmisc::frq(df1$class11)
+
+# if NA in respondents it is assumed to be lower than spouse
+# know, with the cases in we have information for respondent and spouse
+# we replace the value by the highest one, just for those
+
+# Replace the highest class by dominance criteria 
+# Keep the highest of two values:
+df1$class11d <- pmax(df1$class11, #social class respondent + spouse vs:
+                       df1$class10spo,#social class spouse
+                       na.rm = T) # if NA, do nothing
+
+df1$class11d <- 
+  sjlabelled::set_labels(df1$class11d,
+                         levels = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11),
+                         labels =  c("I", "II", "IIIa", "IIIb", "IVa", "IVb", 
+                                     "IVc", "V", "VI", "VIIa", "VIIb")) 
+sjmisc::frq(df1$class11d)
+sjlabelled::set_label(df1$class11d) <- "Social Class"
+
+# Class Scheme 3 classes
+df1$class3 <- car::recode(df1$class11d,as.factor = T,
+                            levels =c('Service Class (I+II)',
+                                      'Intermediate class (III+IV)',
+                                      'Working Class (V+VI+VII)'), 
+                            "1:2='Service Class (I+II)';
+                             3:7='Intermediate class (III+IV)';
+                             8:11='Working Class (V+VI+VII)'")
+
+sjlabelled::set_label(df1$class3) <- "Social Class"
+
+sjmisc::frq(df1$class3)
+
+# Class Scheme 5 classes
+df1$class5 <- car::recode(
+  df1$class11d,
+  as.factor = T,
+  levels = c(
+    'Service class (I+II)',
+    'Routine non-manual (IIIa+b)',
+    'Petty-bourgeoise (IVa+b+c)',
+    'Skilled manual workers and supv. (V+VI)',
+    'Non-skilled manual workers (VIIa+b)'
+  ),
+  "1:2='Service class (I+II)';
+   3:4='Routine non-manual (IIIa+b)';
+   5:7='Petty-bourgeoise (IVa+b+c)';
+   8:9='Skilled manual workers and supv. (V+VI)';
+   10:11='Non-skilled manual workers (VIIa+b)'"
+)
+
+sjlabelled::set_label(df1$class5) <- "Social Class"
+sjmisc::frq(df1$class5)
+
+# Class Scheme 6 classes
+df1$class6 <- car::recode(
+  df1$class11d,
+  as.factor = T,
+  levels = c(
+    'Service class (I - higher grade)',
+    'Service class (II - lower grade)',
+    'Routine non-manual (IIIa+b)',
+    'Petty-bourgeoise (IVa+b+c)',
+    'Skilled manual workers and supv. (V+VI)',
+    'Non-skilled manual workers (VIIa+b)'
+  ),
+  "1='Service class (I - higher grade)';
+   2='Service class (II - lower grade)';
+   3:4='Routine non-manual (IIIa+b)';
+   5:7='Petty-bourgeoise (IVa+b+c)';
+   8:9='Skilled manual workers and supv. (V+VI)';
+   10:11='Non-skilled manual workers (VIIa+b)'"
+)
+```
+
+
+
 
 ```{r}
-sjmisc::frq(df1$educ)
-df1$educ <- car::recode(df1$educ,
-                        recodes = "'P'=1;'S'=2;'PS'=3",
-                        as.factor = T)
-
-df1$educ <- set_labels(df1$educ,labels = c("Primaria"=1,
-                                           "Secundaria"=2,
-                                           "Post-secundaria"=3))
-df1$educ <- set_label(df1$educ,label = "Nivel educacional")
-sjmisc::frq(df1$educ)
+save(df1,file = here::here("input/data/proc/study1.RData"))
 ```
-
-### Apoyo statusquo
-
-```{r}
-sjmisc::descr(df1$statusquo)
-df1$statusquo <- set_label(df1$statusquo,label = "Escala de apoyo al status-quo")
-sjmisc::descr(df1$statusquo)
-```
-
-## Variables contextuales
-
-### Zona
-
-```{r zona}
-sjmisc::frq(df1$zona)
-df1$zona <- set_labels(x = df1$zona,
-                          labels = c("Centro" = "C",
-                                     "Metropolitana Santiago" = "M",
-                                     "Norte"="N",
-                                     "Sur"="S",
-                                     "Santiago ciudad"='SA'))
-df1$zona <- set_label(df1$zona,label = "Zona geográfica")
-sjmisc::frq(df1$zona,out = "txt")
-```
-
-### Proporcion de mujeres x zona
-```{r}
-tab_xtab(var.row = df1$zona, # Filas= zona
-         var.col = df1$mujer,# columna= sexo 
-         show.obs = FALSE,   
-         show.row.prc = T)
-df1 %>% group_by(zona) %>% summarise(propmuj=mean(as.numeric(mujer))-1) 
-
-prop.muj<- df1 %>%
-  group_by(zona, mujer) %>%
-  summarise(n = n()) %>%
-  mutate(propmuj = n / sum(n)) %>%
-  filter(mujer==1) %>% 
-  ungroup() %>% 
-  select(zona,propmuj)
-
-df1 <- left_join(df1,prop.muj,by="zona")
-df1$propmuj <- set_label(df1$propmuj,label = "Proporción de mujeres por zona geográfica")
-sjmisc::descr(df1$propmuj)
-```
-
-### Población por zona
-
-```{r poblacion}
-sjmisc::frq(df1$poblacion)
-df1$poblacion <- set_label(df1$poblacion,label = "Población por zona geofráfica")
-sjmisc::frq(df1$poblacion,out = "txt")
-```
-
-# Seleccionar variables
-
-```{r}
-df_final<- df1 %>%
-  select(zona,
-         poblacion,
-         mujer,
-         edadcat,
-         educ,
-         statusquo)
-```
-
-# Resumen 
-
-```{r,results='asis', echo=FALSE}
-st_css() # esto configura el css de dfsummary
-print(dfSummary(df_final),
-      method = "render")
-view_df(df_final)
-```
-
-# Guardar datos
-
-```{r}
-save(df_final,file = "../input/data/proc/df_final.Rdata")
-```
-
-
 
