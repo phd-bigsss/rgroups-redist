@@ -24,8 +24,185 @@ options(scipen=9999) # desactivar notacion cientifica
 if (!require("pacman")) install.packages("pacman") # instalar pacman
 pacman::p_load(dplyr,sjmisc,GGally,ggplot2)
 load(here::here("input/data/proc/study1.RData"))
+  # Declare ggplot2 features
+ggplot2::theme_set(
+  ggplot2::theme(
+    panel.background = ggplot2::element_rect(fill = "gray85",
+                                             colour = "gray85"),
+    panel.border = ggplot2::element_blank(),
+    axis.text.y = ggplot2::element_text(size = 13,
+                                        hjust = 1),
+    title = ggplot2::element_text(size = 13,
+                                  face = "bold"),
+    legend.text = ggplot2::element_text(size = 12),
+    plot.caption = ggplot2::element_text(size = 10,
+                                         face = "plain",
+                                         hjust = 1)
+  )
+)
 
-df1$country2 <- sjlabelled::to_character(df1$country) 
+df1 %>%
+    dplyr::select(perineq,prefineq,pertransfer,redist) %>%
+    na.omit() %>% 
+    sjPlot::plot_likert(geom.colors = "PuBu",
+                        grid.range  =  c (1.2 , 1),
+                        # title = "a. Perception meritocratic",
+                          geom.size = c(0.62),
+                          catcount = 4,
+                          expand.grid = T,
+                          values  =  "sum.outside",
+                          reverse.colors = T,
+                          reverse.scale = T,
+                          show.n = FALSE,cat.neutral = 3,
+                        show.prc.sign = T,
+                        title = '') +
+    ggplot2::theme(legend.position = "bottom")
+```
+
+```{r welfare}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(dplyr,sjmisc,GGally,ggplot2)
+load(here::here("input/data/proc/study1.RData"))
+df1 %>%
+    dplyr::select(whealth,wcarelder) %>%
+    na.omit() %>% 
+    sjPlot::plot_likert(geom.colors = "PuBu",
+                        grid.range  =  c (0.9 , 0.5),
+                        # title = "a. Perception meritocratic",
+                          geom.size = c(0.62),
+                          catcount = 5,
+                          expand.grid = T,
+                          # values  =  "sum.outside",
+                          reverse.colors = T,
+                          reverse.scale = T,
+                          show.n = FALSE,show.prc.sign = T,
+                        title = 'Who do you think should primarily provide...') +
+    ggplot2::theme(legend.position = "bottom")
+```
+
+```{r redistribution}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(dplyr,sjmisc,GGally,ggplot2)
+load(here::here("input/data/proc/study1.RData"))
+df1$country2 <- countrycode::countrycode(sourcevar = df1$country,origin = "iso3n",destination = "country.name")
+df1$redistF <- factor(df1$redist,levels = 1:5,labels = sjlabelled::get_labels(df1$redist))
+percentage_data <- df1 %>%
+  group_by(country2, redistF) %>%
+  summarise(count = n()) %>%
+  group_by(country2) %>%
+  na.omit() %>% 
+  mutate(percentage = count / sum(count)) %>% 
+  arrange(country2,redistF,percentage) %>% 
+  mutate(pct_lab = paste0(round(percentage*100,1),"%")) %>% 
+  mutate(pct_lab=ifelse(!redistF %in% c("Strongly agree"),NA,pct_lab))
+
+
+
+order <- 
+percentage_data %>% 
+  filter(redistF=="Strongly agree") %>% 
+  arrange(percentage) %>% 
+  select(country2)
+
+order$orden <- 1:31
+ggplot(percentage_data, aes(x=country2,y=percentage*100,fill=redistF,group=redistF,label = pct_lab))+
+  geom_bar(stat = 'identity') +
+  # geom_text(position = position_fill(vjust =100)) +
+  scale_y_continuous(name=NULL,labels = scales::percent_format(scale = 1),limits = c(0,101), expand = c(0, 0)) +
+  scale_x_discrete(limits=order$country2,name=NULL) +  
+  scale_fill_ordinal(guide = guide_legend(reverse = TRUE)) +
+  theme_classic() +
+  ggtitle(label= "Government's responsibility: reduce the differences in income between people with high incomes and those with low incomes.") + 
+  theme(legend.position = 'bottom',legend.title = element_blank())  +
+  coord_flip()
+
+ggsave(plot = last_plot(),filename = "wredist_cn.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
+```
+
+```{r ealth}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(dplyr,sjmisc,GGally,ggplot2)
+load(here::here("input/data/proc/study1.RData"))
+df1$country2 <- countrycode::countrycode(sourcevar = df1$country,origin = "iso3n",destination = "country.name")
+
+df1$whealthF <- factor(df1$whealth,levels = 1:5,labels = sjlabelled::get_labels(df1$whealth))
+
+percentage_data <- df1 %>%
+  group_by(country2, whealthF) %>%
+  summarise(count = n()) %>%
+  group_by(country2) %>%
+  na.omit() %>% 
+  mutate(percentage = count / sum(count)) %>% 
+  arrange(country2,whealthF,percentage) %>% 
+  mutate(pct_lab = paste0(round(percentage*100,1),"%")) %>% 
+  mutate(pct_lab=ifelse(!whealthF %in% c("Government"),NA,pct_lab))
+
+order <- 
+percentage_data %>% 
+  filter(whealthF=="Government") %>% 
+  arrange(percentage) %>% 
+  select(country2)
+
+order$orden <- 1:32
+ggplot(percentage_data, aes(x=country2,y=percentage*100,fill=whealthF,group=whealthF,label = pct_lab))+
+  geom_bar(stat = 'identity') +
+  geom_text(position = position_fill(vjust = 90)) + 
+  scale_y_continuous(name=NULL,labels = scales::percent_format(scale = 1),limits = c(0,101), expand = c(0, 0)) +
+  scale_x_discrete(limits=order$country2,name=NULL) +  
+  scale_fill_ordinal(guide = guide_legend(reverse = TRUE)) +
+  theme_classic() +
+  ggtitle(label= "Who do you think should primarily provide: health") + 
+  theme(legend.position = 'bottom',legend.title = element_blank())  +
+  coord_flip()
+
+ggsave(plot = last_plot(),filename = "whealth_cn.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
+```
+
+```{r elderlycare}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(dplyr,sjmisc,GGally,ggplot2)
+load(here::here("input/data/proc/study1.RData"))
+df1$country2 <- countrycode::countrycode(sourcevar = df1$country,origin = "iso3n",destination = "country.name")
+df1$wcarelderF <- factor(df1$wcarelder,levels = 1:5,labels = sjlabelled::get_labels(df1$wcarelder))
+percentage_data <- df1 %>%
+  group_by(country2, wcarelderF) %>%
+  summarise(count = n()) %>%
+  group_by(country2) %>%
+  na.omit() %>% 
+  mutate(percentage = count / sum(count)) %>% 
+  arrange(country2,wcarelderF,percentage) %>% 
+  mutate(pct_lab = paste0(round(percentage*100,1),"%")) %>% 
+  mutate(pct_lab=ifelse(!wcarelderF %in% c("Government"),NA,pct_lab))
+
+order <- 
+percentage_data %>% 
+  filter(wcarelderF=="Government") %>% 
+  arrange(percentage) %>% 
+  select(country2)
+
+order$orden <- 1:32
+ggplot(percentage_data, aes(x=country2,y=percentage*100,fill=wcarelderF,group=wcarelderF,label = pct_lab))+
+  geom_bar(stat = 'identity') +
+  geom_text(position = position_fill(vjust = 95)) + 
+  scale_y_continuous(name=NULL,labels = scales::percent_format(scale = 1),limits = c(0,101), expand = c(0, 0)) +
+  scale_x_discrete(limits=order$country2,name=NULL) +  
+  scale_fill_ordinal(guide = guide_legend(reverse = TRUE)) +
+  theme_classic() +
+  ggtitle(label= "Who do you think should primarily provide: elderly care") + 
+  theme(legend.position = 'bottom',legend.title = element_blank())  +
+  coord_flip()
+
+ggsave(plot = last_plot(),filename = "wcareelder_cn.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
+```
+
+```{r}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(dplyr,sjmisc,GGally,ggplot2)
+load(here::here("input/data/proc/study1.RData"))
+df1$country2 <- countrycode::countrycode(sourcevar = df1$country,origin = "iso3n",destination = "country.name")
 percentage_data <- df1 %>%
   group_by(country2, class5) %>%
   summarise(count = n()) %>%
@@ -38,20 +215,23 @@ percentage_data$class5 <- forcats::fct_rev(percentage_data$class5)
 
 order <- 
 percentage_data %>% 
-  filter(class5=="Non-skilled manual workers (VIIa+b)") %>% 
+  filter(class5=="Service class (I+II)") %>% 
   arrange(percentage) %>% 
   select(country2)
 
-order$orden <- 1:30
-ggplot(percentage_data, aes(x=country2,y=percentage,fill=class5,group=class5))+
+order$orden <- 1:32
+ggplot(percentage_data, aes(x=country2,y=percentage*100,fill=class5,group=class5))+
   geom_bar(stat = 'identity')+
-  # geom_text(aes(label=number_of_errors),position = position_stack(0.5))+
-  scale_y_continuous(labels = NULL) +
-  scale_x_discrete(limits=order$country2) +  
-  scale_fill_ordinal() +
+  scale_y_continuous(name=NULL,labels = scales::percent_format(scale = 1),limits = c(0,101), expand = c(0, 0)) +
+  scale_x_discrete(limits=order$country2,name=NULL) +  
+  scale_fill_ordinal(guide = guide_legend(reverse = TRUE)) +
   theme_classic() +
-  theme(legend.position = 'bottom')  +
+  ggtitle(label= "Social class by country") + 
+  theme(legend.position = 'bottom',legend.title = element_blank())  +
   coord_flip()
+
+ggsave(plot = last_plot(),filename = "class5_cn.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
 ```
 
 
@@ -73,11 +253,11 @@ percentage_data$class3 <- forcats::fct_rev(percentage_data$class3)
 
 order <- 
 percentage_data %>% 
-  filter(class3=="Intermediate class (III+IV)") %>% 
+  filter(class3=="Working Class (V+VI+VII)") %>% 
   arrange(percentage) %>% 
   select(country2)
 
-order$orden <- 1:30
+order$orden <- 1:32
 ggplot(percentage_data, aes(x=country2,y=percentage,fill=class3,group=class3))+
   geom_bar(stat = 'identity')+
   # geom_text(aes(label=number_of_errors),position = position_stack(0.5))+
@@ -90,4 +270,158 @@ ggplot(percentage_data, aes(x=country2,y=percentage,fill=class3,group=class3))+
 ```
 
 
+```{r}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(dplyr,sjmisc,ggplot2)
+load(here::here("input/data/proc/study1.RData"))
+
+df1 %>% 
+  group_by(class6) %>% 
+  summarise(mean(eindex,na.rm = T))
+
+sjPlot::plot_grpfrq(var.cnt = (df1$eindex),
+                    var.grp = df1$class6,
+                    type = "boxplot") 
+
+sjPlot::plot_grpfrq(var.cnt = df1$hindex_sta,
+                    var.grp = df1$class6,
+                    type = "boxplot")
+
+sjPlot::plot_grpfrq(var.cnt = df1$hindex_10,
+                    var.grp = df1$class6,
+                    type = "boxplot")
+
+sjPlot::plot_grpfrq(var.cnt = df1$homclass,
+                    var.grp = df1$class6,
+                    type = "boxplot")
+
+sjPlot::plot_grpfrq(var.cnt = df1$socdist,
+                    var.grp = df1$class6,
+                    type = "boxplot")
+
+sjPlot::plot_grpfrq(var.cnt = df1$socdist_tot,
+                    var.grp = df1$class6,
+                    type = "boxplot")
+
+df1 %>% 
+  group_by(class6) %>% 
+  summarise(df1$socdist_tot)
+
+
+df1 %>% 
+  select('redist',"eindex","hindex_sta","hindex_10","homclass","socdist","class6") %>% 
+  group_by(class6) %>% 
+  summarise(mean(homclass,na.rm = T))
+
+
+# df1$class6 <- forcats::fct_rev(factor(df1$class6,ordered = T))
+cormat1 <- 
+df1 %>% 
+    select('redist',wcarelder,whealth,isei_tot,isei_max,isei_range,"class6") %>% 
+  na.omit() %>% 
+  polycor::hetcor(parallel = T)
+
+  corrplot::corrplot(cormat1$correlations,
+    method = "color",
+    addCoef.col = "#000390",
+    type = "upper",
+    tl.col = "black",
+    col=colorRampPalette(c("white","#0068DC"))(12),
+    bg = "white",
+    na.label = "-")
+  text(4.7, 0.6, paste0("Source: Authors calculation based on ISSP 2017",
+                             " (N = ",")"),   
+       cex = 0.75)
+
+df1 %>% 
+  select("eindex","hindex_sta","hindex_10","homclass","socdist","class6",class5) %>% 
+  group_by(class5) %>% 
+  summarise(mean(eindex,na.rm = T))
+
+sjPlot::tab_corr((df1[,c("eindex","hindex_sta","hindex_10","homclass","socdist")]),
+                 triangle = "lower") 
+```
+
+```{r}
+df1$country2 <- sjlabelled::to_character(df1$country)
+library(scales)
+
+df1 %>% 
+  filter(!is.na(class5)) %>%
+ggplot(aes(x = class5, y = isei_avg))+
+  geom_boxplot(outlier.shape = NA)+
+  stat_summary(fun.y=mean, geom="point", shape=20, size=2, color="red", fill="red")+
+  ylim(25, 75) +
+  facet_wrap(.~country2, scales = "free")+ 
+  scale_x_discrete(labels=c("I+II","IIIa+b","IVa+b+c","V+VI","VIIa+b"))+
+  ggtitle(sjlabelled::get_label(df1$isei_avg))+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+df1 %>% 
+  # filter(!is.na(class5)) %>% 
+ggplot(aes(x = class5, y = hindex_10))+
+  geom_boxplot(outlier.shape = NA)+
+  stat_summary(fun.y=mean, geom="point", shape=20, size=2, color="red", fill="red")+
+  ylim(0, 1) +
+  facet_wrap(.~country2, scales = "free")+ 
+  scale_x_discrete(labels=c("I+II","IIIa+b","IVa+b+c","V+VI","VIIa+b"))+
+  ggtitle(sjlabelled::get_label(df1$hindex_10))+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+df1 %>% 
+  filter(!is.na(class6)) %>% 
+ggplot(aes(x = class6, y = hindex_10))+
+  geom_boxplot(outlier.shape = NA)+
+  facet_wrap(.~country2, scales = "free")+ 
+  scale_x_discrete(labels=c("I","II","IIIa+b","IVa+b+c","V+VI","VIIa+b"))+
+  ggtitle(sjlabelled::get_label(df1$hindex_10))+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+levels(df1$class5)
+```
+
+```{r}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(dplyr,sjmisc,ggplot2,lme4)
+load(here::here("input/data/proc/study1.RData"))
+
+df1$class3 <- forcats::fct_rev(df1$class3)
+df1$class5 <- forcats::fct_rev(df1$class5)
+df1$class6 <- forcats::fct_rev(df1$class6)
+
+dfreg <- df1 %>% select(redist,
+                        isei08,
+                        class3,
+                        eindex,
+                        # isei_range,
+                        # hindex_sta,
+                        # hindex_10,
+                        ednum,female,agenum,country) %>% na.omit()
+
+
+base <- lmer(redist~1 + (1|country),data=dfreg)
+demo <- lmer(redist~1 +female+agenum + (1|country),data=dfreg)
+scapital <- lmer(redist~1 + female+agenum + eindex + (1|country),data=dfreg)
+class <- lmer(redist~1 +female+agenum + isei08+ (1|country),data=dfreg)
+class_status <- lmer(redist~1 +female+agenum + isei08+ednum+ (1|country),data=dfreg)
+full <- lmer(redist~1 +female+agenum + eindex+isei08+ (1|country),data=dfreg)
+full_int1 <- lmer(redist~1 +female+agenum + eindex*isei08+ (1|country),data=dfreg)
+full_int2 <- lmer(redist~1 +female+agenum + eindex*isei08+ (1+eindex|country),data=dfreg)
+models <- list(scapital,class,class_status,full,full_int1,full_int2)
+texreg::knitreg(models)
+
+texreg::plotreg(full,omit.coef = "(Intercept)")
+
+interplot::interplot(m = full_int2,var1 = "eindex",var2="isei08") +
+  ylab("Network diversity coefficient")+
+  xlab("SES Respondent")+
+  ggtitle("Government's responsibility: reduce the differences in income between people with high incomes and those with low incomes") +
+  geom_hline(yintercept = 0)
+
+ggsave(plot = last_plot(),filename = "margins_diversityxisei.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
+# en la medida que aumenta el status, el efecto de la diversidad de la red se vuelve positivo.
+# en personas de estatus bajo la diversidad hace que demanden menos redistribucion
+# en personas de estatus alto la diversidad hace que demanden más redistribucion
+```
 
