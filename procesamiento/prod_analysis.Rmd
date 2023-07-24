@@ -20,7 +20,9 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 options(scipen=9999) # desactivar notacion cientifica
 ```
 
-```{r}
+# Descriptive
+
+```{r ineq-attitudes}
 if (!require("pacman")) install.packages("pacman") # instalar pacman
 pacman::p_load(dplyr,sjmisc,GGally,ggplot2)
 load(here::here("input/data/proc/study1.RData"))
@@ -57,17 +59,20 @@ df1 %>%
                         show.prc.sign = T,
                         title = '') +
     ggplot2::theme(legend.position = "bottom")
+
+ggsave(plot = last_plot(),filename = "ineq-attitudes.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
 ```
 
 ```{r welfare}
 if (!require("pacman")) install.packages("pacman") # instalar pacman
-pacman::p_load(dplyr,sjmisc,GGally,ggplot2)
+pacman::p_load(dplyr,sjmisc,GGally,ggplot2,scales)
 load(here::here("input/data/proc/study1.RData"))
 df1 %>%
     dplyr::select(whealth,wcarelder) %>%
     na.omit() %>% 
     sjPlot::plot_likert(geom.colors = "PuBu",
-                        grid.range  =  c (0.9 , 0.5),
+                        grid.range  =  c (1 , 1),
                         # title = "a. Perception meritocratic",
                           geom.size = c(0.62),
                           catcount = 5,
@@ -77,13 +82,123 @@ df1 %>%
                           reverse.scale = T,
                           show.n = FALSE,show.prc.sign = T,
                         title = 'Who do you think should primarily provide...') +
+    scale_colour_discrete(labels = function(x) str_wrap(x, width = 10))+
     ggplot2::theme(legend.position = "bottom")
+
+ggsave(plot = last_plot(),filename = "welf-attitudes.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 16)
 ```
+
+```{r perc-integration}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(dplyr,sjmisc,GGally,ggplot2,scales)
+load(here::here("input/data/proc/study1.RData"))
+df1 %>%
+    dplyr::select(starts_with("pi_")) %>%
+    na.omit() %>% 
+    sjPlot::plot_likert(geom.colors = "PuBu",
+                        grid.range  =  c (0.2 , 1),
+                        # title = "a. Perception meritocratic",
+                          geom.size = c(0.62),
+                          catcount = 5,
+                          expand.grid = T,
+                          # values  =  "sum.outside",
+                          reverse.colors = T,
+                          reverse.scale = T,
+                          show.n = FALSE,show.prc.sign = T,sort.frq = "pos.asc",
+                        title = 'How often in the past 4 weeks have you felt that...') +
+    scale_colour_discrete(labels = function(x) str_wrap(x, width = 10))+ 
+    ggplot2::theme(legend.position = "bottom")
+
+ggsave(plot = last_plot(),filename = "perc-integration.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
+
+df1 %>%
+    dplyr::select(starts_with("pi_")) %>% 
+  psych::alpha()
+```
+
+```{r}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(dplyr,sjmisc,GGally,ggplot2,scales)
+load(here::here("input/data/proc/study1.RData"))
+df1$pi_nteg<- rowMeans(df1[,c("pi_compa","pi_isola","pi_left")],na.rm = T)
+dfcor <- 
+df1 %>%
+    dplyr::select(pi_nteg,class6,sstatus,redist) %>% 
+  as.data.frame()
+
+levels(df1$class6)
+table(df1$know_total)
+table(df1$n_high)
+table(df1$n_middle)
+table(df1$n_low)
+
+# dfcor$hhdepriv <- as.factor(dfcor$hhdepriv)
+# dfcor$sstatus <- as.numeric(dfcor$sstatus)
+cormat<- polycor::hetcor(dfcor,parallel = T,thresholds = F)
+
+jpeg(file=here::here("output/network-structure.jpeg"),units = "cm",width = 17,height = 15,res = 300)
+# Set up the layout for the multi-panel plot
+par(mfrow = c(1, 1))
+# Create the histograms
+# hist(df1$prestige, main = sjlabelled::get_label(df1$prestige),xlab = NULL)
+# hist(df1$diversity, main = sjlabelled::get_label(df1$diversity),xlab = NULL)
+hist(df1$homclass, main = sjlabelled::get_label(df1$homclass),xlab = NULL)
+dev.off()
+
+sjPlot::plot_frq(df1$class3,show.n = F) +
+  theme_grey()
+ggsave(plot = last_plot(),filename = "class6.png",device = "png",
+       path = here::here("output"),width = 1.5,height = 1,units = "cm",scale = 10)
+
+
+jpeg(file=here::here("output/n_known.jpeg"),units = "cm",width = 15,height = 15,res = 300)
+# Set up the layout for the multi-panel plot
+par(mfrow = c(2, 2))
+
+# Create the histograms
+hist(df1$n_low, main = sjlabelled::get_label(df1$n_low),xlab = NULL)
+hist(df1$n_middle, main = sjlabelled::get_label(df1$n_middle),xlab = NULL)
+hist(df1$n_high, main = sjlabelled::get_label(df1$n_high),xlab = NULL)
+hist(df1$know_total, main = sjlabelled::get_label(df1$know_total),xlab = NULL)
+# hist(df1$prestige, main = sjlabelled::get_label(df1$prestige),xlab = NULL)
+# hist(df1$diversity, main = sjlabelled::get_label(df1$diversity),xlab = NULL)
+dev.off()
+
+
+
+sjPlot::plot_grpfrq(var.cnt = df1$know_total,var.grp = df1$class3,type = 'box',geom.colors = "Blues")
+ggsave(plot = last_plot(),filename = "known_total_class6.png",device = "png",
+       path = here::here("output"),width = 1,height = 1,units = "cm",scale = 15)
+
+sjPlot::plot_grpfrq(var.cnt = df1$diversity,var.grp = df1$class3,type = 'box',geom.colors = "Blues")
+ggsave(plot = last_plot(),filename = "diversity_class6.png",device = "png",
+       path = here::here("output"),width = 1,height = 1,units = "cm",scale = 15)
+
+sjPlot::plot_grpfrq(var.cnt = df1$prestige,var.grp = df1$class3,type = 'box',geom.colors = "Blues")
+ggsave(plot = last_plot(),filename = "prestige_class6.png",device = "png",
+       path = here::here("output"),width = 1,height = 1,units = "cm",scale = 15)
+
+
+sjPlot::plot_grpfrq(var.cnt = df1$homclass,var.grp = df1$class3,type = 'box',geom.colors = "Blues")
+ggsave(plot = last_plot(),filename = "homclass_class6.png",device = "png",
+       path = here::here("output"),width = 1,height = 1,units = "cm",scale = 15)
+
+sjlabelled::set_label(df1$pi_nteg) <- "Perceived social isolation"
+sjPlot::plot_grpfrq(var.cnt = df1$pi_nteg,var.grp = df1$class3,type = 'box',geom.colors = "Blues",ylim = c(1,5))
+ggsave(plot = last_plot(),filename = "pint_class3.png",device = "png",
+       path = here::here("output"),width = 1,height = 1,units = "cm",scale = 15)
+```
+
+
+# Descriptive x country
 
 ```{r redistribution}
 if (!require("pacman")) install.packages("pacman") # instalar pacman
 pacman::p_load(dplyr,sjmisc,GGally,ggplot2)
 load(here::here("input/data/proc/study1.RData"))
+df1$country<- as.numeric(df1$country)
 df1$country2 <- countrycode::countrycode(sourcevar = df1$country,origin = "iso3n",destination = "country.name")
 df1$redistF <- factor(df1$redist,levels = 1:5,labels = sjlabelled::get_labels(df1$redist))
 percentage_data <- df1 %>%
@@ -95,8 +210,6 @@ percentage_data <- df1 %>%
   arrange(country2,redistF,percentage) %>% 
   mutate(pct_lab = paste0(round(percentage*100,1),"%")) %>% 
   mutate(pct_lab=ifelse(!redistF %in% c("Strongly agree"),NA,pct_lab))
-
-
 
 order <- 
 percentage_data %>% 
@@ -118,9 +231,53 @@ ggplot(percentage_data, aes(x=country2,y=percentage*100,fill=redistF,group=redis
 
 ggsave(plot = last_plot(),filename = "wredist_cn.png",device = "png",
        path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
+
+
+df1$pi_nteg<- rowMeans(df1[,c("pi_compa","pi_isola","pi_left")],na.rm = T)
+resits_count <- df1 %>%
+  group_by(country,country2) %>%
+  summarise(redist = mean(redist,na.rm = T),
+            homclass = mean(homclass,na.rm = T),
+            pi_nteg = mean(pi_nteg,na.rm = T),
+            pi_ntegm = median(pi_nteg,na.rm = T)
+            ) %>%
+  na.omit()
+
+cor(df1[,c("redist","homclass","pi_nteg")],use = "complete.obs")
+
+ggplot(data = resits_count,aes(x = homclass,y = redist,label=country2)) +
+  xlab("Class-based homogeneity") +
+  ylab("Redistributive preferences")+  
+  labs(alt = "A",caption = "r=0.42") +  
+  geom_smooth(method = "lm") +
+  geom_text() 
+
+myorder <-  resits_count$country2[order(resits_count$homclass)]
+ggplot(data = resits_count,aes(x =country2,y = homclass)) + 
+  geom_segment(aes(x=country2, xend=country2, y=0, yend=homclass), color="black") +
+  geom_point() +
+  scale_x_discrete(limits=myorder) +
+  ylab("Class-based homogeneity")+
+  xlab("") +
+  theme(axis.text.x = element_text(angle = 45))
+
+ggsave(plot = last_plot(),filename = "homclass_cn.png",device = "png",
+       path = here::here("output"),width = 1,height = 1,units = "cm",scale = 20)
+
+myorder <-  resits_count$country2[order(resits_count$pi_nteg)]
+ggplot(data = resits_count,aes(x =country2,y = pi_nteg)) + 
+  geom_segment(aes(x=country2, xend=country2, y=0, yend=pi_nteg), color="black") +
+  geom_point() +
+  scale_x_discrete(limits=myorder) +
+  ylab("Perceived isolation")+
+  xlab("") +
+  theme(axis.text.x = element_text(angle = 45))
+
+ggsave(plot = last_plot(),filename = "p_isolat_cn.png",device = "png",
+       path = here::here("output"),width = 1,height = 1,units = "cm",scale = 20)
 ```
 
-```{r ealth}
+```{r health}
 if (!require("pacman")) install.packages("pacman") # instalar pacman
 pacman::p_load(dplyr,sjmisc,GGally,ggplot2)
 load(here::here("input/data/proc/study1.RData"))
@@ -279,35 +436,6 @@ df1 %>%
   group_by(class6) %>% 
   summarise(mean(eindex,na.rm = T))
 
-sjPlot::plot_grpfrq(var.cnt = (df1$eindex),
-                    var.grp = df1$class6,
-                    type = "boxplot") 
-
-sjPlot::plot_grpfrq(var.cnt = df1$hindex_sta,
-                    var.grp = df1$class6,
-                    type = "boxplot")
-
-sjPlot::plot_grpfrq(var.cnt = df1$hindex_10,
-                    var.grp = df1$class6,
-                    type = "boxplot")
-
-sjPlot::plot_grpfrq(var.cnt = df1$homclass,
-                    var.grp = df1$class6,
-                    type = "boxplot")
-
-sjPlot::plot_grpfrq(var.cnt = df1$socdist,
-                    var.grp = df1$class6,
-                    type = "boxplot")
-
-sjPlot::plot_grpfrq(var.cnt = df1$socdist_tot,
-                    var.grp = df1$class6,
-                    type = "boxplot")
-
-df1 %>% 
-  group_by(class6) %>% 
-  summarise(df1$socdist_tot)
-
-
 df1 %>% 
   select('redist',"eindex","hindex_sta","hindex_10","homclass","socdist","class6") %>% 
   group_by(class6) %>% 
@@ -380,40 +508,86 @@ ggplot(aes(x = class6, y = hindex_10))+
 levels(df1$class5)
 ```
 
-```{r}
+# Modelos
+
+dicotomizar homogeneidad en 1=50% similar,49% similar
+
+```{r isei}
 if (!require("pacman")) install.packages("pacman") # instalar pacman
-pacman::p_load(dplyr,sjmisc,ggplot2,lme4)
+pacman::p_load(sjmisc,ggplot2,lme4,interplot)
 load(here::here("input/data/proc/study1.RData"))
-
-df1$class3 <- forcats::fct_rev(df1$class3)
-df1$class5 <- forcats::fct_rev(df1$class5)
-df1$class6 <- forcats::fct_rev(df1$class6)
-
-dfreg <- df1 %>% select(redist,
+# remove.packages("Matrix")
+# install.packages("Matrix")
+df1$class3<-forcats::fct_rev(df1$class3)
+df1$class5<-forcats::fct_rev(df1$class5)
+df1$class6<-forcats::fct_rev(df1$class6)
+dfreg <- df1 %>% dplyr::select(redist,
                         isei08,
-                        class3,
                         eindex,
+                        prestige,
+                        diversity,
                         # isei_range,
                         # hindex_sta,
                         # hindex_10,
                         ednum,female,agenum,country) %>% na.omit()
 
+dfreg$country <- to_factor(dfreg$country)
+dim(dfreg)
 
 base <- lmer(redist~1 + (1|country),data=dfreg)
 demo <- lmer(redist~1 +female+agenum + (1|country),data=dfreg)
-scapital <- lmer(redist~1 + female+agenum + eindex + (1|country),data=dfreg)
+prestige <- lmer(redist~1 + female+agenum + prestige + (1|country),data=dfreg)
+diversity <- lmer(redist~1 + female+agenum + prestige + diversity+ eindex + (1|country),data=dfreg)
+
 class <- lmer(redist~1 +female+agenum + isei08+ (1|country),data=dfreg)
 class_status <- lmer(redist~1 +female+agenum + isei08+ednum+ (1|country),data=dfreg)
-full <- lmer(redist~1 +female+agenum + eindex+isei08+ (1|country),data=dfreg)
-full_int1 <- lmer(redist~1 +female+agenum + eindex*isei08+ (1|country),data=dfreg)
-full_int2 <- lmer(redist~1 +female+agenum + eindex*isei08+ (1+eindex|country),data=dfreg)
-models <- list(scapital,class,class_status,full,full_int1,full_int2)
+full <- lmer(redist~1+female+agenum+isei08+ednum+prestige+diversity+eindex+(1|country),data=dfreg)
+full_int1 <- lmer(redist~1+female+agenum+eindex*isei08+(1|country),data=dfreg)
+full_int2 <- lmer(redist~1+female+agenum+prestige+diversity+eindex*isei08+ednum+(1+diversity|country),data=dfreg)
+models <- list(prestige,diversity,class,class_status,full,full_int1,full_int2)
 texreg::knitreg(models)
 
 texreg::plotreg(full,omit.coef = "(Intercept)")
 
-interplot::interplot(m = full_int2,var1 = "eindex",var2="isei08") +
+interplot::interplot(m = full_int1,var1 = "eindex",var2="isei08") +
   ylab("Network diversity coefficient")+
+  xlab("SES Respondent")+
+  ggtitle("Government's responsibility: reduce the differences in income between people with high incomes and those with low incomes") +
+  geom_hline(yintercept = 0)
+
+ggsave(plot = last_plot(),filename = "margins_diversityxisei.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
+
+#-----------
+dfreg <- df1 %>% select(redist,
+                        isei08,
+                        eindex,
+                        prestige,
+                        # diversity,
+                        # isei_range,
+                        # hindex_sta,
+                        # hindex_10,
+                        ednum,female,agenum,country) %>% na.omit()
+
+dim(dfreg)
+base <- lmer(redist~1 + (1|country),data=dfreg)
+demo <- lmer(redist~1 +female+agenum + (1|country),data=dfreg)
+prestige <- lmer(redist~1 + female+agenum + prestige + (1|country),data=dfreg)
+diversity <- lmer(redist~1 + female+agenum + prestige + eindex+ (1|country),data=dfreg)
+
+class <- lmer(redist~1+female+agenum+isei08+(1|country),data=dfreg)
+class_status <- lmer(redist~1+female+agenum+isei08+ednum+(1|country),data=dfreg)
+full <- lmer(redist~1 +female+agenum + isei08 +ednum +  prestige + eindex +(1|country),data=dfreg)
+fullrs <- lmer(redist~1 +female+agenum + isei08 +ednum +  prestige + eindex +(1+eindex|country),data=dfreg)
+full_int1 <- lmer(redist~1+female+agenum+prestige+eindex*isei08+ednum+(1|country),data=dfreg)
+full_int2 <- lmer(redist~1+female+agenum+prestige+eindex*isei08+ednum+(1+eindex|country),data=dfreg)
+models <- list(prestige,diversity,class,class_status,full,full_int1,full_int2)
+texreg::knitreg(models)
+
+texreg::plotreg(full, omit.coef = "(Intercept)")
+
+interplot::interplot(m = full_int2,var1 = "eindex",var2="isei08") +
+  ylab("Network heterogeneity coefficient")+
   xlab("SES Respondent")+
   ggtitle("Government's responsibility: reduce the differences in income between people with high incomes and those with low incomes") +
   geom_hline(yintercept = 0)
@@ -424,4 +598,310 @@ ggsave(plot = last_plot(),filename = "margins_diversityxisei.png",device = "png"
 # en personas de estatus bajo la diversidad hace que demanden menos redistribucion
 # en personas de estatus alto la diversidad hace que demanden más redistribucion
 ```
+
+```{r class-diversity}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(dplyr,sjmisc,ggplot2,lme4)
+load(here::here("input/data/proc/study1.RData"))
+
+levels(df1$class3)
+df1$class3 <- relevel(df1$class3,ref =  "Intermediate class (III+IV)")
+levels(df1$class3)
+levels(df1$class5)
+df1$class5 <- factor(df1$class5,levels = c("Petty-bourgeoise (IVa+b+c)",
+                                           "Routine non-manual (IIIa+b)",
+                                           "Skilled manual workers and supv. (V+VI)",
+                                           "Non-skilled manual workers (VIIa+b)",
+                                           "Service class (I+II)"
+                                           ))
+
+
+df1$class6 <- factor(df1$class6,levels = c("Petty-bourgeoise (IVa+b+c)",
+                                           "Routine non-manual (IIIa+b)",
+                                           "Skilled manual workers and supv. (V+VI)",
+                                           "Non-skilled manual workers (VIIa+b)",
+                                           "Service class (II - lower grade)",
+                                           "Service class (I - higher grade)" 
+                                           ))
+levels(df1$class6)
+
+dfreg <- df1 %>% select(redist,
+                        class6,
+                        class3,
+                        class5,
+                        # eindex,
+                        prestige,
+                        diversity,
+                        # isei_range,
+                        # hindex_sta,
+                        # hindex_10,
+                        ednum,female,agenum,country) %>% na.omit()
+dim(dfreg)
+
+base <- lmer(redist~1 + (1|country),data=dfreg)
+demo <- lmer(redist~1 +female+agenum + (1|country),data=dfreg)
+prestige <- lmer(redist~1 + female+agenum + prestige + (1|country),data=dfreg)
+diversity <- lmer(redist~1 + female+agenum + prestige + diversity+ (1|country),data=dfreg)
+
+class <- lmer(redist~1 +female+agenum + class6+ (1|country),data=dfreg)
+class_status <- lmer(redist~1 +female+agenum + class6+ednum+ (1|country),data=dfreg)
+full <- lmer(redist~1 +female+agenum + class6 +ednum +  prestige + diversity +(1|country),data=dfreg)
+full_int1 <- lmer(redist~1 +female+agenum + prestige+diversity*class6+ ednum +(1|country),data=dfreg)
+full_int2 <- lmer(redist~1 +female+agenum + prestige+diversity*class6+ ednum + (1+diversity|country),data=dfreg)
+models <- list(prestige,diversity,class,class_status,full,full_int1,full_int2)
+texreg::knitreg(models)
+
+
+base <- lmer(redist~1 + (1|country),data=dfreg)
+demo <- lmer(redist~1 +female+agenum + (1|country),data=dfreg)
+prestige <- lmer(redist~1 + female+agenum + prestige + (1|country),data=dfreg)
+diversity <- lmer(redist~1 + female+agenum + prestige + diversity+ (1|country),data=dfreg)
+
+class <- lmer(redist~1 +female+agenum + class5+ (1|country),data=dfreg)
+class_status <- lmer(redist~1 +female+agenum + class5+ednum+ (1|country),data=dfreg)
+full <- lmer(redist~1 +female+agenum + class5 +ednum +  prestige + diversity +(1|country),data=dfreg)
+full_int1 <- lmer(redist~1 +female+agenum + prestige+diversity*class5+ ednum +(1|country),data=dfreg)
+full_int2 <- lmer(redist~1 +female+agenum + prestige+diversity*class5+ ednum + (1+diversity|country),data=dfreg)
+models <- list(prestige,diversity,class,class_status,full,full_int1,full_int2)
+texreg::knitreg(models)
+
+base <- lmer(redist~1 + (1|country),data=dfreg)
+demo <- lmer(redist~1 +female+agenum + (1|country),data=dfreg)
+prestige <- lmer(redist~1 + female+agenum + prestige + (1|country),data=dfreg)
+diversity <- lmer(redist~1 + female+agenum + prestige + diversity+ (1|country),data=dfreg)
+
+class <- lmer(redist~1 +female+agenum + class3+ (1|country),data=dfreg)
+class_status <- lmer(redist~1 +female+agenum + class3+ednum+ (1|country),data=dfreg)
+full <- lmer(redist~1 +female+agenum + class3 +ednum +  prestige + diversity +(1|country),data=dfreg)
+full_int1 <- lmer(redist~1 +female+agenum + prestige+diversity*class3+ ednum +(1|country),data=dfreg)
+full_int2 <- lmer(redist~1 +female+agenum + prestige+diversity*class3+ ednum + (1+diversity|country),data=dfreg)
+models <- list(prestige,diversity,class,class_status,full,full_int1,full_int2)
+texreg::knitreg(models)
+
+interplot::interplot(m = full_int1,var1 = "diversity",var2="class3") +
+  ylab("Network diversity coefficient")+
+  xlab("SES Respondent")+
+  ggtitle("Government's responsibility: reduce the differences in income between people with high incomes and those with low incomes") +
+  geom_hline(yintercept = 0)
+
+```
+
+```{r class-homclass}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot)
+load(here::here("input/data/proc/study1.RData"))
+
+df1$class3 <- relevel(df1$class3,ref =  "Intermediate class (III+IV)")
+df1$class5 <- factor(df1$class5,levels = c("Petty-bourgeoise (IVa+b+c)",
+                                           "Routine non-manual (IIIa+b)",
+                                           "Skilled manual workers and supv. (V+VI)",
+                                           "Non-skilled manual workers (VIIa+b)",
+                                           "Service class (I+II)"
+                                           ))
+
+
+df1$class6 <- factor(df1$class6,levels = c("Petty-bourgeoise (IVa+b+c)",
+                                           "Routine non-manual (IIIa+b)",
+                                           "Skilled manual workers and supv. (V+VI)",
+                                           "Non-skilled manual workers (VIIa+b)",
+                                           "Service class (II - lower grade)",
+                                           "Service class (I - higher grade)" 
+                                           ))
+df1$pi_nteg<- rowMeans(df1[,c("pi_compa","pi_isola","pi_left")],na.rm = T)
+sjlabelled::set_label(df1$pi_nteg) <- "Perceived social isolation"
+df1$Q05pcm <- car::recode(df1$Q05pc,"1='Q01';2='Q02';3='Q03';4='Q04';5='Q05';NA='Missing'",
+                          as.factor = T,
+                          levels = c("Q01","Q02","Q03","Q04","Q05","Missing")) 
+frq(df1$Q05pcm)
+dfreg <- df1 %>% dplyr::select(redist,
+                        class6,
+                        class3,
+                        class5,
+                        # eindex,
+                        # know_total,
+                        homclass,
+                        # prestige,
+                        # diversity,
+                        pi_nteg,
+                        # isei_range,
+                        # hindex_sta,
+                        # hindex_10,
+                        Q05pcm,
+                        ednum,female,agenum,country) %>% na.omit()
+dfreg$country <- to_factor(dfreg$country)
+
+sjPlot::plot_model(lmer(pi_nteg~1 + female+agenum + homclass+class3 +ednum+ (1|country),data=dfreg))
+
+
+base <- lmer(redist~1 + (1|country),data=dfreg)
+demo <- lmer(redist~1 +female+agenum + (1|country),data=dfreg)
+homclass <- lmer(redist~1 + female+agenum + homclass+ (1|country),data=dfreg)
+class <- lmer(redist~1 +female+agenum + class3+ (1|country),data=dfreg)
+class_status <- lmer(redist~1 +female+agenum + class3+ednum+ Q05pcm + (1|country),data=dfreg)
+full <- lmer(redist~1 +female+agenum + class3 +ednum+homclass + pi_nteg + Q05pcm + (1|country),data=dfreg)
+full_int1 <- lmer(redist~1 +female+agenum + homclass*class3+ pi_nteg+ ednum +(1|country),data=dfreg)
+full_int3 <- lmer(redist~1 +female+agenum + homclass+pi_nteg*class3+ pi_nteg+ ednum + (1|country),data=dfreg)
+
+models <- list(homclass,class,class_status,full,full_int1,full_int3)
+texreg::knitreg(models)
+texreg::knitreg(full)
+sjPlot::plot_model(full,show.values = T,rm.terms = c("ednum","femaleFemale","agenum")) + geom_hline(yintercept = 0)
+ggsave(plot = last_plot(),filename = "model_full.png",device = "png",
+       path = here::here("output"),width = 1.5,height = 1,units = "cm",scale = 15)
+
+
+
+
+interplot <- 
+interplot::interplot(m = full_int2,var1 = "homclass",var2="class3")
+
+df_int <- interplot$data
+df_int <- df_int[c(1,2,4),]
+df_int$value <- c("Intermediate class (III+IV)","Service Class (I+II)","Working Class (V+VI+VII)")
+df_int
+df_int$value <- factor(df_int$value,ordered = T,levels = c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)"))
+
+df_int %>% 
+ggplot() +
+  geom_point(aes(x = value,y = coef1)) + 
+  geom_errorbar(aes(x = value, ymin = lb, ymax = ub),color="black",width=0.1,size=1) +
+  ylab("Class-based homogeneity coefficient")+
+  xlab("Social Class")+
+  ggtitle("Government's responsibility: reduce the differences in income between people with high incomes and those with low incomes") +
+  geom_hline(yintercept = 0)
+
+ggsave(plot = last_plot(),filename = "margins_homoxclass.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
+
+isolation <- 
+interplot::interplot(m = full_int3,var1 = "pi_nteg",var2="class3")
+df_int2 <- isolation$data
+df_int2 <- df_int2[c(1,2,4),]
+df_int2$value <- c("Intermediate class (III+IV)","Service Class (I+II)","Working Class (V+VI+VII)")
+df_int2
+df_int2$value <- factor(df_int2$value,ordered = T,levels = c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)"))
+
+df_int2 %>% 
+ggplot() +
+  geom_point(aes(x = value,y = coef1)) + 
+  geom_errorbar(aes(x = value, ymin = lb, ymax = ub),color="black",width=0.1,size=1) +
+  ylab("Perceived isolation coefficient")+
+  xlab("Social Class")+
+  ggtitle("Government's responsibility: reduce the differences in income between people with high incomes and those with low incomes") +
+  geom_hline(yintercept = 0)
+
+ggsave(plot = last_plot(),filename = "margins_isolationxclass.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
+```
+
+```{r eindex}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(dplyr,sjmisc,ggplot2,lme4)
+load(here::here("input/data/proc/study1.RData"))
+
+levels(df1$class3)
+df1$class3 <- relevel(df1$class3,ref =  "Intermediate class (III+IV)")
+levels(df1$class3)
+levels(df1$class5)
+df1$class5 <- factor(df1$class5,levels = c("Petty-bourgeoise (IVa+b+c)",
+                                           "Routine non-manual (IIIa+b)",
+                                           "Skilled manual workers and supv. (V+VI)",
+                                           "Non-skilled manual workers (VIIa+b)",
+                                           "Service class (I+II)"
+                                           ))
+
+
+df1$class6 <- factor(df1$class6,levels = c("Petty-bourgeoise (IVa+b+c)",
+                                           "Routine non-manual (IIIa+b)",
+                                           "Skilled manual workers and supv. (V+VI)",
+                                           "Non-skilled manual workers (VIIa+b)",
+                                           "Service class (II - lower grade)",
+                                           "Service class (I - higher grade)" 
+                                           ))
+levels(df1$class6)
+
+dfreg <- df1 %>% select(redist,
+                        class6,
+                        class3,
+                        class5,
+                        eindex,
+                        homclass,
+                        prestige,
+                        diversity,
+                        # isei_range,
+                        # hindex_sta,
+                        # hindex_10,
+                        ednum,female,agenum,country) %>% na.omit()
+
+dim(dfreg)
+cor(dfreg[,c("eindex","prestige","diversity")])
+
+base <- lmer(redist~1 + (1|country),data=dfreg)
+demo <- lmer(redist~1 +female+agenum + (1|country),data=dfreg)
+prestige <- lmer(redist~1 + female+agenum + prestige + (1|country),data=dfreg)
+eindex <- lmer(redist~1 + female+agenum + prestige +diversity+eindex+ (1|country),data=dfreg)
+
+class <- lmer(redist~1 +female+agenum + class6+ (1|country),data=dfreg)
+class_status <- lmer(redist~1 +female+agenum + class6+ednum+ (1|country),data=dfreg)
+full <- lmer(redist~1 +female+agenum + class6 +ednum + prestige +diversity+ eindex +(1|country),data=dfreg)
+full_int1 <- lmer(redist~1 +female+agenum + prestige+diversity+eindex*class6+ ednum +(1|country),data=dfreg)
+full_int2 <- lmer(redist~1 +female+agenum + prestige+diversity+eindex*class6+ ednum + (1+eindex|country),data=dfreg)
+models <- list(prestige,eindex,class,class_status,full,full_int1,full_int2)
+texreg::knitreg(models)
+
+
+base <- lmer(redist~1 + (1|country),data=dfreg)
+demo <- lmer(redist~1 +female+agenum + (1|country),data=dfreg)
+prestige <- lmer(redist~1 + female+agenum + prestige + (1|country),data=dfreg)
+eindex <- lmer(redist~1 + female+agenum + prestige + eindex+ (1|country),data=dfreg)
+
+class <- lmer(redist~1 +female+agenum + class5+ (1|country),data=dfreg)
+class_status <- lmer(redist~1 +female+agenum + class5+ednum+ (1|country),data=dfreg)
+full <- lmer(redist~1 +female+agenum + class5 +ednum +  prestige + eindex +(1|country),data=dfreg)
+full_int1 <- lmer(redist~1 +female+agenum + prestige+eindex*class5+ ednum +(1|country),data=dfreg)
+full_int2 <- lmer(redist~1 +female+agenum + prestige+eindex*class5+ ednum + (1+eindex|country),data=dfreg)
+models <- list(prestige,eindex,class,class_status,full,full_int1,full_int2)
+texreg::knitreg(models)
+
+base <- lmer(redist~1 + (1|country),data=dfreg)
+demo <- lmer(redist~1 +female+agenum + (1|country),data=dfreg)
+prestige <- lmer(redist~1 + female+agenum + prestige + (1|country),data=dfreg)
+eindex <- lmer(redist~1 + female+agenum + prestige + eindex+ (1|country),data=dfreg)
+
+class <- lmer(redist~1 +female+agenum + class3+ (1|country),data=dfreg)
+class_status <- lmer(redist~1 +female+agenum + class3+ednum+ (1|country),data=dfreg)
+full <- lmer(redist~1 +female+agenum + class3 +ednum +  prestige + eindex +(1|country),data=dfreg)
+full_int1 <- lmer(redist~1 +female+agenum + prestige+eindex*class3+ ednum +(1|country),data=dfreg)
+full_int2 <- lmer(redist~1 +female+agenum + prestige+eindex*class3+ ednum + (1+eindex|country),data=dfreg)
+models <- list(prestige,eindex,class,class_status,full,full_int1,full_int2)
+texreg::knitreg(models)
+
+interplot <- 
+interplot::interplot(m = full_int2,var1 = "eindex",var2="class3") +
+  ylab("Network heterophily coefficient")+
+  xlab("Social Class")+
+  ggtitle("Government's responsibility: reduce the differences in income between people with high incomes and those with low incomes") +
+  geom_hline(yintercept = 0)
+
+
+df_int <- interplot$data
+df_int <- df_int[c(1,2,4),]
+df_int$value <- c("Intermediate class (III+IV)","Service Class (I+II)","Working Class (V+VI+VII)")
+df_int
+df_int$value <- factor(df_int$value,ordered = T,levels = c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)"))
+
+df_int %>% 
+ggplot() +
+  geom_point(aes(x = value,y = coef1)) + 
+  geom_errorbar(aes(x = value, ymin = lb, ymax = ub),color="black",width=0.1,size=1) +
+  ylab("Network heterophily coefficient")+
+  xlab("Social Class")+
+  ggtitle("Government's responsibility: reduce the differences in income between people with high incomes and those with low incomes") +
+  geom_hline(yintercept = 0)
+
+ggsave(plot = last_plot(),filename = "margins_hetxclass.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
+```
+
+
 
