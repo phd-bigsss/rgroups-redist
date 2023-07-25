@@ -355,7 +355,7 @@ ggsave(plot = last_plot(),filename = "wcareelder_cn.png",device = "png",
        path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
 ```
 
-```{r}
+```{r class5}
 if (!require("pacman")) install.packages("pacman") # instalar pacman
 pacman::p_load(dplyr,sjmisc,GGally,ggplot2)
 load(here::here("input/data/proc/study1.RData"))
@@ -392,7 +392,7 @@ ggsave(plot = last_plot(),filename = "class5_cn.png",device = "png",
 ```
 
 
-```{r}
+```{r class3}
 if (!require("pacman")) install.packages("pacman") # instalar pacman
 pacman::p_load(dplyr,sjmisc,GGally,ggplot2)
 load(here::here("input/data/proc/study1.RData"))
@@ -427,21 +427,10 @@ ggplot(percentage_data, aes(x=country2,y=percentage,fill=class3,group=class3))+
 ```
 
 
-```{r}
+```{r correlation-socap}
 if (!require("pacman")) install.packages("pacman") # instalar pacman
 pacman::p_load(dplyr,sjmisc,ggplot2)
 load(here::here("input/data/proc/study1.RData"))
-
-df1 %>% 
-  group_by(class6) %>% 
-  summarise(mean(eindex,na.rm = T))
-
-df1 %>% 
-  select('redist',"eindex","hindex_sta","hindex_10","homclass","socdist","class6") %>% 
-  group_by(class6) %>% 
-  summarise(mean(homclass,na.rm = T))
-
-
 # df1$class6 <- forcats::fct_rev(factor(df1$class6,ordered = T))
 cormat1 <- 
 df1 %>% 
@@ -460,15 +449,32 @@ df1 %>%
   text(4.7, 0.6, paste0("Source: Authors calculation based on ISSP 2017",
                              " (N = ",")"),   
        cex = 0.75)
-
-df1 %>% 
-  select("eindex","hindex_sta","hindex_10","homclass","socdist","class6",class5) %>% 
-  group_by(class5) %>% 
-  summarise(mean(eindex,na.rm = T))
-
-sjPlot::tab_corr((df1[,c("eindex","hindex_sta","hindex_10","homclass","socdist")]),
-                 triangle = "lower") 
 ```
+
+```{r correlation-segregation}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(dplyr,sjmisc,ggplot2)
+load(here::here("input/data/proc/study1.RData"))
+# df1$class6 <- forcats::fct_rev(factor(df1$class6,ordered = T))
+cormat1 <- 
+df1 %>% 
+    select('redist',homclass,homclass_s,homclass_w,pi_nteg,class3) %>% 
+  na.omit() %>% 
+  polycor::hetcor(parallel = T)
+
+  corrplot::corrplot(cormat1$correlations,
+    method = "color",
+    addCoef.col = "#000390",
+    type = "upper",
+    tl.col = "black",
+    col=colorRampPalette(c("white","#0068DC"))(12),
+    bg = "white",
+    na.label = "-")
+  text(4.7, 0.6, paste0("Source: Authors calculation based on ISSP 2017",
+                             " (N = ",")"),   
+       cex = 0.75)
+```
+
 
 ```{r}
 df1$country2 <- sjlabelled::to_character(df1$country)
@@ -720,6 +726,7 @@ dfreg <- df1 %>% dplyr::select(redist,
                         # eindex,
                         # know_total,
                         homclass,
+                        # homclass_s,homclass_w,
                         # prestige,
                         # diversity,
                         pi_nteg,
@@ -727,10 +734,13 @@ dfreg <- df1 %>% dplyr::select(redist,
                         # hindex_sta,
                         # hindex_10,
                         Q05pcm,
+                        # sstatus,
+                        giniwd,
                         ednum,female,agenum,country) %>% na.omit()
+dim(dfreg)
 dfreg$country <- to_factor(dfreg$country)
 
-sjPlot::plot_model(lmer(pi_nteg~1 + female+agenum + homclass+class3 +ednum+ (1|country),data=dfreg))
+sjPlot::plot_model(lmer(redist~1 + female+agenum + homclass*giniwd + pi_nteg+class3 +ednum + Q05pcm + giniwd + (1+homclass|country),data=dfreg),show.values = T)
 
 
 base <- lmer(redist~1 + (1|country),data=dfreg)
@@ -826,6 +836,7 @@ dfreg <- df1 %>% select(redist,
                         class5,
                         eindex,
                         homclass,
+                        # homclass_s,homclass_w,
                         prestige,
                         diversity,
                         # isei_range,
