@@ -1,0 +1,144 @@
+---
+title: "Data preparation"
+date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
+output: 
+  html_document: 
+    toc: yes
+    toc_float:
+      collapsed: yes
+      smooth_scroll: no
+      number_sections: yes
+    code_folding: show  
+    number_sections: yes
+editor_options: 
+  chunk_output_type: console
+---
+
+# Setup
+
+```{r setup}
+knitr::opts_chunk$set(warning = FALSE, 
+                      message = FALSE, 
+                      echo = TRUE 
+                      )
+options(scipen=9999) # desactivar notacion cientifica
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+load(here::here("input/data/proc/study1.RData"))
+pacman::p_load(dplyr,sjmisc,sjPlot,sjlabelled,tidyverse)
+```
+
+# Country level
+
+```{r}
+countries <- 
+df1 %>% 
+  group_by(country) %>% 
+  summarise(n=n())
+countries$ccode <- as.numeric(countries$country)
+countries$countryname <- as_character(countries$country)
+```
+
+
+# Economic inequality
+
+```{r world-bank, eval=FALSE, include=FALSE}
+# install.packages("wbstats")
+library(wbstats)
+ineq<- c("3.0.Rate75-25","3.0.Rate90-10","SI.POV.GINI","3.0.Gini","3.0.Gini_nozero")
+# Gini
+giniwb <- wb_data("SI.POV.GINI", start_date = 2015, end_date = 2020,return_wide = F)
+gini_wb<- reshape::cast(giniwb[,c("iso3c","date","value")],formula = iso3c ~ date,value = "value")
+gini_wb$ccode <- countrycode::countrycode(sourcevar = gini_wb$iso3c,origin = "iso3c",destination = "iso3n")
+gini_wb<- gini_wb %>% filter(ccode %in% countries$ccode)
+
+skimr::skim(gini_wb)
+
+gini_wb$giniwb <-  gini_wb$"2017"
+summary(gini_wb$giniwb)
+gini_wb$giniwb <- ifelse(is.na(gini_wb$giniwb),yes = gini_wb$"2018",no = gini_wb$giniwb)
+summary(gini_wb$giniwb)
+gini_wb$giniwb <- ifelse(is.na(gini_wb$giniwb),yes = gini_wb$"2016",no = gini_wb$giniwb)
+summary(gini_wb$giniwb)
+
+# Rate 90-1
+rate90_10 <- wb_data("3.0.Rate90-10", start_date = 2015, end_date = 2020,return_wide = F)
+rate90_10_wb<- reshape::cast(giniwb[,c("iso3c","date","value")],formula = iso3c ~ date,value = "value")
+rate90_10_wb$ccode <- countrycode::countrycode(sourcevar = rate90_10_wb$iso3c,origin = "iso3c",destination = "iso3n")
+rate90_10_wb<- rate90_10_wb %>% filter(ccode %in% country_data$ccode)
+
+
+# Rate 90-1
+rate75_25 <- wb_data("3.0.Rate75-25", start_date = 2015, end_date = 2020,return_wide = F)
+rate75_25_wb<- reshape::cast(giniwb[,c("iso3c","date","value")],formula = iso3c ~ date,value = "value")
+rate75_25_wb$ccode <- countrycode::countrycode(sourcevar = rate75_25_wb$iso3c,origin = "iso3c",destination = "iso3n")
+rate75_25_wb<- rate75_25_wb %>% filter(ccode %in% country_data$ccode)
+
+
+country_data <- 
+countries %>% left_join(select(gini_wb,iso3c,ccode,giniwb),by="ccode")
+```
+
+```{r WIID}
+wiid<- haven::read_dta(here::here("input/data/original/WIID_30JUN2022_0/WIID_30JUN2022_0.dta"))
+summary(wiid$gini)
+
+gini_wiid <- wiid %>% dplyr::select(c3,year,gini,palma) %>% dplyr::filter(year %in% c(2014:2019))
+summary(gini_wiid)
+
+gini_wiid <- panelr::widen_panel(data = panelr::panel_data(as.data.frame(gini_wiid), id = c3 , wave = year))
+gini_wiid$ccode <- countrycode::countrycode(sourcevar = gini_wiid$c3,origin = "iso3c",destination = "iso3n")
+
+gini_wiid<- gini_wiid %>% filter(ccode %in% countries$ccode)
+
+gini_wiid$giniwd <- gini_wiid$gini_2017
+summary(gini_wiid$giniwd)
+gini_wiid$giniwd <- ifelse(is.na(gini_wiid$giniwd),gini_wiid$gini_2018,no = gini_wiid$giniwd)
+summary(gini_wiid$giniwd)
+gini_wiid$giniwd <- ifelse(is.na(gini_wiid$giniwd),gini_wiid$gini_2016,no = gini_wiid$giniwd)
+summary(gini_wiid$giniwd)
+
+skimr::skim(gini_wiid)
+
+gini_wiid$palmawd <- gini_wiid$palma_2017
+summary(gini_wiid$palmawd)
+gini_wiid$palmawd <- ifelse(is.na(gini_wiid$palmawd),gini_wiid$palma_2018,no = gini_wiid$palmawd)
+summary(gini_wiid$palmawd)
+gini_wiid$palmawd <- ifelse(is.na(gini_wiid$palmawd),gini_wiid$palma_2016,no = gini_wiid$palmawd)
+summary(gini_wiid$palmawd)
+
+country_data2 <- 
+countries %>% left_join(gini_wiid[,c("ccode","c3","giniwd","palmawd")],by="ccode")
+```
+
+```{r Solt}
+load(file = here::here("input/data/original/swiid9_5/swiid9_5.rda"))
+solt <- 
+swiid_summary %>% dplyr::select(country,year,gini_disp,gini_mkt) %>% dplyr::filter(year %in% c(2016))
+solt$ccode <- countrycode::countrycode(sourcevar = solt$country,origin = "country.name",destination = "iso3n")
+solt$country <- NULL
+solt <-  solt %>% filter(ccode %in% country_data2$ccode)
+country_data3 <- country_data2 %>% 
+  left_join(solt,by="ccode")
+```
+
+# GDP
+
+```{r pen-data}
+pendata<- haven::read_dta(file = "input/data/original/pen-world/pwt1001.dta")
+pendata$ccode <- countrycode::countrycode(sourcevar = pendata$countrycode,origin = "iso3c",destination = "iso3n")
+pen <- pendata %>% filter(ccode %in% countries$ccode,year %in% 2017) 
+
+skimr::skim(pen)
+country_data4 <- country_data3 %>% 
+  left_join(pen,by="ccode")
+```
+
+```{r merge}
+df1$ccode <- as.numeric(df1$country)
+df2 <- 
+df1 %>% left_join(country_data4[,c("ccode","c3","giniwd","gini_disp","gini_mkt","palmawd","rgdpna")],by = "ccode")
+```
+
+```{r save}
+save(df2,file = here::here("input/data/proc/study1_country.RData"))
+```

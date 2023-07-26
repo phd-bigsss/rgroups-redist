@@ -125,6 +125,23 @@ df1$pi_nteg<- rowMeans(df1[,c("pi_compa","pi_isola","pi_left")],na.rm = T)
 sjlabelled::set_label(df1$pi_nteg) <- "Perceived integration"
 ```
 
+# Trust
+
+```{r}
+df1$tr_inte <- car::recode(df1$v35,recodes = "c(0,8,9)=NA")
+df1$tr_inte <- set_na(df1$tr_inte,na = c(0,8,9))
+df1$tr_inte <- sjmisc::rec(x = df1$tr_inte,rec = "rev")
+sjlabelled::set_label(df1$tr_inte) <- "Interpersonal trust"
+frq(df1$tr_inte)
+
+df1$tr_courts <- car::recode(df1$v36,recodes = "c(98,99)=NA")
+df1$tr_courts <- set_na(df1$tr_courts,na = c(98,99))
+# df1$tr_courts <- sjmisc::rec(x = df1$tr_courts,rec = "rev")
+sjlabelled::set_label(df1$tr_courts) <- "Trust in courts"
+frq(df1$tr_courts)
+```
+
+
 # Social status
 
 ```{r income-hhold}
@@ -930,97 +947,15 @@ df1$female <- car::recode(as.numeric(df1$SEX),"2='Female';1='Male';9=NA",
 #frq(df1$female)
 ```
 
-# Country level
+# Group-mean center
 
 ```{r}
-countries <- 
-df1 %>% 
-  group_by(country) %>% 
-  summarise(n=n())
-countries$ccode <- as.numeric(countries$country)
-countries$countryname <- as_character(countries$country)
+
 ```
 
 
-```{r}
-# install.packages("wbstats")
-library(wbstats)
-ineq<- c("3.0.Rate75-25","3.0.Rate90-10","SI.POV.GINI","3.0.Gini","3.0.Gini_nozero")
-# Gini
-giniwb <- wb_data("SI.POV.GINI", start_date = 2015, end_date = 2020,return_wide = F)
-gini_wb<- reshape::cast(giniwb[,c("iso3c","date","value")],formula = iso3c ~ date,value = "value")
-gini_wb$ccode <- countrycode::countrycode(sourcevar = gini_wb$iso3c,origin = "iso3c",destination = "iso3n")
-gini_wb<- gini_wb %>% filter(ccode %in% countries$ccode)
-
-skimr::skim(gini_wb)
-
-gini_wb$giniwb <-  gini_wb$"2017"
-summary(gini_wb$giniwb)
-gini_wb$giniwb <- ifelse(is.na(gini_wb$giniwb),yes = gini_wb$"2018",no = gini_wb$giniwb)
-summary(gini_wb$giniwb)
-gini_wb$giniwb <- ifelse(is.na(gini_wb$giniwb),yes = gini_wb$"2016",no = gini_wb$giniwb)
-summary(gini_wb$giniwb)
-
-country_data <- 
-countries %>% left_join(select(gini_wb,iso3c,ccode,giniwb),by="ccode")
-
-# Rate 90-1
-rate90_10 <- wb_data("3.0.Rate90-10", start_date = 2015, end_date = 2020,return_wide = F)
-rate90_10_wb<- reshape::cast(giniwb[,c("iso3c","date","value")],formula = iso3c ~ date,value = "value")
-rate90_10_wb$ccode <- countrycode::countrycode(sourcevar = rate90_10_wb$iso3c,origin = "iso3c",destination = "iso3n")
-rate90_10_wb<- rate90_10_wb %>% filter(ccode %in% countries$ccode)
-
-
-```
 
 ```{r}
-wiid<- haven::read_dta(here::here("input/data/original/WIID_30JUN2022_0/WIID_30JUN2022_0.dta"))
-summary(wiid$gini)
-gini_wiid <- wiid %>% select(c3,year,gini) %>% filter(year %in% c(2010:2020))
-summary(gini_wiid)
-
-gini_wiid <- panelr::widen_panel(data = panelr::panel_data(as.data.frame(gini_wiid), id = c3 , wave = year))
-gini_wiid$ccode <- countrycode::countrycode(sourcevar = gini_wiid$c3,origin = "iso3c",destination = "iso3n")
-
-gini_wiid<- gini_wiid %>% filter(ccode %in% countries$ccode)
-
-gini_wiid$giniwd <- gini_wiid$gini_2017
-summary(gini_wiid$giniwd)
-gini_wiid$giniwd <- ifelse(is.na(gini_wiid$giniwd),gini_wiid$gini_2018,no = gini_wiid$giniwd)
-summary(gini_wiid$giniwd)
-# gini_wiid$giniwd <- ifelse(is.na(gini_wiid$giniwd),gini_wiid$gini_2019,no = gini_wiid$giniwd)
-# summary(gini_wiid$giniwd)
-# gini_wiid$giniwd <- ifelse(is.na(gini_wiid$giniwd),gini_wiid$gini_2020,no = gini_wiid$giniwd)
-# summary(gini_wiid$giniwd)
-gini_wiid$giniwd <- ifelse(is.na(gini_wiid$giniwd),gini_wiid$gini_2016,no = gini_wiid$giniwd)
-summary(gini_wiid$giniwd)
-# gini_wiid$giniwd <- ifelse(is.na(gini_wiid$giniwd),gini_wiid$gini_2015,no = gini_wiid$giniwd)
-# summary(gini_wiid$giniwd)
-# gini_wiid$giniwd <- ifelse(is.na(gini_wiid$giniwd),gini_wiid$gini_2014,no = gini_wiid$giniwd)
-# summary(gini_wiid$giniwd)
-# gini_wiid$giniwd <- ifelse(is.na(gini_wiid$giniwd),gini_wiid$gini_2013,no = gini_wiid$giniwd)
-# summary(gini_wiid$giniwd)
-# gini_wiid$giniwd <- ifelse(is.na(gini_wiid$giniwd),gini_wiid$gini_2012,no = gini_wiid$giniwd)
-# summary(gini_wiid$giniwd)
-
-country_data2 <- 
-country_data %>% left_join(gini_wiid[,c("ccode","giniwd","c3")],by="ccode")
-```
-
-```{r}
-df1$ccode <- as.numeric(df1$country)
-df2 <- 
-df1 %>% left_join(country_data2[,c("ccode","c3","giniwb","giniwd")],by = "ccode")
-```
-
-
-https://fsolt.org/swiid/
-
-```{r}
-names(df2)
-```
-
-```{r}
-df1 <- df2
-save(df2,file = here::here("input/data/proc/study1.RData"))
+df1
+save(df1,file = here::here("input/data/proc/study1.RData"))
 ```
