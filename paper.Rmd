@@ -47,6 +47,10 @@ header-includes:
   - \usepackage{threeparttable}
 ---
 
+- controls educ and income
+- laborstatus
+
+
 ```{r setup, include=FALSE}
 if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
 if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
@@ -135,7 +139,7 @@ df1$country2 <- countrycode::countrycode(sourcevar = df1$country,origin = "iso3n
 dfreg <- df1 %>% dplyr::select(redist,
                         class3,
                         homclass,
-                        incomepcap,
+                        Q05pcm,
                         gini_disp,
                         gini_mkt,
                         rgdpna,
@@ -143,8 +147,8 @@ dfreg <- df1 %>% dplyr::select(redist,
                         female,
                         agenum,
                         country2,pi_isola,
-                        # union,
-                        # labst,
+                        union,
+                        labst,
                         # WEIGHT
                         ) %>% 
   mutate(logrgdpna=log(rgdpna)) %>%
@@ -155,13 +159,13 @@ dfreg <- df1 %>% dplyr::select(redist,
 base <- lmer(redist~1 + (1|country2),data=dfreg); icc1<- performance::icc(base)
 homclass <- lmer(redist~1 + female+agenum + homclass +(1|country2),data=dfreg)
 class <- lmer(redist~1 +female+agenum + class3+(1|country2),data=dfreg)
-full <- lmer(redist~1 +female+agenum + class3 +edyears+homclass+incomepcap+(1|country2),data=dfreg)
+full <- lmer(redist~1 +female+agenum + class3 +edyears+homclass+Q05pcm+(1|country2),data=dfreg)
 # Interactions segregation x class
-full_int1 <- lmer(redist~1 +female+agenum + edyears + incomepcap + homclass*class3 +(1|country2),data=dfreg)
+full_int1 <- lmer(redist~1 +female+agenum + edyears + Q05pcm + homclass*class3 +(1|country2),data=dfreg)
 models <- list(homclass,class,full,full_int1)
 
 cap1 <- "Multilevel regression for redistributive preferences, network homogeneity and social class" 
-omitcoef <- "(Intercept)|(agenum)|(female)|(incomepcap)|(edyears)|(logrgdpna)"
+omitcoef <- "(Intercept)|(agenum)|(female)|(Q05pcm)|(edyears)|(logrgdpna)"
 coefname <- c("Network class homogeneity","Service Class","Working Class",
               "Homogeneity x Service Class","Homogeneity x Working Class")
 coefgroup <- list("Social Class (ref: Intermediate class)"=2:3,"Interaction:"=4:5)
