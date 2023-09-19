@@ -26,13 +26,20 @@ options(scipen=9999) # desactivar notacion cientifica
 
 ```{r}
 if (!require("pacman")) install.packages("pacman") # instalar pacman
-pacman::p_load(dplyr,sjmisc,GGally,sjlabelled,tidyverse)
+pacman::p_load(dplyr,sjmisc,GGally,sjlabelled,tidyverse,MLMusingR)
 df1 <- haven::read_dta(here::here("input/data/original/ZA6980_v2-0-0.dta"))
 dfTR <- haven::read_dta(here::here("input/data/original/ZA5521_v1-0-0.dta"))
 dfES <- haven::read_dta(here::here("input/data/original/ZA5962_v1-0-0.dta"))
 
 df1 <- df1 %>% rename(topbot=TOPBOT)
 dfES <- dfES %>% rename(topbot=TOPBOT)
+#fix problem with variable names
+dfTR <- dfTR %>% rename(SEX=sex,
+                        DEGREE=degree,
+                        EDUCYRS=educyrs,
+                        AGE=age,
+                        MAINSTAT=mainstat,
+                        UNION=union)  
 dfES$c_alphan <- NULL
 dfTR$c_alphan <- NULL
 df2 <- bind_rows(dfES,dfTR)
@@ -176,7 +183,7 @@ sjlabelled::set_label(df1$logincpc) <- "Household income (log)"
 ```
 
 ```{r income-respondent}
-income_country <- names(df1 %>% select(dplyr::ends_with("_RINC")))
+income_country <- names(df1 %>% dplyr::select(dplyr::ends_with("_RINC")))
 # lapply(df1[,income_country], table)
 for (i in income_country) {
   df1[[i]] <- car::recode(var = df1[[i]],"999990:99999999=NA")
@@ -342,7 +349,7 @@ haven::write_dta(data = df1[c("id","isco88r","semp","supvis",
 df_class <- haven::read_dta(file = here::here("input/data/proc/class_respondent-spouse.dta"))
 df1 <- left_join(df1,df_class,by='id')
 
-
+# Class R´s and Spouse
 df1$class10 <- car::recode(df1$class10, "7=8; 8=9; 9=10; 10=11; 11=7")
 df1$class10 <- sjlabelled::set_labels(df1$class10, levels = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11),
                         labels = c("I", "II", "IIIa", "IIIb", "IVa", "IVb", "IVc", "V", "VI", "VIIa", "VIIb"))
@@ -437,6 +444,121 @@ df1$class6 <- car::recode(
    8:9='Skilled manual workers and supv. (V+VI)';
    10:11='Non-skilled manual workers (VIIa+b)'"
 )
+
+# Class only R's --------------------------------------------------------------
+df1$class10
+
+# Class Scheme 3 classes
+df1$class3res <- car::recode(as.numeric(df1$class10),as.factor = T,
+                            levels =c('Service Class (I+II)',
+                                      'Intermediate class (III+IV)',
+                                      'Working Class (V+VI+VII)'), 
+                            "1:2='Service Class (I+II)';
+                             3:7='Intermediate class (III+IV)';
+                             8:11='Working Class (V+VI+VII)'")
+
+sjlabelled::set_label(df1$class3res) <- "Social Class (R's)"
+# frq(df1$class3res)
+
+# Class Scheme 5 classes
+df1$class5res <- car::recode(
+  as.numeric(df1$class10),
+  as.factor = T,
+  levels = c(
+    'Service class (I+II)',
+    'Routine non-manual (IIIa+b)',
+    'Petty-bourgeoise (IVa+b+c)',
+    'Skilled manual workers and supv. (V+VI)',
+    'Non-skilled manual workers (VIIa+b)'
+  ),
+  "1:2='Service class (I+II)';
+   3:4='Routine non-manual (IIIa+b)';
+   5:7='Petty-bourgeoise (IVa+b+c)';
+   8:9='Skilled manual workers and supv. (V+VI)';
+   10:11='Non-skilled manual workers (VIIa+b)'"
+)
+
+sjlabelled::set_label(df1$class5res) <- "Social Class (R's)"
+# frq(df1$class5res)
+
+# Class Scheme 6 classes
+df1$class6res <- car::recode(
+  as.numeric(df1$class10),
+  as.factor = T,
+  levels = c(
+    'Service class (I - higher grade)',
+    'Service class (II - lower grade)',
+    'Routine non-manual (IIIa+b)',
+    'Petty-bourgeoise (IVa+b+c)',
+    'Skilled manual workers and supv. (V+VI)',
+    'Non-skilled manual workers (VIIa+b)'
+  ),
+  "1='Service class (I - higher grade)';
+   2='Service class (II - lower grade)';
+   3:4='Routine non-manual (IIIa+b)';
+   5:7='Petty-bourgeoise (IVa+b+c)';
+   8:9='Skilled manual workers and supv. (V+VI)';
+   10:11='Non-skilled manual workers (VIIa+b)'"
+)
+
+sjlabelled::set_label(df1$class6res) <- "Social Class (R's)"
+frq(df1$class6res)
+# Class only Spouse --------------------------------------------------------------
+df1$class10spo
+
+# Class Scheme 3 classes
+df1$class3spo <- car::recode(as.numeric(df1$class10spo),as.factor = T,
+                            levels =c('Service Class (I+II)',
+                                      'Intermediate class (III+IV)',
+                                      'Working Class (V+VI+VII)'), 
+                            "1:2='Service Class (I+II)';
+                             3:7='Intermediate class (III+IV)';
+                             8:11='Working Class (V+VI+VII)'")
+
+sjlabelled::set_label(df1$class3spo) <- "Social Class (Spouse)"
+frq(df1$class3spo)
+
+# Class Scheme 5 classes
+df1$class5spo <- car::recode(
+  as.numeric(df1$class10spo),
+  as.factor = T,
+  levels = c(
+    'Service class (I+II)',
+    'Routine non-manual (IIIa+b)',
+    'Petty-bourgeoise (IVa+b+c)',
+    'Skilled manual workers and supv. (V+VI)',
+    'Non-skilled manual workers (VIIa+b)'
+  ),
+  "1:2='Service class (I+II)';
+   3:4='Routine non-manual (IIIa+b)';
+   5:7='Petty-bourgeoise (IVa+b+c)';
+   8:9='Skilled manual workers and supv. (V+VI)';
+   10:11='Non-skilled manual workers (VIIa+b)'"
+)
+
+sjlabelled::set_label(df1$class5spo) <- "Social Class (Spouse)"
+# frq(df1$class5res)
+
+# Class Scheme 6 classes
+df1$class6spo <- car::recode(
+  as.numeric(df1$class10spo),
+  as.factor = T,
+  levels = c(
+    'Service class (I - higher grade)',
+    'Service class (II - lower grade)',
+    'Routine non-manual (IIIa+b)',
+    'Petty-bourgeoise (IVa+b+c)',
+    'Skilled manual workers and supv. (V+VI)',
+    'Non-skilled manual workers (VIIa+b)'
+  ),
+  "1='Service class (I - higher grade)';
+   2='Service class (II - lower grade)';
+   3:4='Routine non-manual (IIIa+b)';
+   5:7='Petty-bourgeoise (IVa+b+c)';
+   8:9='Skilled manual workers and supv. (V+VI)';
+   10:11='Non-skilled manual workers (VIIa+b)'"
+)
+sjlabelled::set_label(df1$class6spo) <- "Social Class (Spouse)"
 ```
 
 # Networks
@@ -793,10 +915,14 @@ df1$eindex<- (df1$outgroup-df1$ingroup)/(df1$outgroup+df1$ingroup)
 sjlabelled::set_label(df1$eindex) <- "EI homophily index"
 #frq(df1$eindex)
 hist.default(df1$eindex)
+df1$eindex_gc <- group_center(x = df1$eindex,grp = df1$country)
+hist.default(df1$eindex_gc)
 
 df1 %>% select(class3,n_high,n_middle,n_low,outgroup,ingroup,eindex)
 df1$homclass <- as.numeric(df1$ingroup/df1$know_total)
 sjlabelled::set_label(df1$homclass) <- "Class homogeneity"
+df1$homclass_gc <- group_center(x = df1$homclass,grp = df1$country)
+View(df1[,c("homclass","homclass_gc")])
 # Weighted EI index
 # https://arxiv.org/pdf/2109.00348.pdf
 
@@ -885,6 +1011,37 @@ sjlabelled::set_label(df1$socdist) <- "Social distance: ISEI (respondent - conta
 #higher values represent higher socioeconomic distance from my contacts. In other words, higher values means that in average, my contacts are more different from me in terms of socioeconomic status (ISEI), while lower values represent higher homogeneity.
 ```
 
+```{r homogeneity-resp}
+# EI homophily index
+df1$ingroup_res <- NA 
+df1 %>% select(class3res,n_high,n_middle,n_low,ingroup_res)
+df1$ingroup_res <- ifelse(df1$class3res=="Service Class (I+II)",df1$n_high,df1$ingroup_res)
+df1$ingroup_res <- ifelse(df1$class3res=="Intermediate class (III+IV)",df1$n_middle,df1$ingroup_res)
+df1$ingroup_res <- ifelse(df1$class3res=="Working Class (V+VI+VII)",df1$n_low,df1$ingroup_res)
+# frq(df1$ingroup_res)
+
+df1$outgroup_res <- NA 
+df1 %>% select(class3res,n_high,n_middle,n_low,outgroup_res)
+df1$outgroup_res <- ifelse(df1$class3res=="Service Class (I+II)",rowSums(df1[,c("n_low","n_middle")],na.rm = T),df1$outgroup_res)
+df1$outgroup_res <- ifelse(df1$class3res=="Intermediate class (III+IV)",rowSums(df1[,c("n_low","n_high")],na.rm = T),df1$outgroup_res)
+df1$outgroup_res <- ifelse(df1$class3res=="Working Class (V+VI+VII)",rowSums(df1[,c("n_middle","n_high")],na.rm=T),df1$outgroup_res)
+# frq(df1$outgroup_res)
+
+df1$eindex_res<- (df1$outgroup_res-df1$ingroup_res)/(df1$outgroup_res+df1$ingroup_res)
+sjlabelled::set_label(df1$eindex_res) <- "EI homophily index (R's)"
+# frq(df1$eindex)
+# hist.default(df1$eindex)
+
+df1 %>% select(class3res,n_high,n_middle,n_low,outgroup_res,ingroup_res,eindex_res)
+df1$homclass_res <- as.numeric(df1$ingroup_res/df1$know_total)
+sjlabelled::set_label(df1$homclass_res) <- "Class homogeneity (R's)"
+# Weighted EI index
+# https://arxiv.org/pdf/2109.00348.pdf
+
+
+# Thus, an EI score of -1 means complete homophily- the individual only has relationships with actors of the same “type” as they themselves are. An EI score of 1 means complete heterophily- all the alters are of a different “type” than they themselves are. Finally, an EI score of 0 means that an equal number of alters are of both the same “type” as the ego, and different types
+```
+
 (i)  the highest status job accessed (upper reachability),
 (ii) the range between highest and lowest occupations accessed (resource heterogeneity)
 (iii) the total number of occupations accessed (network extensity),
@@ -947,13 +1104,7 @@ df1$female <- car::recode(as.numeric(df1$SEX),"2='Female';1='Male';9=NA",
 #frq(df1$female)
 ```
 
-# Group-mean center
-
-```{r}
-
-```
-
-
+# Variable centering
 
 ```{r}
 df1

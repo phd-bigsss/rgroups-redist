@@ -1,0 +1,1397 @@
+---
+title: "Multilevel regression models"
+date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
+output: 
+  html_document: 
+    toc: yes
+    code_folding: hide
+    toc_float: 
+      collapsed: true
+      smooth_scroll: false
+      number_sections: true
+editor_options: 
+  chunk_output_type: console
+---
+
+- mantener clase R´s y calcular homogeneidad
+- mantener clase de Partner a parte como un control
+
+
+```{r setup}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+options(scipen=9999) # desactivar notacion cientifica
+```
+
+# Modelos
+
+dicotomizar homogeneidad en 1=50% similar,49% similar
+
+Modelos homogeneidad 
+
+```{r class-homclass}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven)
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"))
+df1 <- df2
+df1$class3 <- relevel(df1$class3,ref =  "Intermediate class (III+IV)")
+df1$class5 <- factor(df1$class5,levels = c("Petty-bourgeoise (IVa+b+c)",
+                                           "Routine non-manual (IIIa+b)",
+                                           "Skilled manual workers and supv. (V+VI)",
+                                           "Non-skilled manual workers (VIIa+b)",
+                                           "Service class (I+II)"
+                                           ))
+df1$class6 <- factor(df1$class6,levels = c("Petty-bourgeoise (IVa+b+c)",
+                                           "Routine non-manual (IIIa+b)",
+                                           "Skilled manual workers and supv. (V+VI)",
+                                           "Non-skilled manual workers (VIIa+b)",
+                                           "Service class (II - lower grade)",
+                                           "Service class (I - higher grade)" 
+                                           ))
+df1$pi_nteg<- rowMeans(df1[,c("pi_compa","pi_isola","pi_left")],na.rm = T)
+sjlabelled::set_label(df1$pi_nteg) <- "Perceived social isolation"
+df1$Q05pcm <- car::recode(df1$Q05pc,"1='Q01';2='Q02';3='Q03';4='Q04';5='Q05';NA='Missing'",
+                          as.factor = T,
+                          levels = c("Q01","Q02","Q03","Q04","Q05","Missing")) 
+frq(df1$Q05pcm)
+df1$country2 <- countrycode::countrycode(sourcevar = df1$country,origin = "iso3n",destination = "country.name")
+dfreg <- df1 %>% dplyr::select(redist,
+                        class3,
+                        # tr_inte,
+                        # eindex,
+                        # know_total,
+                        homclass,
+                        homclass_gc,
+                        # homclass_s,homclass_w,
+                        # prestige,
+                        # diversity,
+                        # pi_nteg,
+                        # isei_range,
+                        # hindex_sta,
+                        # hindex_10,
+                        Q05pcm,
+                        # sstatus,
+                        gini_disp,
+                        gini_mkt,
+                        # palmawd,
+                        rgdpna,
+                        # giniwb,
+                        # giniwd,
+                        ednum,
+                        female,
+                        agenum,
+                        country2,
+                        # WEIGHT
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna)) %>%
+  # filter(country!=233) %>% 
+  na.omit()
+dim(dfreg)
+
+base <- lmer(redist~1 + (1|country2),data=dfreg);performance::icc(base)
+demo <- lmer(redist~1 +female+agenum + (1|country2),data=dfreg)
+homclass <- lmer(redist~1 + female+agenum + homclass + (1|country2),data=dfreg)
+class <- lmer(redist~1 +female+agenum + class3+ (1|country2),data=dfreg)
+class_status <- lmer(redist~1 +female+agenum + class3+ednum+ Q05pcm + (1|country2),data=dfreg)
+full <- lmer(redist~1 +female+agenum + class3 +ednum+homclass +  Q05pcm + (1|country2),data=dfreg)
+full_b <- lmer(redist~1 +female+agenum + class3 +ednum+homclass_gc +  Q05pcm + (1|country2),data=dfreg)
+full_m <- lmer(redist~1 +female+agenum + class3 +ednum+homclass +  Q05pcm +  gini_disp + logrgdpna + (1|country2),data=dfreg)
+full_m_rs <- lmer(redist~1 +female+agenum + class3 +ednum+homclass +  Q05pcm +  gini_disp + logrgdpna + (1+homclass|country2),data=dfreg)
+
+anova(full_m,full_m_rs)
+plot_model(full_m_rs,type = "re")
+# Interactions segregation x class
+full_int1 <- lmer(redist~1 +female+agenum + ednum + Q05pcm + homclass*class3 +(1|country2),data=dfreg)
+# full_int3 <- lmer(redist~1 +female+agenum + labst + union+ homclass+pi_nteg*class3+ pi_nteg+ ednum + Q05pcm + tr_inte + (1|country),data=dfreg)
+
+models <- list(homclass,class,full,full_int1)
+texreg::knitreg(models)
+
+# Conditional Marginal effect
+interplot <- 
+interplot::interplot(m = full_int1,var1 = "homclass",var2="class3")
+df_int <- interplot$data
+df_int <- df_int[c(1,2,4),]
+df_int$value <- c("Intermediate class (III+IV)","Service Class (I+II)","Working Class (V+VI+VII)")
+df_int
+df_int$value <- factor(df_int$value,ordered = T,
+                       levels = c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)"))
+
+df_int %>% 
+ggplot() +
+  geom_point(aes(x = value,y = coef1)) + 
+  geom_errorbar(aes(x = value, ymin = lb, ymax = ub),color="black",width=0.1,size=1) +
+  labs(caption = paste0("N=",nobs(full),", Countries=",lme4::ngrps(full))) +
+  ylab("Class-based homogeneity coefficient")+
+  xlab("Social Class")+
+  ggtitle("Government's responsibility: reduce the differences in income between people with high incomes and those with low incomes") +
+  geom_hline(yintercept = 0) +
+  labs(caption = paste0("N=",nobs(full),", Countries=",lme4::ngrps(full))) +  
+  theme(plot.title = element_text(size = 8))  
+
+ggsave(plot = last_plot(),filename = "mar_homo_class.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 10)
+
+# Predicted values 
+pred1<- plot_model(full_int1,type = "int")
+pred_data <- data.frame(pred1$data)
+pred_data <- pred_data %>% arrange(pred_data$group)
+pred_data$group <- factor(pred_data$group,ordered = T,
+                       levels = c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)"))
+
+pred_data %>% 
+ggplot() +
+  geom_point(aes(x = x,y = predicted)) +
+  geom_line(aes(x = x,y = predicted))+
+  geom_errorbar(aes(x = x, ymin = conf.low, ymax = conf.high),color="black",width=0.05,size=1) +
+  facet_grid(. ~ group) +
+  labs(caption = paste0("N=",nobs(full),", Countries=",lme4::ngrps(full))) +
+  xlab("Network homogeneity")+
+  ylab("Redistributive preferences") + 
+  theme_minimal()
+
+ggsave(plot = last_plot(),filename = "pred_homo_class.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 10)
+```
+
+```{r homclass-gini}
+# Interactions segregation x inequality
+df1$homclass_gc <- MLMusingR::group_center(df1$homclass,df1$country) 
+df1$logrgdpna=log(df1$rgdpna)
+df1$ratio10_50 <- df1$pc10_2017/df1$pc50_2017
+
+int_ginidis<- lmer(redist~1 +female+agenum + labst + union+ class3 + homclass_gc*gini_disp+ednum + Q05pcm  +logrgdpna + (1+homclass_gc|country),data=df1)
+int_ginimkt <- lmer(redist~1 +female+agenum + labst + union+ class3 + homclass_gc*gini_mkt+ednum + Q05pcm  +logrgdpna + (1+homclass_gc|country),data=df1)
+int_palma <- lmer(redist~1 +female+agenum + labst + union+ class3 + homclass_gc*palmawd+ednum + Q05pcm  +logrgdpna + (1+homclass_gc|country),data=df1)
+int_pc10 <- lmer(redist~1 +female+agenum + labst + union+ class3 + homclass_gc*pc10_2017+ednum + Q05pcm  +logrgdpna + (1+homclass_gc|country),data=df1)
+int_pc50 <- lmer(redist~1 +female+agenum + labst + union+ class3 + homclass_gc*pc50_2017+ednum + Q05pcm  +logrgdpna + (1+homclass_gc|country),data=df1)
+int_r1090 <- lmer(redist~1 +female+agenum + labst + union+ class3 + homclass_gc*ratio10_50+ednum + Q05pcm  +logrgdpna + (1+homclass_gc|country),data=df1)
+int_giniot<- lmer(redist~1 +female+agenum + labst + union+ class3 + homclass_gc*gini+ednum + Q05pcm  +logrgdpna + (1+homclass_gc|country),data=df1)
+
+# int_giniwd <- lmer(redist~1 +female+agenum + labst + union+ class3 + homclass_gc*giniwd+ednum + Q05pcm  +logrgdpna + (1+homclass_res_gc|country),data=df1)
+
+# full_int5 <- lmer(redist~1 +female+agenum + labst + union+ class3 + homclass+pi_nteg*gini_disp+pi_nteg+ednum + Q05pcm + tr_inte +logrgdpna + (1+pi_nteg|country),data=dfreg)
+models_m <- list(int_ginidis,int_ginimkt,int_palma,int_pc10,int_pc50,int_r1090,int_giniot)
+texreg::knitreg(models_m)
+
+library(gridExtra)
+p1<- interplot::interplot(m = int_ginidis,var1 = "homclass_gc",var2="gini_disp")+
+  ylab("Class-based homogeneity coefficient")+ xlab("Gini disposable") +
+  geom_point()+ geom_hline(yintercept = 0)
+p1$data$fake[p1$data$ub>0]
+min(p1$data$fake[p1$data$ub>0])
+max(p1$data$fake[p1$data$ub>0])
+
+p2<- interplot::interplot(m = int_ginimkt,var1 = "homclass_gc",var2="gini_mkt") +
+  xlab("Gini market") +geom_point()+ geom_hline(yintercept = 0)
+
+p2$data$fake[p2$data$ub>0]
+min(p2$data$fake[p2$data$ub>0])
+max(p2$data$fake[p2$data$ub>0])
+
+
+df1 %>% filter(gini_mkt>=min(p2$data$fake[p2$data$ub>0]) &  gini_mkt<= max(p2$data$fake[p2$data$ub>0])) %>% 
+  group_by(country) %>% 
+  summarise(n(),gini_mkt=mean(gini_mkt),homclass_gc=mean(homclass,na.rm=T)) %>% 
+  arrange(gini_mkt)
+
+
+df1 %>% filter(gini_disp>=min(p1$data$fake[p1$data$ub>0]) &  gini_disp<= max(p1$data$fake[p1$data$ub>0])) %>% 
+  group_by(country) %>% 
+  summarise(n(),gini_disp=mean(gini_disp),homclass_gc=mean(homclass,na.rm=T)) %>% 
+  arrange(gini_disp)
+
+p3<- interplot::interplot(m = int_palma,var1 = "homclass_gc",var2="palmawd") +
+  xlab("Palma ratio (90/40)") + geom_point()+ geom_hline(yintercept = 0)
+
+p4<- interplot::interplot(m = int_pc10,var1 = "homclass_gc",var2="pc10_2017") +
+  xlab("Share GDP top 10%") + geom_point()+ geom_hline(yintercept = 0)
+
+p5<- interplot::interplot(m = int_pc50,var1 = "homclass_gc",var2="pc50_2017") +
+  xlab("Share GDP bottom 50%") + geom_point()+ geom_hline(yintercept = 0)
+
+p6<- interplot::interplot(m = int_r1090,var1 = "homclass_gc",var2="ratio10_50") +
+  xlab("Ratio (90/50)") + geom_point()+ geom_hline(yintercept = 0)
+
+p7<- interplot::interplot(m = int_giniot,var1 = "homclass_gc",var2="gini") +
+  xlab("Gini (WD)") + geom_point()+ geom_hline(yintercept = 0)
+
+
+grid.arrange(p1,p2,p3,p4,p5,p6,nrow = 2)
+g<- arrangeGrob(p1,p2,p3,p4,p5,p6,nrow = 2,top = "Network segregation × Inequality")
+
+ggsave(plot = g,filename = "mar_homclass_ineq.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 20) 
+```
+
+```{r class-homclass-res}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot)
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"))
+df1 <- df2
+df1$class3res <- relevel(df1$class3res,ref =  "Intermediate class (III+IV)")
+df1$class3spo <- relevel(df1$class3spo,ref =  "Intermediate class (III+IV)")
+
+df1$class3spo <-  car::recode(df1$class3spo,recodes = "NA='No information'")
+frq(df1$class3spo)
+df1$Q05pcm <- car::recode(df1$Q05pc,"1='Q01';2='Q02';3='Q03';4='Q04';5='Q05';NA='Missing'",
+                          as.factor = T,
+                          levels = c("Q01","Q02","Q03","Q04","Q05","Missing")) 
+frq(df1$Q05pcm)
+dfreg <- df1 %>% dplyr::select(redist,
+                        class3res,
+                        # class3spo,
+                        # tr_inte,
+                        # eindex,
+                        # know_total,
+                        homclass_res,
+                        # homclass_s,homclass_w,
+                        # prestige,
+                        # diversity,
+                        # pi_nteg,
+                        # isei_range,
+                        # hindex_sta,
+                        # hindex_10,
+                        Q05pcm,
+                        labst,
+                        union,
+                        # sstatus,
+                        gini_disp,
+                        gini_mkt,
+                        # palmawd,
+                        rgdpna,
+                        # giniwb,
+                        # giniwd,
+                        ednum,female,agenum,country) %>% 
+  mutate(logrgdpna=log(rgdpna)) %>% 
+  # filter(country!=233) %>% 
+  na.omit()
+dim(dfreg)
+
+dfreg$country <- sjlabelled::as_factor(dfreg$country)
+base <- lmer(redist~1 + (1|country),data=dfreg);performance::icc(base)
+demo <- lmer(redist~1 +female+agenum + labst + union + (1|country),data=dfreg)
+homclass <- lmer(redist~1 + female+agenum + labst + union+  homclass_res + (1|country),data=dfreg)
+class <- lmer(redist~1 +female+agenum + labst + union+ class3res+ (1|country),data=dfreg)
+class_status <- lmer(redist~1 +female+agenum + labst + union+ class3res+ednum+ Q05pcm + (1|country),data=dfreg)
+full <- lmer(redist~1 +female+agenum + labst + union+ class3res + ednum+homclass_res +  Q05pcm + (1|country),data=dfreg)
+full_m <- lmer(redist~1 +female+agenum + labst + union+ class3res+ednum+homclass_res +  Q05pcm +  gini_disp + logrgdpna + (1|country),data=dfreg)
+
+# Interactions segregation x class
+full_int1 <- lmer(redist~1 +female+agenum + labst + union+ homclass_res*class3res+ednum + Q05pcm + (1|country),data=dfreg)
+# full_int3 <- lmer(redist~1 +female+agenum + labst + union+ homclass+pi_nteg*class3+ pi_nteg+ ednum + Q05pcm + tr_inte + (1|country),data=dfreg)
+
+models <- list(homclass,class,class_status,full,full_int1)
+texreg::knitreg(models)
+
+# Conditional Marginal effect
+interplot <- 
+interplot::interplot(m = full_int1,var1 = "homclass_res",var2="class3res")
+df_int <- interplot$data
+df_int <- df_int[c(1,2,4),]
+df_int$value <- c("Intermediate class (III+IV)","Service Class (I+II)","Working Class (V+VI+VII)")
+df_int
+df_int$value <- factor(df_int$value,ordered = T,
+                       levels = c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)"))
+
+df_int %>% 
+ggplot() +
+  geom_point(aes(x = value,y = coef1)) + 
+  geom_errorbar(aes(x = value, ymin = lb, ymax = ub),color="black",width=0.1,size=1) +
+  labs(caption = paste0("N=",nobs(full),", Countries=",lme4::ngrps(full))) +
+  ylab("Class-based homogeneity (R's) coefficient")+
+  xlab("Social Class")+
+  ggtitle("Government's responsibility: reduce the differences in income between people with high incomes and those with low incomes") +
+  geom_hline(yintercept = 0) +
+  labs(caption = paste0("N=",nobs(full),", Countries=",lme4::ngrps(full))) +  
+  theme(plot.title = element_text(size = 8))  
+
+ggsave(plot = last_plot(),filename = "mar_homores_class.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 10)
+
+# Predicted values 
+pred1<- plot_model(full_int1,type = "int")
+pred_data <- data.frame(pred1$data)
+pred_data <- pred_data %>% arrange(pred_data$group)
+pred_data$group <- factor(pred_data$group,ordered = T,
+                       levels = c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)"))
+
+pred_data %>% 
+ggplot() +
+  geom_point(aes(x = x,y = predicted)) +
+  geom_line(aes(x = x,y = predicted))+
+  geom_errorbar(aes(x = x, ymin = conf.low, ymax = conf.high),color="black",width=0.05,size=1) +
+  facet_grid(. ~ group) +
+  labs(caption = paste0("N=",nobs(full),", Countries=",lme4::ngrps(full))) +
+  xlab("Network homogeneity (R's)")+
+  ylab("Redistributive preferences") + 
+  theme_minimal()
+
+ggsave(plot = last_plot(),filename = "pred_homores_class.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 10)
+
+# isolation <- 
+# interplot::interplot(m = full_int3,var1 = "pi_nteg",var2="class3")
+# df_int2 <- isolation$data
+# df_int2 <- df_int2[c(1,2,4),]
+# df_int2$value <- c("Intermediate class (III+IV)","Service Class (I+II)","Working Class (V+VI+VII)")
+# df_int2
+# df_int2$value <- factor(df_int2$value,ordered = T,
+#                         levels = c("Working Class (V+VI+VII)",
+#                                    "Intermediate class (III+IV)",
+#                                    "Service Class (I+II)"))
+# 
+# df_int2 %>% 
+# ggplot() +
+#   geom_point(aes(x = value,y = coef1)) + 
+#   geom_errorbar(aes(x = value, ymin = lb, ymax = ub),color="black",width=0.1,size=1) +
+#   ylab("Perceived isolation coefficient")+
+#   xlab("Social Class")+
+#   ggtitle("Government's responsibility: reduce the differences in income between people with high incomes and those with low incomes") +
+#   geom_hline(yintercept = 0)
+# 
+# ggsave(plot = last_plot(),filename = "margins_isolationxclass.png",device = "png",
+#        path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
+
+```
+
+```{r homclass-macro-res}
+# Interactions segregation x inequality
+df1$homclass_res_gc <- MLMusingR::group_center(df1$homclass_res,df1$country) 
+df1$logrgdpna=log(df1$rgdpna)
+
+int_ginidis<- lmer(redist~1 +female+agenum + labst + union+ class3res + homclass_res_gc*gini_disp+ednum + Q05pcm  +logrgdpna + (1+homclass_res_gc|country),data=df1)
+int_ginimkt <- lmer(redist~1 +female+agenum + labst + union+ class3res + homclass_res_gc*gini_mkt+ednum + Q05pcm  +logrgdpna + (1+homclass_res_gc|country),data=df1)
+int_palma <- lmer(redist~1 +female+agenum + labst + union+ class3res + homclass_res_gc*palmawd+ednum + Q05pcm  +logrgdpna + (1+homclass_res_gc|country),data=df1)
+# int_giniwd <- lmer(redist~1 +female+agenum + labst + union+ class3res + homclass_res_gc*giniwd+ednum + Q05pcm  +logrgdpna + (1+homclass_res_gc|country),data=df1)
+int_pc10 <- lmer(redist~1 +female+agenum + labst + union+ class3res + homclass_res_gc*pc10_2017+ednum + Q05pcm  +logrgdpna + (1+homclass_res_gc|country),data=df1)
+int_pc50 <- lmer(redist~1 +female+agenum + labst + union+ class3res + homclass_res_gc*pc50_2017+ednum + Q05pcm  +logrgdpna + (1+homclass_res_gc|country),data=df1)
+int_r1090 <- lmer(redist~1 +female+agenum + labst + union+ class3res + homclass_res_gc*ratio10_50+ednum + Q05pcm  +logrgdpna + (1+homclass_res_gc|country),data=df1)
+
+
+# full_int5 <- lmer(redist~1 +female+agenum + labst + union+ class3 + homclass+pi_nteg*gini_disp+pi_nteg+ednum + Q05pcm + tr_inte +logrgdpna + (1+pi_nteg|country),data=dfreg)
+models_m <- list(int_ginidis,int_ginimkt,int_palma,int_pc10,int_pc50,int_r1090)
+texreg::knitreg(models_m)
+
+library(gridExtra)
+p1<- interplot::interplot(m = int_ginidis,var1 = "homclass_res_gc",var2="gini_disp")+
+  ylab("Class-based homogeneity coefficient")+ xlab("Gini disposable") +
+  geom_point()+ geom_hline(yintercept = 0)
+p1$data$fake[p1$data$ub>0]
+min(p1$data$fake[p1$data$ub>0])
+max(p1$data$fake[p1$data$ub>0])
+
+p2<- interplot::interplot(m = int_ginimkt,var1 = "homclass_res_gc",var2="gini_mkt") +
+  xlab("Gini market") +geom_point()+ geom_hline(yintercept = 0)
+
+p2$data$fake[p2$data$ub>0]
+min(p2$data$fake[p2$data$ub>0])
+max(p2$data$fake[p2$data$ub>0])
+
+p3<- interplot::interplot(m = int_palma,var1 = "homclass_res_gc",var2="palmawd") +
+  xlab("Palma ratio (90/40)") + geom_point()+ geom_hline(yintercept = 0)
+
+p4<- interplot::interplot(m = int_pc10,var1 = "homclass_res_gc",var2="pc10_2017") +
+  xlab("Share GDP top 10%") + geom_point()+ geom_hline(yintercept = 0)
+
+p5<- interplot::interplot(m = int_pc50,var1 = "homclass_res_gc",var2="pc50_2017") +
+  xlab("Share GDP bottom 50%") + geom_point()+ geom_hline(yintercept = 0)
+
+p6<- interplot::interplot(m = int_r1090,var1 = "homclass_res_gc",var2="ratio10_50") +
+  xlab("Ratio (90/50)") + geom_point()+ geom_hline(yintercept = 0)
+
+
+grid.arrange(p1,p2,p3,p4,p5,p6,nrow = 2)
+g<- arrangeGrob(p1,p2,p3,p4,p5,p6,nrow = 2,top = "Network segregation (R's) × Inequality")
+
+ggsave(plot = g,filename = "mar_homclass_rs_ineq.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 20) 
+```
+
+Modelos strong ties
+
+```{r strong-ties}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot)
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"))
+df1 <- df2
+df1$class3 <- relevel(df1$class3,ref =  "Intermediate class (III+IV)")
+df1$class5 <- factor(df1$class5,levels = c("Petty-bourgeoise (IVa+b+c)",
+                                           "Routine non-manual (IIIa+b)",
+                                           "Skilled manual workers and supv. (V+VI)",
+                                           "Non-skilled manual workers (VIIa+b)",
+                                           "Service class (I+II)"
+                                           ))
+df1$class6 <- factor(df1$class6,levels = c("Petty-bourgeoise (IVa+b+c)",
+                                           "Routine non-manual (IIIa+b)",
+                                           "Skilled manual workers and supv. (V+VI)",
+                                           "Non-skilled manual workers (VIIa+b)",
+                                           "Service class (II - lower grade)",
+                                           "Service class (I - higher grade)" 
+                                           ))
+df1$pi_nteg<- rowMeans(df1[,c("pi_compa","pi_isola","pi_left")],na.rm = T)
+sjlabelled::set_label(df1$pi_nteg) <- "Perceived social isolation"
+df1$Q05pcm <- car::recode(df1$Q05pc,"1='Q01';2='Q02';3='Q03';4='Q04';5='Q05';NA='Missing'",
+                          as.factor = T,
+                          levels = c("Q01","Q02","Q03","Q04","Q05","Missing")) 
+frq(df1$Q05pcm)
+dfreg <- df1 %>% dplyr::select(redist,
+                        class6,class3,class5,
+                        # tr_inte,
+                        # eindex,
+                        # know_total,
+                        # homclass,
+                        homclass_s,
+                        # homclass_w,
+                        # prestige,
+                        # diversity,
+                        # pi_nteg,
+                        # isei_range,
+                        # hindex_sta,
+                        # hindex_10,
+                        Q05pcm,labst,union,
+                        # sstatus,
+                        gini_disp,
+                        gini_mkt,
+                        # palmawd,
+                        rgdpna,
+                        # giniwb,
+                        # giniwd,
+                        ednum,female,agenum,country) %>% 
+  mutate(logrgdpna=log(rgdpna)) %>% 
+  # filter(country!=233) %>% 
+  na.omit()
+dim(dfreg)
+dfreg$country <- sjlabelled::as_factor(dfreg$country)
+base <- lmer(redist~1 + (1|country),data=dfreg);performance::icc(base)
+demo <- lmer(redist~1 +female+agenum + labst + union + (1|country),data=dfreg)
+homclass <- lmer(redist~1 + female+agenum + labst + union+  homclass_s + (1|country),data=dfreg)
+class <- lmer(redist~1 +female+agenum + labst + union+ class3+ (1|country),data=dfreg)
+class_status <- lmer(redist~1 +female+agenum + labst + union+ class3+ednum+ Q05pcm + (1|country),data=dfreg)
+full <- lmer(redist~1 +female+agenum + labst + union+ class3 +ednum+homclass_s + Q05pcm + (1|country),data=dfreg)
+full_m <- lmer(redist~1 +female+agenum + labst + union+ class3 +ednum+homclass_s + Q05pcm + gini_disp + logrgdpna + (1|country),data=dfreg)
+
+# Interactions segregation x class
+full_int1 <- lmer(redist~1 +female+agenum + labst + union+ homclass_s*class3+ ednum + Q05pcm + (1|country),data=dfreg)
+# full_int3 <- lmer(redist~1 +female+agenum + labst + union+ homclass_s+pi_nteg*class3+ pi_nteg+ ednum + Q05pcm + tr_inte + (1|country),data=dfreg)
+
+models <- list(homclass,class,class_status,full,full_m,full_int1)
+texreg::knitreg(models)
+
+# Conditional Marginal effect---------------------------------------------------
+interplot <- 
+interplot::interplot(m = full_int1,var1 = "homclass_s",var2="class3")
+df_int <- interplot$data
+df_int <- df_int[c(1,2,4),]
+df_int$value <- c("Intermediate class (III+IV)","Service Class (I+II)","Working Class (V+VI+VII)")
+df_int
+df_int$value <- factor(df_int$value,ordered = T,
+                       levels = c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)"))
+
+df_int %>% 
+ggplot() +
+  geom_point(aes(x = value,y = coef1)) + 
+  geom_errorbar(aes(x = value, ymin = lb, ymax = ub),color="black",width=0.1,size=1) +
+  ylab("Class-based homogeneity (s) coefficient")+
+  xlab("Social Class")+
+  ggtitle("Government's responsibility: reduce the differences in income between people with high incomes and those with low incomes") +
+  geom_hline(yintercept = 0) +
+  labs(caption = paste0("N=",nobs(full),", Countries=",lme4::ngrps(full))) +  
+  theme(plot.title = element_text(size = 8))  
+
+ggsave(plot = last_plot(),filename = "mar_strong-ties_class.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 10)
+
+# Predicted values -------------------------------------------------------------
+pred1<- plot_model(full_int1,type = "int")
+pred_data <- data.frame(pred1$data)
+pred_data <- pred_data %>% arrange(pred_data$group)
+pred_data$group <- factor(pred_data$group,ordered = T,
+                       levels = c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)"))
+
+pred_data %>% 
+ggplot() +
+  geom_point(aes(x = x,y = predicted)) +
+  geom_line(aes(x = x,y = predicted))+
+  geom_errorbar(aes(x = x, ymin = conf.low, ymax = conf.high),color="black",width=0.05,size=1) +
+  facet_grid(. ~ group) +
+  labs(caption = paste0("N=",nobs(full_int1),", Countries=",lme4::ngrps(full_int1))) +
+  xlab("Network homogeneity (strong ties)")+
+  ylab("Redistributive preferences") + 
+  theme_minimal()
+
+ggsave(plot = last_plot(),filename = "pred_strong-ties_class.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 10)
+
+# isolation <- 
+# interplot::interplot(m = full_int3,var1 = "pi_nteg",var2="class3")
+# df_int2 <- isolation$data
+# df_int2 <- df_int2[c(1,2,4),]
+# df_int2$value <- c("Intermediate class (III+IV)","Service Class (I+II)","Working Class (V+VI+VII)")
+# df_int2
+# df_int2$value <- factor(df_int2$value,ordered = T,
+#                         levels = c("Working Class (V+VI+VII)",
+#                                    "Intermediate class (III+IV)",
+#                                    "Service Class (I+II)"))
+
+# df_int2 %>% 
+# ggplot() +
+#   geom_point(aes(x = value,y = coef1)) + 
+#   geom_errorbar(aes(x = value, ymin = lb, ymax = ub),color="black",width=0.1,size=1) +
+#   ylab("Perceived isolation coefficient")+
+#   xlab("Social Class")+
+#   ggtitle("Government's responsibility: reduce the differences in income between people with high incomes and those with low incomes") +
+#   geom_hline(yintercept = 0)
+
+# ggsave(plot = last_plot(),filename = "margins_isolationxclass.png",device = "png",
+#        path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
+
+```
+
+```{r strong-ties-macro}
+df1$homclass_s_gc <- MLMusingR::group_center(df1$homclass_s,df1$country) 
+df1$logrgdpna=log(df1$rgdpna)
+
+int_ginidis<- lmer(redist~1 +female+agenum + labst + union+ class3res + homclass_s_gc*gini_disp+ednum + Q05pcm  +logrgdpna + (1+homclass_s_gc|country),data=df1)
+int_ginimkt <- lmer(redist~1 +female+agenum + labst + union+ class3res + homclass_s_gc*gini_mkt+ednum + Q05pcm  +logrgdpna + (1+homclass_s_gc|country),data=df1)
+int_palma <- lmer(redist~1 +female+agenum + labst + union+ class3res + homclass_s_gc*palmawd+ednum + Q05pcm  +logrgdpna + (1+homclass_s_gc|country),data=df1)
+# int_giniwd <- lmer(redist~1 +female+agenum + labst + union+ class3res + homclass_res_gc*giniwd+ednum + Q05pcm  +logrgdpna + (1+homclass_res_gc|country),data=df1)
+int_pc10 <- lmer(redist~1 +female+agenum + labst + union+ class3res + homclass_s_gc*pc10_2017+ednum + Q05pcm  +logrgdpna + (1+homclass_s_gc|country),data=df1)
+int_pc50 <- lmer(redist~1 +female+agenum + labst + union+ class3res + homclass_s_gc*pc50_2017+ednum + Q05pcm  +logrgdpna + (1+homclass_s_gc|country),data=df1)
+int_r1090 <- lmer(redist~1 +female+agenum + labst + union+ class3res + homclass_s_gc*ratio10_50+ednum + Q05pcm  +logrgdpna + (1+homclass_s_gc|country),data=df1)
+
+
+# full_int5 <- lmer(redist~1 +female+agenum + labst + union+ class3 + homclass+pi_nteg*gini_disp+pi_nteg+ednum + Q05pcm + tr_inte +logrgdpna + (1+pi_nteg|country),data=dfreg)
+models_m <- list(int_ginidis,int_ginimkt,int_palma,int_pc10,int_pc50,int_r1090)
+texreg::knitreg(models_m)
+
+library(gridExtra)
+p1<- interplot::interplot(m = int_ginidis,var1 = "homclass_s_gc",var2="gini_disp")+
+  ylab("Class-based homogeneity coefficient")+ xlab("Gini disposable") +
+  geom_point()+ geom_hline(yintercept = 0)
+p1$data$fake[p1$data$ub>0]
+min(p1$data$fake[p1$data$ub>0])
+max(p1$data$fake[p1$data$ub>0])
+
+p2<- interplot::interplot(m = int_ginimkt,var1 = "homclass_s_gc",var2="gini_mkt") +
+  xlab("Gini market") +geom_point()+ geom_hline(yintercept = 0)
+
+p2$data$fake[p2$data$ub>0]
+min(p2$data$fake[p2$data$ub>0])
+max(p2$data$fake[p2$data$ub>0])
+
+p3<- interplot::interplot(m = int_palma,var1 = "homclass_s_gc",var2="palmawd") +
+  xlab("Palma ratio (90/40)") + geom_point()+ geom_hline(yintercept = 0)
+
+p4<- interplot::interplot(m = int_pc10,var1 = "homclass_s_gc",var2="pc10_2017") +
+  xlab("Share GDP top 10%") + geom_point()+ geom_hline(yintercept = 0)
+
+p5<- interplot::interplot(m = int_pc50,var1 = "homclass_s_gc",var2="pc50_2017") +
+  xlab("Share GDP bottom 50%") + geom_point()+ geom_hline(yintercept = 0)
+
+p6<- interplot::interplot(m = int_r1090,var1 = "homclass_s_gc",var2="ratio10_50") +
+  xlab("Ratio (90/50)") + geom_point()+ geom_hline(yintercept = 0)
+
+
+grid.arrange(p1,p2,p3,p4,p5,p6,nrow = 2)
+g<- arrangeGrob(p1,p2,p3,p4,p5,p6,nrow = 2,top = "Network segregation (strong ties) × Inequality")
+
+ggsave(plot = g,filename = "mar_homclass_st_ineq.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 20) 
+```
+
+Modelos weak ties
+
+```{r weak-ties}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot)
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"))
+df1 <- df2
+df1$class3 <- relevel(df1$class3,ref =  "Intermediate class (III+IV)")
+df1$class5 <- factor(df1$class5,levels = c("Petty-bourgeoise (IVa+b+c)",
+                                           "Routine non-manual (IIIa+b)",
+                                           "Skilled manual workers and supv. (V+VI)",
+                                           "Non-skilled manual workers (VIIa+b)",
+                                           "Service class (I+II)"
+                                           ))
+df1$class6 <- factor(df1$class6,levels = c("Petty-bourgeoise (IVa+b+c)",
+                                           "Routine non-manual (IIIa+b)",
+                                           "Skilled manual workers and supv. (V+VI)",
+                                           "Non-skilled manual workers (VIIa+b)",
+                                           "Service class (II - lower grade)",
+                                           "Service class (I - higher grade)" 
+                                           ))
+df1$pi_nteg<- rowMeans(df1[,c("pi_compa","pi_isola","pi_left")],na.rm = T)
+sjlabelled::set_label(df1$pi_nteg) <- "Perceived social isolation"
+df1$Q05pcm <- car::recode(df1$Q05pc,"1='Q01';2='Q02';3='Q03';4='Q04';5='Q05';NA='Missing'",
+                          as.factor = T,
+                          levels = c("Q01","Q02","Q03","Q04","Q05","Missing")) 
+frq(df1$Q05pcm)
+dfreg <- df1 %>% dplyr::select(redist,
+                        class6,class3,class5,
+                        # tr_inte,
+                        # eindex,
+                        # know_total,
+                        homclass,
+                        homclass_s,
+                        homclass_w,
+                        # prestige,
+                        # diversity,
+                        # pi_nteg,
+                        # isei_range,
+                        # hindex_sta,
+                        # hindex_10,
+                        Q05pcm,labst,union,
+                        # sstatus,
+                        gini_disp,
+                        gini_mkt,
+                        # palmawd,
+                        rgdpna,
+                        # giniwb,
+                        # giniwd,
+                        ednum,female,agenum,country,) %>% 
+  mutate(logrgdpna=log(rgdpna)) %>% 
+  # filter(country!=233) %>% 
+  na.omit()
+dim(dfreg)
+dfreg$country <- sjlabelled::as_factor(dfreg$country)
+base <- lmer(redist~1 + (1|country),data=dfreg);performance::icc(base)
+demo <- lmer(redist~1 +female+agenum + labst + union + (1|country),data=dfreg)
+homclass <- lmer(redist~1 + female+agenum + labst + union+  homclass_w + (1|country),data=dfreg)
+class <- lmer(redist~1 +female+agenum + labst + union+ class3+ (1|country),data=dfreg)
+class_status <- lmer(redist~1 +female+agenum + labst + union+ class3+ednum+ Q05pcm + (1|country),data=dfreg)
+full <- lmer(redist~1 +female+agenum + labst + union+ class3 +ednum+homclass_w + Q05pcm + (1|country),data=dfreg)
+full_m <- lmer(redist~1 +female+agenum + labst + union+ class3 +ednum+homclass_w + Q05pcm + gini_disp + logrgdpna + (1|country),data=dfreg)
+
+# Interactions segregation x class
+full_int1 <- lmer(redist~1 +female+agenum + labst + union+ homclass_w*class3+ ednum + Q05pcm + (1|country),data=dfreg)
+# full_int3 <- lmer(redist~1 +female+agenum + labst + union+ homclass_s+pi_nteg*class3+ pi_nteg+ ednum + Q05pcm + tr_inte + (1|country),data=dfreg)
+
+models <- list(homclass,class,class_status,full,full_m,full_int1)
+texreg::knitreg(models)
+
+# Conditional Marginal effect---------------------------------------------------
+interplot <- 
+interplot::interplot(m = full_int1,var1 = "homclass_w",var2="class3")
+df_int <- interplot$data
+df_int <- df_int[c(1,2,4),]
+df_int$value <- c("Intermediate class (III+IV)","Service Class (I+II)","Working Class (V+VI+VII)")
+df_int
+df_int$value <- factor(df_int$value,ordered = T,
+                       levels = c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)"))
+
+df_int %>% 
+ggplot() +
+  geom_point(aes(x = value,y = coef1)) + 
+  geom_errorbar(aes(x = value, ymin = lb, ymax = ub),color="black",width=0.1,size=1) +
+  ylab("Class-based homogeneity (w) coefficient")+
+  xlab("Social Class")+
+  ggtitle("Government's responsibility: reduce the differences in income between people with high incomes and those with low incomes") +
+  geom_hline(yintercept = 0) +
+  labs(caption = paste0("N=",nobs(full),", Countries=",lme4::ngrps(full))) +  
+  theme(plot.title = element_text(size = 8))  
+
+ggsave(plot = last_plot(),filename = "mar_weak-ties_class.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 10)
+
+# Predicted values -------------------------------------------------------------
+pred1<- plot_model(full_int1,type = "int")
+pred_data <- data.frame(pred1$data)
+pred_data <- pred_data %>% arrange(pred_data$group)
+pred_data$group <- factor(pred_data$group,ordered = T,
+                       levels = c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)"))
+
+pred_data %>% 
+ggplot() +
+  geom_point(aes(x = x,y = predicted)) +
+  geom_line(aes(x = x,y = predicted))+
+  geom_errorbar(aes(x = x, ymin = conf.low, ymax = conf.high),color="black",width=0.05,size=1) +
+  facet_grid(. ~ group) +
+  labs(caption = paste0("N=",nobs(full_int1),", Countries=",lme4::ngrps(full_int1))) +
+  xlab("Network homogeneity (weak ties)")+
+  ylab("Redistributive preferences") + 
+  theme_minimal()
+
+ggsave(plot = last_plot(),filename = "pred_weak-ties_class.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 10)
+
+# ggsave(plot = last_plot(),filename = "margins_isolationxclass.png",device = "png",
+#        path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
+
+```
+
+```{r weak-ties-macro}
+df1$homclass_w_gc <- MLMusingR::group_center(df1$homclass_w,df1$country) 
+df1$logrgdpna=log(df1$rgdpna)
+
+int_ginidis<- lmer(redist~1 +female+agenum + labst + union+ class3res + homclass_w_gc*gini_disp+ednum + Q05pcm  +logrgdpna + (1+homclass_w_gc|country),data=df1)
+int_ginimkt <- lmer(redist~1 +female+agenum + labst + union+ class3res + homclass_w_gc*gini_mkt+ednum + Q05pcm  +logrgdpna + (1+homclass_w_gc|country),data=df1)
+int_palma <- lmer(redist~1 +female+agenum + labst + union+ class3res + homclass_w_gc*palmawd+ednum + Q05pcm  +logrgdpna + (1+homclass_s_gc|country),data=df1)
+# int_giniwd <- lmer(redist~1 +female+agenum + labst + union+ class3res + homclass_res_gc*giniwd+ednum + Q05pcm  +logrgdpna + (1+homclass_res_gc|country),data=df1)
+int_pc10 <- lmer(redist~1 +female+agenum + labst + union+ class3res + homclass_w_gc*pc10_2017+ednum + Q05pcm  +logrgdpna + (1+homclass_w_gc|country),data=df1)
+int_pc50 <- lmer(redist~1 +female+agenum + labst + union+ class3res + homclass_w_gc*pc50_2017+ednum + Q05pcm  +logrgdpna + (1+homclass_w_gc|country),data=df1)
+int_r1090 <- lmer(redist~1 +female+agenum + labst + union+ class3res + homclass_w_gc*ratio10_50+ednum + Q05pcm  +logrgdpna + (1+homclass_w_gc|country),data=df1)
+
+
+# full_int5 <- lmer(redist~1 +female+agenum + labst + union+ class3 + homclass+pi_nteg*gini_disp+pi_nteg+ednum + Q05pcm + tr_inte +logrgdpna + (1+pi_nteg|country),data=dfreg)
+models_m <- list(int_ginidis,int_ginimkt,int_palma,int_pc10,int_pc50,int_r1090)
+texreg::knitreg(models_m)
+
+library(gridExtra)
+p1<- interplot::interplot(m = int_ginidis,var1 = "homclass_w_gc",var2="gini_disp")+
+  ylab("Class-based homogeneity coefficient")+ xlab("Gini disposable") +
+  geom_point()+ geom_hline(yintercept = 0)
+p1$data$fake[p1$data$ub>0]
+min(p1$data$fake[p1$data$ub>0])
+max(p1$data$fake[p1$data$ub>0])
+
+p2<- interplot::interplot(m = int_ginimkt,var1 = "homclass_w_gc",var2="gini_mkt") +
+  xlab("Gini market") +geom_point()+ geom_hline(yintercept = 0)
+
+p2$data$fake[p2$data$ub>0]
+min(p2$data$fake[p2$data$ub>0])
+max(p2$data$fake[p2$data$ub>0])
+
+p3<- interplot::interplot(m = int_palma,var1 = "homclass_w_gc",var2="palmawd") +
+  xlab("Palma ratio (90/40)") + geom_point()+ geom_hline(yintercept = 0)
+
+p4<- interplot::interplot(m = int_pc10,var1 = "homclass_w_gc",var2="pc10_2017") +
+  xlab("Share GDP top 10%") + geom_point()+ geom_hline(yintercept = 0)
+
+p5<- interplot::interplot(m = int_pc50,var1 = "homclass_w_gc",var2="pc50_2017") +
+  xlab("Share GDP bottom 50%") + geom_point()+ geom_hline(yintercept = 0)
+
+p6<- interplot::interplot(m = int_r1090,var1 = "homclass_w_gc",var2="ratio10_50") +
+  xlab("Ratio (90/50)") + geom_point()+ geom_hline(yintercept = 0)
+
+
+grid.arrange(p1,p2,p3,p4,p5,p6,nrow = 2)
+g<- arrangeGrob(p1,p2,p3,p4,p5,p6,nrow = 2,top = "Network segregation (weak ties) × Inequality")
+
+ggsave(plot = g,filename = "mar_homclass_wt_ineq.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 20) 
+```
+
+# Models perceived isolation
+
+```{r class-pinsolation}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled)
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"))
+df1 <- df2
+df1$class3 <- relevel(df1$class3,ref =  "Intermediate class (III+IV)")
+df1$class5 <- factor(df1$class5,levels = c("Petty-bourgeoise (IVa+b+c)",
+                                           "Routine non-manual (IIIa+b)",
+                                           "Skilled manual workers and supv. (V+VI)",
+                                           "Non-skilled manual workers (VIIa+b)",
+                                           "Service class (I+II)"
+                                           ))
+df1$class6 <- factor(df1$class6,levels = c("Petty-bourgeoise (IVa+b+c)",
+                                           "Routine non-manual (IIIa+b)",
+                                           "Skilled manual workers and supv. (V+VI)",
+                                           "Non-skilled manual workers (VIIa+b)",
+                                           "Service class (II - lower grade)",
+                                           "Service class (I - higher grade)" 
+                                           ))
+df1$pi_nteg<- rowMeans(df1[,c("pi_compa","pi_isola","pi_left")],na.rm = T)
+sjlabelled::set_label(df1$pi_nteg) <- "Perceived social isolation"
+df1$Q05pcm <- car::recode(df1$Q05pc,"1='Q01';2='Q02';3='Q03';4='Q04';5='Q05';NA='Missing'",
+                          as.factor = T,
+                          levels = c("Q01","Q02","Q03","Q04","Q05","Missing")) 
+frq(df1$Q05pcm)
+dfreg <- df1 %>% dplyr::select(redist,
+                        class6,class3,class5,
+                        # tr_inte,
+                        # eindex,
+                        # know_total,
+                        homclass,
+                        homclass_gc,
+                        # homclass_s,homclass_w,
+                        # prestige,
+                        # diversity,
+                        pi_nteg,
+                        # isei_range,
+                        # hindex_sta,
+                        # hindex_10,
+                        Q05pcm,
+                        labst,
+                        union,
+                        # sstatus,
+                        gini_disp,
+                        gini_mkt,
+                        # palmawd,
+                        rgdpna,
+                        # giniwb,
+                        # giniwd,
+                        ednum,female,agenum,country) %>% 
+  mutate(logrgdpna=log(rgdpna)) %>% 
+  # filter(country!=233) %>% 
+  na.omit()
+dim(dfreg)
+
+dfreg$country <- sjlabelled::as_factor(dfreg$country)
+base <- lmer(redist~1 + (1|country),data=dfreg);performance::icc(base)
+demo <- lmer(redist~1 +female+agenum + labst + union + (1|country),data=dfreg)
+homclass <- lmer(redist~1 + female+agenum + labst + union+  homclass + (1|country),data=dfreg)
+class <- lmer(redist~1 +female+agenum + labst + union+ class3+ (1|country),data=dfreg)
+class_status <- lmer(redist~1 +female+agenum + labst + union+ class3+ednum+ Q05pcm + (1|country),data=dfreg)
+full <- lmer(redist~1 +female+agenum + labst + union+ class3 +ednum+pi_nteg +  Q05pcm + (1|country),data=dfreg)
+full_b <- lmer(redist~1 +female+agenum + labst + union+ class3 +ednum+pi_nteg +  Q05pcm + (1|country),data=dfreg)
+full_m <- lmer(redist~1 +female+agenum + labst + union+ class3 +ednum+pi_nteg +  Q05pcm +  gini_disp + logrgdpna + (1|country),data=dfreg)
+full_m_rs <- lmer(redist~1 +female+agenum + labst + union+ class3 +ednum+pi_nteg +  Q05pcm +  gini_disp + logrgdpna + (1+pi_nteg|country),data=dfreg)
+
+plot_model(full_m_rs,type = "re")
+anova(full_m,full_m_rs)
+
+# Interactions segregation x class
+full_int1 <- lmer(redist~1 +female+agenum + pi_nteg*class3+ ednum + Q05pcm + (1|country),data=dfreg)
+# full_int3 <- lmer(redist~1 +female+agenum + labst + union+ homclass+pi_nteg*class3+ pi_nteg+ ednum + Q05pcm + tr_inte + (1|country),data=dfreg)
+
+models <- list(homclass,class,class_status,full,full_b,full_int1)
+texreg::knitreg(models)
+
+# Conditional Marginal effect
+interplot <- 
+interplot::interplot(m = full_int1,var1 = "pi_nteg",var2="class3")
+df_int <- interplot$data
+df_int <- df_int[c(1,2,4),]
+df_int$value <- c("Intermediate class (III+IV)","Service Class (I+II)","Working Class (V+VI+VII)")
+df_int
+df_int$value <- factor(df_int$value,ordered = T,
+                       levels = c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)"))
+
+df_int %>% 
+ggplot() +
+  geom_point(aes(x = value,y = coef1)) + 
+  geom_errorbar(aes(x = value, ymin = lb, ymax = ub),color="black",width=0.1,size=1) +
+  labs(caption = paste0("N=",nobs(full),", Countries=",lme4::ngrps(full))) +
+  ylab("Perceived Isolation coefficient")+
+  xlab("Social Class")+
+  ggtitle("Government's responsibility: reduce the differences in income between people with high incomes and those with low incomes") +
+  geom_hline(yintercept = 0) +
+  labs(caption = paste0("N=",nobs(full),", Countries=",lme4::ngrps(full))) +  
+  theme(plot.title = element_text(size = 8))  
+
+ggsave(plot = last_plot(),filename = "mar_pisolation_class.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 10)
+
+# Predicted values 
+pred1<- plot_model(full_int1,type = "int")
+pred_data <- data.frame(pred1$data)
+pred_data <- pred_data %>% arrange(pred_data$group)
+pred_data$group <- factor(pred_data$group,ordered = T,
+                       levels = c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)"))
+
+pred_data %>% 
+ggplot() +
+  geom_point(aes(x = x,y = predicted)) +
+  geom_line(aes(x = x,y = predicted))+
+  geom_errorbar(aes(x = x, ymin = conf.low, ymax = conf.high),color="black",width=0.05,size=1) +
+  facet_grid(. ~ group) +
+  labs(caption = paste0("N=",nobs(full),", Countries=",lme4::ngrps(full))) +
+  xlab("Perceived Isolation")+
+  ylab("Redistributive preferences") + 
+  theme_minimal()
+
+ggsave(plot = last_plot(),filename = "pred_pisolation_class.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 10)
+
+# isolation <- 
+# interplot::interplot(m = full_int3,var1 = "pi_nteg",var2="class3")
+# df_int2 <- isolation$data
+# df_int2 <- df_int2[c(1,2,4),]
+# df_int2$value <- c("Intermediate class (III+IV)","Service Class (I+II)","Working Class (V+VI+VII)")
+# df_int2
+# df_int2$value <- factor(df_int2$value,ordered = T,
+#                         levels = c("Working Class (V+VI+VII)",
+#                                    "Intermediate class (III+IV)",
+#                                    "Service Class (I+II)"))
+# 
+# df_int2 %>% 
+# ggplot() +
+#   geom_point(aes(x = value,y = coef1)) + 
+#   geom_errorbar(aes(x = value, ymin = lb, ymax = ub),color="black",width=0.1,size=1) +
+#   ylab("Perceived isolation coefficient")+
+#   xlab("Social Class")+
+#   ggtitle("Government's responsibility: reduce the differences in income between people with high incomes and those with low incomes") +
+#   geom_hline(yintercept = 0)
+# 
+# ggsave(plot = last_plot(),filename = "margins_isolationxclass.png",device = "png",
+#        path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
+
+```
+
+```{r pinsolation-macro}
+# Interactions segregation x inequality
+df1$pi_isola_gc <- MLMusingR::group_center(df1$pi_isola,df1$country) 
+df1$logrgdpna=log(df1$rgdpna)
+df1$ratio10_50 <- df1$pc10_2017/df1$pc50_2017
+
+df1$homclass
+
+int_ginidis<- lmer(redist~1 +female+agenum + labst + union+ class3 + homclass+pi_isola_gc*gini_disp+ednum + Q05pcm  +logrgdpna + (1+pi_isola_gc|country),data=df1)
+int_ginimkt <- lmer(redist~1 +female+agenum + labst + union+ class3 + homclass+pi_isola_gc*gini_mkt+ednum + Q05pcm  +logrgdpna + (1+pi_isola_gc|country),data=df1)
+int_palma <- lmer(redist~1 +female+agenum + labst + union+ class3 + homclass+pi_isola_gc*palmawd+ednum + Q05pcm  +logrgdpna + (1+pi_isola_gc|country),data=df1)
+int_pc10 <- lmer(redist~1 +female+agenum + labst + union+ class3 + homclass+pi_isola_gc*pc10_2017+ednum + Q05pcm  +logrgdpna + (1+pi_isola_gc|country),data=df1)
+int_pc50 <- lmer(redist~1 +female+agenum + labst + union+ class3 + homclass+pi_isola_gc*pc50_2017+ednum + Q05pcm  +logrgdpna + (1+pi_isola_gc|country),data=df1)
+int_r1090 <- lmer(redist~1 +female+agenum + labst + union+ class3 + homclass+pi_isola_gc*ratio10_50+ednum + Q05pcm  +logrgdpna + (1+pi_isola_gc|country),data=df1)
+int_giniot<- lmer(redist~1 +female+agenum + labst + union+ class3 + homclass+pi_isola_gc*gini+ednum + Q05pcm  +logrgdpna + (1+pi_isola_gc|country),data=df1)
+
+# int_giniwd <- lmer(redist~1 +female+agenum + labst + union+ class3 + homclass_gc*giniwd+ednum + Q05pcm  +logrgdpna + (1+homclass_res_gc|country),data=df1)
+
+# full_int5 <- lmer(redist~1 +female+agenum + labst + union+ class3 + homclass+pi_nteg*gini_disp+pi_nteg+ednum + Q05pcm + tr_inte +logrgdpna + (1+pi_nteg|country),data=dfreg)
+models_m <- list(int_ginidis,int_ginimkt,int_palma,int_pc10,int_pc50,int_r1090,int_giniot)
+texreg::knitreg(models_m)
+
+library(gridExtra)
+p1<- interplot::interplot(m = int_ginidis,var1 = "pi_isola_gc",var2="gini_disp")+
+  ylab("Perceived Isolation coefficient")+ xlab("Gini disposable") +
+  geom_point()+ geom_hline(yintercept = 0)
+p1$data$fake[p1$data$ub>0]
+min(p1$data$fake[p1$data$ub>0])
+max(p1$data$fake[p1$data$ub>0])
+
+p2<- interplot::interplot(m = int_ginimkt,var1 = "pi_isola_gc",var2="gini_mkt") +
+  xlab("Gini market") +geom_point()+ geom_hline(yintercept = 0)
+
+p2$data$fake[p2$data$ub>0]
+min(p2$data$fake[p2$data$ub>0])
+max(p2$data$fake[p2$data$ub>0])
+
+
+df1 %>% filter(gini_mkt>=min(p2$data$fake[p2$data$ub>0]) &  gini_mkt<= max(p2$data$fake[p2$data$ub>0])) %>% 
+  group_by(country) %>% 
+  summarise(n(),gini_mkt=mean(gini_mkt),homclass_gc=mean(homclass,na.rm=T)) %>% 
+  arrange(gini_mkt)
+
+
+df1 %>% filter(gini_disp>=min(p1$data$fake[p1$data$ub>0]) &  gini_disp<= max(p1$data$fake[p1$data$ub>0])) %>% 
+  group_by(country) %>% 
+  summarise(n(),gini_disp=mean(gini_disp),homclass_gc=mean(homclass,na.rm=T)) %>% 
+  arrange(gini_disp)
+
+p3<- interplot::interplot(m = int_palma,var1 = "pi_isola_gc",var2="palmawd") +
+  xlab("Palma ratio (90/40)") + geom_point()+ geom_hline(yintercept = 0)
+
+p4<- interplot::interplot(m = int_pc10,var1 = "pi_isola_gc",var2="pc10_2017") +
+  xlab("Share GDP top 10%") + geom_point()+ geom_hline(yintercept = 0)
+
+p5<- interplot::interplot(m = int_pc50,var1 = "pi_isola_gc",var2="pc50_2017") +
+  xlab("Share GDP bottom 50%") + geom_point()+ geom_hline(yintercept = 0)
+
+p6<- interplot::interplot(m = int_r1090,var1 = "pi_isola_gc",var2="ratio10_50") +
+  xlab("Ratio (90/50)") + geom_point()+ geom_hline(yintercept = 0)
+
+p7<- interplot::interplot(m = int_giniot,var1 = "pi_isola_gc",var2="gini") +
+  xlab("Gini (WD)") + geom_point()+ geom_hline(yintercept = 0)
+
+
+grid.arrange(p1,p2,p3,p4,p5,p6,nrow = 2)
+g<- arrangeGrob(p1,p2,p3,p4,p5,p6,nrow = 2,top = "Perceived Isolation × Inequality")
+
+ggsave(plot = g,filename = "mar_pisolation_ineq.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 20) 
+```
+
+# Modelos alternativos
+
+```{r eindex-homclass}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot)
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"))
+df1 <- df2
+df1$class3 <- relevel(df1$class3,ref =  "Intermediate class (III+IV)")
+df1$class5 <- factor(df1$class5,levels = c("Petty-bourgeoise (IVa+b+c)",
+                                           "Routine non-manual (IIIa+b)",
+                                           "Skilled manual workers and supv. (V+VI)",
+                                           "Non-skilled manual workers (VIIa+b)",
+                                           "Service class (I+II)"
+                                           ))
+df1$class6 <- factor(df1$class6,levels = c("Petty-bourgeoise (IVa+b+c)",
+                                           "Routine non-manual (IIIa+b)",
+                                           "Skilled manual workers and supv. (V+VI)",
+                                           "Non-skilled manual workers (VIIa+b)",
+                                           "Service class (II - lower grade)",
+                                           "Service class (I - higher grade)" 
+                                           ))
+df1$pi_nteg<- rowMeans(df1[,c("pi_compa","pi_isola","pi_left")],na.rm = T)
+sjlabelled::set_label(df1$pi_nteg) <- "Perceived social isolation"
+df1$Q05pcm <- car::recode(df1$Q05pc,"1='Q01';2='Q02';3='Q03';4='Q04';5='Q05';NA='Missing'",
+                          as.factor = T,
+                          levels = c("Q01","Q02","Q03","Q04","Q05","Missing")) 
+frq(df1$Q05pcm)
+dfreg <- df1 %>% dplyr::select(redist,
+                        class6,class3,class5,
+                        # tr_inte,
+                        eindex,
+                        # know_total,
+                        # homclass,
+                        # homclass_gc,
+                        # homclass_s,homclass_w,
+                        # prestige,
+                        # diversity,
+                        # pi_nteg,
+                        # isei_range,
+                        # hindex_sta,
+                        # hindex_10,
+                        Q05pcm,
+                        labst,
+                        union,
+                        # sstatus,
+                        gini_disp,
+                        gini_mkt,
+                        # palmawd,
+                        rgdpna,
+                        # giniwb,
+                        # giniwd,
+                        ednum,female,agenum,country) %>% 
+  mutate(logrgdpna=log(rgdpna)) %>% 
+  # filter(country!=233) %>% 
+  na.omit()
+dim(dfreg)
+
+dfreg$country <- sjlabelled::as_factor(dfreg$country)
+base <- lmer(redist~1 + (1|country),data=dfreg);performance::icc(base)
+demo <- lmer(redist~1 +female+agenum + labst + union + (1|country),data=dfreg)
+homclass <- lmer(redist~1 + female+agenum + labst + union+  eindex + (1|country),data=dfreg)
+class <- lmer(redist~1 +female+agenum + labst + union+ class3+ (1|country),data=dfreg)
+class_status <- lmer(redist~1 +female+agenum + labst + union+ class3+ednum+ Q05pcm + (1|country),data=dfreg)
+full <- lmer(redist~1 +female+agenum + labst + union+ class3 +ednum+homclass +  Q05pcm + (1|country),data=dfreg)
+full_b <- lmer(redist~1 +female+agenum + labst + union+ class3 +ednum+eindex +  Q05pcm + (1|country),data=dfreg)
+full_m <- lmer(redist~1 +female+agenum + labst + union+ class3 +ednum+eindex +  Q05pcm +  gini_disp + logrgdpna + (1|country),data=dfreg)
+
+# Interactions segregation x class
+full_int1 <- lmer(redist~1 +female+agenum + homclass*class3+ ednum + Q05pcm + (1|country),data=dfreg)
+# full_int3 <- lmer(redist~1 +female+agenum + labst + union+ homclass+pi_nteg*class3+ pi_nteg+ ednum + Q05pcm + tr_inte + (1|country),data=dfreg)
+
+models <- list(homclass,class,class_status,full,full_b,full_int1)
+texreg::knitreg(models)
+
+# Conditional Marginal effect
+interplot <- 
+interplot::interplot(m = full_int1,var1 = "eindex",var2="class3")
+df_int <- interplot$data
+df_int <- df_int[c(1,2,4),]
+df_int$value <- c("Intermediate class (III+IV)","Service Class (I+II)","Working Class (V+VI+VII)")
+df_int
+df_int$value <- factor(df_int$value,ordered = T,
+                       levels = c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)"))
+
+df_int %>% 
+ggplot() +
+  geom_point(aes(x = value,y = coef1)) + 
+  geom_errorbar(aes(x = value, ymin = lb, ymax = ub),color="black",width=0.1,size=1) +
+  labs(caption = paste0("N=",nobs(full),", Countries=",lme4::ngrps(full))) +
+  ylab("Class-based homogeneity coefficient")+
+  xlab("Social Class")+
+  ggtitle("Government's responsibility: reduce the differences in income between people with high incomes and those with low incomes") +
+  geom_hline(yintercept = 0) +
+  labs(caption = paste0("N=",nobs(full),", Countries=",lme4::ngrps(full))) +  
+  theme(plot.title = element_text(size = 8))  
+
+ggsave(plot = last_plot(),filename = "mar_homo_class.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 10)
+
+# Predicted values 
+pred1<- plot_model(full_int1,type = "int")
+pred_data <- data.frame(pred1$data)
+pred_data <- pred_data %>% arrange(pred_data$group)
+pred_data$group <- factor(pred_data$group,ordered = T,
+                       levels = c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)"))
+
+pred_data %>% 
+ggplot() +
+  geom_point(aes(x = x,y = predicted)) +
+  geom_line(aes(x = x,y = predicted))+
+  geom_errorbar(aes(x = x, ymin = conf.low, ymax = conf.high),color="black",width=0.05,size=1) +
+  facet_grid(. ~ group) +
+  labs(caption = paste0("N=",nobs(full),", Countries=",lme4::ngrps(full))) +
+  xlab("Network homogeneity")+
+  ylab("Redistributive preferences") + 
+  theme_minimal()
+
+ggsave(plot = last_plot(),filename = "pred_homo_class.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 10)
+
+# isolation <- 
+# interplot::interplot(m = full_int3,var1 = "pi_nteg",var2="class3")
+# df_int2 <- isolation$data
+# df_int2 <- df_int2[c(1,2,4),]
+# df_int2$value <- c("Intermediate class (III+IV)","Service Class (I+II)","Working Class (V+VI+VII)")
+# df_int2
+# df_int2$value <- factor(df_int2$value,ordered = T,
+#                         levels = c("Working Class (V+VI+VII)",
+#                                    "Intermediate class (III+IV)",
+#                                    "Service Class (I+II)"))
+# 
+# df_int2 %>% 
+# ggplot() +
+#   geom_point(aes(x = value,y = coef1)) + 
+#   geom_errorbar(aes(x = value, ymin = lb, ymax = ub),color="black",width=0.1,size=1) +
+#   ylab("Perceived isolation coefficient")+
+#   xlab("Social Class")+
+#   ggtitle("Government's responsibility: reduce the differences in income between people with high incomes and those with low incomes") +
+#   geom_hline(yintercept = 0)
+# 
+# ggsave(plot = last_plot(),filename = "margins_isolationxclass.png",device = "png",
+#        path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
+
+```
+
+```{r eindex-macro}
+# Interactions segregation x inequality
+df1$homclass_gc <- MLMusingR::group_center(df1$homclass,df1$country) 
+df1$logrgdpna=log(df1$rgdpna)
+
+int_ginidis<- lmer(redist~1 +female+agenum + labst + union+ class3 + homclass_gc*gini_disp+ednum + Q05pcm  +logrgdpna + (1+homclass_res_gc|country),data=df1)
+int_ginimkt <- lmer(redist~1 +female+agenum + labst + union+ class3 + homclass_gc*gini_mkt+ednum + Q05pcm  +logrgdpna + (1+homclass_res_gc|country),data=df1)
+int_palma <- lmer(redist~1 +female+agenum + labst + union+ class3 + homclass_gc*palmawd+ednum + Q05pcm  +logrgdpna + (1+homclass_res_gc|country),data=df1)
+int_giniwd <- lmer(redist~1 +female+agenum + labst + union+ class3 + homclass_gc*giniwd+ednum + Q05pcm  +logrgdpna + (1+homclass_res_gc|country),data=df1)
+
+# full_int5 <- lmer(redist~1 +female+agenum + labst + union+ class3 + homclass+pi_nteg*gini_disp+pi_nteg+ednum + Q05pcm + tr_inte +logrgdpna + (1+pi_nteg|country),data=dfreg)
+models_m <- list(int_ginidis,int_ginimkt,int_palma,int_giniwd)
+texreg::knitreg(models_m)
+
+library(gridExtra)
+p1<- interplot::interplot(m = int_ginidis,var1 = "homclass_gc",var2="gini_disp")+
+  ylab("Class-based homogeneity coefficient")+ xlab("Gini disposable") +
+  geom_point()+ geom_hline(yintercept = 0)
+p1$data$fake[p1$data$ub>0]
+min(p1$data$fake[p1$data$ub>0])
+max(p1$data$fake[p1$data$ub>0])
+
+p2<- interplot::interplot(m = int_ginimkt,var1 = "homclass_gc",var2="gini_mkt") +
+  xlab("Gini market") +geom_point()+ geom_hline(yintercept = 0)
+
+p2$data$fake[p2$data$ub>0]
+min(p2$data$fake[p2$data$ub>0])
+max(p2$data$fake[p2$data$ub>0])
+
+
+df1 %>% filter(gini_mkt>=min(p2$data$fake[p2$data$ub>0]) &  gini_mkt<= max(p2$data$fake[p2$data$ub>0])) %>% 
+  group_by(country) %>% 
+  summarise(n(),gini_mkt=mean(gini_mkt),homclass_gc=mean(homclass,na.rm=T)) %>% 
+  arrange(gini_mkt)
+
+
+df1 %>% filter(gini_disp>=min(p1$data$fake[p1$data$ub>0]) &  gini_disp<= max(p1$data$fake[p1$data$ub>0])) %>% 
+  group_by(country) %>% 
+  summarise(n(),gini_disp=mean(gini_disp),homclass_gc=mean(homclass,na.rm=T)) %>% 
+  arrange(gini_disp)
+
+p3<- interplot::interplot(m = int_palma,var1 = "homclass_gc",var2="palmawd") +
+  xlab("Palma ratio (90/40)") + geom_point()+ geom_hline(yintercept = 0)
+grid.arrange(p1,p2,p3,nrow = 1)
+g<- arrangeGrob(p1,p2,p3,nrow = 1,top = "Network segregation")
+
+ggsave(plot = g,filename = "mar_homclass_ineq.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 12) 
+
+
+interplot::interplot(m = int_ginimkt,var1 = "homclass_gc",var2="gini_mkt") +
+  geom_point()+
+  ylab("Class-based homogeneity coefficient")+
+  xlab("Economic Inequality")+
+  ggtitle("Government's responsibility: reduce the differences in income between people with high incomes and those with low incomes") +
+  geom_hline(yintercept = 0) +
+  labs(caption = paste0("N=",nobs(full_int4),", Countries=",lme4::ngrps(full_int4))) +  
+  theme(plot.title = element_text(size = 8))
+
+ggsave(plot = last_plot(),filename = "mar_homclass_gini.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 10) 
+
+# interplot::interplot(m = full_int5,var1 = "pi_nteg",var2="gini_disp") +
+#   geom_point()+
+#   ylab("Perceived isolation coefficient")+
+#   xlab("Economic Inequality")+
+#   ggtitle("Government's responsibility: reduce the differences in income between people with high incomes and those with low incomes") +
+#   geom_hline(yintercept = 0)
+# ggsave(plot = last_plot(),filename = "margins_isolationxgini.png",device = "png",
+#        path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
+```
+
+
+
+
+```{r isei, eval=FALSE, include=FALSE}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(sjmisc,ggplot2,lme4,interplot)
+load(here::here("input/data/proc/study1.RData"))
+# remove.packages("Matrix")
+# install.packages("Matrix")
+df1$class3<-forcats::fct_rev(df1$class3)
+df1$class5<-forcats::fct_rev(df1$class5)
+df1$class6<-forcats::fct_rev(df1$class6)
+dfreg <- df1 %>% dplyr::select(redist,
+                        isei08,
+                        eindex,
+                        prestige,
+                        diversity,
+                        # isei_range,
+                        # hindex_sta,
+                        # hindex_10,
+                        ednum,female,agenum,country) %>% na.omit()
+
+dfreg$country <- to_factor(dfreg$country)
+dim(dfreg)
+
+base <- lmer(redist~1 + (1|country),data=dfreg)
+demo <- lmer(redist~1 +female+agenum + (1|country),data=dfreg)
+prestige <- lmer(redist~1 + female+agenum + prestige + (1|country),data=dfreg)
+diversity <- lmer(redist~1 + female+agenum + prestige + diversity+ eindex + (1|country),data=dfreg)
+
+class <- lmer(redist~1 +female+agenum + isei08+ (1|country),data=dfreg)
+class_status <- lmer(redist~1 +female+agenum + isei08+ednum+ (1|country),data=dfreg)
+full <- lmer(redist~1+female+agenum+isei08+ednum+prestige+diversity+eindex+(1|country),data=dfreg)
+full_int1 <- lmer(redist~1+female+agenum+eindex*isei08+(1|country),data=dfreg)
+full_int2 <- lmer(redist~1+female+agenum+prestige+diversity+eindex*isei08+ednum+(1+diversity|country),data=dfreg)
+models <- list(prestige,diversity,class,class_status,full,full_int1,full_int2)
+texreg::knitreg(models)
+
+texreg::plotreg(full,omit.coef = "(Intercept)")
+
+interplot::interplot(m = full_int1,var1 = "eindex",var2="isei08") +
+  ylab("Network diversity coefficient")+
+  xlab("SES Respondent")+
+  ggtitle("Government's responsibility: reduce the differences in income between people with high incomes and those with low incomes") +
+  geom_hline(yintercept = 0)
+
+ggsave(plot = last_plot(),filename = "margins_diversityxisei.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
+
+#-----------
+dfreg <- df1 %>% select(redist,
+                        isei08,
+                        eindex,
+                        prestige,
+                        # diversity,
+                        # isei_range,
+                        # hindex_sta,
+                        # hindex_10,
+                        ednum,female,agenum,country) %>% na.omit()
+
+dim(dfreg)
+base <- lmer(redist~1 + (1|country),data=dfreg)
+demo <- lmer(redist~1 +female+agenum + (1|country),data=dfreg)
+prestige <- lmer(redist~1 + female+agenum + prestige + (1|country),data=dfreg)
+diversity <- lmer(redist~1 + female+agenum + prestige + eindex+ (1|country),data=dfreg)
+
+class <- lmer(redist~1+female+agenum+isei08+(1|country),data=dfreg)
+class_status <- lmer(redist~1+female+agenum+isei08+ednum+(1|country),data=dfreg)
+full <- lmer(redist~1 +female+agenum + isei08 +ednum +  prestige + eindex +(1|country),data=dfreg)
+fullrs <- lmer(redist~1 +female+agenum + isei08 +ednum +  prestige + eindex +(1+eindex|country),data=dfreg)
+full_int1 <- lmer(redist~1+female+agenum+prestige+eindex*isei08+ednum+(1|country),data=dfreg)
+full_int2 <- lmer(redist~1+female+agenum+prestige+eindex*isei08+ednum+(1+eindex|country),data=dfreg)
+models <- list(prestige,diversity,class,class_status,full,full_int1,full_int2)
+texreg::knitreg(models)
+
+texreg::plotreg(full, omit.coef = "(Intercept)")
+
+interplot::interplot(m = full_int2,var1 = "eindex",var2="isei08") +
+  ylab("Network heterogeneity coefficient")+
+  xlab("SES Respondent")+
+  ggtitle("Government's responsibility: reduce the differences in income between people with high incomes and those with low incomes") +
+  geom_hline(yintercept = 0)
+
+ggsave(plot = last_plot(),filename = "margins_diversityxisei.png",device = "png",
+       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
+# en la medida que aumenta el status, el efecto de la diversidad de la red se vuelve positivo.
+# en personas de estatus bajo la diversidad hace que demanden menos redistribucion
+# en personas de estatus alto la diversidad hace que demanden más redistribucion
+```
+
+```{r class-diversity, eval=FALSE, include=FALSE}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(dplyr,sjmisc,ggplot2,lme4)
+load(here::here("input/data/proc/study1.RData"))
+
+levels(df1$class3)
+df1$class3 <- relevel(df1$class3,ref =  "Intermediate class (III+IV)")
+levels(df1$class3)
+levels(df1$class5)
+df1$class5 <- factor(df1$class5,levels = c("Petty-bourgeoise (IVa+b+c)",
+                                           "Routine non-manual (IIIa+b)",
+                                           "Skilled manual workers and supv. (V+VI)",
+                                           "Non-skilled manual workers (VIIa+b)",
+                                           "Service class (I+II)"
+                                           ))
+
+
+df1$class6 <- factor(df1$class6,levels = c("Petty-bourgeoise (IVa+b+c)",
+                                           "Routine non-manual (IIIa+b)",
+                                           "Skilled manual workers and supv. (V+VI)",
+                                           "Non-skilled manual workers (VIIa+b)",
+                                           "Service class (II - lower grade)",
+                                           "Service class (I - higher grade)" 
+                                           ))
+levels(df1$class6)
+
+dfreg <- df1 %>% select(redist,
+                        class6,
+                        class3,
+                        class5,
+                        # eindex,
+                        prestige,
+                        diversity,
+                        # isei_range,
+                        # hindex_sta,
+                        # hindex_10,
+                        ednum,female,agenum,country) %>% na.omit()
+dim(dfreg)
+
+base <- lmer(redist~1 + (1|country),data=dfreg)
+demo <- lmer(redist~1 +female+agenum + (1|country),data=dfreg)
+prestige <- lmer(redist~1 + female+agenum + prestige + (1|country),data=dfreg)
+diversity <- lmer(redist~1 + female+agenum + prestige + diversity+ (1|country),data=dfreg)
+
+class <- lmer(redist~1 +female+agenum + class6+ (1|country),data=dfreg)
+class_status <- lmer(redist~1 +female+agenum + class6+ednum+ (1|country),data=dfreg)
+full <- lmer(redist~1 +female+agenum + class6 +ednum +  prestige + diversity +(1|country),data=dfreg)
+full_int1 <- lmer(redist~1 +female+agenum + prestige+diversity*class6+ ednum +(1|country),data=dfreg)
+full_int2 <- lmer(redist~1 +female+agenum + prestige+diversity*class6+ ednum + (1+diversity|country),data=dfreg)
+models <- list(prestige,diversity,class,class_status,full,full_int1,full_int2)
+texreg::knitreg(models)
+
+
+base <- lmer(redist~1 + (1|country),data=dfreg)
+demo <- lmer(redist~1 +female+agenum + (1|country),data=dfreg)
+prestige <- lmer(redist~1 + female+agenum + prestige + (1|country),data=dfreg)
+diversity <- lmer(redist~1 + female+agenum + prestige + diversity+ (1|country),data=dfreg)
+
+class <- lmer(redist~1 +female+agenum + class5+ (1|country),data=dfreg)
+class_status <- lmer(redist~1 +female+agenum + class5+ednum+ (1|country),data=dfreg)
+full <- lmer(redist~1 +female+agenum + class5 +ednum +  prestige + diversity +(1|country),data=dfreg)
+full_int1 <- lmer(redist~1 +female+agenum + prestige+diversity*class5+ ednum +(1|country),data=dfreg)
+full_int2 <- lmer(redist~1 +female+agenum + prestige+diversity*class5+ ednum + (1+diversity|country),data=dfreg)
+models <- list(prestige,diversity,class,class_status,full,full_int1,full_int2)
+texreg::knitreg(models)
+
+base <- lmer(redist~1 + (1|country),data=dfreg)
+demo <- lmer(redist~1 +female+agenum + (1|country),data=dfreg)
+prestige <- lmer(redist~1 + female+agenum + prestige + (1|country),data=dfreg)
+diversity <- lmer(redist~1 + female+agenum + prestige + diversity+ (1|country),data=dfreg)
+
+class <- lmer(redist~1 +female+agenum + class3+ (1|country),data=dfreg)
+class_status <- lmer(redist~1 +female+agenum + class3+ednum+ (1|country),data=dfreg)
+full <- lmer(redist~1 +female+agenum + class3 +ednum +  prestige + diversity +(1|country),data=dfreg)
+full_int1 <- lmer(redist~1 +female+agenum + prestige+diversity*class3+ ednum +(1|country),data=dfreg)
+full_int2 <- lmer(redist~1 +female+agenum + prestige+diversity*class3+ ednum + (1+diversity|country),data=dfreg)
+models <- list(prestige,diversity,class,class_status,full,full_int1,full_int2)
+texreg::knitreg(models)
+
+interplot::interplot(m = full_int1,var1 = "diversity",var2="class3") +
+  ylab("Network diversity coefficient")+
+  xlab("SES Respondent")+
+  ggtitle("Government's responsibility: reduce the differences in income between people with high incomes and those with low incomes") +
+  geom_hline(yintercept = 0)
+
+```
+
+
+
+

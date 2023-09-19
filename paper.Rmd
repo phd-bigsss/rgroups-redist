@@ -1,29 +1,29 @@
 ---
-title: "Lorem ipsum dolor sit amet"
+title: "Network segregation, Social Isolation and Preference for Redistribution across societies"
 css: "input/css/custom.css" # custom CSS para html
 linestretch: '1.5'          # interlineado 
 link-citations: yes         # citas linkeadas
 author:
-- name: Duke A Caboom
-  affiliation: University of Tuktoyaktuk
-  email: dtholmes@mail.ubc.ca
-  number: 1
-- name: Justin d'Ottawa
-  affiliation: University of Ottawa
-  number: 2
-- name: Pedro Torres
-  number: 1,2 
+# - name: Julio Iturra-Sanhueza
+#   affiliation: University of Bremen
+#   email: jiturra@uni-bremen.de
+#   number: 1
+# - name: Justin d'Ottawa
+#   affiliation: University of Ottawa
+#   number: 2
+# - name: Pedro Torres
+#   number: 1,2 
 # Nota: Autores que comparten filiacion, poner el mismo number y declarar filiación una sola vez.  
-abstract: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do *eiusmod tempor* incididunt ut labore et dolore magna aliqua. Ut enimad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+# abstract: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do *eiusmod tempor* incididunt ut labore et dolore magna aliqua. Ut enimad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
 output:
+  bookdown::html_document2:
+    number_sections: false
   bookdown::pdf_document2:
     template: null
     toc: false
     keep_tex: false
     pandoc_args:
       - --template=input/mytemplate.tex #custom template para usar autores con afiliacion  
-  bookdown::html_document2:
-    number_sections: false
 linkcolor: blue                         # enlaces y citas en color azul
 bibliography: input/bib/library.bib     # bibliografia en bibtex
 editor_options:
@@ -61,18 +61,6 @@ knitr::opts_chunk$set(warning = FALSE,  # mensaje de warning
 options(scipen=999) # notacion cientifica
 rm(list=ls())       # limpiar workspace
 options(knitr.kable.NA = '') # NA en kable = ''
-
-table_format = if(is_html_output()) { # Usar en argumento "format=" de kable
-  "html"
-} else if(is_latex_output()) {
-  "latex"
-}
-
-fwidth = if(is_html_output()) { #Usar en argumento "full_width" de kableExtra
-  T
-} else if(is_latex_output()) {
-  F
-}
 ```
 
 
@@ -88,12 +76,183 @@ fwidth = if(is_html_output()) { #Usar en argumento "full_width" de kableExtra
 Note: network segregation decreases perceived isolation *  
 
 - class x network segregation 
-
-  - the influence of homogeneity is positive among the working and intermediate classes, and negative among the upper class 
+- the influence of homogeneity is positive among the working and intermediate classes, and negative among the upper class 
   
-
 - Economic inequality
   - expected: economic inequality increases segregation (maybe weak or null effect)
   - expected: increase redistributive preferences
   - expected: in unequal countries the effect of network segregation and perceived isolation will be stronger 
+
+The structure of the social network provide access to social resources. On the one hand, contacts can be translated into resources, access to the life of others that could provide information and life opportunities. 
+
+- stratified access to resources
+- class and networks (focus of this paper)
+
+Some research has connected social capital with economic rational dimension, while others have conected it to more value-driven or moralistic dimension
+
+Both assume direct effects,but other literature such as Otero et al has suggested that experiences might vary across social classes.
+
+For example, we trust other people because we know about them (connected)
+
+<!-- Across all countries, a nurse (41.2%) and a schoolteacher (39.6%) are mentioned the most often and a human resource manager (19.2%) and a lawyer (22.2%) the least often. Considering the scope of the network, Suriname (42%), the United States (41.4%), and Iceland (41.3%) are the countries in which respondents are connected to the widest array of occupations, while Thailand (13.2%), Japan (15%), and Taiwan (18.9%) represent the other end. The social network thus is larger and more diverse in the former countries -->
+
+# Results
+
+## Descriptive
+
+
+```{r redistribution}
+# x country
+
+
+```
+
+```{r homogeneity}
+# x country
+```
+
+```{r macro}
+
+```
+
+- class x homogeneity (3 plots)
+- homogeneity x redistribution (1 plot)
+- perceived isolation x redistribution (1 plot)
+- homogeneity x perceived isolation (1 plot)
+
+## Multivariate
+
+```{r,results='asis', cache=T}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven)
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+df1$class3 <- relevel(df1$class3,ref =  "Intermediate class (III+IV)")
+df1$Q05pcm <- car::recode(df1$Q05pc,"1='Q01';2='Q02';3='Q03';4='Q04';5='Q05';NA='Missing'",
+                          as.factor = T,
+                          levels = c("Q01","Q02","Q03","Q04","Q05","Missing")) 
+df1$country2 <- countrycode::countrycode(sourcevar = df1$country,origin = "iso3n",destination = "country.name")
+dfreg <- df1 %>% dplyr::select(redist,
+                        class3,
+                        homclass,
+                        incomepcap,
+                        gini_disp,
+                        gini_mkt,
+                        rgdpna,
+                        edyears,
+                        female,
+                        agenum,
+                        country2,pi_isola,
+                        # union,
+                        # labst,
+                        # WEIGHT
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna)) %>%
+  # filter(!country2 %in% c("Turkey","Estonia")) %>% 
+  na.omit()
+
+# lineal
+base <- lmer(redist~1 + (1|country2),data=dfreg); icc1<- performance::icc(base)
+homclass <- lmer(redist~1 + female+agenum + homclass +(1|country2),data=dfreg)
+class <- lmer(redist~1 +female+agenum + class3+(1|country2),data=dfreg)
+full <- lmer(redist~1 +female+agenum + class3 +edyears+homclass+incomepcap+(1|country2),data=dfreg)
+# Interactions segregation x class
+full_int1 <- lmer(redist~1 +female+agenum + edyears + incomepcap + homclass*class3 +(1|country2),data=dfreg)
+models <- list(homclass,class,full,full_int1)
+
+cap1 <- "Multilevel regression for redistributive preferences, network homogeneity and social class" 
+omitcoef <- "(Intercept)|(agenum)|(female)|(incomepcap)|(edyears)|(logrgdpna)"
+coefname <- c("Network class homogeneity","Service Class","Working Class",
+              "Homogeneity x Service Class","Homogeneity x Working Class")
+coefgroup <- list("Social Class (ref: Intermediate class)"=2:3,"Interaction:"=4:5)
+gofrow <-  list(Controls=c("Yes","Yes","Yes","Yes"))
+gof1<-  c(NA,NA,"Num. countries:","Var: Group",NA)
+
+texreg::knitreg(models)
+texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,
+                  omit.coef = omitcoef,include.thresholds=FALSE,
+                  custom.coef.names = coefname,
+                  groups = coefgroup,custom.gof.rows=gofrow,
+                  include.loglik = FALSE,include.aic = FALSE,
+                  custom.gof.names = gof1)
+```
+
+## Interactions
+
+```{r inter1,fig.height=5,fig.width=7,fig.cap=c("Conditional marginal effects for network class-based homogeneity on preferences for redistribution","Conditional predicted values")}
+if (!require("pacman")) install.packages("pacman") # instalar pacman
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven)
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+df1$class3 <- relevel(df1$class3,ref =  "Intermediate class (III+IV)")
+df1$Q05pcm <- car::recode(df1$Q05pc,"1='Q01';2='Q02';3='Q03';4='Q04';5='Q05';NA='Missing'",
+                          as.factor = T,
+                          levels = c("Q01","Q02","Q03","Q04","Q05","Missing")) 
+df1$country2 <- countrycode::countrycode(sourcevar = df1$country,origin = "iso3n",destination = "country.name")
+dfreg <- df1 %>% dplyr::select(redist,
+                        class3,
+                        homclass,
+                        Q05pcm,
+                        gini_disp,
+                        gini_mkt,
+                        rgdpna,
+                        ednum,
+                        female,
+                        agenum,
+                        country2,pi_isola,
+                        # union,
+                        # labst,
+                        # WEIGHT
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna)) %>%
+  # filter(!country2 %in% c("Turkey","Estonia")) %>% 
+  na.omit()
+# Interactions segregation x class
+full_int1 <- lmer(redist~1 +female+agenum + ednum + Q05pcm + homclass*class3 +(1|country2),data=dfreg)
+# Conditional Marginal effect
+interplot <- 
+interplot::interplot(m = full_int1,var1 = "homclass",var2="class3")
+df_int <- interplot$data
+df_int <- df_int[c(1,2,4),]
+df_int$value <- c("Intermediate class (III+IV)","Service Class (I+II)","Working Class (V+VI+VII)")
+df_int$value <- factor(df_int$value,ordered = T,
+                       levels = c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)"))
+
+df_int %>% 
+ggplot() +
+  geom_point(aes(x = value,y = coef1)) + 
+  geom_errorbar(aes(x = value, ymin = lb, ymax = ub),color="black",width=0.1,size=1) +
+  labs(caption = paste0("N=",nobs(full_int1),", Countries=",lme4::ngrps(full_int1))) +
+  ylab("Class-based homogeneity coefficient")+
+  xlab("Social Class")+
+  ggtitle("Redistributive preferences") +
+  geom_hline(yintercept = 0) +
+  labs(caption = paste0("N=",nobs(full_int1),", Countries=",lme4::ngrps(full_int1))) +  
+  theme(plot.title = element_text(size = 8))  
+
+# Predicted values 
+pred1<- plot_model(full_int1,type = "int")
+pred_data <- data.frame(pred1$data)
+pred_data <- pred_data %>% arrange(pred_data$group)
+pred_data$group <- factor(pred_data$group,ordered = T,
+                       levels = c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)"))
+
+pred_data %>% 
+ggplot() +
+  geom_point(aes(x = x,y = predicted)) +
+  geom_line(aes(x = x,y = predicted))+
+  geom_errorbar(aes(x = x, ymin = conf.low, ymax = conf.high),color="black",width=0.05,size=1) +
+  facet_grid(. ~ group) +
+  labs(caption = paste0("N=",nobs(full_int1),", Countries=",lme4::ngrps(full_int1))) +
+  xlab("Network homogeneity")+
+  ylab("Redistributive preferences") + 
+  theme_minimal()
+```
+
+```{r intermacro}
+
+```
+
+
+
 

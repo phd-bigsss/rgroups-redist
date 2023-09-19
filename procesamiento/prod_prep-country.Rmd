@@ -73,7 +73,6 @@ rate75_25_wb<- reshape::cast(giniwb[,c("iso3c","date","value")],formula = iso3c 
 rate75_25_wb$ccode <- countrycode::countrycode(sourcevar = rate75_25_wb$iso3c,origin = "iso3c",destination = "iso3n")
 rate75_25_wb<- rate75_25_wb %>% filter(ccode %in% country_data$ccode)
 
-
 country_data <- 
 countries %>% left_join(select(gini_wb,iso3c,ccode,giniwb),by="ccode")
 ```
@@ -121,10 +120,27 @@ country_data3 <- country_data2 %>%
   left_join(solt,by="ccode")
 ```
 
+```{r wid-dataset}
+wid <- 
+  read.csv(file = here::here("input/data/original/wid-percentiles/WID_Data_Metadata/WID_Data_28072023-104940.csv"),sep = ";")
+country_data3 <- country_data3 %>% 
+  left_join(wid,by="ccode")
+summary(country_data3)
+```
+
+```{r otero23}
+otero <- 
+  read.csv(file = here::here("input/data/original/otero23.csv"),sep = ";")
+otero$ccode <- countrycode::countrycode(sourcevar = otero$iso3n,origin = "iso2c",destination = "iso3n")
+country_data3 <- country_data3 %>% 
+  left_join(otero,by="ccode")
+summary(country_data3)
+```
+
 # GDP
 
 ```{r pen-data}
-pendata<- haven::read_dta(file = "input/data/original/pen-world/pwt1001.dta")
+pendata<- haven::read_dta(file = here::here("input/data/original/pen-world/pwt1001.dta"))
 pendata$ccode <- countrycode::countrycode(sourcevar = pendata$countrycode,origin = "iso3c",destination = "iso3n")
 pen <- pendata %>% filter(ccode %in% countries$ccode,year %in% 2017) 
 
@@ -136,7 +152,7 @@ country_data4 <- country_data3 %>%
 ```{r merge}
 df1$ccode <- as.numeric(df1$country)
 df2 <- 
-df1 %>% left_join(country_data4[,c("ccode","c3","giniwd","gini_disp","gini_mkt","palmawd","rgdpna")],by = "ccode")
+df1 %>% left_join(country_data4[,c("ccode","c3","giniwd","gini_disp","gini_mkt","gini","gv_spen","palmawd","rgdpna","pc10_2017","pc50_2017")],by = "ccode")
 ```
 
 ```{r save}
