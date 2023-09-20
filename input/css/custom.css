@@ -5,6 +5,11 @@ body{
   font-size: 20px;
   font-family: "Times New Roman", Times, serif;
   }
+  
+body .main-container {
+      max-width: 1800px !important;
+      width: 1800px !important;
+    }  
 
 /**td { font-size: 14px;
 	  align: center;

@@ -39,7 +39,8 @@ dfTR <- dfTR %>% rename(SEX=sex,
                         EDUCYRS=educyrs,
                         AGE=age,
                         MAINSTAT=mainstat,
-                        UNION=union)  
+                        UNION=union,
+                        WEIGHT=weight)  
 dfES$c_alphan <- NULL
 dfTR$c_alphan <- NULL
 df2 <- bind_rows(dfES,dfTR)
@@ -173,8 +174,18 @@ df1$incomepcap <- as.numeric(df1$income/df1$hhpop) # Ingreso per capita del hoga
   
 df1 <- df1 %>%group_by(country)  %>% mutate(D10pc=ntile(incomepcap,10),
                                               Q05pc=ntile(incomepcap,5),
+                                              Q03pc=ntile(incomepcap,3),
                                               zincpc=scale(incomepcap,center = TRUE),
                                               logincpc=log(incomepcap)) %>% ungroup()
+
+df1$Q05pcm <- car::recode(df1$Q05pc,"1='Q01';2='Q02';3='Q03';4='Q04';5='Q05';NA='Missing'",
+                          as.factor = T,
+                          levels = c("Q01","Q02","Q03","Q04","Q05","Missing")) 
+
+df1$Q03pcm <- car::recode(df1$Q03pc,"1='T01';2='T02';3='T03';NA='Missing'",
+                          as.factor = T,
+                          levels = c("T01","T02","T03","Missing")) 
+
 
 sjlabelled::set_label(df1$D10pc) <- "Household income (D10)"
 sjlabelled::set_label(df1$Q05pc) <- "Household income (Q05)"
@@ -223,6 +234,8 @@ df1[,c("incomer","hhpop","incomepcap","incomerep")] %>% arrange(incomepcap,hhpop
 df1$incomerep <- ifelse(df1$hhpop==1 & df1$incomerep==0,df1$incomer,df1$incomerep)
 #frq(df1$incomerep==0)
 df1[,c("incomer","hhpop","incomepcap","incomerep")] %>% arrange(incomepcap,hhpop) %>% head()
+
+summary(df1[,c("incomer","hhpop","incomepcap","incomerep")])
 ```
 
 ```{r}
@@ -922,7 +935,7 @@ df1 %>% select(class3,n_high,n_middle,n_low,outgroup,ingroup,eindex)
 df1$homclass <- as.numeric(df1$ingroup/df1$know_total)
 sjlabelled::set_label(df1$homclass) <- "Class homogeneity"
 df1$homclass_gc <- group_center(x = df1$homclass,grp = df1$country)
-View(df1[,c("homclass","homclass_gc")])
+# View(df1[,c("homclass","homclass_gc")])
 # Weighted EI index
 # https://arxiv.org/pdf/2109.00348.pdf
 
@@ -985,7 +998,6 @@ hist.default(df1$homclass_s)
 ```
 
 ```{r social distance}
-
 df1$dis_busdriver <- df1$isei08 - df1$isei_busdriver
 df1$dis_ceo <- df1$isei08 - df1$isei_ceo
 df1$dis_cleaner <- df1$isei08 - df1$isei_cleaner
@@ -1060,7 +1072,7 @@ isei_ocupnames<- names(dplyr::select(df1,starts_with("isei_")))
 df1$isei_sd <- apply(df1[isei_ocupnames], 1, sd, na.rm = TRUE)
 
 # Print the standard deviation for each column
-df1 %>% dplyr::select(isei_ocupnames,isei_sd) %>% View()
+# df1 %>% dplyr::select(isei_ocupnames,isei_sd) %>% View()
 
 # reduce dimensions in 2: diversity and prestige
 df_cs<- df1[,c("isei_max","isei_avg","isei_range","know_total","isei_sd")]
@@ -1104,9 +1116,8 @@ df1$female <- car::recode(as.numeric(df1$SEX),"2='Female';1='Male';9=NA",
 #frq(df1$female)
 ```
 
-# Variable centering
+# Save
 
 ```{r}
-df1
 save(df1,file = here::here("input/data/proc/study1.RData"))
 ```

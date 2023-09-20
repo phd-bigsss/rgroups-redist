@@ -15,3 +15,5 @@ interplot
 sjPlot
 sjlabelled
 haven
+stringr
+gridExtra
