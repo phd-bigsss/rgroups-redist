@@ -277,7 +277,7 @@ texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,
                 )
 ```
 
-```{r ownclass,results='asis', cache=T}
+```{r ownclass, cache=TRUE, results='asis'}
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr,ordinal)  
 rm(list=ls())

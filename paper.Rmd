@@ -54,6 +54,9 @@ header-includes:
   - \usepackage{threeparttable}
 ---
 
+- considerar ISEI08 como alternativa de social class
+- darle una oportunidad al h-index
+
 
 ```{r setup, include=FALSE}
 if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
@@ -72,7 +75,6 @@ rm(list=ls())       # limpiar workspace
 options(knitr.kable.NA = '') # NA en kable = ''
 ```
 #  Introduction
-
 
 The escalating economic inequality and the current sanitary crisis have threatened social cohesion among citizens. However, these consequences have been unevenly experienced across the social structure. The upper and intermediate classes, benefiting from privileged access to social resources, have shown resilience. Conversely, working-class families have faced deteriorating material conditions, leading to a heightened sense of marginalisation and increasing the demand for welfare support. Particularly, social resources through network ties have been suggested to have a direct link with an individual’s welfare through instrumental and expressive outcomes, such as providing information or help in moments of need. Consequently, inequalities in access to certain social positions (i.e. occupations) are translated into a lack of social resources beyond individual economic and cultural capital. Additionally, it has been argued that social isolation not only plays a role in terms of resources but given that higher levels of segregation can bolster opinions, it is argued that being isolated from other social classes can polarise attitudes mainly in the working and upper-middle classes. Employing data from the International Social Survey Programme - Social Networks  this research aims to understand to what extent the demand for redistribution is linked to social ties. For addresing this, ego-centred social networks are used to represent the degree of class-based homogeneity of social ties. The results of multilevel estimations show that being socially segregated increases demand for redistribution. Additionally, this influence is conditional to social class, where the working and intermediate classes with highly homogeneous networks demand more governmental redistribution than the upper class. At the macro level, as the current distribution of economic resources influences the opportunity structure, it has been hypothesised that income inequality could bolster the influence of social segregation on the demand for redistribution. However, cross-level interactions do not provide supporting evidence on this behalf. 
 
@@ -93,6 +95,14 @@ The escalating economic inequality and the current sanitary crisis have threaten
 *Data* 
 
 *Variables*
+
+Homogeneity: 
+
+Thus, an EI score of 1 means complete homophily- the individual only has relationships with actors of the same “type” as they themselves are. An EI score of -1 means complete heterophily- all the alters are of a different “type” than they themselves are. Finally, an EI score of 0 means that an equal number of alters are of both the same “type” as the ego, and different types.
+
+
+
+
 
 *Methods*
 
@@ -275,11 +285,14 @@ load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 df1$class3 <- relevel(df1$class3,ref =  "Intermediate class (III+IV)")
 df1$class3res <- relevel(df1$class3res,ref =  "Intermediate class (III+IV)")
 df1$labst1 <-car::recode(df1$labst,"'No information'='Not in labour force'")
+df1$eindex2<- (df1$ingroup-df1$outgroup)/(df1$outgroup+df1$ingroup)
+
 dfreg <- df1 %>% dplyr::select(redist,
-                        class3,
+                        class3,class5,
                         homclass,
                         Q05pcm,
                         Q03pcm,
+                        # isei08,
                         gini_disp,
                         gini_mkt,
                         giniot=gini,
@@ -598,7 +611,7 @@ homclass <- lmer(redist~homclass + (1|country2),data=dfreg)
 full1 <- lmer(redist~ class3 +homclass+ female+agenum + age2+(1|country2),data=dfreg)
 rob1 <- lmer(redist~class3+ homclass+ edyears+ female+ agenum+ age2+(1|country2),data=dfreg)
 rob2 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ female+ agenum +age2+(1|country2),data=dfreg)
-rob3 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+(1|country2),data=dfreg)
+rob3 <- lmer(redist~isei08+ homclass+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+(1|country2),data=dfreg)
 # Interactions segregation x class
 int_homo <- lmer(redist~class3*homclass+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+ (1|country2),data=dfreg)
 # models <- list(homclass,class,full1,
