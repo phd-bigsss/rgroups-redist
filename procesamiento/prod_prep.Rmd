@@ -362,7 +362,7 @@ haven::write_dta(data = df1[c("id","isco88r","semp","supvis",
 df_class <- haven::read_dta(file = here::here("input/data/proc/class_respondent-spouse.dta"))
 df1 <- left_join(df1,df_class,by='id')
 
-# Class R´s and Spouse
+# Class R´s and Spouse----------------------------------------------------------
 df1$class10 <- car::recode(df1$class10, "7=8; 8=9; 9=10; 10=11; 11=7")
 df1$class10 <- sjlabelled::set_labels(df1$class10, levels = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11),
                         labels = c("I", "II", "IIIa", "IIIb", "IVa", "IVb", "IVc", "V", "VI", "VIIa", "VIIb"))
