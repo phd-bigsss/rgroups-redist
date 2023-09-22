@@ -1,0 +1,16 @@
+name: "instituciones-informales"
+navbar:
+  title: "Fondecyt #1211099"
+  left:
+    - text: "Inicio"
+      href: index.html
+    # - text: "About"
+    #   href: about.html
+output:
+  html_document:
+    theme: flatly
+    highlight: textmate
+    include:
+      after_body: footer.html
+    css: input/css/styles.css
+output_dir: "."    
