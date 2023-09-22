@@ -40,7 +40,8 @@ dfTR <- dfTR %>% rename(SEX=sex,
                         AGE=age,
                         MAINSTAT=mainstat,
                         UNION=union,
-                        WEIGHT=weight)  
+                        WEIGHT=weight,
+                        URBRURAL=urbrural)  
 dfES$c_alphan <- NULL
 dfTR$c_alphan <- NULL
 df2 <- bind_rows(dfES,dfTR)
@@ -129,8 +130,8 @@ df1$pi_left <- set_na(df1$pi_left,na = c(0,8,9))
 sjlabelled::set_label(df1$pi_left) <- "Perceived integration: left out from activities"
 #frq(df1$pi_left)
 
-df1$pi_nteg<- rowMeans(df1[,c("pi_compa","pi_isola","pi_left")],na.rm = T)
-sjlabelled::set_label(df1$pi_nteg) <- "Perceived integration"
+df1$isolation<- rowMeans(df1[,c("pi_compa","pi_isola","pi_left")],na.rm = T)
+sjlabelled::set_label(df1$isolation) <- "Perceived isolation"
 ```
 
 # Trust
@@ -924,7 +925,8 @@ df1$outgroup <- ifelse(df1$class3=="Intermediate class (III+IV)",rowSums(df1[,c(
 df1$outgroup <- ifelse(df1$class3=="Working Class (V+VI+VII)",rowSums(df1[,c("n_middle","n_high")],na.rm=T),df1$outgroup)
 #frq(df1$outgroup)
 
-df1$eindex<- (df1$outgroup-df1$ingroup)/(df1$outgroup+df1$ingroup)
+# df1$eindex<- (df1$outgroup-df1$ingroup)/(df1$outgroup+df1$ingroup)
+df1$eindex<- (df1$ingroup-df1$outgroup)/(df1$outgroup+df1$ingroup)
 sjlabelled::set_label(df1$eindex) <- "EI homophily index"
 #frq(df1$eindex)
 hist.default(df1$eindex)
@@ -959,7 +961,7 @@ df1$outgroup_s <- ifelse(df1$class3=="Intermediate class (III+IV)",rowSums(df1[,
 df1$outgroup_s <- ifelse(df1$class3=="Working Class (V+VI+VII)",rowSums(df1[,c("n_middle_s","n_high_s")],na.rm=T),df1$outgroup_s)
 #frq(df1$outgroup_s)
 
-df1$eindex_s<- (df1$outgroup_s-df1$ingroup_s)/(df1$outgroup_s+df1$ingroup_s)
+df1$eindex_s<- (df1$ingroup_s-df1$outgroup_s)/(df1$outgroup_s+df1$ingroup_s)
 sjlabelled::set_label(df1$eindex_s) <- "EI homophily index (strong ties)"
 #frq(df1$eindex_s)
 hist.default(df1$eindex_s)
@@ -986,7 +988,7 @@ df1$outgroup_w <- ifelse(df1$class3=="Intermediate class (III+IV)",rowSums(df1[,
 df1$outgroup_w <- ifelse(df1$class3=="Working Class (V+VI+VII)",rowSums(df1[,c("n_middle_w","n_high_w")],na.rm=T),df1$outgroup_w)
 # frq(df1$outgroup_w)
 
-df1$eindex_w<- (df1$outgroup_w-df1$ingroup_w)/(df1$outgroup_w+df1$ingroup_w)
+df1$eindex_w<- (df1$ingroup_w-df1$outgroup_w)/(df1$outgroup_w+df1$ingroup_w)
 sjlabelled::set_label(df1$eindex_w) <- "EI homophily index (weak ties)"
 frq(df1$eindex_w)
 hist.default(df1$eindex_w)
@@ -1039,7 +1041,7 @@ df1$outgroup_res <- ifelse(df1$class3res=="Intermediate class (III+IV)",rowSums(
 df1$outgroup_res <- ifelse(df1$class3res=="Working Class (V+VI+VII)",rowSums(df1[,c("n_middle","n_high")],na.rm=T),df1$outgroup_res)
 # frq(df1$outgroup_res)
 
-df1$eindex_res<- (df1$outgroup_res-df1$ingroup_res)/(df1$outgroup_res+df1$ingroup_res)
+df1$eindex_res<- (df1$ingroup_res-df1$outgroup_res)/(df1$outgroup_res+df1$ingroup_res)
 sjlabelled::set_label(df1$eindex_res) <- "EI homophily index (R's)"
 # frq(df1$eindex)
 # hist.default(df1$eindex)

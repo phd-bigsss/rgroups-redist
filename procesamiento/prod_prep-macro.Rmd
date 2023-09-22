@@ -24,7 +24,7 @@ knitr::opts_chunk$set(warning = FALSE,
 options(scipen=9999) # desactivar notacion cientifica
 if (!require("pacman")) install.packages("pacman") # instalar pacman
 load(here::here("input/data/proc/study1.RData"))
-pacman::p_load(dplyr,sjmisc,sjPlot,sjlabelled,tidyverse)
+pacman::p_load(dplyr,sjmisc,sjPlot,sjlabelled,tidyverse,haven)
 ```
 
 # Country level
