@@ -152,8 +152,8 @@ country_data4 <- country_data3 %>%
 ```{r merge}
 df1$ccode <- as.numeric(df1$country)
 df2 <- 
-df1 %>% left_join(country_data4[,c("ccode","c3","giniwd","gini_disp","gini_mkt","gini","gv_spen","palmawd","rgdpna","pc10_2017","pc50_2017")],by = "ccode")
-
+df1 %>% left_join(country_data4[,c("ccode","c3","giniwd","gini_disp","gini_mkt","gini","gv_spen","palmawd","rgdpna","pc10_2017","pc50_2017","individualism","gdp")],by = "ccode")
+df2$ratio10_50 <- df2$pc10_2017/df2$pc50_2017
 df2$country2 <- countrycode::countrycode(sourcevar = df2$country,origin = "iso3n",destination = "country.name")
 df2 <- df2 %>% rename(country3=c3)
 df2 <- df2 %>% select(country,country2, country3, everything())

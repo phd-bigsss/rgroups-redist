@@ -1105,6 +1105,13 @@ sjlabelled::set_label(df1$prestige) <- "Network Contacts Prestige"
 sjlabelled::set_label(df1$diversity) <- "Network Contacts Diversity"
 ```
 
+```{r res-generator}
+
+
+```
+
+
+
 # Demographics
 
 ```{r demographics}
