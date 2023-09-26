@@ -1,0 +1,433 @@
+ISO,COUNTRY,YEAR,PALMA RATIO 
+ABW,Aruba,2017,2.774
+ABW,Aruba,2020,3.028
+AFG,Afghanistan,2017,2.384
+AFG,Afghanistan,2020,2.384
+AGO,Angola,2017,6.847
+AGO,Angola,2020,7.525
+AIA,Anguilla,2017,2.774
+AIA,Anguilla,2020,3.028
+ALB,Albania,2017,1.589
+ALB,Albania,2020,1.38
+AND,Andorra,2017,1.164
+AND,Andorra,2020,1.164
+ARE,United Arab Emirates,2017,1.004
+ARE,United Arab Emirates,2020,0.869
+ARG,Argentina,2017,1.741
+ARG,Argentina,2020,1.831
+ARM,Armenia,2017,1.509
+ARM,Armenia,2020,1.073
+ATG,Antigua and Barbuda,2017,2.774
+ATG,Antigua and Barbuda,2020,3.028
+AUS,Australia,2017,1.351
+AUS,Australia,2020,1.377
+AUT,Austria,2017,1.155
+AUT,Austria,2020,1.11
+AZE,Azerbaijan,2017,0.62
+AZE,Azerbaijan,2020,0.661
+BDI,Burundi,2017,3.86
+BDI,Burundi,2020,3.86
+BEL,Belgium,2017,0.976
+BEL,Belgium,2020,0.951
+BEN,Benin,2017,4.813
+BEN,Benin,2020,3.789
+BFA,Burkina Faso,2017,10.097
+BFA,Burkina Faso,2020,18.121
+BGD,Bangladesh,2017,2.975
+BGD,Bangladesh,2020,2.975
+BGR,Bulgaria,2017,1.919
+BGR,Bulgaria,2020,1.881
+BHR,Bahrain,2017,1.453
+BHR,Bahrain,2020,1.393
+BHS,Bahamas,,
+BHS,Bahamas,,
+BIH,Bosnia and Herzegovina,2017,1.409
+BIH,Bosnia and Herzegovina,2020,1.409
+BLR,Belarus,2017,1.081
+BLR,Belarus,2020,1.034
+BLZ,Belize,2017,3.893
+BLZ,Belize,2020,3.893
+BMU,Bermuda,2017,1.879
+BMU,Bermuda,2020,1.913
+BOL,Bolivia,2017,2.624
+BOL,Bolivia,2020,2.4
+BRA,Brazil,2017,3.565
+BRA,Brazil,2020,3.264
+BRB,Barbados,2017,4.795
+BRB,Barbados,2020,4.795
+BRN,Brunei,2017,0.993
+BRN,Brunei,2020,0.993
+BTN,Bhutan,2017,3.312
+BTN,Bhutan,2020,3.312
+BWA,Botswana,2017,5.18
+BWA,Botswana,2020,5.18
+CAF,Central African Republic,2017,9.133
+CAF,Central African Republic,2020,9.133
+CAN,Canada,2017,1.303
+CAN,Canada,2020,1.244
+CHE,Switzerland,2017,1.323
+CHE,Switzerland,2020,1.317
+CHL,Chile,2017,2.886
+CHL,Chile,2020,3.261
+CHN,China,2017,2.205
+CHN,China,2020,2.234
+CIV,Cote d'Ivoire,2017,5.378
+CIV,Cote d'Ivoire,2020,4.655
+CMR,Cameroon,2017,6.092
+CMR,Cameroon,2020,6.092
+COD,Congo,,
+COD,Congo,,
+COG,Congo,,
+COG,Congo,,
+COL,Colombia,2017,3.193
+COL,Colombia,2020,4.153
+COM,Comoros,2017,5.637
+COM,Comoros,2020,5.637
+CPV,Cape Verde,2017,4.773
+CPV,Cape Verde,2020,4.773
+CRI,Costa Rica,2017,3.074
+CRI,Costa Rica,2020,2.975
+CUB,Cuba,2017,2.943
+CUB,Cuba,2020,2.943
+CUW,Curacao,2017,2.774
+CUW,Curacao,2020,3.028
+CYM,Cayman Islands,2017,2.774
+CYM,Cayman Islands,2020,3.028
+CYP,Cyprus,2017,1.306
+CYP,Cyprus,2020,1.194
+CZE,Czechia,2017,0.899
+CZE,Czechia,2020,0.885
+DEU,Germany,2017,1.2
+DEU,Germany,2020,1.213
+DJI,Djibouti,2017,2.304
+DJI,Djibouti,2020,2.304
+DMA,Dominica,2017,4.647
+DMA,Dominica,2020,4.647
+DNK,Denmark,2017,0.923
+DNK,Denmark,2020,0.929
+DOM,Dominican Republic,2017,2.213
+DOM,Dominican Republic,2020,1.891
+DZA,Algeria,2017,1.332
+DZA,Algeria,2020,1.332
+ECU,Ecuador,2017,2.345
+ECU,Ecuador,2020,2.628
+EGY,Egypt,2017,1.547
+EGY,Egypt,2020,1.512
+ERI,Eritrea,2017,4.145
+ERI,Eritrea,2020,4.145
+ESP,Spain,2017,1.477
+ESP,Spain,2020,1.358
+EST,Estonia,2017,1.132
+EST,Estonia,2020,1.117
+ETH,Ethiopia,2017,3.383
+ETH,Ethiopia,2020,3.383
+FIN,Finland,2017,0.963
+FIN,Finland,2020,0.997
+FJI,Fiji,2017,1.524
+FJI,Fiji,2020,1.346
+FRA,France,2017,1.258
+FRA,France,2020,1.292
+FSM,Micronesia,,
+FSM,Micronesia,,
+GAB,Gabon,2017,2.673
+GAB,Gabon,2020,2.673
+GBR,United Kingdom,2017,1.293
+GBR,United Kingdom,2020,1.332
+GEO,Georgia,2017,2.161
+GEO,Georgia,2020,1.866
+GHA,Ghana,2017,5.183
+GHA,Ghana,2020,5.183
+GIN,Guinea,2017,2.831
+GIN,Guinea,2020,2.706
+GMB,Gambia,,
+GMB,Gambia,,
+GNB,Guinea-Bissau,2017,3.808
+GNB,Guinea-Bissau,2020,3.289
+GNQ,Equatorial Guinea,2017,5.153
+GNQ,Equatorial Guinea,2020,5.153
+GRC,Greece,2017,1.363
+GRC,Greece,2020,1.238
+GRD,Grenada,2017,2.79
+GRD,Grenada,2020,2.79
+GRL,Greenland,2017,1.382
+GRL,Greenland,2020,1.433
+GTM,Guatemala,2017,2.902
+GTM,Guatemala,2020,2.902
+GUY,Guyana,2017,2.457
+GUY,Guyana,2020,2.457
+HKG,Hong Kong,2017,1.886
+HKG,Hong Kong,2020,1.886
+HND,Honduras,2017,2.823
+HND,Honduras,2020,3.085
+HRV,Croatia,2017,1.138
+HRV,Croatia,2020,1.027
+HTI,Haiti,2017,6.453
+HTI,Haiti,2020,6.453
+HUN,Hungary,2017,1.004
+HUN,Hungary,2020,0.94
+IDN,Indonesia,2017,1.874
+IDN,Indonesia,2020,1.798
+IND,India,2017,3.47
+IND,India,2020,3.47
+IRL,Ireland,2017,1.274
+IRL,Ireland,2020,1.165
+IRN,Iran,2017,2.133
+IRN,Iran,2020,2.218
+IRQ,Iraq,2017,1.953
+IRQ,Iraq,2020,1.953
+ISL,Iceland,2017,0.978
+ISL,Iceland,2020,0.927
+ISR,Israel,2017,1.688
+ISR,Israel,2020,1.732
+ITA,Italy,2017,1.476
+ITA,Italy,2020,1.47
+JAM,Jamaica,2017,2.888
+JAM,Jamaica,2020,2.888
+JOR,Jordan,2017,1.861
+JOR,Jordan,2020,1.861
+JPN,Japan,2017,1.289
+JPN,Japan,2020,1.289
+KAZ,Kazakhstan,2017,1.171
+KAZ,Kazakhstan,2020,1.187
+KEN,Kenya,2017,4.355
+KEN,Kenya,2020,4.355
+KGZ,Kyrgyzstan,2017,1.158
+KGZ,Kyrgyzstan,2020,1.229
+KHM,Cambodia,2017,1.43
+KHM,Cambodia,2020,1.43
+KIR,Kiribati,2017,1.382
+KIR,Kiribati,2020,1.281
+KNA,Saint Kitts and Nevis,2017,2.774
+KNA,Saint Kitts and Nevis,2020,3.028
+KOR,Korea,,
+KOR,Korea,,
+KWT,Kuwait,2017,1.93
+KWT,Kuwait,2020,1.93
+LAO,Laos,2017,1.866
+LAO,Laos,2020,1.934
+LBN,Lebanon,2017,1.506
+LBN,Lebanon,2020,1.506
+LBR,Liberia,2017,3.385
+LBR,Liberia,2020,3.385
+LBY,Libya,2017,1.873
+LBY,Libya,2020,1.877
+LCA,Saint Lucia,2017,3.485
+LCA,Saint Lucia,2020,3.485
+LIE,Liechtenstein,2017,1.235
+LIE,Liechtenstein,2020,1.23
+LKA,Sri Lanka,2017,2.61
+LKA,Sri Lanka,2020,2.61
+LSO,Lesotho,2017,5.926
+LSO,Lesotho,2020,5.614
+LTU,Lithuania,2017,1.663
+LTU,Lithuania,2020,1.453
+LUX,Luxembourg,2017,1.225
+LUX,Luxembourg,2020,1.402
+LVA,Latvia,2017,1.377
+LVA,Latvia,2020,1.396
+MAC,Macao,2017,1.294
+MAC,Macao,2020,1.297
+MAR,Morocco,2017,2.105
+MAR,Morocco,2020,2.105
+MCO,Monaco,2017,1.235
+MCO,Monaco,2020,1.23
+MDA,Moldova,2017,1.099
+MDA,Moldova,2020,1.107
+MDG,Madagascar,2017,4.657
+MDG,Madagascar,2020,4.657
+MDV,Maldives,2017,2.474
+MDV,Maldives,2020,2.32
+MEX,Mexico,2017,2.822
+MEX,Mexico,2020,2.451
+MHL,Marshall Islands,2017,1.626
+MHL,Marshall Islands,2020,1.626
+MKD,North Macedonia,2017,1.341
+MKD,North Macedonia,2020,1.253
+MLI,Mali,2017,1.567
+MLI,Mali,2020,1.904
+MLT,Malta,2017,1.053
+MLT,Malta,2020,1.175
+MMR,Myanmar,2017,1.438
+MMR,Myanmar,2020,1.438
+MNE,Montenegro,2017,1.608
+MNE,Montenegro,2020,1.363
+MNG,Mongolia,2017,1.523
+MNG,Mongolia,2020,1.535
+MOZ,Mozambique,2017,5.547
+MOZ,Mozambique,2020,5.547
+MRT,Mauritania,2017,3.115
+MRT,Mauritania,2020,3.115
+MSR,Montserrat,2017,2.774
+MSR,Montserrat,2020,3.028
+MUS,Mauritius,2017,2.813
+MUS,Mauritius,2020,2.813
+MWI,Malawi,2017,4.833
+MWI,Malawi,2020,3.848
+MYS,Malaysia,2017,1.964
+MYS,Malaysia,2020,1.964
+NAM,Namibia,2017,7.102
+NAM,Namibia,2020,7.102
+NER,Niger,2017,3.456
+NER,Niger,2020,3.607
+NGA,Nigeria,2017,1.481
+NGA,Nigeria,2020,1.475
+NIC,Nicaragua,2017,3.127
+NIC,Nicaragua,2020,3.127
+NLD,Netherlands,2017,1.028
+NLD,Netherlands,2020,1.086
+NOR,Norway,2017,0.972
+NOR,Norway,2020,0.965
+NPL,Nepal,2017,2.707
+NPL,Nepal,2020,2.707
+NRU,Nauru,2017,1.437
+NRU,Nauru,2020,1.437
+NZL,New Zealand,2017,1.448
+NZL,New Zealand,2020,1.437
+OMN,Oman,2017,1.865
+OMN,Oman,2020,1.865
+PAK,Pakistan,2017,2.474
+PAK,Pakistan,2020,2.371
+PAN,Panama,2017,3.38
+PAN,Panama,2020,3.438
+PER,Peru,2017,2.717
+PER,Peru,2020,2.968
+PHL,Philippines,2017,2.17
+PHL,Philippines,2020,2.086
+PLW,Palau,2017,2.011
+PLW,Palau,2020,2.011
+PNG,Papua New Guinea,2017,2.175
+PNG,Papua New Guinea,2020,2.175
+POL,Poland,2017,1.135
+POL,Poland,2020,1.202
+PRI,Puerto Rico,2017,3.862
+PRI,Puerto Rico,2020,3.862
+PRK,Korea,,
+PRK,Korea,,
+PRT,Portugal,2017,1.443
+PRT,Portugal,2020,1.279
+PRY,Paraguay,2017,3.435
+PRY,Paraguay,2020,2.696
+PSE,West Bank and Gaza,2017,2.463
+PSE,West Bank and Gaza,2020,2.463
+QAT,Qatar,2017,1.453
+QAT,Qatar,2020,1.393
+ROU,Romania,2017,1.364
+ROU,Romania,2020,1.405
+RUS,Russia,2017,1.47
+RUS,Russia,2020,1.421
+RWA,Rwanda,2017,4.775
+RWA,Rwanda,2020,4.775
+SAU,Saudi Arabia,2017,1.453
+SAU,Saudi Arabia,2020,1.393
+SDN,Sudan,2017,3.845
+SDN,Sudan,2020,3.845
+SEN,Senegal,2017,3.978
+SEN,Senegal,2020,3.846
+SGP,Singapore,2017,1.909
+SGP,Singapore,2020,1.909
+SLB,Solomon Islands,2017,1.807
+SLB,Solomon Islands,2020,1.807
+SLE,Sierra Leone,2017,3.354
+SLE,Sierra Leone,2020,3.384
+SLV,El Salvador,2017,1.859
+SLV,El Salvador,2020,2.098
+SMR,San Marino,2017,1.235
+SMR,San Marino,2020,1.23
+SOM,Somalia,2017,4.407
+SOM,Somalia,2020,4.407
+SRB,Serbia,2017,1.211
+SRB,Serbia,2020,0.978
+SSD,South Sudan,2017,6.105
+SSD,South Sudan,2020,6.105
+STP,Sao Tome and Principe,2017,4.335
+STP,Sao Tome and Principe,2020,4.335
+SUR,Suriname,2017,5.782
+SUR,Suriname,2020,5.782
+SVK,Slovakia,2017,0.815
+SVK,Slovakia,2020,0.756
+SVN,Slovenia,2017,0.873
+SVN,Slovenia,2020,0.865
+SWE,Sweden,2017,1.066
+SWE,Sweden,2020,1.042
+SWZ,Eswatini,2017,8.738
+SWZ,Eswatini,2020,8.738
+SXM,Sint Maarten (Dutch part),2017,2.774
+SXM,Sint Maarten (Dutch part),2020,3.028
+SYC,Seychelles,2017,1.609
+SYC,Seychelles,2020,1.217
+SYR,Syria,2017,1.473
+SYR,Syria,2020,1.473
+TCA,Turks and Caicos Islands,2017,2.774
+TCA,Turks and Caicos Islands,2020,3.028
+TCD,Chad,2017,3.964
+TCD,Chad,2020,3.691
+TGO,Togo,2017,4.784
+TGO,Togo,2020,4.635
+THA,Thailand,2017,1.694
+THA,Thailand,2020,1.594
+TJK,Tajikistan,2017,1.488
+TJK,Tajikistan,2020,1.488
+TKM,Turkmenistan,2017,1.948
+TKM,Turkmenistan,2020,1.948
+TLS,Timor-Leste,2017,1.33
+TLS,Timor-Leste,2020,1.33
+TON,Tonga,2017,1.771
+TON,Tonga,2020,1.771
+TTO,Trinidad and Tobago,2017,1.887
+TTO,Trinidad and Tobago,2020,1.887
+TUN,Tunisia,2017,1.803
+TUN,Tunisia,2020,1.803
+TUR,Turkiye,2017,2.352
+TUR,Turkiye,2020,2.39
+TUV,Tuvalu,2017,1.883
+TUV,Tuvalu,2020,1.883
+TWN,Taiwan,2017,1.198
+TWN,Taiwan,2020,1.198
+TZA,Tanzania,2017,4.117
+TZA,Tanzania,2020,4.195
+UGA,Uganda,2017,4.611
+UGA,Uganda,2020,4.606
+UKR,Ukraine,2017,1.095
+UKR,Ukraine,2020,1.079
+URY,Uruguay,2017,1.855
+URY,Uruguay,2020,1.945
+USA,United States,2017,1.961
+USA,United States,2020,2.013
+UZB,Uzbekistan,2017,1.57
+UZB,Uzbekistan,2020,1.57
+VCT,Saint Vincent and the Grenadines,2017,2.967
+VCT,Saint Vincent and the Grenadines,2020,2.858
+VEN,Venezuela,2017,1.624
+VEN,Venezuela,2020,1.624
+VGB,British Virgin Islands,2017,2.774
+VGB,British Virgin Islands,2020,3.028
+VNM,Vietnam,2017,1.522
+VNM,Vietnam,2020,1.54
+VUT,Vanuatu,2017,1.601
+VUT,Vanuatu,2020,1.511
+WSM,Samoa,2017,1.932
+WSM,Samoa,2020,1.932
+XKX,Kosovo,2017,2.011
+XKX,Kosovo,2020,2.118
+YEM,Yemen,2017,1.836
+YEM,Yemen,2020,1.836
+ZAF,South Africa,2017,10.051
+ZAF,South Africa,2020,10.051
+ZMB,Zambia,2017,10.617
+ZMB,Zambia,2020,10.617
+ZWE,Zimbabwe,2017,5.064
+ZWE,Zimbabwe,2020,5.064
+region_wb-east_asia_and_the_pacific,East Asia and the Pacific,2017,3.285
+region_wb-east_asia_and_the_pacific,East Asia and the Pacific,2020,3.186
+region_wb-europe_and_central_asia,Europe and Central Asia,2017,2.087
+region_wb-europe_and_central_asia,Europe and Central Asia,2020,2.012
+region_wb-latin_america_and_the_caribbean,Latin America and the Caribbean,2017,3.411
+region_wb-latin_america_and_the_caribbean,Latin America and the Caribbean,2020,3.363
+region_wb-middle_east_and_north_africa,Middle East and North Africa,2017,4.194
+region_wb-middle_east_and_north_africa,Middle East and North Africa,2020,4.061
+region_wb-north_america,North America,2017,1.98
+region_wb-north_america,North America,2020,2.001
+region_wb-south_asia,South Asia,2017,3.696
+region_wb-south_asia,South Asia,2020,3.6
+region_wb-sub_saharan_africa,Sub-Saharan Africa,2017,7.35
+region_wb-sub_saharan_africa,Sub-Saharan Africa,2020,6.844
