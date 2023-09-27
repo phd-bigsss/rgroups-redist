@@ -1105,9 +1105,37 @@ sjlabelled::set_label(df1$prestige) <- "Network Contacts Prestige"
 sjlabelled::set_label(df1$diversity) <- "Network Contacts Diversity"
 ```
 
-```{r res-generator}
 
+# Community participation
 
+```{r}
+# frq(df1$v17)
+df1$act_lei <- car::recode(df1$v17,recodes = "c(0,8,9)=NA")
+df1$act_lei <- set_na(df1$act_lei,na = c(0,8,9))
+df1$act_lei <- sjmisc::rec(x = df1$act_lei,rec = "rev")
+sjlabelled::set_label(df1$act_lei) <- "Activities: groups for leisure, sports or culture"
+# frq(df1$act_lei)
+
+# frq(df1$v18)
+df1$act_pol <- car::recode(df1$v18,recodes = "c(0,8,9)=NA")
+df1$act_pol <- set_na(df1$act_pol,na = c(0,8,9))
+df1$act_pol <- sjmisc::rec(x = df1$act_pol,rec = "rev")
+sjlabelled::set_label(df1$act_pol) <- "Activities: political parties, groups, associations"
+# frq(df1$act_pol)
+
+# frq(df1$v19)
+df1$act_vol <- car::recode(df1$v19,recodes = "c(0,8,9)=NA")
+df1$act_vol <- set_na(df1$act_vol,na = c(0,8,9))
+df1$act_vol <- sjmisc::rec(x = df1$act_vol,rec = "rev")
+sjlabelled::set_label(df1$act_vol) <- "Activities: charitable or religious - voluntary"
+# frq(df1$act_vol)
+
+# cor(df1[,c("act_lei","act_pol","act_vol")],use="complete.obs")
+# psych::alpha(df1[,c("act_lei","act_pol","act_vol")])
+
+df1$activities<- rowMeans(df1[,c("act_lei","act_pol","act_vol")],na.rm = T)
+sjlabelled::set_label(df1$activities) <- "Participation in social activities"
+# summary(df1$activities)
 ```
 
 
