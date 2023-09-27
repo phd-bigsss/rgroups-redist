@@ -60,5 +60,6 @@ filter sample:
 
 - Network homogeneity:
   - Cook distance dice quye hay influencia: CHN (sig), TWN(sig), ZAF (sig), FIN (sig), USA (sig), GRB(sig), ISL (sig)
-  - leverage no es estadísticamente signifcativa
+  - leverage no es estadísticamente sig
 - Perceived Isolation:
+  - leverage no es estadísticamente sig
