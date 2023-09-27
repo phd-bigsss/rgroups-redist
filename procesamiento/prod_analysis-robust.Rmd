@@ -1,7 +1,7 @@
 ---
 title: "Robustness checks"
 date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
-css: "input/css/custom.css" # custom CSS para html
+css: "../input/css/custom.css" # custom CSS para html
 linestretch: '1.5'          # interlineado 
 link-citations: yes         # citas linkeadas
 output:
@@ -53,13 +53,15 @@ df1$labst1 <-car::recode(df1$labst,"'No information'='Not in labour force'")
 df1$redistF <- as.factor(df1$redist)
 
 dfreg <- df1 %>% dplyr::select(redist=redistF,
-                        class3,
+                        class3,class5,
                         homclass,
                         Q05pcm,
                         Q03pcm,
+                        # isei08,
                         gini_disp,
                         gini_mkt,
                         giniot=gini,
+                        giniindex,
                         rgdpna,
                         edyears,
                         female,
@@ -67,14 +69,24 @@ dfreg <- df1 %>% dplyr::select(redist=redistF,
                         country2,country,
                         union,
                         labst,
-                        labst1
+                        labst1,
+                        isolation,
+                        MAINSTAT,
                         ) %>% 
   mutate(logrgdpna=log(rgdpna),
          age2=agenum^2,
          edyears2=edyears^2) %>%
-  # filter(!country2 %in% c("Turkey","Estonia")) %>%
+  # filter(!country2 %in% c("CHN")) %>%
+  # filter(!country2 %in% c("TWN")) %>%
+  # filter(!country2 %in% c("ZAF")) %>%
+  # filter(!country2 %in% c("FIN")) %>%
+  # filter(!country2 %in% c("USA")) %>%
+  # filter(!country2 %in% c("GBR")) %>%
+  # filter(!country2 %in% c("ISL")) %>%
+  # filter(!country2 %in% c("TUR","EST")) %>%
+  # filter(MAINSTAT %in% c(1,2)) %>%
+  # filter(agenum %in% c(25:65)) %>% # Paskov & Weisstanner
   na.omit()
-# dim(dfreg)
 
 # lineal
 base <- clmm(redist~1 + (1|country2),data=dfreg); icc1<- performance::icc(base)
@@ -84,6 +96,8 @@ full1 <- clmm(redist~ class3 +homclass+ female+agenum + age2+(1|country2),data=d
 # rob1 <- clmm(redist~class3+ homclass+ edyears+ female+ agenum+ age2+(1|country2),data=dfreg)
 # rob2 <- clmm(redist~class3+ homclass+ edyears+ Q03pcm+ female+ agenum +age2+(1|country2),data=dfreg)
 rob3 <- clmm(redist~class3+ homclass+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+(1|country2),data=dfreg)
+# rob4 <- clmm(redist~class3+ homclass+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+(homclass|country2),data=dfreg)
+# anova(rob3,rob4)
 # Interactions segregation x class
 int_homo <- clmm(redist~class3*homclass+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+ (1|country2),data=dfreg)
 # models <- list(homclass,class,full1,
