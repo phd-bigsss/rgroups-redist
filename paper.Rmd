@@ -18,6 +18,12 @@ author:
 # Nota: Autores que comparten filiacion, poner el mismo number y declarar filiación una sola vez.  
 # abstract: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do *eiusmod tempor* incididunt ut labore et dolore magna aliqua. Ut enimad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
 output:
+  bookdown::pdf_document2:
+    template: null
+    toc: false
+    keep_tex: false
+    pandoc_args:
+      - --template=input/mytemplate.tex #custom template para usar autores con afiliacion  
   bookdown::html_document2:
     toc: yes
     code_folding: hide
@@ -25,12 +31,6 @@ output:
       collapsed: false
       smooth_scroll: false
     number_sections: false   
-  bookdown::pdf_document2:
-    template: null
-    toc: false
-    keep_tex: false
-    pandoc_args:
-      - --template=input/mytemplate.tex #custom template para usar autores con afiliacion  
 linkcolor: blue                         # enlaces y citas en color azul
 bibliography: input/bib/rgroup-redist.bib     # bibliografia en bibtex
 csl: input/bib/apa6.csl
@@ -170,7 +170,7 @@ _Perceived Isolation_
 
 "The next questions are about how you feel about different aspects of your life. For each one, please indicate how often during the past 4 weeks you have felt that way. How often in the past 4 weeks have you felt that..." 1) "companionship lacking?",(2) "isolated from others?" and (3) "left out?". 
 
-The response categories are  (1)"Never", (2)"Rarely", (3) "Sometimes", (4)"Often" and  (5)"Very often". As the indicators show an acceptable internal consistency (α=.85), an index of the three items was created. Positive values indicate higher perceived isolation. 
+The response categories are  (1)"Never", (2)"Rarely", (3) "Sometimes", (4)"Often" and  (5)"Very often". As the indicators show an acceptable internal consistency ($\alpha$=.85), an index of the three items was created. Positive values indicate higher perceived isolation. 
 
 **Methods**
 
