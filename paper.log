@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.9.29)  9 OCT 2023 16:46
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.9.29)  9 OCT 2023 17:45
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -532,6 +532,9 @@ LaTeX Warning: Label `tab:modredist' multiply defined.
 LaTeX Warning: Label `table:coefficients' multiply defined.
 
 
+LaTeX Warning: Label `table:coefficients' multiply defined.
+
+
 LaTeX Warning: Label `tab:modredist' multiply defined.
 
 
@@ -650,31 +653,31 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 205.
 (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [5]
-<paper_files/figure-latex/homogeneity-1.pdf, id=154, 433.62pt x 244.915pt>
+<paper_files/figure-latex/homogeneity-1.pdf, id=158, 433.62pt x 244.915pt>
 File: paper_files/figure-latex/homogeneity-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/homogeneity-1.pdf>
 Package pdftex.def Info: paper_files/figure-latex/homogeneity-1.pdf  used on input line 250.
 (pdftex.def)             Requested size: 500.484pt x 282.69643pt.
 [6{c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}]
-<paper_files/figure-latex/class-hom-1.pdf, id=163, 505.89pt x 505.89pt>
+<paper_files/figure-latex/class-hom-1.pdf, id=167, 505.89pt x 505.89pt>
 File: paper_files/figure-latex/class-hom-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/class-hom-1.pdf>
 Package pdftex.def Info: paper_files/figure-latex/class-hom-1.pdf  used on input line 259.
 (pdftex.def)             Requested size: 500.484pt x 500.49298pt.
 [7 <./paper_files/figure-latex/homogeneity-1.pdf>] [8 <./paper_files/figure-latex/class-hom-1.pdf>]
-<paper_files/figure-latex/marg1-1.pdf, id=191, 296.10625pt x 187.70125pt>
+<paper_files/figure-latex/marg1-1.pdf, id=195, 296.10625pt x 187.70125pt>
 File: paper_files/figure-latex/marg1-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/marg1-1.pdf>
 Package pdftex.def Info: paper_files/figure-latex/marg1-1.pdf  used on input line 357.
 (pdftex.def)             Requested size: 375.36299pt x 237.95119pt.
 [9{c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
-<paper_files/figure-latex/pred1-1.pdf, id=205, 411.5375pt x 259.97125pt>
+<paper_files/figure-latex/pred1-1.pdf, id=209, 411.5375pt x 259.97125pt>
 File: paper_files/figure-latex/pred1-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/pred1-1.pdf>
 Package pdftex.def Info: paper_files/figure-latex/pred1-1.pdf  used on input line 366.
 (pdftex.def)             Requested size: 375.36299pt x 237.12163pt.
 [10 <./paper_files/figure-latex/marg1-1.pdf> <./paper_files/figure-latex/pred1-1.pdf>]
-<paper_files/figure-latex/ineq-homo-1.pdf, id=225, 542.025pt x 289.08pt>
+<paper_files/figure-latex/ineq-homo-1.pdf, id=229, 542.025pt x 289.08pt>
 File: paper_files/figure-latex/ineq-homo-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/ineq-homo-1.pdf>
 Package pdftex.def Info: paper_files/figure-latex/ineq-homo-1.pdf  used on input line 388.
@@ -683,58 +686,58 @@ Package pdftex.def Info: paper_files/figure-latex/ineq-homo-1.pdf  used on input
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [11 <./paper_files/figure-latex/ineq-homo-1.pdf>]
-<paper_files/figure-latex/crossginiD-1.pdf, id=241, 671.50874pt x 289.08pt>
+<paper_files/figure-latex/crossginiD-1.pdf, id=245, 671.50874pt x 289.08pt>
 File: paper_files/figure-latex/crossginiD-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/crossginiD-1.pdf>
 Package pdftex.def Info: paper_files/figure-latex/crossginiD-1.pdf  used on input line 433.
 (pdftex.def)             Requested size: 500.484pt x 215.45528pt.
-<paper_files/figure-latex/crossginiM-1.pdf, id=242, 671.50874pt x 289.08pt>
+<paper_files/figure-latex/crossginiM-1.pdf, id=246, 671.50874pt x 289.08pt>
 File: paper_files/figure-latex/crossginiM-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/crossginiM-1.pdf>
 Package pdftex.def Info: paper_files/figure-latex/crossginiM-1.pdf  used on input line 442.
 (pdftex.def)             Requested size: 500.484pt x 215.45528pt.
 [12 <./paper_files/figure-latex/crossginiD-1.pdf>] [13 <./paper_files/figure-latex/crossginiM-1.pdf>]
-<paper_files/figure-latex/unnamed-chunk-2-1.pdf, id=274, 578.16pt x 433.62pt>
-File: paper_files/figure-latex/unnamed-chunk-2-1.pdf Graphic file (type pdf)
-<use paper_files/figure-latex/unnamed-chunk-2-1.pdf>
-Package pdftex.def Info: paper_files/figure-latex/unnamed-chunk-2-1.pdf  used on input line 537.
+<paper_files/figure-latex/homclass-ineq-1.pdf, id=278, 578.16pt x 433.62pt>
+File: paper_files/figure-latex/homclass-ineq-1.pdf Graphic file (type pdf)
+<use paper_files/figure-latex/homclass-ineq-1.pdf>
+Package pdftex.def Info: paper_files/figure-latex/homclass-ineq-1.pdf  used on input line 529.
 (pdftex.def)             Requested size: 500.484pt x 375.36066pt.
-[14]
-<paper_files/figure-latex/unnamed-chunk-3-1.pdf, id=282, 578.16pt x 433.62pt>
-File: paper_files/figure-latex/unnamed-chunk-3-1.pdf Graphic file (type pdf)
-<use paper_files/figure-latex/unnamed-chunk-3-1.pdf>
-Package pdftex.def Info: paper_files/figure-latex/unnamed-chunk-3-1.pdf  used on input line 546.
+[14] [15 <./paper_files/figure-latex/homclass-ineq-1.pdf>] [16] [17] [18]
+<paper_files/figure-latex/homclass-spend-indv-1.pdf, id=319, 578.16pt x 433.62pt>
+File: paper_files/figure-latex/homclass-spend-indv-1.pdf Graphic file (type pdf)
+<use paper_files/figure-latex/homclass-spend-indv-1.pdf>
+Package pdftex.def Info: paper_files/figure-latex/homclass-spend-indv-1.pdf  used on input line 747.
 (pdftex.def)             Requested size: 500.484pt x 375.36066pt.
-[15 <./paper_files/figure-latex/unnamed-chunk-2-1.pdf>] [16 <./paper_files/figure-latex/unnamed-chunk-3-1.pdf>] [17] [18] [19]
-<paper_files/figure-latex/marg2-1.pdf, id=332, 296.10625pt x 187.70125pt>
+[19] [20 <./paper_files/figure-latex/homclass-spend-indv-1.pdf>]
+<paper_files/figure-latex/marg2-1.pdf, id=341, 296.10625pt x 187.70125pt>
 File: paper_files/figure-latex/marg2-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/marg2-1.pdf>
-Package pdftex.def Info: paper_files/figure-latex/marg2-1.pdf  used on input line 775.
+Package pdftex.def Info: paper_files/figure-latex/marg2-1.pdf  used on input line 810.
 (pdftex.def)             Requested size: 375.36299pt x 237.95119pt.
-[20]
-<paper_files/figure-latex/pred2-1.pdf, id=339, 411.5375pt x 259.97125pt>
+[21]
+<paper_files/figure-latex/pred2-1.pdf, id=348, 411.5375pt x 259.97125pt>
 File: paper_files/figure-latex/pred2-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/pred2-1.pdf>
-Package pdftex.def Info: paper_files/figure-latex/pred2-1.pdf  used on input line 784.
+Package pdftex.def Info: paper_files/figure-latex/pred2-1.pdf  used on input line 819.
 (pdftex.def)             Requested size: 375.36299pt x 237.12163pt.
-<paper_files/figure-latex/crossginiD2-1.pdf, id=340, 671.50874pt x 289.08pt>
+<paper_files/figure-latex/crossginiD2-1.pdf, id=349, 671.50874pt x 289.08pt>
 File: paper_files/figure-latex/crossginiD2-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/crossginiD2-1.pdf>
-Package pdftex.def Info: paper_files/figure-latex/crossginiD2-1.pdf  used on input line 827.
+Package pdftex.def Info: paper_files/figure-latex/crossginiD2-1.pdf  used on input line 862.
 (pdftex.def)             Requested size: 500.484pt x 215.45528pt.
-[21 <./paper_files/figure-latex/marg2-1.pdf> <./paper_files/figure-latex/pred2-1.pdf>]
-<paper_files/figure-latex/crossginiM2-1.pdf, id=360, 671.50874pt x 289.08pt>
+[22 <./paper_files/figure-latex/marg2-1.pdf> <./paper_files/figure-latex/pred2-1.pdf>]
+<paper_files/figure-latex/crossginiM2-1.pdf, id=369, 671.50874pt x 289.08pt>
 File: paper_files/figure-latex/crossginiM2-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/crossginiM2-1.pdf>
-Package pdftex.def Info: paper_files/figure-latex/crossginiM2-1.pdf  used on input line 836.
+Package pdftex.def Info: paper_files/figure-latex/crossginiM2-1.pdf  used on input line 871.
 (pdftex.def)             Requested size: 500.484pt x 215.45528pt.
-[22 <./paper_files/figure-latex/crossginiD2-1.pdf>] [23 <./paper_files/figure-latex/crossginiM2-1.pdf>] [24]
-<paper_files/figure-latex/redistribution-1.pdf, id=417, 512.91624pt x 325.215pt>
+[23 <./paper_files/figure-latex/crossginiD2-1.pdf>] [24 <./paper_files/figure-latex/crossginiM2-1.pdf>] [25]
+<paper_files/figure-latex/redistribution-1.pdf, id=427, 512.91624pt x 325.215pt>
 File: paper_files/figure-latex/redistribution-1.pdf Graphic file (type pdf)
 <use paper_files/figure-latex/redistribution-1.pdf>
-Package pdftex.def Info: paper_files/figure-latex/redistribution-1.pdf  used on input line 934.
+Package pdftex.def Info: paper_files/figure-latex/redistribution-1.pdf  used on input line 969.
 (pdftex.def)             Requested size: 500.484pt x 317.33394pt.
-[25]
+[26]
 
 Package caption Warning: Unused \captionsetup[figure] on input line \caption@opt@figure@lineno .
 See the caption package documentation for explanation.
@@ -743,7 +746,7 @@ See the caption package documentation for explanation.
 Package caption Warning: Unused \captionsetup[ table] on input line \caption@opt@ table@lineno .
 See the caption package documentation for explanation.
 
-[26 <./paper_files/figure-latex/redistribution-1.pdf>] (./paper.aux)
+[27 <./paper_files/figure-latex/redistribution-1.pdf>] (./paper.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-08-29>
@@ -752,21 +755,21 @@ L3 programming layer <2023-08-29>
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `paper.out' has not changed.
-(rerunfilecheck)             Checksum: 290D92C7DCED09392D56BC05E5D7C32D;2819.
+(rerunfilecheck)             Checksum: D535F395B2FB1D656D57B3F153306007;2842.
  ) 
 Here is how much of TeX's memory you used:
- 14448 strings out of 476875
- 235932 string characters out of 5806401
- 1954785 words of memory out of 5000000
+ 14450 strings out of 476875
+ 235959 string characters out of 5806401
+ 1952785 words of memory out of 5000000
  35363 multiletter control sequences out of 15000+600000
- 601935 words of font info for 75 fonts, out of 8000000 for 9000
+ 599167 words of font info for 73 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  66i,13n,67p,2167b,500s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy5.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper.pdf (26 pages, 286522 bytes).
+<c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy5.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on paper.pdf (27 pages, 278257 bytes).
 PDF statistics:
- 514 PDF objects out of 1000 (max. 8388607)
- 431 compressed objects within 5 object streams
- 112 named destinations out of 1000 (max. 500000)
- 207 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 520 PDF objects out of 1000 (max. 8388607)
+ 438 compressed objects within 5 object streams
+ 116 named destinations out of 1000 (max. 500000)
+ 215 words of extra memory for PDF output out of 10000 (max. 10000000)
 
