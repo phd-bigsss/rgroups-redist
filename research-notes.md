@@ -64,4 +64,24 @@ filter sample:
 - Perceived Isolation:
   - leverage no es estadísticamente sig
   
-hola
+# 05.10.2023
+
+**sampling weights**
+
+- usando 30 paises (sin TURKIA) el random slope es casi significativo (p=0.15)
+
+**Multiple imputation:**
+
+-  hay que dejar todo como dummy y en numeric porque naniar::mcar_test() solo acepta numeric values
+
+```  
+mice::md.pattern(dfreg,rotate.names = T,plot = T)
+as.matrix(dfreg)
+naniar::mcar_test(data=dfreg)
+```
+
+# 09.10.2023
+
+- solucionado el tema del income de Japon
+- resultados son robustos al eliminar la categoria de missing, pero se mantienen para mantener el N ya que se pierden cerca de 8000 casos al hacer listwise
+

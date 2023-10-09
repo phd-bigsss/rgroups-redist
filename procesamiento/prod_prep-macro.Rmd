@@ -59,12 +59,27 @@ wiid <-
 names(wiid) <- tolower(names(wiid))
 names(wiid) <- gsub('\\.', '', names(wiid))
 wiid$ccode <- countrycode::countrycode(sourcevar = wiid$iso,origin = "iso3c",destination = "iso3n")
+
+wiid_d10d01 <- 
+  read.csv(file = here::here("input/data/original/wid-percentiles/wiid-data-D10D01-ratio.csv"),sep = ";")
+
+names(wiid_d10d01) <- tolower(names(wiid_d10d01))
+names(wiid_d10d01) <- gsub('\\.', '', names(wiid_d10d01))
+wiid_d10d01$ccode <- countrycode::countrycode(sourcevar = wiid_d10d01$iso,origin = "iso3c",destination = "iso3n")
+wiid_d10d01 <- 
+  wiid_d10d01 %>%  
+  filter(ccode %in% countries$ccode) %>% 
+  filter(year==2017) %>% 
+  select(ccode,everything(),-iso,-country,-year,-giniindex) 
+
 wiid_2017 <- 
 wiid %>% 
   filter(ccode %in% countries$ccode) %>% 
   filter(year==2017) %>% 
-  select(ccode,everything(),-iso,-country,-year) 
+  select(ccode,everything(),-iso,-country,-year) %>% 
+  left_join(wiid_d10d01,by="ccode")
 ```
+
 
 
 **Solt SWDIID**
@@ -107,7 +122,8 @@ df1$ccode <- as.numeric(df1$country)
 df2 <- left_join(df1,macro_data,by="ccode")
 df2 <- 
 df2 %>% mutate(country2=countrycode::countrycode(sourcevar = ccode,origin = "iso3n",destination = "iso3c"),
-               country3=countrycode::countrycode(sourcevar = ccode,origin = "iso3n",destination = "country.name")) %>% 
+               country3=countrycode::countrycode(sourcevar = ccode,origin = "iso3n",destination = "country.name"),
+               region=countrycode::countrycode(sourcevar = ccode,origin = "iso3n",destination = "region23")) %>% 
   select(ccode,country2,country3,everything())
 ```
 

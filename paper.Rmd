@@ -6,7 +6,7 @@ link-citations: yes         # citas linkeadas
 # date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
 date: "`r format(Sys.Date(), '%d %B %Y')`"
 author:
-# - name: Julio Iturra-Sanhueza
+- name: Julio Iturra-Sanhueza
 #   affiliation: University of Bremen
 #   email: jiturra@uni-bremen.de
 #   number: 1
@@ -61,8 +61,6 @@ header-includes:
 <!-- - controlaria por social activities index () -->
 <!-- - social resources  -->
     
-
-
 ```{r setup, include=FALSE}
 if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
 if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
@@ -80,7 +78,6 @@ rm(list=ls())       # limpiar workspace
 options(knitr.kable.NA = '') # NA en kable = ''
 ```
 
-
 ```{r}
 set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
 options(ggplot2.discrete.fill = set1)
@@ -91,28 +88,65 @@ ggplot2::theme_update(text=element_text(size=10,  family="serif"))
 
 #  Introduction
 
-The escalating economic inequality and the current sanitary crisis have threatened social cohesion among citizens. However, these consequences have been unevenly experienced across the social structure. The upper and intermediate classes, benefiting from privileged access to social resources, have shown resilience. Conversely, working-class families have faced deteriorating material conditions, leading to a heightened sense of marginalisation and increasing the demand for welfare support. Particularly, social resources through network ties have been suggested to have a direct link with an individual’s welfare through instrumental and expressive outcomes, such as providing information or help in moments of need. Consequently, inequalities in access to certain social positions (i.e. occupations) are translated into a lack of social resources beyond individual economic and cultural capital. Additionally, it has been argued that social isolation not only plays a role in terms of resources but given that higher levels of segregation can bolster opinions, it is argued that being isolated from other social classes can polarise attitudes mainly in the working and upper-middle classes. Employing data from the International Social Survey Programme - Social Networks  this research aims to understand to what extent the demand for redistribution is linked to social ties. For addressing this, ego-centred social networks are used to represent the degree of class-based homogeneity of social ties. The results of multilevel estimations show that being socially segregated increases demand for redistribution. Additionally, this influence is conditional to social class, where the working and intermediate classes with highly homogeneous networks demand more governmental redistribution than the upper class. At the macro level, as the current distribution of economic resources influences the opportunity structure, it has been hypothesised that income inequality could bolster the influence of social segregation on the demand for redistribution. However, cross-level interactions do not provide supporting evidence on this behalf. 
+The escalating economic inequality and the current sanitary crisis have threatened social cohesion among citizens. However, these consequences have been unevenly experienced across the social structure. The upper and intermediate classes, benefiting from privileged access to social resources, have shown resilience. Conversely, working-class families have faced deteriorating material conditions, leading to a heightened sense of marginalisation and increasing the demand for welfare support. Particularly, social resources through network ties have been suggested to have a direct link with an individual’s welfare through instrumental and expressive outcomes, such as providing information or help in moments of need. Consequently, inequalities in access to certain social positions (i.e. occupations) are translated into a lack of social resources beyond individual economic and cultural capital. Additionally, it has been argued that social isolation not only plays a role in terms of resources but given that higher levels of segregation can bolster opinions, it is argued that being isolated from other social classes can polarise attitudes mainly in the working and upper-middle classes. Employing data from the International Social Survey Programme - Social Networks  this research aims to understand to what extent the demand for redistribution is linked to social ties. To addresss this, ego-centred social networks are used to represent the degree of class-based homogeneity of social ties. The results of multilevel estimations show that being socially segregated increases demand for redistribution. Additionally, this influence is conditional to social class, where the working and intermediate classes with highly homogeneous networks demand more governmental redistribution than the upper class. At the macro level, as the current distribution of economic resources influences the opportunity structure, it has been hypothesised that income inequality could bolster the influence of social segregation on the demand for redistribution. However, cross-level interactions do not provide supporting evidence on this behalf. 
 
-network segregation decreases  attachment to society (Otero et al., 2022) 
-
-
-subjective marginalization increases alienation (Gidron & Hall, 2020)
+<!-- * network segregation decreases  attachment to society (Otero et al., 2022)  -->
 
 
-social ties with lower or upper class influence welfare attitudes aligned to class interests (Paskov & Weisstanner, 2022; Lindh et al., 2021) 
+<!-- * subjective marginalization increases alienation (Gidron & Hall, 2020) -->
 
 
-Focus on the sociability/relational dimension and its consequences on inequality attitudes - redistributive and welfare attitudes
+<!-- * social ties with lower or upper class influence welfare attitudes aligned to class interests (Paskov & Weisstanner, 2022; Lindh et al., 2021)  -->
 
 
+<!-- Focus on the sociability/relational dimension and its consequences on inequality attitudes - redistributive and welfare attitudes -->
 
-The literature review (possible structure)
+<!-- The literature review (possible structure) -->
 
-* Class and political attitudes (Svallfors, Edlund & Lindh)
-* Inequality in social networks (Lin, Wright, Bourdieu, Volker)
-* Interplay of class, networks and attitudes toward inequality (Lindh, McCall) 
+<!-- * Class and political attitudes (Svallfors, Edlund & Lindh) -->
+<!-- * Inequality in social networks (Lin, Wright, Bourdieu, Volker) -->
+<!-- * Interplay of class, networks and attitudes toward inequality (Lindh, McCall)  -->
 
-The literature have discussed two complementary social mechanisms that could explain what role does social ties play in shaping people's demand for redistribution. 
+<!-- The literature have discussed two complementary social mechanisms that could explain what role does social ties play in shaping people's demand for redistribution.  -->
+
+## Class interests and redistribution
+
+The following paragraph will briefly present the class-preference link. While previous research have focus more extensevely on the economic dimension of social class such as employment relations and occupation, the focus of this research is idea  to argue that the patterns of social interactions (social ties) are also a constituent dimension of how classes shape their interests.    
+
+- The "Democratic" class struggle [@edlund_democratic_2015]
+
+- The moral economy of class [@Svallfors2006] 
+
+- Class interests in the economic domain [@lindh_class_2020]
+
+<!-- en paises donde el bienestar material a incrementado y las diferencias entre las clases ha disminuido se espera que el conflicto distributivo sea menor.  
+
+se cree que en lops paises escandinavos con un estado de bienestar mas desarrollado la hipotesis debiese ser mas valida que en paises anglosajones  
+
+Hi: la desigualdad o distancia entre grupos
+Hi: el tamagno del wlefare state
+-->
+
+## Class-based inequality in social networks
+
+Recent studies have focused on social capital formation processes [@volker_social_2020], concentrating on structural processes, such as intergenerational social mobility and class inequalities, demonstrating how meeting opportunities and association preferences are stratified [@lin_theory_2008]. Consequently, access to higher and diverse resources through social ties follows a pattern of accumulation that reproduces pre-existing inequalities, in which class positions are vital in accounting for mechanisms of exclusion and segregation across the class structure.
+ 
+According to Weber [-@weber_economy_1978], classes are a common basis for action, defined by the labour market position and access to opportunities and goods. Additionally, the degree of intergenerational exchange leads to the development of social classes, characterised by the reproduction of socialisation patterns and lifestyles over time. Therefore, marriages, friendships, and social relationships between individuals of similar status groups represent class sociability practices. Similarly, two processes are described in class formation [@goldthorpe_sobre_1992]. First, demographic identity refers to when classes become identifiable as collectivities regarding how individuals and families retain their class positions across generations. Second, cultural identity is expressed in distinctive shared lifestyles along with preferred patterns of association, which class members perform. As Bourdieu [-@bourdieu_distinction_1984] suggested, cultural capital is the pivotal attribute of these distinctive practices in class *habitus*, in which educational credentials represent the most salient cultural resources [@bourdieu_distinction_1984]. Hence, the socialisation of common lifestyles and shared worldviews facilitates the consolidation of social classes. Moreover, upper classes also choose socially segregated environments, increasing their chances of establishing ties with similar others, maintaining privileged social positions, and excluding lower classes [@bourdieu_reproduccion_1981]. Altogether, these processes further reinforce social distinctions between classes and contribute to the persistence of class structures. 
+ 
+Class-based research shows that class permeability is affected by property-based boundaries, in which owners are less likely to connect to the working class through friendship ties, whereas interactions between supervisors and workers might explain why the authority dimension is more permeable [@wright_relative_1992a]. Similarly, extended network diversity is lower in the upper-middle class than in the intermediate class, whereas friendship diversity increases for upwardly mobile individuals [@cepic_how_2020]. However, the gain for this group is moderated by class background, where upward mobility cannot equalise access to social capital compared to those stable in the upper class [@carrascosa_class_2023]. Moreover, the distribution of ties between the two extremes of the class structure depicts the higher permeability of intermediate classes, in contrast to the higher exclusion of the working class and self-selected upper-class homogenous networks [@otero_open_2021]. Additionally, engagement in formal organisations increases the chances of the upper class bridging with diverse people, while the working class is homogeneous in their civic engagement behaviour, limiting its access to social capital [@pichler_social_2009]. This tendency is strengthened over time, where social capital increases for those with higher education compared to those with less education [@volker_social_2020].  
+
+## Social ties on the demand for redistribution and welfare
+
+As mentioned above, social networks influence people's experience of social life, self-evaluations, and the surrounding social and economic conditions. Notably, it has been shown that social perceptions of economic inequality influence their preferences towards it. However, it is less known about how the composition and resources embedded in social networks influence what people prefer in terms of economic inequality, mainly what are their views regarding the role of government in terms of social policy measures, which in turn are expressed in demands for economic redistribution and social welfare. Despite this, some insights in the literature highlight the role of social networks on redistributive preferences by describing the impact of civic engagement in voluntary organisations, cross-class embeddedness through kinship and friendship ties, and socioeconomic network diversity.    
+
+As mentioned, the literature has previously addressed efforts to address the link between social networks and redistributive preferences. For example, a study in Japan by @yamamura_social_2012 argued that participation in community organisations boosts connections among different income groups. Consequently, contact might trigger envy from the poorer groups toward the wealthy, suggesting that negative externalities like unhappiness and crime rates will motivate altruistic behaviour, showing that the highest community participation rates increase support for redistribution for those above the median income of each prefecture. Also, research has focused on class-based networks, particularly how embeddedness in cross-class relationships influences attitudes through a synthetic scope that entails class material interests, socio-cultural or normative views, and political preferences [@lindh_class_2020]. Hence, the discussion regarding how social class and network segregation intersect for explaining attitudes can be summarised in two mechanisms: (i) social influence and (ii) socialisation processes. 
+
+@lindh_missing_2021 scrutinised how social influence and class segregation affect redistributive and social welfare preferences in Sweden, arguing that people tend to assimilate their opinions and attitudes according to their surrounding peers (*influence*), which is reinforced by class homophily (*segregation*). Therefore, higher contacts in the managerial class negatively impact redistributive demands, while ties to the working class increase them. Additionally, contact with socio-cultural professionals that entail more inclusive and egalitarian attitudes lowers welfare chauvinism, while it rises with working-class ties that might perceive immigrants as a threat. Similarly, aside from the current class position, additional socialisation sources are cross-class ties through the family of origin and partners. For instance, @lee_consider_2023 found that family of origin class position shapes economic redistributive and tax preferences, being crucial for political socialisation during childhood and early adulthood, where class interests and norms are nurtured. As a result, those with parents from the upper classes are less supportive of redistribution, while those having working-class origins hold favourable attitudes. Also,  @paskov_crossclass_2022 found that the class position of family and partners shapes redistributive preferences, where kinship ties are considered a source of inter-group contact, suggesting that heterogeneity in class ties can reduce negative prejudges toward out groups as contact theory suggests [@pettigrew_intergroup_1998], what in turn might motivate changes in political attitudes [@nathan_context_2023]. As a result, homogeneity in ties polarises preferences between lower and upper classes. However, this gradient is blurred as heterogeneity increases according to the class position of the partner and family of origin.  
+
+Friendship ties are also relevant in preference formation. In this regard, @londono-velez_impact_2022 suggests that socioeconomic diversity at the school level introduces changes in friendship ties that influence (i) perceived inequality and (ii) support for redistribution in affluent students, claiming that homogeneous networks restrict economic inequality inferences. Therefore, exposure to diverse reference groups (e.g. friends) influences redistributive demands via self-interest, mobility prospects and distributive justice. On the one hand, contrary to self-interest, redistributive preferences increase when exposure to low-income peers improves accuracy in perceived inequality. On the other hand, heterogeneity has a null effect on mobility prospects. Finally, heterogeneity triggers concerns about the fairness of market-based life outcomes for low-income students, motivating higher support for government intervention. Similarly, @beck_explorando_2019 demonstrate that occupational network heterogeneity diminishes preferences for the marketisation of welfare provision in Chile, suggesting that contact diversity shortens the social distance between low and upper-status groups, providing them with broader images of inequality and the living conditions of others.
+
+The literature on social networks and inequality preferences makes two major contributions. First, it comprises the social influence and socialisation processes in social networks, where segregation entails a certain degree of social closure regarding others' life experiences and living conditions. In addition, heterogeneity provides a broader image of society in terms of social and economic inequality, contributing to preference formation. Consequently, studying preferences toward economic inequality from a social network perspective goes beyond the individual perspective by including the relational dimension. Hence, considering the degree of embeddedness of people in a network provides a more explicit image of how social environments are composed and of the social distance between individuals and groups.
+
 
 <!-- The structure of the social network provide access to social resources. On the one hand, contacts can be translated into resources, access to the life of others that could provide information and life opportunities.  -->
 
@@ -125,6 +159,7 @@ The literature have discussed two complementary social mechanisms that could exp
 
 <!-- For example, we trust other people because we know about them (connected) -->
 
+\pagebreak
 
 # Data, variables and methods
 
@@ -143,6 +178,8 @@ _Social Class_
 
 A synthetic version of the EGP class was used, including three main classes: Service class (I+II), Intermediate class (III+IV) and Working class (V+VI+VII)
 
+<!-- -  in this research the *unit* for class is assumed as the family unit.  -->
+
 _Class-based network homogeneity_
 
 For measuring the personal network of the respondent, a short version of the position generator was included in the survey, which presents a set of ten occupations that seek to represent the hierarchical status order in society [@joye_measuring_2019], declaring four possible response alternatives: "Family or relative", "Close friend", "Someone else I know" or "No one". For this research, a binary variable is created by coding the first three categories as 1 and the last one as 0, representing if the person knows (or not) one of the occupations. The following text corresponds to the original phrasing of the questionnaire:  
@@ -157,9 +194,9 @@ pacman::p_load(dplyr,knitr,kableExtra)
 rm(list=ls())
 options(knitr.kable.NA = '') # NA en kable = ''
 cap <- "Clasification of occupations of the position generator in the ISSP 2017"
-xlsx::read.xlsx(file = "input/tables/tables.xlsx",sheetName = "ties") %>% 
-  kable(caption = cap) %>% 
-  kable_styling(full_width = F) 
+read.csv(file = "input/tables/tables.csv") %>% 
+  kable(caption = cap,booktabs = T,col.names = c("Status","Occupation","ISEI")) %>% 
+  kable_styling(full_width = F,latex_options = "HOLD_position") 
 ```
 
 Consequently, we calculate the number of contacts that belong to a similar class/status to create the number of ingroup and outgroup contacts. It is considered ingroup (i) when the ego's class matches the Alter's status. This measure represents the proportion of similar contacts, where 0 implies that all contacts are different to Ego's social class, while 1 represents complete network homogeneity. Therefore, higher values represent greater social distance from other groups in society. The calculation of the class-based network homogeneity variables is as follows:  
@@ -182,16 +219,12 @@ The response categories are  (1)"Never", (2)"Rarely", (3) "Sometimes", (4)"Often
 
 ## Descriptive
 
-
-```{r redistribution,fig.height=4.5,fig.width=7.1,fig.cap=c("Redistributive preferences by country in the ISSP 2017"), out.width = '50%'}
+```{r homogeneity,fig.height=3.4,fig.width=6,fig.cap=c("Class-based network homogeneity by country in the ISSP 2017"), out.width = '100%'}
 # x country   
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr,gridExtra)  
 rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
-# df1$class3res <- relevel(df1$class3res,ref =  "Intermediate class (III+IV)")
-df1$labst1 <-car::recode(df1$labst,"'No information'='Not in labour force'")
-df1$redistF <- factor(df1$redist,levels = 1:5,labels = sjlabelled::get_labels(df1$redist))
 dfreg <- df1 %>% dplyr::select(redist,
                         class3, 
                         homclass,
@@ -207,44 +240,13 @@ dfreg <- df1 %>% dplyr::select(redist,
                         agenum,
                         country2,country,
                         union,
-                        labst,
-                        labst1,
+                        workst
                         ) %>% 
   mutate(logrgdpna=log(rgdpna),
          age2=agenum^2,
          edyears2=edyears^2) %>%
   # filter(!country2 %in% c("Turkey","Estonia")) %>%
   na.omit()
- 
-percentage_data <- df1 %>%
-  group_by(country2, redistF) %>%
-  summarise(count = n()) %>%
-  group_by(country2) %>%
-  na.omit() %>% 
-  mutate(percentage = count / sum(count)) %>% 
-  arrange(country2,redistF,percentage) %>% 
-  mutate(pct_lab = paste0(round(percentage*100,1),"%")) %>% 
-  mutate(pct_lab=ifelse(!redistF %in% c("Strongly agree"),NA,pct_lab))
-
-order <- 
-percentage_data %>% 
-  filter(redistF=="Strongly agree") %>% 
-  arrange(percentage) %>% 
-  dplyr::select(country2)
-
-order$orden <- 1:31
-ggplot(percentage_data, aes(x=country2,y=percentage*100,fill=redistF,group=redistF,label = pct_lab))+
-  geom_bar(stat = 'identity') +
-  # geom_text(position = position_fill(vjust =100)) +
-  scale_y_continuous(name=NULL,labels = scales::percent_format(scale = 1),limits = c(0,101), expand = c(0, 0)) +
-  scale_x_discrete(limits=order$country2,name=NULL) +  
-  scale_fill_ordinal(guide = guide_legend(reverse = TRUE)) +
-  ggtitle(label= "Redistributive preferences") + 
-  theme(legend.position = 'bottom',legend.title = element_blank(), text = element_text(size = 12))  +  
-  coord_flip()
-```
-
-```{r homogeneity,fig.height=3.4,fig.width=6,fig.cap=c("Class-based network homogeneity by country in the ISSP 2017"), out.width = '50%'}
 # x country
 dfreg <- bind_cols(dfreg,sjmisc::to_dummy(x = dfreg$class3,suffix = "numeric"))
 resits_count <- dfreg %>%
@@ -255,8 +257,8 @@ resits_count <- dfreg %>%
 resits_count$country3 <- countrycode::countrycode(sourcevar = resits_count$country,origin = "iso3n",destination = "iso3c")
 
 myorder <-  resits_count$country2[order(resits_count$homclass)]
-ggplot(data = resits_count,aes(x =country2,y = homclass)) + 
-  geom_segment(aes(x=country2, xend=country2, y=0, yend=homclass), color="black") +
+ggplot(data = resits_count,aes(x =country3,y = homclass)) + 
+  geom_segment(aes(x=country2, xend=country3, y=0, yend=homclass), color="black") +
   geom_point() +
   scale_x_discrete(limits=myorder) +
   ylab("Class-based homogeneity")+   
@@ -264,7 +266,7 @@ ggplot(data = resits_count,aes(x =country2,y = homclass)) +
   theme(axis.text.x=element_text(angle=45,hjust=1,vjust=1.2))    
 ```
 
-```{r class-hom,fig.height=7,fig.width=7,fig.cap=c("Redistribution, Network homogeneity and Social Class in the ISSP 2017"), out.width = '50%'}
+```{r class-hom,fig.height=7,fig.width=7,fig.cap=c("Redistribution, Network homogeneity and Social Class in the ISSP 2017"), out.width = '100%'}
 sizetext <- 2.5
 
 predis <-  
@@ -328,8 +330,7 @@ grid.arrange(predis,p1,p2,p3,nrow = 2)
 ```
 
 
-<!-- - perceived isolation x redistribution (1 plot) -->
-<!-- - homogeneity x perceived isolation (1 plot) -->
+\pagebreak
 
 ## Individual level
 
@@ -353,29 +354,30 @@ if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr)  
 rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
-df1$class3 <- relevel(df1$class3,ref =  "Intermediate class (III+IV)")
-df1$class3res <- relevel(df1$class3res,ref =  "Intermediate class (III+IV)") 
-df1$labst1 <-car::recode(df1$labst,"'No information'='Not in labour force'")
 dfreg <- df1 %>% dplyr::select(redist,
-                        class3,class5,
+                        class3,
+                        class5,
                         homclass,
-                        Q05pcm,
                         Q03pcm,
+                        # Q03pcm=Q03rm,
+                        # Q03pcm=Q03rm,
+                        # Q03pcm=zincpc,
+                        # Q03rm=
                         # isei08,
-                        gini_disp,
-                        gini_mkt,
-                        giniot=gini,
-                        giniindex,
                         rgdpna,
                         edyears,
                         female,
                         agenum,
                         country2,country,
                         union,
-                        labst,
-                        labst1,
-                        isolation,
-                        MAINSTAT,
+                        workst,
+                        # isolation,  
+                        # MAINSTAT,
+                        # activities,
+                        # WEIGHT,
+                        region,
+                        "gini_disp",
+                        "gini_mkt"
                         ) %>% 
   mutate(logrgdpna=log(rgdpna),
          age2=agenum^2,
@@ -390,8 +392,13 @@ dfreg <- df1 %>% dplyr::select(redist,
   # filter(!country2 %in% c("TUR","EST")) %>%
   # filter(MAINSTAT %in% c(1,2)) %>%
   # filter(agenum %in% c(25:65)) %>% # Paskov & Weisstanner
+  # filter(PARTLIV %in% c(0,1,2,3)) %>%
+  # filter(region %in% c("Northern America","South America")) %>%
+  # filter(Q03pcm!="Missing") %>%
   na.omit()
-# dim(dfreg)
+
+# frq(df1$region)
+# frq(dfreg$country2)
 
 # lineal
 base <- lmer(redist~1 + (1|country2),data=dfreg); icc1<- performance::icc(base)
@@ -400,13 +407,14 @@ homclass <- lmer(redist~homclass + (1|country2),data=dfreg)
 full1 <- lmer(redist~ class3 +homclass+ female+agenum + age2+(1|country2),data=dfreg)
 rob1 <- lmer(redist~class3+ homclass+ edyears+ female+ agenum+ age2+(1|country2),data=dfreg)
 rob2 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ female+ agenum +age2+(1|country2),data=dfreg)
-rob3 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ labst1 + union+ female+agenum +age2 + (1|country2),data=dfreg)
-rob4 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ labst1 + union+ female+agenum +age2 + (homclass|country2),data=dfreg)
-# anova(rob3,rob4)
+rob3 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ workst + union+ female+agenum +age2 +  (1|country2),data=dfreg)
+rob4 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ workst + union+ female+agenum +age2 + (homclass|country2),data=dfreg)
+anova(rob3,rob4)
+
 # plot_model(rob4,type = "re",show.values = T)
 
 # Interactions segregation x class
-int_homo <- lmer(redist~class3*homclass+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+ (1|country2),data=dfreg)
+int_homo <- lmer(redist~class3*homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ (1|country2),data=dfreg)
 # int_homo2 <- lmer(redist~class3*homclass+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+  (homclass + class3*homclass|country2),data=dfreg)
 # anova(int_homo,int_homo2)
 # plot_model(int_homo2,type = "re",show.values = F,vline.color = "black")
@@ -416,19 +424,17 @@ int_homo <- lmer(redist~class3*homclass+ edyears+ Q03pcm+ labst1+ union+ female+
 #                rob4)
 cap1 <- "Multilevel regression for redistributive preferences, network homogeneity and social class" 
 coefmap <-  list(homclass ="Class-based network homogeneity",
-                 'class3Service Class (I+II)' ='Service Class',
+                 'class3Intermediate class (III+IV)' ='Intermediate Class',
                  'class3Working Class (V+VI+VII)' ='Working Class',
                  "Q03pcmT02" = "Middle",
                  "Q03pcmT03" = "High",
                  "edyears" = 'Education in years',
-                  "labst1Not in labour force"="Not in labor force",
+                  "workstNot in paid work"="Not in labor force",
                  "unionYes" = 'Union: Yes',
-                 'class3Service Class (I+II):homclass'='Homogeneity x Service Class',
+                 'class3Intermediate class (III+IV):homclass'='Homogeneity x Intermediate Class',
                  'class3Working Class (V+VI+VII):homclass'='Homogeneity x Working Class'
-                 # know_total="Number contacts"
-                 # outgroup="Number outgroup"
                  )
-coefgroup <- list("Social Class (ref: Intermediate Class)"=2:3,
+coefgroup <- list("Social Class (ref: Service Class)"=2:3,
                   "Income Tercile (ref: Low)"=4:5,
                   "Homogeneity x Social Class"=9:10
                   )
@@ -437,14 +443,14 @@ gof1<-  c(NA,NA,"Num. Countries:","Var: Group",NA)
 
 models <- list(homclass,class,full1,rob3,int_homo)
 texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,
+                                float.pos="h!",
                   include.thresholds=FALSE,
                   custom.coef.map=coefmap,
                   groups = coefgroup,
                   custom.gof.rows=gofrow,
                   include.loglik = FALSE,include.aic = FALSE,
-                  # custom.gof.names = gof1
+                  custom.gof.names = gof1
                 )
-
 ```
 
 ```{r leverage1, eval=FALSE, include=FALSE}
@@ -473,14 +479,14 @@ sigtest1$homclass
 ```
 
 
-```{r marg1,fig.dim=c(4.1,2.6),fig.cap=c("Conditional marginal effects of Network homogeneity on redistributive preferences"),out.width = "50%"}
+```{r marg1,fig.dim=c(4.1,2.6),fig.cap=c("Conditional marginal effects of Network homogeneity on redistributive preferences"),out.width = "75%"}
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr)   
 # Conditional Marginal effect
 interplot <- 
 interplot::interplot(m = int_homo,var1 = "homclass",var2="class3")
 df_int <- interplot$data
 df_int <- df_int[c(1,2,4),]
-df_int$value <- c("Intermediate class (III+IV)","Service Class (I+II)","Working Class (V+VI+VII)")
+df_int$value <- c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)")
 df_int$value <- factor(df_int$value,ordered = T,
                        levels = c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)")) 
 
@@ -498,7 +504,7 @@ ggplot() +
   theme(plot.title = element_text(size = 8))  
 ```
 
-```{r pred1,fig.height=3.6,fig.width=5.7,fig.cap=c("Predictions for Redistributive Preferences"),out.width = '50%'}
+```{r pred1,fig.height=3.6,fig.width=5.7,fig.cap=c("Conditional linear Predictions for network homogeneity on redistributive Preferences"),out.width = '75%'}
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,gridExtra,papaja)        
 # Predicted values 
 
@@ -512,20 +518,19 @@ plot_predictions(int_homo, condition = c("homclass","class3")) +
   # scale_color_grey(start = 0.40, end = 0.6)
 ```
 
-
-
 \pagebreak
+
 ## Macro level
 
-  - expected: economic inequality increases segregation (maybe weak or null effect)
-  - expected: economic inequality increase the influence of network homogeneity/segregation
+  - Expectation: Economic inequality increases segregation (maybe weak or null effect)
+  - Expectation: Economic inequality increase the influence of network homogeneity/segregation
   
-```{r ineq-homo,fig.height=4,fig.width=7.5,fig.cap=c("Network Homogeneity and Income Inequality in the ISSP 2017"), out.width = '50%'}
+```{r ineq-homo,fig.height=4,fig.width=7.5,fig.cap=c("Network Homogeneity and Income Inequality in the ISSP 2017"), out.width = '100%'}
 sizetext <- 2.5
 resits_count <- dfreg %>%
   group_by(country2,country) %>%
   summarise_at(c("redist","homclass", 
-                 "gini_disp","gini_mkt","giniindex"), mean, na.rm = TRUE) %>% 
+                 "gini_disp","gini_mkt"), mean, na.rm = TRUE) %>% 
   as.data.frame()
 resits_count$country3 <- countrycode::countrycode(sourcevar = resits_count$country,origin = "iso3n",destination = "iso3c")
 p1 <- resits_count %>%  
@@ -560,6 +565,7 @@ grid.arrange(p1,p2,nrow = 1)
 
   <!-- - expected: in unequal countries the effect of network segregation and perceived isolation will be stronger  -->
 
+
 ```{r mod-intermacro,results='asis'}
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjlabelled,haven,stringr,sjPlot)  
@@ -584,10 +590,8 @@ dfreg <- df1 %>% dplyr::select(redist,
                         agenum,
                         country2,
                         union,
-                        labst,
-                        labst1,
-                        isolation,
-                        MAINSTAT) %>% 
+                        WEIGHT,
+                        workst) %>% 
   mutate(logrgdpna=log(rgdpna),
          age2=agenum^2,
          edyears2=edyears^2) %>%
@@ -597,18 +601,18 @@ dfreg <- df1 %>% dplyr::select(redist,
   na.omit()
 # T03dim(dfreg)
 
-main <- "redist~class3+ homclass+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2"
+main <- "redist~class3+ homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2"
 
-giniD_gdp<-lmer(formula(paste0(main,"+gini_disp+logrgdpna","+(1|country2)")),data=dfreg)
-giniD_rs <-lmer(formula(paste0(main,"+gini_disp+logrgdpna","+(homclass|country2)")),data=dfreg)
+giniD_gdp<-lmer(formula(paste0(main,"+gini_disp+logrgdpna","+(1|country2)")),data=dfreg,weights = WEIGHT)
+giniD_rs <-lmer(formula(paste0(main,"+gini_disp+logrgdpna","+(homclass|country2)")),data=dfreg,weights = WEIGHT)
 # anova(giniD_gdp,giniD_rs)
-giniD_int<- lmer(formula(paste0(main,"+homclass*gini_disp+logrgdpna","+(homclass|country2)")),data=dfreg)
+giniD_int<- lmer(formula(paste0(main,"+homclass*gini_disp+logrgdpna","+(homclass|country2)")),data=dfreg,weights = WEIGHT)
 # summary(giniD_int)
 
-giniM_gdp<- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+ gini_mkt + logrgdpna+ (1|country2),data=dfreg)
-giniM_rs<- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+ gini_mkt + logrgdpna+ (1+homclass|country2),data=dfreg)
+giniM_gdp<- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ gini_mkt + logrgdpna+ (1|country2),data=dfreg,weights = WEIGHT)
+giniM_rs<- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ gini_mkt + logrgdpna+ (1+homclass|country2),data=dfreg,weights = WEIGHT)
 # anova(giniM_gdp,giniM_rs)
-giniM_int <- lmer(redist~class3+ homclass*gini_mkt+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+ gini_mkt + logrgdpna+ (1+homclass|country2),data=dfreg)
+giniM_int <- lmer(redist~class3+ homclass*gini_mkt+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ gini_mkt + logrgdpna+ (1+homclass|country2),data=dfreg,weights = WEIGHT)
 # anova(giniOT_gdp,giniOT_rs)
 
 models <- list(giniD_gdp,giniD_rs,giniD_int,
@@ -616,13 +620,13 @@ models <- list(giniD_gdp,giniD_rs,giniD_int,
 
 texreg::knitreg(models,
                 caption=paste("(\\#tab:modinter1)","Cross-level interaction for Network homogeneity and Economic Inequality"),
-                caption.above=T,
-                  # include.thresholds=FALSE,
-                  custom.coef.map=list(homclass="Network Homogeneity",
-                                       logrgdpna="log GDP","gini_disp"="Gini (Disposable) ",
-                                       "homclass:gini_disp"="Homogeneity x Gini (D)",
-                                       "gini_mkt"="Gini (Market) ",
-                                       "homclass:gini_mkt"="Homogeneity x Gini (M)"),
+                caption.above=T,float.pos="h!",
+                # include.thresholds=FALSE,
+                custom.coef.map=list(homclass="Network Homogeneity",
+                                     logrgdpna="log GDP","gini_disp"="Gini (Disposable) ",
+                                     "homclass:gini_disp"="Homogeneity x Gini (D)",
+                                     "gini_mkt"="Gini (Market) ",
+                                     "homclass:gini_mkt"="Homogeneity x Gini (M)"),
                   # groups = coefgroup,
                   # custom.gof.rows=gofrow,
                   include.loglik = FALSE,include.aic = FALSE,
@@ -630,6 +634,7 @@ texreg::knitreg(models,
                 )
 ```
 
+\pagebreak
 ```{r crosslevel}
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,gridExtra)       
 p1<- interplot::interplot(m = giniD_int,var1 = "homclass",var2="gini_disp")+
@@ -659,13 +664,13 @@ plot_predictions(giniM_int, condition = list("homclass",gini_mkt=range),gray = F
   theme(legend.position = "right")
 ```
 
-```{r crossginiD, fig.height=4,fig.width=9.3,fig.cap=c("Cross-level interaction for Network homogeneity and Gini (Disposable)"),out.width='60%'}
+```{r crossginiD, fig.height=4,fig.width=9.3,fig.cap=c("Cross-level interaction for Network homogeneity and Gini (Disposable)"),out.width='100%'}
 grid.arrange(p1,predval1,nrow = 1 
              # top = "Network homogeneity × Gini (Disposable)"   
              )
 ```
 
-```{r crossginiM, fig.height=4,fig.width=9.3,fig.cap=c("Cross-level interaction for Network homogeneity and Gini (Market)"),out.width='60%'}
+```{r crossginiM, fig.height=4,fig.width=9.3,fig.cap=c("Cross-level interaction for Network homogeneity and Gini (Market)"),out.width='100%'}
 grid.arrange(p2,predval2,nrow = 1  
              # top = "Network homogeneity × Gini (Market)"
              ) 
@@ -673,17 +678,422 @@ grid.arrange(p2,predval2,nrow = 1
 
 \pagebreak
 
-# References
+# Additional analysis
 
-<div id="refs"></div>
-
-# Other analysis
-
-- Perceived Isolation
+- Homogeneity x other macro variables
 - Network homogeneity (Strong ties)
 - Network homogeneity (Weak ties)
 - R's and Partner social class
-- Homogeneity x other macro variables
+- Perceived Isolation
+
+## Other macro variables
+
+Source: https://www4.wider.unu.edu/?ind=1&type=ChoroplethSeq&year=70&byCountry=false&slider=buttons
+
+* The **Palma ratio** is the share of all income received by the 10% people with highest disposable income divided by the share of all income received by the 40% people with the lowest disposable income.
+* **90/10 ratio** = the ratio of Decile 10 income to Decile 1 income
+* **90/50 ratio** = the ratio of Decile 10 income to Decile 5 income (the median)
+<!-- * 50/10 ratio = the ratio of Decile 5 income (the median) to Decile 1 income. -->
+
+```{r mod-other-macro,fig.height=3,fig.width=6,out.width='70%',results='asis', cache=T}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr,gridExtra)  
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+dfreg <- df1 %>% dplyr::select(redist,
+                        class3,
+                        homclass=homclass_gc,
+                        # homclass=homclass_res,
+                        Q05pcm,
+                        Q03pcm,
+                        gini_disp,
+                        gini_mkt,
+                        giniot=gini,
+                        giniindex,ttheilge1,
+                        gv_spen=gv_spen,
+                        top10,
+                        middle50,
+                        palmaratio,
+                        d10d1,
+                        rgdpna,
+                        individualism,
+                        edyears,
+                        female,
+                        agenum,
+                        country2,
+                        union,
+                        workst
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna),
+         age2=agenum^2,
+         edyears2=edyears^2) %>%
+    # filter(!country2 %in% c("Turkey","Estonia")) %>%
+  # filter(MAINSTAT %in% c(1,2)) %>%
+  # filter(agenum %in% c(25:65)) %>%
+   na.omit()
+
+
+int_palma <- lmer(redist~class3+ homclass*palmaratio+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+logrgdpna + (1+homclass|country2),data=dfreg)
+int_pc10  <- lmer(redist~class3+ homclass*top10+edyears+ Q03pcm+ workst+ union+ female+agenum +age2+logrgdpna +(1+homclass|country2),data=dfreg)
+int_pc50  <- lmer(redist~class3+homclass*middle50+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+logrgdpna +(1+homclass|country2),data=dfreg)
+int_d10d1<- lmer(redist~class3+ homclass*d10d1+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+logrgdpna +(1+homclass|country2),data=dfreg)
+int_gini_wiid  <- lmer(redist~class3+ homclass*giniindex+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+logrgdpna +(1+homclass|country2),data=dfreg)
+int_theil  <- lmer(redist~class3+ homclass*ttheilge1+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+logrgdpna +(1+homclass|country2),data=dfreg)
+int_indivi<- lmer(redist~class3+ homclass*individualism+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+logrgdpna + (1+homclass|country2),data=dfreg)
+int_govspe<- lmer(redist~class3+ homclass*gv_spen+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+logrgdpna + (1+homclass|country2),data=dfreg)
+
+models_m <- list(int_palma,int_pc10,int_pc50,int_indivi,int_govspe,int_d10d1
+                 # int_gini_wiid,int_theil
+                 )
+
+cap1=c("Cross-level interaction for Network homogeneity and Economic Inequality")
+customcoef <- 
+list(homclass = "Class-based network homogeneity",
+  logrgdpna           = "log GDP",
+  palmaratio               = "Palma Ratio",
+  "homclass:palmawd"      = "Homogeneity x Palma Ratio",
+  top10             = "Share National Income - top 10%",
+  "homclass:top10"    = "Homogeneity x top 10",
+  middle50             = "Share National Income -  bottom 50%",
+  "homclass:middle50"    = "Homogeneity x bottom 50",
+  individualism         = "Individualism Index*",
+  "homclass:individualism" = "Homogeneity x Individualism",
+  gv_spen               = "Gov. Spending (% GDP)*",
+  "homclass:gv_spen"      = "Homogeneity x Gov. Spend.",
+    d10d1             = "Ratio D10/D01",
+  "homclass:d10d1"    = "Homogeneity x Ratio D10/D01"  
+)
+texreg::knitreg(models_m,scalebox = 0.75,
+                float.pos="h!",                
+                custom.coef.map = customcoef,
+                caption.above = T,caption = cap1)
+```
+
+```{r,fig.height=6,fig.width=8,fig.cap=c("Cross-level interaction for Network homogeneity and Economic Inequality"),out.width='100%',results='asis'}
+p3<- interplot::interplot(m = int_palma,var1 = "homclass",var2="palmaratio") +
+  xlab("Palma ratio (top 10%/ bottom 40%)") + geom_point()+ geom_hline(yintercept = 0) +
+    labs(caption = paste0("N=",nobs(int_palma),", Countries=",lme4::ngrps(int_palma)))
+
+p3.pred <- plot_predictions(int_palma, condition = list("homclass",palmaratio=range),gray = F) +
+    labs(caption = paste0("N=",nobs(int_palma),", Countries=",lme4::ngrps(int_palma)),
+       linetype='Palma Ratio',fill='Palma Ratio',color='Palma Ratio') +
+  xlab("Class-based homogeneity")+
+  ylab("Redistributive preferences") +
+  theme(legend.position = "right")
+
+p4<- interplot::interplot(m = int_pc10,var1 = "homclass",var2="top10") +
+  xlab("Share National Income -  top 10%") + geom_point()+ geom_hline(yintercept = 0) +
+  labs(caption = paste0("N=",nobs(int_pc10),", Countries=",lme4::ngrps(int_pc10)))  
+
+# plot_predictions(int_pc10, condition = list("homclass",top10=range),gray = F)
+
+p5<- interplot::interplot(m = int_pc50,var1 = "homclass",var2="middle50") +
+  xlab("Share National Income - middle 50%") + geom_point()+ geom_hline(yintercept = 0) +
+  labs(caption = paste0("N=",nobs(int_pc50),", Countries=",lme4::ngrps(int_pc50)))   
+
+# plot_predictions(int_pc50, condition = list("homclass",middle50=range),gray = F)
+
+p6<- interplot::interplot(m = int_d10d1,var1 = "homclass",var2="d10d1") +
+  xlab("Ratio (Top 10%/Bottom 10%)") + geom_point()+ geom_hline(yintercept = 0)+
+  labs(caption = paste0("N=",nobs(int_d10d1),", Countries=",lme4::ngrps(int_d10d1)))
+
+p6.pred<- plot_predictions(int_d10d1, condition = list("homclass",d10d1=range),gray = F) +
+      labs(caption = paste0("N=",nobs(int_palma),", Countries=",lme4::ngrps(int_palma)),
+       linetype='Ratio D10/D01',fill='Ratio D10/D01',color='Ratio D10/D01') +
+  xlab("Class-based homogeneity")+
+  ylab("Redistributive preferences") +
+  theme(legend.position = "right")
+
+grid.arrange(p3,p3.pred,p6,p6.pred,nrow = 2)
+```
+
+```{r , fig.height=6,fig.width=8,fig.cap=c("Cross-level interaction for Network homogeneity, Gov. Spending and Individualism"),out.width='100%',}
+# p7<- interplot::interplot(m = int_giniot,var1 = "homclass",var2="giniot") +
+#   xlab("Gini Market*") + geom_point()+ geom_hline(yintercept = 0)+
+#   labs(caption = paste0("N=",nobs(int_giniot),", Countries=",lme4::ngrps(int_giniot)))  
+
+p8<- interplot::interplot(m = int_indivi,var1 = "homclass",var2="individualism") +
+  xlab("Individualism Index*") + geom_point()+ geom_hline(yintercept = 0)+
+  labs(caption = paste0("N=",nobs(int_indivi),", Countries=",lme4::ngrps(int_indivi)))  
+
+predval8 <- 
+plot_predictions(int_indivi, condition = list("homclass",individualism=range),gray = F) +
+  labs(caption = paste0("N=",nobs(int_indivi),", Countries=",lme4::ngrps(int_indivi)),
+       linetype='Individualism') +
+  xlab("Class-based homogeneity")+
+  ylab("Redistributive preferences") +
+  theme(legend.position = "right")
+
+
+p9<- interplot::interplot(m = int_govspe,var1 = "homclass",var2="gv_spen") +
+  xlab("Gov. Spending (% GDP)*") + geom_point()+ geom_hline(yintercept = 0)+
+  labs(caption = paste0("N=",nobs(int_govspe),", Countries=",lme4::ngrps(int_govspe)))
+
+predval9 <- 
+plot_predictions(int_govspe, condition = list("homclass",gv_spen=range),gray = F) +
+  labs(caption = paste0("N=",nobs(int_govspe),", Countries=",lme4::ngrps(int_govspe)),
+       linetype='Gov.Spend') +
+  xlab("Class-based homogeneity")+
+  ylab("Redistributive preferences") +
+  theme(legend.position = "right")
+
+grid.arrange(p9,predval9,
+             p8,predval8,nrow = 2)
+```
+
+\pagebreak
+
+## Strong ties
+
+```{r mod-strongties,results='asis', cache=T}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr)  
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+# df1$class3 <- relevel(df1$class3,ref =  "Intermediate class (III+IV)")
+# df1$class3res <- relevel(df1$class3res,ref =  "Intermediate class (III+IV)")
+df1$labst1 <-car::recode(df1$labst,"'No information'='Not in labour force'")
+dfreg <- df1 %>% dplyr::select(redist,
+                        class3,
+                        homclass=homclass_s,
+                        # homclass=eindex_s,
+                        Q05pcm,
+                        Q03pcm,
+                        gini_disp,
+                        gini_mkt,
+                        giniot=gini,
+                        rgdpna,
+                        edyears,
+                        female,
+                        agenum,
+                        country2,country,
+                        union,
+                        workst
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna),
+         age2=agenum^2,
+         edyears2=edyears^2) %>%
+  na.omit()
+# dim(dfreg)
+
+# lineal
+base <- lmer(redist~1 + (1|country2),data=dfreg); icc1<- performance::icc(base)
+class <- lmer(redist~ class3+ (1|country2),data=dfreg)
+homclass <- lmer(redist~homclass + (1|country2),data=dfreg)
+full1 <- lmer(redist~ class3 +homclass+ female+agenum + age2+(1|country2),data=dfreg)
+rob1 <- lmer(redist~class3+ homclass+ edyears+ female+ agenum+ age2+(1|country2),data=dfreg)
+rob2 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ female+ agenum +age2+(1|country2),data=dfreg)
+rob3 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+(1|country2),data=dfreg)
+# Interactions segregation x class
+int_homo <- lmer(redist~class3*homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ (1|country2),data=dfreg)
+# models <- list(homclass,class,full1,
+#                # rob1,rob2,
+#                rob4)
+# texreg::screenreg(int_homo,single.row = F)
+
+cap1 <- "Multilevel regression for redistributive preferences, network homogeneity (strong) and social class" 
+coefmap <-  list(homclass ="Class-based network homogeneity (Strong)",
+                 'class3Intermediate class (III+IV)' ='Intermediate class',
+                 'class3Working Class (V+VI+VII)' ='Working Class',
+                 "Q03pcmT02" = "Middle",
+                 "Q03pcmT03" = "High",
+                 "edyears" = 'Education in years',
+                  "workstNot in paid work"="Not in labor force",
+                 "unionYes" = 'Union: Yes',
+                 'class3Intermediate class (III+IV):homclass'='Homogeneity x Intermediate class',
+                 'class3Working Class (V+VI+VII):homclass'='Homogeneity x Working Class'
+                 )
+coefgroup <- list("Social Class (ref: Service Class)"=2:3,
+                  "Income Tercile (ref: Low)"=4:5,
+                  "Homogeneity x Social Class"=9:10
+                  )
+gofrow <-  list(Controls=c("No","No","No","Yes","Yes"))
+gof1<-  c(NA,NA,"Num. Countries:","Var: Group",NA)
+
+models <- list(homclass,class,full1,rob3,int_homo)
+texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,scalebox = 1,
+                                float.pos="h!",
+                  include.thresholds=FALSE,
+                  custom.coef.map=coefmap,
+                  groups = coefgroup,
+                  custom.gof.rows=gofrow,
+                  include.loglik = FALSE,include.aic = FALSE,
+                  custom.gof.names = gof1
+                )
+```
+
+\pagebreak
+
+## Weak ties
+
+```{r mod-weakties,results='asis', cache=T}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr)  
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+# df1$class3 <- relevel(df1$class3,ref =  "Intermediate class (III+IV)")
+# df1$class3res <- relevel(df1$class3res,ref =  "Intermediate class (III+IV)")
+# df1$labst1 <-car::recode(df1$labst,"'No information'='Not in labour force'")
+dfreg <- df1 %>% dplyr::select(redist,
+                        class3,
+                        homclass=homclass_w,
+                        # homclass=eindex_w,
+                        Q05pcm,
+                        Q03pcm,
+                        gini_disp,
+                        gini_mkt,
+                        giniot=gini,
+                        rgdpna,
+                        edyears,
+                        female,
+                        agenum,
+                        country2,country,
+                        union,
+                        workst
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna),
+         age2=agenum^2,
+         edyears2=edyears^2) %>%
+  na.omit()
+# dim(dfreg)
+
+# lineal
+base <- lmer(redist~1 + (1|country2),data=dfreg); icc1<- performance::icc(base)
+class <- lmer(redist~ class3+ (1|country2),data=dfreg)
+homclass <- lmer(redist~homclass + (1|country2),data=dfreg)
+full1 <- lmer(redist~ class3 +homclass+ female+agenum + age2+(1|country2),data=dfreg)
+rob1 <- lmer(redist~class3+ homclass+ edyears+ female+ agenum+ age2+(1|country2),data=dfreg)
+rob2 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ female+ agenum +age2+(1|country2),data=dfreg)
+rob3 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+(1|country2),data=dfreg)
+# Interactions segregation x class
+int_homo <- lmer(redist~class3*homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ (1|country2),data=dfreg)
+# models <- list(homclass,class,full1,
+#                # rob1,rob2,
+#                rob4)
+# texreg::screenreg(int_homo,single.row = F)
+
+cap1 <- "Multilevel regression for redistributive preferences, network homogeneity (weak) and social class" 
+coefmap <-  list(homclass ="Class-based network homogeneity (Weak)",
+                 'class3Intermediate class (III+IV)' ='Intermediate class',
+                 'class3Working Class (V+VI+VII)' ='Working Class',
+                 "Q03pcmT02" = "Middle",
+                 "Q03pcmT03" = "High",
+                 "edyears" = 'Education in years',
+                  "workstNot in paid work"="Not in labor force",
+                 "unionYes" = 'Union: Yes',
+                 'class3Intermediate class (III+IV):homclass'='Homogeneity x Intermediate class',
+                 'class3Working Class (V+VI+VII):homclass'='Homogeneity x Working Class'
+                 )
+coefgroup <- list("Social Class (ref: Service Class)"=2:3,
+                  "Income Tercile (ref: Low)"=4:5,
+                  "Homogeneity x Social Class"=9:10
+                  )
+gofrow <-  list(Controls=c("No","No","No","Yes","Yes"))
+gof1<-  c(NA,NA,"Num. Countries:","Var: Group",NA)
+
+models <- list(homclass,class,full1,rob3,int_homo)
+texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,scalebox = 1,
+                float.pos="h!",
+                include.thresholds=FALSE,
+                  custom.coef.map=coefmap,
+                  groups = coefgroup,
+                  custom.gof.rows=gofrow,
+                  include.loglik = FALSE,include.aic = FALSE,
+                  custom.gof.names = gof1
+                )
+```
+
+\pagebreak
+
+## Respondent class
+
+```{r mod-ownclass, cache=TRUE, results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr)  
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+# df1$class3 <- relevel(df1$class3,ref =  "Intermediate class (III+IV)")
+# df1$class3res <- relevel(df1$class3res,ref =  "Intermediate class (III+IV)")
+# df1$class3spo <- relevel(df1$class3spo,ref =  "Intermediate class (III+IV)")
+
+df1$labst1 <-car::recode(df1$labst,"'No information'='Not in labour force'")
+dfreg <- df1 %>% dplyr::select(redist,
+                        class3=class3res,
+                        class3spo,
+                        homclass,
+                        # homclass=eindex_res,
+                        Q05pcm,
+                        Q03pcm,
+                        gini_disp,
+                        gini_mkt,
+                        giniot=gini,
+                        rgdpna,
+                        edyears,
+                        female,
+                        agenum,
+                        country2,country,
+                        union,
+                        workst
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna),
+         age2=agenum^2,
+         edyears2=edyears^2) %>%
+  # filter(!country2 %in% c("Turkey","Estonia")) %>%
+  na.omit()
+# dim(dfreg)
+
+# lineal
+base <- lmer(redist~1 + (1|country2),data=dfreg); icc1<- performance::icc(base)
+class <- lmer(redist~ class3+ (1|country2),data=dfreg)
+homclass <- lmer(redist~homclass + (1|country2),data=dfreg)
+full1 <- lmer(redist~ class3 +homclass+ female+agenum + age2+ (1|country2),data=dfreg)
+rob1 <- lmer(redist~class3+ homclass+ edyears+ female+ agenum+ age2+(1|country2),data=dfreg)
+rob2 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ female+ agenum +age2+(1|country2),data=dfreg)
+rob3 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ (1|country2),data=dfreg)
+rob4 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ class3spo +(1|country2),data=dfreg)
+rob5 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ class3spo +(homclass|country2),data=dfreg)
+
+# Interactions segregation x class
+int_homo <- lmer(redist~class3*homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ class3spo +(1|country2),data=dfreg)
+# models <- list(homclass,class,full1,
+#                # rob1,rob2,
+#                rob4)
+# texreg::screenreg(int_homo,single.row = F)
+
+cap1 <- "Multilevel regression for redistributive preferences, network homogeneity and Own social class " 
+coefmap <-  list(homclass ="Class-based network homogeneity",
+                 'class3Intermediate class (III+IV)' ='Intermediate class',
+                 'class3Working Class (V+VI+VII)' ='Working Class',
+                 "Q03pcmT02" = "Middle",
+                 "Q03pcmT03" = "High",
+                 "edyears" = 'Education in years',
+                  "workstNot in paid work"="Not in labor force",
+                 "unionYes" = 'Union: Yes',
+                 'class3Intermediate class (III+IV):homclass'='Homogeneity x Intermediate class',
+                 'class3Working Class (V+VI+VII):homclass'='Homogeneity x Working Class',
+                 'class3spoIntermediate class (III+IV)' ='Intermediate Class (Partner)',
+                 "class3spoWorking Class (V+VI+VII)"='Working Class (Partner)'
+                 )
+coefgroup <- list("Social Class - Resp. (ref: Service Class)"=2:3,
+                  "Income Tercile (ref: Low)"=4:5,
+                  "Homogeneity x Social Class"=9:10
+                  )
+gofrow <-  list(Controls=c("No","No","No","Yes","Yes","Yes"))
+gof1<-  c(NA,NA,"Num. Countries:","Var: Group",NA)
+
+models <- list(homclass,class,full1,rob3,rob4,int_homo)
+texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,scalebox = 1,
+                float.pos="h!",
+                  include.thresholds=FALSE,
+                  custom.coef.map=coefmap,
+                  groups = coefgroup,
+                  custom.gof.rows=gofrow,
+                  include.loglik = FALSE,include.aic = FALSE,
+                  custom.gof.names = gof1
+                )
+```
+
+\pagebreak  
 
 ## Perceived Isolation
 
@@ -692,11 +1102,6 @@ if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr)  
 rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
-df1$class3 <- relevel(df1$class3,ref =  "Intermediate class (III+IV)")
-df1$class3res <- relevel(df1$class3res,ref =  "Intermediate class (III+IV)")
-df1$labst1 <-car::recode(df1$labst,"'No information'='Not in labour force'")
-df1$eindex2<- (df1$ingroup-df1$outgroup)/(df1$outgroup+df1$ingroup)
-
 dfreg <- df1 %>% dplyr::select(redist,
                         class3,class5,
                         homclass,
@@ -713,9 +1118,7 @@ dfreg <- df1 %>% dplyr::select(redist,
                         agenum,
                         country2,country,
                         union,
-                        labst,
-                        labst1
-                        
+                        workst
                         ) %>% 
   mutate(logrgdpna=log(rgdpna),
          age2=agenum^2,
@@ -731,36 +1134,41 @@ homclass <- lmer(redist~isolation + homclass + (1|country2),data=dfreg)
 full1 <- lmer(redist~ class3 +isolation+homclass+female+agenum + age2+(1|country2),data=dfreg)
 rob1 <- lmer(redist~class3+ isolation+homclass+ edyears+ female+ agenum+ age2+(1|country2),data=dfreg)
 rob2 <- lmer(redist~class3+ isolation+homclass+ edyears+ Q03pcm+ female+ agenum +age2+(1|country2),data=dfreg)
-rob3 <- lmer(redist~class3+ isolation+homclass+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+(1|country2),data=dfreg)
+rob3 <- lmer(redist~class3+ isolation+homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+(1|country2),data=dfreg)
 # Interactions segregation x class
-int_homo <- lmer(redist~class3*isolation+homclass+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+ (1|country2),data=dfreg)
+int_homo <- lmer(redist~class3*isolation+homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ (1|country2),data=dfreg)
 # models <- list(homclass,class,full1,
 #                # rob1,rob2,
 #                rob4)
 # texreg::screenreg(full1,single.row = F)
 
 cap1 <- "Multilevel regression for redistributive preferences, social isolation and social class" 
+coefgroup <- list("Social Class (ref: Service Class)"=2:3,
+                  "Income Tercile (ref: Low)"=4:5,
+                  "Isolation x Social Class"=9:10
+                  )
+
 coefmap <-  list(isolation ="Perceived Isolation",
-                 'class3Service Class (I+II)' ='Service Class',
+                 'class3Intermediate class (III+IV)' ='Intermediate Class',
                  'class3Working Class (V+VI+VII)' ='Working Class',
                  "Q03pcmT02" = "Middle",
                  "Q03pcmT03" = "High",
                  "edyears" = 'Education in years',
-                  "labst1Not in labour force"="Not in labor force",
+                  "workstNot in paid work"="Not in labor force",
                  "unionYes" = 'Union: Yes',
-                 'class3Service Class (I+II):isolation'='Isolation x Service Class',
-                 'class3Working Class (V+VI+VII):isolation'='Isolation x Working Class',
-                  homclass ="Class-based network homogeneity"
+                 'class3Intermediate class (III+IV):isolation'='Homogeneity x Intermediate Class',
+                 'class3Working Class (V+VI+VII):isolation'='Homogeneity x Working Class',
+                 # know_total="Number contacts"
+                 # outgroup="Number outgroup"
+                 homclass ="Class-based network homogeneity"
                  )
-coefgroup <- list("Social Class (ref: Intermediate Class)"=2:3,
-                  "Income Tercile (ref: Low)"=4:5,
-                  "Isolation x Social Class"=9:10
-                  )
+
 gofrow <-  list(Controls=c("No","No","No","Yes","Yes"))
 gof1<-  c(NA,NA,"Num. Countries:","Var: Group",NA)
 
 models <- list(homclass,class,full1,rob3,int_homo)
 texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,
+                float.pos="h!",
                   include.thresholds=FALSE,
                   custom.coef.map=coefmap,
                   groups = coefgroup,
@@ -797,14 +1205,14 @@ sigtest1$homclass
 ```
 
 
-```{r marg2,fig.dim=c(4.1,2.6),fig.cap=c("Conditional marginal effects of Perceived Isolation on redistributive preferences"),out.width = "50%"}
+```{r marg2,fig.dim=c(4.1,2.6),fig.cap=c("Conditional marginal effects of Perceived Isolation on redistributive preferences"),out.width = "75%"}
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr)  
 # Conditional Marginal effect
 interplot <- 
 interplot::interplot(m = int_homo,var1 = "isolation",var2="class3")
 df_int <- interplot$data
 df_int <- df_int[c(1,2,4),]
-df_int$value <- c("Intermediate class (III+IV)","Service Class (I+II)","Working Class (V+VI+VII)")
+df_int$value <- c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)")
 df_int$value <- factor(df_int$value,ordered = T,
                        levels = c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)"))
 
@@ -822,7 +1230,7 @@ ggplot() +
   theme(plot.title = element_text(size = 8))  
 ```
 
-```{r pred2,fig.height=3.6,fig.width=5.7,fig.cap=c("Predictions for Redistributive Preferences"),out.width = '50%'}
+```{r pred2,fig.height=3.6,fig.width=5.7,fig.cap=c("Predictions for Redistributive Preferences"),out.width = '75%'}
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr)       
 # Predicted values 
 plot_predictions(int_homo, condition = list("isolation","class3"),gray = F)+
@@ -857,8 +1265,7 @@ dfreg <- df1 %>% dplyr::select(redist,
                         agenum,
                         country2,
                         union,
-                        labst,
-                        labst1) %>% 
+                        workst) %>% 
   mutate(logrgdpna=log(rgdpna),
          age2=agenum^2,
          edyears2=edyears^2) %>%
@@ -866,7 +1273,7 @@ dfreg <- df1 %>% dplyr::select(redist,
   na.omit()
 # T03dim(dfreg)
 
-main <- "redist~class3+ isolation+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2 +homclass"
+main <- "redist~class3+ isolation+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2 +homclass"
 
 giniD_gdp<-lmer(formula(paste0(main,"+gini_disp+logrgdpna","+(1|country2)")),data=dfreg)
 giniD_rs <-lmer(formula(paste0(main,"+gini_disp+logrgdpna","+(isolation|country2)")),data=dfreg)
@@ -874,10 +1281,10 @@ giniD_rs <-lmer(formula(paste0(main,"+gini_disp+logrgdpna","+(isolation|country2
 giniD_int<- lmer(formula(paste0(main,"+isolation*gini_disp+logrgdpna","+(isolation|country2)")),data=dfreg)
 # summary(giniD_int)
 
-giniM_gdp<- lmer(redist~class3+ isolation+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+ gini_mkt + logrgdpna+ (1|country2),data=dfreg)
-giniM_rs<- lmer(redist~class3+ isolation+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+ gini_mkt + logrgdpna+ (1+isolation|country2),data=dfreg)
+giniM_gdp<- lmer(redist~class3+ isolation+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ gini_mkt + logrgdpna+ (1|country2),data=dfreg)
+giniM_rs<- lmer(redist~class3+ isolation+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ gini_mkt + logrgdpna+ (1+isolation|country2),data=dfreg)
 # anova(giniM_gdp,giniM_rs)
-giniM_int <- lmer(redist~class3+ isolation*gini_mkt+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+ gini_mkt + logrgdpna+ (1+isolation|country2),data=dfreg)
+giniM_int <- lmer(redist~class3+ isolation*gini_mkt+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ gini_mkt + logrgdpna+ (1+isolation|country2),data=dfreg)
 
 models <- list(giniD_gdp,giniD_rs,giniD_int,
                giniM_gdp,giniM_rs,giniM_int)
@@ -928,435 +1335,88 @@ plot_predictions(giniM_int, condition = list("isolation",gini_mkt=range),gray = 
   theme(legend.position = "right")
 ``` 
 
-```{r crossginiD2, fig.height=4,fig.width=9.3,fig.cap=c("Cross-level interaction for Perceived Isolation and Gini (Disposable)"),out.width='50%'}
+```{r crossginiD2, fig.height=4,fig.width=9.3,fig.cap=c("Cross-level interaction for Perceived Isolation and Gini (Disposable)"),out.width='100%'}
 grid.arrange(p1,predval1,nrow = 1    
              # Gini (Disposable)top = "Perceived Isolation × Gini (Disposable)"  
              )
 ```
 
-```{r crossginiM2, fig.height=4,fig.width=9.3,fig.cap=c("Cross-level interaction for Perceived Isolation and Gini (Market)"),out.width='50%'}
+```{r crossginiM2, fig.height=4,fig.width=9.3,fig.cap=c("Cross-level interaction for Perceived Isolation and Gini (Market)"),out.width='100%'}
 grid.arrange(p2,predval2,nrow = 1    
              # top = "Perceived Isolation × Gini (Market)"  
              )
 ```
 
-## Strong & weak ties
 
-___Homogeneity: strong ties___
-
-```{r mod-strongties,results='asis', cache=T}
-if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr)  
-rm(list=ls())
-load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
-df1$class3 <- relevel(df1$class3,ref =  "Intermediate class (III+IV)")
-df1$class3res <- relevel(df1$class3res,ref =  "Intermediate class (III+IV)")
-df1$labst1 <-car::recode(df1$labst,"'No information'='Not in labour force'")
-dfreg <- df1 %>% dplyr::select(redist,
-                        class3,
-                        homclass=homclass_s,
-                        # homclass=eindex_s,
-                        Q05pcm,
-                        Q03pcm,
-                        gini_disp,
-                        gini_mkt,
-                        giniot=gini,
-                        rgdpna,
-                        edyears,
-                        female,
-                        agenum,
-                        country2,country,
-                        union,
-                        labst,
-                        labst1
-                        ) %>% 
-  mutate(logrgdpna=log(rgdpna),
-         age2=agenum^2,
-         edyears2=edyears^2) %>%
-  # filter(!country2 %in% c("Turkey","Estonia")) %>%
-  na.omit()
-# dim(dfreg)
-
-# lineal
-base <- lmer(redist~1 + (1|country2),data=dfreg); icc1<- performance::icc(base)
-class <- lmer(redist~ class3+ (1|country2),data=dfreg)
-homclass <- lmer(redist~homclass + (1|country2),data=dfreg)
-full1 <- lmer(redist~ class3 +homclass+ female+agenum + age2+(1|country2),data=dfreg)
-rob1 <- lmer(redist~class3+ homclass+ edyears+ female+ agenum+ age2+(1|country2),data=dfreg)
-rob2 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ female+ agenum +age2+(1|country2),data=dfreg)
-rob3 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+(1|country2),data=dfreg)
-# Interactions segregation x class
-int_homo <- lmer(redist~class3*homclass+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+ (1|country2),data=dfreg)
-# models <- list(homclass,class,full1,
-#                # rob1,rob2,
-#                rob4)
-# texreg::screenreg(int_homo,single.row = F)
-
-cap1 <- "Multilevel regression for redistributive preferences, network homogeneity (strong) and social class" 
-coefmap <-  list(homclass ="Class-based network homogeneity (Strong)",
-                 'class3Service Class (I+II)' ='Service Class',
-                 'class3Working Class (V+VI+VII)' ='Working Class',
-                 "Q03pcmT02" = "Middle",
-                 "Q03pcmT03" = "High",
-                 "edyears" = 'Education in years',
-                  "labst1Not in labour force"="Not in labor force",
-                 "unionYes" = 'Union: Yes',
-                 'class3Service Class (I+II):homclass'='Homogeneity x Service Class',
-                 'class3Working Class (V+VI+VII):homclass'='Homogeneity x Working Class'
-                 )
-coefgroup <- list("Social Class (ref: Intermediate Class)"=2:3,
-                  "Income Tercile (ref: Low)"=4:5,
-                  "Homogeneity x Social Class"=9:10
-                  )
-gofrow <-  list(Controls=c("No","No","No","Yes","Yes"))
-gof1<-  c(NA,NA,"Num. Countries:","Var: Group",NA)
-
-models <- list(homclass,class,full1,rob3,int_homo)
-texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,
-                  include.thresholds=FALSE,
-                  custom.coef.map=coefmap,
-                  groups = coefgroup,
-                  custom.gof.rows=gofrow,
-                  include.loglik = FALSE,include.aic = FALSE,
-                  custom.gof.names = gof1
-                )
-```
-
-___Homogeneity: weak ties___
-
-```{r mod-weakties,results='asis', cache=T}
-if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr)  
-rm(list=ls())
-load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
-df1$class3 <- relevel(df1$class3,ref =  "Intermediate class (III+IV)")
-df1$class3res <- relevel(df1$class3res,ref =  "Intermediate class (III+IV)")
-df1$labst1 <-car::recode(df1$labst,"'No information'='Not in labour force'")
-dfreg <- df1 %>% dplyr::select(redist,
-                        class3,
-                        homclass=homclass_w,
-                        # homclass=eindex_w,
-                        Q05pcm,
-                        Q03pcm,
-                        gini_disp,
-                        gini_mkt,
-                        giniot=gini,
-                        rgdpna,
-                        edyears,
-                        female,
-                        agenum,
-                        country2,country,
-                        union,
-                        labst,
-                        labst1
-                        ) %>% 
-  mutate(logrgdpna=log(rgdpna),
-         age2=agenum^2,
-         edyears2=edyears^2) %>%
-  # filter(!country2 %in% c("Turkey","Estonia")) %>%
-  na.omit()
-# dim(dfreg)
-
-# lineal
-base <- lmer(redist~1 + (1|country2),data=dfreg); icc1<- performance::icc(base)
-class <- lmer(redist~ class3+ (1|country2),data=dfreg)
-homclass <- lmer(redist~homclass + (1|country2),data=dfreg)
-full1 <- lmer(redist~ class3 +homclass+ female+agenum + age2+(1|country2),data=dfreg)
-rob1 <- lmer(redist~class3+ homclass+ edyears+ female+ agenum+ age2+(1|country2),data=dfreg)
-rob2 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ female+ agenum +age2+(1|country2),data=dfreg)
-rob3 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+(1|country2),data=dfreg)
-# Interactions segregation x class
-int_homo <- lmer(redist~class3*homclass+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+ (1|country2),data=dfreg)
-# models <- list(homclass,class,full1,
-#                # rob1,rob2,
-#                rob4)
-# texreg::screenreg(int_homo,single.row = F)
-
-cap1 <- "Multilevel regression for redistributive preferences, network homogeneity (weak) and social class" 
-coefmap <-  list(homclass ="Class-based network homogeneity (Weak)",
-                 'class3Service Class (I+II)' ='Service Class',
-                 'class3Working Class (V+VI+VII)' ='Working Class',
-                 "Q03pcmT02" = "Middle",
-                 "Q03pcmT03" = "High",
-                 "edyears" = 'Education in years',
-                  "labst1Not in labour force"="Not in labor force",
-                 "unionYes" = 'Union: Yes',
-                 'class3Service Class (I+II):homclass'='Homogeneity x Service Class',
-                 'class3Working Class (V+VI+VII):homclass'='Homogeneity x Working Class'
-                 )
-coefgroup <- list("Social Class (ref: Intermediate Class)"=2:3,
-                  "Income Tercile (ref: Low)"=4:5,
-                  "Homogeneity x Social Class"=9:10
-                  )
-gofrow <-  list(Controls=c("No","No","No","Yes","Yes"))
-gof1<-  c(NA,NA,"Num. Countries:","Var: Group",NA)
-
-models <- list(homclass,class,full1,rob3,int_homo)
-texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,
-                  include.thresholds=FALSE,
-                  custom.coef.map=coefmap,
-                  groups = coefgroup,
-                  custom.gof.rows=gofrow,
-                  include.loglik = FALSE,include.aic = FALSE,
-                  custom.gof.names = gof1
-                )
-```
-
-___Homogeneity: respondent class___
-
-```{r mod-ownclass, cache=TRUE, results='asis'}
-if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr)  
-rm(list=ls())
-load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
-df1$class3 <- relevel(df1$class3,ref =  "Intermediate class (III+IV)")
-df1$class3res <- relevel(df1$class3res,ref =  "Intermediate class (III+IV)")
-df1$class3spo <- relevel(df1$class3spo,ref =  "Intermediate class (III+IV)")
-
-df1$labst1 <-car::recode(df1$labst,"'No information'='Not in labour force'")
-dfreg <- df1 %>% dplyr::select(redist,
-                        class3=class3res,
-                        class3spo,
-                        homclass,
-                        # homclass=eindex_res,
-                        Q05pcm,
-                        Q03pcm,
-                        gini_disp,
-                        gini_mkt,
-                        giniot=gini,
-                        rgdpna,
-                        edyears,
-                        female,
-                        agenum,
-                        country2,country,
-                        union,
-                        labst,
-                        labst1
-                        ) %>% 
-  mutate(logrgdpna=log(rgdpna),
-         age2=agenum^2,
-         edyears2=edyears^2) %>%
-  # filter(!country2 %in% c("Turkey","Estonia")) %>%
-  na.omit()
-# dim(dfreg)
-
-# lineal
-base <- lmer(redist~1 + (1|country2),data=dfreg); icc1<- performance::icc(base)
-class <- lmer(redist~ class3+ (1|country2),data=dfreg)
-homclass <- lmer(redist~homclass + (1|country2),data=dfreg)
-full1 <- lmer(redist~ class3 +homclass+ female+agenum + age2+ (1|country2),data=dfreg)
-rob1 <- lmer(redist~class3+ homclass+ edyears+ female+ agenum+ age2+(1|country2),data=dfreg)
-rob2 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ female+ agenum +age2+(1|country2),data=dfreg)
-rob3 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+ (1|country2),data=dfreg)
-rob4 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+ class3spo +(1|country2),data=dfreg)
-rob5 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+ class3spo +(homclass|country2),data=dfreg)
-
-# Interactions segregation x class
-int_homo <- lmer(redist~class3*homclass+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+ class3spo +(1|country2),data=dfreg)
-# models <- list(homclass,class,full1,
-#                # rob1,rob2,
-#                rob4)
-# texreg::screenreg(int_homo,single.row = F)
-
-cap1 <- "Multilevel regression for redistributive preferences, network homogeneity and Own social class " 
-coefmap <-  list(homclass ="Class-based network homogeneity",
-                 'class3Service Class (I+II)' ='Service Class',
-                 'class3Working Class (V+VI+VII)' ='Working Class',
-                 "Q03pcmT02" = "Middle",
-                 "Q03pcmT03" = "High",
-                 "edyears" = 'Education in years',
-                  "labst1Not in labour force"="Not in labor force",
-                 "unionYes" = 'Union: Yes',
-                 'class3Service Class (I+II):homclass'='Homogeneity x Service Class',
-                 'class3Working Class (V+VI+VII):homclass'='Homogeneity x Working Class',
-                 'class3spoService Class (I+II)' ='Service Class (Partner)',
-                 "class3spoWorking Class (V+VI+VII)"='Working Class (Partner)'
-                
-                 )
-coefgroup <- list("Social Class - Resp. (ref: Intermediate Class)"=2:3,
-                  "Income Tercile (ref: Low)"=4:5,
-                  "Homogeneity x Social Class"=9:10
-                  )
-gofrow <-  list(Controls=c("No","No","No","Yes","Yes","Yes"))
-gof1<-  c(NA,NA,"Num. Countries:","Var: Group",NA)
-
-models <- list(homclass,class,full1,rob3,rob4,int_homo)
-texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,
-                  include.thresholds=FALSE,
-                  custom.coef.map=coefmap,
-                  groups = coefgroup,
-                  custom.gof.rows=gofrow,
-                  include.loglik = FALSE,include.aic = FALSE,
-                  custom.gof.names = gof1
-                )
-```
-
-## Other macro variables
-
-Source: https://www4.wider.unu.edu/?ind=1&type=ChoroplethSeq&year=70&byCountry=false&slider=buttons
+\pagebreak
 
 
-* The **Palma ratio** is the share of all income received by the 10% people with highest disposable income divided by the share of all income received by the 40% people with the lowest disposable income.
-<!-- * **90/10 ratio** = the ratio of Decile 10 income to Decile 1 income -->
-<!-- * 90/50 ratio = the ratio of Decile 10 income to Decile 5 income (the median) -->
-<!-- * 50/10 ratio = the ratio of Decile 5 income (the median) to Decile 1 income. -->
+# References
 
-```{r mod-other-macro,fig.height=3,fig.width=6,out.width='70%',results='asis', cache=T}
+<div id="refs"></div>
+
+
+# (APPENDIX) Appendix {-} 
+
+`r if (knitr::is_latex_output()){ '\\appendix'}`          <!-- Si documento es latex, se genera sección de Anexos -->
+`r if (knitr::is_latex_output()){ '\\section{Appendix}'}` <!-- Si documento es latex, se genera titulo de Anexos -->
+```{r redistribution, echo=FALSE, fig.cap=c("Redistributive preferences by country in the ISSP 2017"), fig.height=4.5, fig.width=7.1, out.width='100%'}
+# x country   
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr,gridExtra)  
 rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
-df1$class3 <- relevel(df1$class3,ref =  "Intermediate class (III+IV)")
+# df1$class3res <- relevel(df1$class3res,ref =  "Intermediate class (III+IV)")
 df1$labst1 <-car::recode(df1$labst,"'No information'='Not in labour force'")
+df1$redistF <- factor(df1$redist,levels = 1:5,labels = sjlabelled::get_labels(df1$redist))
 dfreg <- df1 %>% dplyr::select(redist,
-                        class3,
-                        homclass=homclass_gc,
-                        # homclass=homclass_res,
+                        class3, 
+                        homclass,
+                        # homclass=eindex,
                         Q05pcm,
                         Q03pcm,
                         gini_disp,
                         gini_mkt,
                         giniot=gini,
-                        giniindex,ttheilge1,
-                        gv_spen=gv_spen,
-                        top10,
-                        middle50,
-                        palmaratio,
                         rgdpna,
-                        individualism,
                         edyears,
                         female,
                         agenum,
-                        country2,
+                        country2,country,
                         union,
                         labst,
                         labst1,
-                        isolation,
-                        MAINSTAT) %>% 
+                        ) %>% 
   mutate(logrgdpna=log(rgdpna),
          age2=agenum^2,
          edyears2=edyears^2) %>%
-    # filter(!country2 %in% c("Turkey","Estonia")) %>%
-  # filter(MAINSTAT %in% c(1,2)) %>%
-  # filter(agenum %in% c(25:65)) %>%
-   na.omit()
+  # filter(!country2 %in% c("Turkey","Estonia")) %>%
+  na.omit()
 
+percentage_data <- df1 %>%
+  group_by(country2, redistF) %>%
+  summarise(count = n()) %>%
+  group_by(country2) %>%
+  na.omit() %>% 
+  mutate(percentage = count / sum(count)) %>% 
+  arrange(country2,redistF,percentage) %>% 
+  mutate(pct_lab = paste0(round(percentage*100,1),"%")) %>% 
+  mutate(pct_lab=ifelse(!redistF %in% c("Strongly agree"),NA,pct_lab))
 
-int_palma <- lmer(redist~class3+ isolation+homclass*palmaratio+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+logrgdpna + (1+homclass|country2),data=dfreg)
-int_pc10  <- lmer(redist~class3+ isolation+homclass*top10+edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+logrgdpna +(1+homclass|country2),data=dfreg)
-int_pc50  <- lmer(redist~class3+ isolation+homclass*middle50+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+logrgdpna +(1+homclass|country2),data=dfreg)
-int_gini_wiid  <- lmer(redist~class3+ isolation+homclass*giniindex+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+logrgdpna +(1+homclass|country2),data=dfreg)
-int_theil  <- lmer(redist~class3+ isolation+homclass*ttheilge1+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+logrgdpna +(1+homclass|country2),data=dfreg)
-int_indivi<- lmer(redist~class3+ isolation+homclass*individualism+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+logrgdpna + (1+homclass|country2),data=dfreg)
-int_govspe<- lmer(redist~class3+ isolation+homclass*gv_spen+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+logrgdpna + (1+homclass|country2),data=dfreg)
+order <- 
+percentage_data %>% 
+  filter(redistF=="Strongly agree") %>% 
+  arrange(percentage) %>% 
+  dplyr::select(country2)
 
-models_m <- list(int_palma,int_pc10,int_pc50,int_indivi,int_govspe
-                 # int_gini_wiid,int_theil
-                 )
-
-cap1=c("Cross-level interaction for Network homogeneity and Economic Inequality")
-customcoef <- 
-list(homclass = "Class-based network homogeneity",
-  logrgdpna           = "log GDP",
-  palmaratio               = "Palma Ratio",
-  "homclass:palmawd"      = "Homogeneity x Palma Ratio",
-  top10             = "Share National Income - top 10%",
-  "homclass:top10"    = "Homogeneity x top 10",
-  middle50             = "Share National Income -  bottom 50%",
-  "homclass:middle50"    = "Homogeneity x bottom 50",
-  individualism         = "Individualism Index*",
-  "homclass:individualism" = "Homogeneity x Individualism",
-  gv_spen               = "Gov. Spending (% GDP)*",
-  "homclass:gv_spen"      = "Homogeneity x Gov. Spend."
-)
-texreg::knitreg(models_m,
-                custom.coef.map = customcoef,
-                caption.above = T,caption = cap1)
+order$orden <- 1:31
+ggplot(percentage_data, aes(x=country2,y=percentage*100,fill=redistF,group=redistF,label = pct_lab))+
+  geom_bar(stat = 'identity') +
+  # geom_text(position = position_fill(vjust =100)) +
+  scale_y_continuous(name=NULL,labels = scales::percent_format(scale = 1),limits = c(0,101), expand = c(0, 0)) +
+  scale_x_discrete(limits=order$country2,name=NULL) +  
+  scale_fill_ordinal(guide = guide_legend(reverse = TRUE)) +
+  ggtitle(label= "Redistributive preferences") + 
+  theme(legend.position = 'bottom',legend.title = element_blank(), text = element_text(size = 12))  +  
+  coord_flip()
 ```
-
-```{r,fig.height=4,fig.width=12,fig.cap=c("Cross-level interaction for Network homogeneity and Economic Inequality"),out.width='100%',results='asis'}
-p3<- interplot::interplot(m = int_palma,var1 = "homclass",var2="palmaratio") +
-  xlab("Palma ratio (top 10%/ bottom 40%)") + geom_point()+ geom_hline(yintercept = 0) +
-    labs(caption = paste0("N=",nobs(int_palma),", Countries=",lme4::ngrps(int_palma)))
-
-# plot_predictions(int_palma, condition = list("homclass",palmaratio=range),gray = F) +
-#   labs(caption = paste0("N=",nobs(int_indivi),", Countries=",lme4::ngrps(int_indivi)),
-#        linetype='Palma Ratio') +
-#   xlab("Class-based homogeneity")+
-#   ylab("Redistributive preferences") +
-#   theme(legend.position = "right")
-
-p4<- interplot::interplot(m = int_pc10,var1 = "homclass",var2="top10") +
-  xlab("Share National Income -  top 10%") + geom_point()+ geom_hline(yintercept = 0) +
-  labs(caption = paste0("N=",nobs(int_pc10),", Countries=",lme4::ngrps(int_pc10)))  
-
-# plot_predictions(int_pc10, condition = list("homclass",top10=range),gray = F) +
-#   labs(caption = paste0("N=",nobs(int_indivi),", Countries=",lme4::ngrps(int_indivi)),
-#        linetype='Palma Ratio') +
-#   xlab("Class-based homogeneity")+
-#   ylab("Redistributive preferences") +
-#   theme(legend.position = "right")
-p5<- interplot::interplot(m = int_pc50,var1 = "homclass",var2="middle50") +
-  xlab("Share National Income - middle 50%") + geom_point()+ geom_hline(yintercept = 0) +
-  labs(caption = paste0("N=",nobs(int_pc50),", Countries=",lme4::ngrps(int_pc50)))   
-
-# plot_predictions(int_pc50, condition = list("homclass",middle50=range),gray = F) +
-#   labs(caption = paste0("N=",nobs(int_indivi),", Countries=",lme4::ngrps(int_indivi)),
-#        linetype='Palma Ratio') +
-#   xlab("Class-based homogeneity")+
-#   ylab("Redistributive preferences") +
-#   theme(legend.position = "right")
-
-
-# interplot::interplot(m = int_gini_wiid,var1 = "homclass",var2="giniindex") +
-#   xlab("Gini (WIID)") + geom_point()+ geom_hline(yintercept = 0) +
-#     labs(caption = paste0("N=",nobs(int_gini_wiid),", Countries=",lme4::ngrps(int_gini_wiid)))
-
-# interplot::interplot(m = int_theil,var1 = "homclass",var2="ttheilge1") +
-#   xlab("Theil Index") + geom_point()+ geom_hline(yintercept = 0) +
-#     labs(caption = paste0("N=",nobs(int_theil),", Countries=",lme4::ngrps(int_theil)))
-
-# p6<- interplot::interplot(m = int_r1090,var1 = "homclass",var2="ratio10_50") +
-#   xlab("Ratio (90/50)") + geom_point()+ geom_hline(yintercept = 0)+
-#   labs(caption = paste0("N=",nobs(int_r1090),", Countries=",lme4::ngrps(int_r1090)))  
-grid.arrange(p3,p4,p5,nrow = 1) 
-```
-
-
-```{r , fig.height=6,fig.width=8,fig.cap=c("Cross-level interaction for Network homogeneity, Gov. Spending and Individualism"),out.width='70%',}
-# p7<- interplot::interplot(m = int_giniot,var1 = "homclass",var2="giniot") +
-#   xlab("Gini Market*") + geom_point()+ geom_hline(yintercept = 0)+
-#   labs(caption = paste0("N=",nobs(int_giniot),", Countries=",lme4::ngrps(int_giniot)))  
-
-p8<- interplot::interplot(m = int_indivi,var1 = "homclass",var2="individualism") +
-  xlab("Individualism Index*") + geom_point()+ geom_hline(yintercept = 0)+
-  labs(caption = paste0("N=",nobs(int_indivi),", Countries=",lme4::ngrps(int_indivi)))  
-
-predval8 <- 
-plot_predictions(int_indivi, condition = list("homclass",individualism=range),gray = F) +
-  labs(caption = paste0("N=",nobs(int_indivi),", Countries=",lme4::ngrps(int_indivi)),
-       linetype='Individualism') +
-  xlab("Class-based homogeneity")+
-  ylab("Redistributive preferences") +
-  theme(legend.position = "right")
-
-
-p9<- interplot::interplot(m = int_govspe,var1 = "homclass",var2="gv_spen") +
-  xlab("Gov. Spending (% GDP)*") + geom_point()+ geom_hline(yintercept = 0)+
-  labs(caption = paste0("N=",nobs(int_govspe),", Countries=",lme4::ngrps(int_govspe)))
-
-predval9 <- 
-plot_predictions(int_govspe, condition = list("homclass",gv_spen=range),gray = F) +
-  labs(caption = paste0("N=",nobs(int_govspe),", Countries=",lme4::ngrps(int_govspe)),
-       linetype='Gov.Spend') +
-  xlab("Class-based homogeneity")+
-  ylab("Redistributive preferences") +
-  theme(legend.position = "right")
-
-grid.arrange(p9,predval9,
-             p8,predval8,nrow = 2)
-```
-
-
-
-

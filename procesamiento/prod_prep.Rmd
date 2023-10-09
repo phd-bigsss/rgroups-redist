@@ -31,6 +31,10 @@ df1 <- haven::read_dta(here::here("input/data/original/ZA6980_v2-0-0.dta"))
 dfTR <- haven::read_dta(here::here("input/data/original/ZA5521_v1-0-0.dta"))
 dfES <- haven::read_dta(here::here("input/data/original/ZA5962_v1-0-0.dta"))
 
+relig <- haven::read_dta(here::here("input/data/original/ZA7570_v2-1-0.dta"))
+religTR <- relig %>% filter(country==792)
+
+
 df1 <- df1 %>% rename(topbot=TOPBOT)
 dfES <- dfES %>% rename(topbot=TOPBOT)
 #fix problem with variable names
@@ -41,7 +45,9 @@ dfTR <- dfTR %>% rename(SEX=sex,
                         MAINSTAT=mainstat,
                         UNION=union,
                         WEIGHT=weight,
-                        URBRURAL=urbrural)  
+                        URBRURAL=urbrural,
+                        WORK=work,
+                        HOMPOP=hompop)  
 dfES$c_alphan <- NULL
 dfTR$c_alphan <- NULL
 df2 <- bind_rows(dfES,dfTR)
@@ -157,20 +163,82 @@ frq(df1$tr_courts)
 income_country <- names(df1 %>% dplyr::select(dplyr::ends_with("_INC")))
 # lapply(df1[,income_country], table)
 for (i in income_country) {
-  df1[[i]] <- car::recode(var = df1[[i]],"999990:99999999=NA")
+  # df1[[i]] <- car::recode(var = df1[[i]],"999990:99999999=NA")
   df1[[i]] <- as.numeric(df1[[i]])
   }
 
+df1$AT_INC<- car::recode( df1$AT_INC,"999990:999999=NA")
+df1$AU_INC<- car::recode( df1$AU_INC,"9999990:9999999=NA")
+df1$CH_INC<- car::recode( df1$CH_INC,"999990:999999=NA")
+df1$CN_INC<- car::recode( df1$CN_INC,"9999990:9999999=NA")
+df1$CZ_INC<- car::recode( df1$CZ_INC,"999990:999999=NA")
+df1$DE_INC<- car::recode( df1$DE_INC,"999990:999999=NA")
+df1$DK_INC<- car::recode( df1$DK_INC,"9999990:9999999=NA")
+df1$ES_INC<- car::recode( df1$ES_INC,"999990:999999=NA")
+df1$FI_INC<- car::recode( df1$FI_INC,"999990:999999=NA")
+df1$FR_INC<- car::recode( df1$FR_INC,"999990:999999=NA")
+df1$GB_INC<- car::recode( df1$GB_INC,"999990:999999=NA")
+df1$HR_INC<- car::recode( df1$HR_INC,"999990:999999=NA")
+df1$HU_INC<- car::recode( df1$HU_INC,"9999990:9999999=NA")
+df1$IL_INC<- car::recode( df1$IL_INC,"999990:999999=NA")
+df1$IN_INC<- car::recode( df1$IN_INC,"999990:999999=NA")
+df1$IS_INC<- car::recode( df1$IS_INC,"99999990:99999999=NA")
+df1$JP_INC<- car::recode( df1$JP_INC,"99999990:99999999=NA")
+df1$LT_INC<- car::recode( df1$LT_INC,"999990:999999=NA")
+df1$MX_INC<- car::recode( df1$MX_INC,"999990:999999=NA")
+df1$NZ_INC<- car::recode( df1$NZ_INC,"999990:999999=NA")
+df1$PH_INC<- car::recode( df1$PH_INC,"999990:999999=NA")
+df1$RU_INC<- car::recode( df1$RU_INC,"999990:999999=NA")
+df1$SE_INC<- car::recode( df1$SE_INC,"999990:999999=NA")
+df1$SI_INC<- car::recode( df1$SI_INC,"999990:999999=NA")
+df1$SK_INC<- car::recode( df1$SK_INC,"999990:999999=NA")
+df1$SR_INC<- car::recode( df1$SR_INC,"999990:999999=NA")
+df1$TH_INC<- car::recode( df1$TH_INC,"999990:999999=NA")
+df1$TW_INC<- car::recode( df1$TW_INC,"9999990:9999999=NA")
+df1$US_INC<- car::recode( df1$US_INC,"999990:999999=NA")
+df1$ZA_INC<- car::recode( df1$ZA_INC,"999990:999999=NA")
+
+frq(df1$EE_INC)
+
+c((200 )/1,
+    (201 + 300)/2,
+    (301 + 400)/2,
+    (401 + 500)/2,
+    (501 + 650)/2,
+    (651 + 800)/2,
+    (801 + 1000)/2,
+    (1001 +1300)/2,
+    (1301 + 1600)/2,
+    (1601 +2100)/2,
+    (2500)/1)
+
+df1$EE_INC<- car::recode( df1$EE_INC,"1=200.0;2=250.5;3=350.5;4=450.5;5=575.5;6=725.5;7=900.5;8=1150.5;9=1450.5;10=1850.5;11=2500.0;999990:999999=NA")
+
+frq(df1$TR_INC)
+df1$TR_INC<- car::recode( df1$TR_INC,"999990:999997=NA")
 # lapply(df1[,income_country], table)  # Ok el recode de ingresos familiares 
 # Crear variable ingresos unica 
-df1 <- df1 %>% mutate(income = coalesce(AT_INC,AU_INC,CH_INC,CN_INC,CZ_INC,DE_INC,DK_INC,ES_INC,FI_INC,FR_INC,GB_INC,HR_INC,HU_INC,IL_INC,IN_INC,IS_INC,
-                                        JP_INC,LT_INC,MX_INC,NZ_INC,PH_INC,RU_INC,SE_INC,SI_INC,SK_INC,SR_INC,TH_INC,TW_INC,US_INC,ZA_INC))
+df1 <- df1 %>% 
+  mutate(income = coalesce(AT_INC,AU_INC,CH_INC,CN_INC,CZ_INC,DE_INC,DK_INC,ES_INC,
+                           FI_INC,FR_INC,GB_INC,HR_INC,HU_INC,IL_INC,IN_INC,IS_INC,
+                           JP_INC,LT_INC,MX_INC,NZ_INC,PH_INC,RU_INC,SE_INC,SI_INC,
+                           SK_INC,SR_INC,TH_INC,TW_INC,US_INC,ZA_INC,EE_INC,TR_INC))
+
+
+
+table(df1$c_alphan,is.na(df1$income))
+
+# summary(df1$JP_RINC)
+# summary(df1$JP_RINC)
+# 
+# summary(df1$EE_INC)
+# summary(df1$TR_INC)
 
 #frq(df1$income==0)
-#frq(df1$HOMPOP)
+frq(df1$HOMPOP)
 df1$hhpop <- as.numeric(df1$HOMPOP) 
 df1$hhpop[df1$hhpop %in%c(0,97,99)] <- NA
-#frq(df1$hhpop)
+# frq(df1$hhpop)
 df1$incomepcap <- as.numeric(df1$income/df1$hhpop) # Ingreso per capita del hogar
   
 df1 <- df1 %>%group_by(country)  %>% mutate(D10pc=ntile(incomepcap,10),
@@ -182,11 +250,14 @@ df1 <- df1 %>%group_by(country)  %>% mutate(D10pc=ntile(incomepcap,10),
 df1$Q05pcm <- car::recode(df1$Q05pc,"1='Q01';2='Q02';3='Q03';4='Q04';5='Q05';NA='Missing'",
                           as.factor = T,
                           levels = c("Q01","Q02","Q03","Q04","Q05","Missing")) 
+frq(df1$Q05pc)
 
 df1$Q03pcm <- car::recode(df1$Q03pc,"1='T01';2='T02';3='T03';NA='Missing'",
                           as.factor = T,
                           levels = c("T01","T02","T03","Missing")) 
+frq(df1$Q03pcm)
 
+table(as_character(df1$country),df1$Q03pcm)
 
 sjlabelled::set_label(df1$D10pc) <- "Household income (D10)"
 sjlabelled::set_label(df1$Q05pc) <- "Household income (Q05)"
@@ -198,9 +269,50 @@ sjlabelled::set_label(df1$logincpc) <- "Household income (log)"
 income_country <- names(df1 %>% dplyr::select(dplyr::ends_with("_RINC")))
 # lapply(df1[,income_country], table)
 for (i in income_country) {
-  df1[[i]] <- car::recode(var = df1[[i]],"999990:99999999=NA")
+  # df1[[i]] <- car::recode(var = df1[[i]],"999990:99999999=NA")
   df1[[i]] <- as.numeric(df1[[i]])
   }
+
+
+df1$AT_RINC<- car::recode( df1$AT_RINC,"999990:999999=NA")
+df1$AU_RINC<- car::recode( df1$AU_RINC,"999990:999999=NA")
+df1$CH_RINC<- car::recode( df1$CH_RINC,"999990:999999=NA")
+df1$CN_RINC<- car::recode( df1$CN_RINC,"9999990:9999999=NA")
+df1$CZ_RINC<- car::recode( df1$CZ_RINC,"999990:999999=NA")
+df1$DE_RINC<- car::recode( df1$DE_RINC,"999990:999999=NA")
+df1$DK_RINC<- car::recode( df1$DK_RINC,"999990:999999=NA")
+df1$ES_RINC<- car::recode( df1$ES_RINC,"999990:999999=NA")
+df1$FI_RINC<- car::recode( df1$FI_RINC,"999990:999999=NA")
+df1$FR_RINC<- car::recode( df1$FR_RINC,"999990:999999=NA")
+df1$GB_RINC<- car::recode( df1$GB_RINC,"999990:999999=NA")
+df1$HR_RINC<- car::recode( df1$HR_RINC,"999990:999999=NA")
+df1$HU_RINC<- car::recode( df1$HU_RINC,"999990:999999=NA")
+df1$IL_RINC<- car::recode( df1$IL_RINC,"999990:999999=NA")
+df1$IN_RINC<- car::recode( df1$IN_RINC,"999990:999999=NA")
+df1$IS_RINC<- car::recode( df1$IS_RINC,"9999990:9999999=NA")
+df1$JP_RINC<- car::recode( df1$JP_RINC,"99999990:99999999=NA")
+df1$LT_RINC<- car::recode( df1$LT_RINC,"999990:999999=NA")
+df1$MX_RINC<- car::recode( df1$MX_RINC,"999990:999999=NA")
+df1$NZ_RINC<- car::recode( df1$NZ_RINC,"999990:999999=NA")
+df1$PH_RINC<- car::recode( df1$PH_RINC,"999990:999999=NA")
+df1$RU_RINC<- car::recode( df1$RU_RINC,"999990:999999=NA")
+df1$SE_RINC<- car::recode( df1$SE_RINC,"999990:999999=NA")
+df1$SI_RINC<- car::recode( df1$SI_RINC,"999990:999999=NA")
+df1$SK_RINC<- car::recode( df1$SK_RINC,"999990:999999=NA")
+df1$SR_RINC<- car::recode( df1$SR_RINC,"999990:999999=NA")
+df1$TH_RINC<- car::recode( df1$TH_RINC,"999990:999999=NA")
+df1$TW_RINC<- car::recode( df1$TW_RINC,"999990:999999=NA")
+df1$US_RINC<- car::recode( df1$US_RINC,"999990:999999=NA")
+df1$ZA_RINC<- car::recode( df1$ZA_RINC,"999990:999999=NA")
+
+frq(df1$EE_RINC)
+df1$EE_RINC<- car::recode( df1$EE_RINC,"1=200.0;2=250.5;3=350.5;4=450.5;5=575.5;6=725.5;7=900.5;8=1150.5;9=1450.5;10=1850.5;11=2500.0;999990:999999=NA")
+frq(df1$EE_RINC)
+
+frq(df1$TR_RINC)
+df1$TR_RINC<- car::recode( df1$TR_RINC,"999990:999997=NA")
+frq(df1$TR_RINC)
+
 
 # lapply(df1[,income_country], table)  # Ok el recode de ingresos familiares 
 # Crear variable ingresos unica 
@@ -218,15 +330,31 @@ df1 <- df1 %>% mutate(incomer = coalesce(AT_RINC,AU_RINC,
                                         SE_RINC, SI_RINC,
                                         SK_RINC, SR_RINC,
                                         TH_RINC, TW_RINC,
-                                        US_RINC, ZA_RINC))
-#frq(df1$incomer==0)
+                                        US_RINC, ZA_RINC, 
+                                        EE_RINC,TR_RINC))
+table(df1$c_alphan,is.na(df1$income))
+prop.table(table(df1$c_alphan,is.na(df1$income)),margin =1)
+
 
 df1 <- df1 %>%group_by(country) %>% mutate(D10r=ntile(incomer,10),
                                               Q05r=ntile(incomer,5),
+                                           Q03r=ntile(incomer,3),
                                               zincpcr=scale(incomer,center = TRUE),
                                               logincr=log(incomer)) %>% ungroup()
-#frq(df1$incomer)
-#frq(df1$incomepcap)
+
+
+df1$Q05rm <- car::recode(df1$Q05r,"1='Q01';2='Q02';3='Q03';4='Q04';5='Q05';NA='Missing'",
+                          as.factor = T,
+                          levels = c("Q01","Q02","Q03","Q04","Q05","Missing")) 
+
+df1$Q03rm <- car::recode(df1$Q03r,"1='T01';2='T02';3='T03';NA='Missing'",
+                          as.factor = T,
+                          levels = c("T01","T02","T03","Missing")) 
+
+table(as_character(df1$country),df1$Q03rm)
+
+# frq(df1$incomer)
+# frq(df1$incomepcap)
 # Single household 
 df1$incomerep <- ifelse(df1$hhpop==1 & is.na(df1$incomepcap),df1$incomer,df1$incomepcap)
 #frq(is.na(df1$incomerep))
@@ -281,13 +409,25 @@ sjlabelled::set_label(df1$labst) <- "Occupational status"
 #frq(df1$labst)
 ```
 
+```{r paid-work}
+frq(df1$WORK)
+df1$workst <- car::recode(
+  as.numeric(df1$WORK),
+  recodes = "1='In paid work';2:3='Not in paid work';c(9)=NA",
+  levels = c('In paid work', 'Not in paid work'),
+  as.factor = T
+)
+sjlabelled::set_label(df1$workst) <- "Work status"
+frq(df1$workst)
+```
+
+
 ```{r union}
-#frq(df1$WORK)
-#frq(df1$UNION)
+frq(df1$UNION)
 df1$union <- car::recode(as.numeric(df1$UNION),
-                         recodes= "1:2='Yes';c(0,3,7,8)='No';9=NA",
+                         recodes= "1:2='Yes';c(0,3,7)='No';8:9=NA",
                          levels = c("No","Yes"))
-#frq(df1$union)
+frq(df1$union)
 ```
 
 ```{r isei}
