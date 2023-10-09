@@ -18,12 +18,6 @@ author:
 # Nota: Autores que comparten filiacion, poner el mismo number y declarar filiación una sola vez.  
 # abstract: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do *eiusmod tempor* incididunt ut labore et dolore magna aliqua. Ut enimad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
 output:
-  bookdown::pdf_document2:
-    template: null
-    toc: false
-    keep_tex: false
-    pandoc_args:
-      - --template=input/mytemplate.tex #custom template para usar autores con afiliacion  
   bookdown::html_document2:
     toc: yes
     code_folding: hide
@@ -31,6 +25,12 @@ output:
       collapsed: false
       smooth_scroll: false
     number_sections: false   
+  bookdown::pdf_document2:
+    template: null
+    toc: false
+    keep_tex: false
+    pandoc_args:
+      - --template=input/mytemplate.tex #custom template para usar autores con afiliacion  
 linkcolor: blue                         # enlaces y citas en color azul
 bibliography: input/bib/rgroup-redist.bib     # bibliografia en bibtex
 csl: input/bib/apa6.csl
