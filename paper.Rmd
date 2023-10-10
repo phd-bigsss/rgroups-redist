@@ -7,6 +7,7 @@ link-citations: yes         # citas linkeadas
 date: "`r format(Sys.Date(), '%d %B %Y')`"
 author:
 - name: Julio Iturra-Sanhueza
+- name: Julio Iturra-Sanhueza
 #   affiliation: University of Bremen
 #   email: jiturra@uni-bremen.de
 #   number: 1
@@ -77,6 +78,15 @@ options(scipen=999) # notacion cientifica
 rm(list=ls())       # limpiar workspace
 options(knitr.kable.NA = '') # NA en kable = ''
 ```
+
+```{r}
+set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
+options(ggplot2.discrete.fill = set1)
+options(ggplot2.discrete.colour = set1)
+ggplot2::theme_set(theme_minimal())
+ggplot2::theme_update(text=element_text(size=10,  family="serif"))  
+```
+
 
 ```{r}
 set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
