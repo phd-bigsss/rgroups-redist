@@ -1,7 +1,7 @@
 ---
 title: "Robustness checks"
 date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
-css: "input/css/custom.css" # custom CSS para html
+css: "../input/css/custom.css" # custom CSS para html
 linestretch: '1.5'          # interlineado 
 link-citations: yes         # citas linkeadas
 output:
@@ -44,66 +44,79 @@ options(knitr.kable.NA = '') # NA en kable = ''
 
 ```{r ord-micro,results='asis', cache=T}
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr,ordinal)  
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal)  
 rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
-df1$class3 <- relevel(df1$class3,ref =  "Intermediate class (III+IV)")
-df1$class3res <- relevel(df1$class3res,ref =  "Intermediate class (III+IV)")
-df1$labst1 <-car::recode(df1$labst,"'No information'='Not in labour force'")
 df1$redistF <- as.factor(df1$redist)
-
 dfreg <- df1 %>% dplyr::select(redist=redistF,
                         class3,
+                        class5,
                         homclass,
-                        Q05pcm,
                         Q03pcm,
-                        gini_disp,
-                        gini_mkt,
-                        giniot=gini,
+                        # Q03pcm=Q03rm,
+                        # Q03pcm=Q03rm,
+                        # Q03pcm=zincpc,
+                        # Q03rm=
+                        # isei08,
                         rgdpna,
                         edyears,
                         female,
                         agenum,
                         country2,country,
                         union,
-                        labst,
-                        labst1
+                        workst,
+                        # isolation,  
+                        # MAINSTAT,
+                        # activities,
+                        # WEIGHT,
+                        region,
+                        "gini_disp",
+                        "gini_mkt"
                         ) %>% 
   mutate(logrgdpna=log(rgdpna),
          age2=agenum^2,
          edyears2=edyears^2) %>%
-  # filter(!country2 %in% c("Turkey","Estonia")) %>%
+  # filter(!country2 %in% c("CHN")) %>%
+  # filter(!country2 %in% c("TWN")) %>%
+  # filter(!country2 %in% c("ZAF")) %>%
+  # filter(!country2 %in% c("FIN")) %>%
+  # filter(!country2 %in% c("USA")) %>%
+  # filter(!country2 %in% c("GBR")) %>%
+  # filter(!country2 %in% c("ISL")) %>%
+  # filter(!country2 %in% c("TUR","EST")) %>%
+  # filter(MAINSTAT %in% c(1,2)) %>%
+  # filter(agenum %in% c(25:65)) %>% # Paskov & Weisstanner
+  # filter(PARTLIV %in% c(0,1,2,3)) %>%
+  # filter(region %in% c("Northern America","South America")) %>%
+  # filter(Q03pcm!="Missing") %>%
   na.omit()
-# dim(dfreg)
 
 # lineal
 base <- clmm(redist~1 + (1|country2),data=dfreg); icc1<- performance::icc(base)
 class <- clmm(redist~ class3+ (1|country2),data=dfreg)
 homclass <- clmm(redist~homclass + (1|country2),data=dfreg)
 full1 <- clmm(redist~ class3 +homclass+ female+agenum + age2+(1|country2),data=dfreg)
-# rob1 <- clmm(redist~class3+ homclass+ edyears+ female+ agenum+ age2+(1|country2),data=dfreg)
-# rob2 <- clmm(redist~class3+ homclass+ edyears+ Q03pcm+ female+ agenum +age2+(1|country2),data=dfreg)
-rob3 <- clmm(redist~class3+ homclass+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+(1|country2),data=dfreg)
+rob1 <- clmm(redist~class3+ homclass+ edyears+ female+ agenum+ age2+(1|country2),data=dfreg)
+rob2 <- clmm(redist~class3+ homclass+ edyears+ Q03pcm+ female+ agenum +age2+(1|country2),data=dfreg)
+rob3 <- clmm(redist~class3+ homclass+ edyears+ Q03pcm+ workst + union+ female+agenum +age2 +  (1|country2),data=dfreg)
+rob4 <- clmm(redist~class3+ homclass+ edyears+ Q03pcm+ workst + union+ female+agenum +age2 + (homclass|country2),data=dfreg)
+anova(rob3,rob4)
 # Interactions segregation x class
-int_homo <- clmm(redist~class3*homclass+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+ (1|country2),data=dfreg)
-# models <- list(homclass,class,full1,
-#                # rob1,rob2,
-#                rob4)
-# texreg::screenreg(int_homo,single.row = F)
+int_homo <- clmm(redist~class3*homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ (1|country2),data=dfreg)
 
 cap1 <- "Multilevel regression for redistributive preferences, network homogeneity and social class" 
 coefmap <-  list(homclass ="Class-based network homogeneity",
-                 'class3Service Class (I+II)' ='Service Class',
+                 'class3Intermediate class (III+IV)' ='Intermediate Class',
                  'class3Working Class (V+VI+VII)' ='Working Class',
                  "Q03pcmT02" = "Middle",
                  "Q03pcmT03" = "High",
                  "edyears" = 'Education in years',
-                  "labst1Not in labour force"="Not in labor force",
-                 "unionYes" = 'Union: Yes',
-                 'class3Service Class (I+II):homclass'='Homogeneity x Service Class',
+                  "workstNot in paid work"="Not in labor force",
+                 "unionYes" = 'Union membership: Yes',
+                 'class3Intermediate class (III+IV):homclass'='Homogeneity x Intermediate Class',
                  'class3Working Class (V+VI+VII):homclass'='Homogeneity x Working Class'
                  )
-coefgroup <- list("Social Class (ref: Intermediate Class)"=2:3,
+coefgroup <- list("Social Class (ref: Service Class)"=2:3,
                   "Income Tercile (ref: Low)"=4:5,
                   "Homogeneity x Social Class"=9:10
                   )
@@ -112,6 +125,7 @@ gof1<-  c(NA,NA,"Num. Countries:","Var: Group",NA)
 
 models <- list(homclass,class,full1,rob3,int_homo)
 texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,
+                                float.pos="h!",
                   include.thresholds=FALSE,
                   custom.coef.map=coefmap,
                   groups = coefgroup,
@@ -119,6 +133,13 @@ texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,
                   include.loglik = FALSE,include.aic = FALSE,
                   # custom.gof.names = gof1
                 )
+
+
+
+avg_slopes(
+  int_homo,
+  by = "class3",
+  variables = "homclass")
 ```
 
 ```{r ord-strongties,results='asis', cache=T}
