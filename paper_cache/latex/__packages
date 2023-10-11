@@ -20,3 +20,5 @@ gridExtra
 marginaleffects
 tinylabels
 papaja
+dotwhisker
+broom.mixed
