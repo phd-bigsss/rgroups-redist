@@ -1257,8 +1257,8 @@ df1$class6<-forcats::fct_rev(df1$class6)
 dfreg <- df1 %>% dplyr::select(redist,
                         isei08,
                         eindex,
-                        prestige,
-                        diversity,
+                        # prestige,
+                        # diversity,
                         # isei_range,
                         # hindex_sta,
                         # hindex_10,
@@ -1276,10 +1276,9 @@ class <- lmer(redist~1 +female+agenum + isei08+ (1|country),data=dfreg)
 class_status <- lmer(redist~1 +female+agenum + isei08+ednum+ (1|country),data=dfreg)
 full <- lmer(redist~1+female+agenum+isei08+ednum+prestige+diversity+eindex+(1|country),data=dfreg)
 full_int1 <- lmer(redist~1+female+agenum+eindex*isei08+(1|country),data=dfreg)
-full_int2 <- lmer(redist~1+female+agenum+prestige+diversity+eindex*isei08+ednum+(1+diversity|country),data=dfreg)
-models <- list(prestige,diversity,class,class_status,full,full_int1,full_int2)
-texreg::knitreg(models)
-
+full_int2 <- lmer(redist~1+female+agenum+eindex*isei08+ednum+(1|country),data=dfreg)
+models <- list(class,class_status,full,full_int1,full_int2)
+texreg::knitreg(full_int2)
 texreg::plotreg(full,omit.coef = "(Intercept)")
 
 interplot::interplot(m = full_int1,var1 = "eindex",var2="isei08") +
@@ -1363,11 +1362,11 @@ dfreg <- df1 %>% select(redist,
                         class3,
                         class5,
                         # eindex,
-                        prestige,
-                        diversity,
-                        # isei_range,
-                        # hindex_sta,
-                        # hindex_10,
+                        # prestige,
+                        # diversity,
+                        isei_range,
+                        hindex_sta,
+                        hindex_10,
                         ednum,female,agenum,country) %>% na.omit()
 dim(dfreg)
 

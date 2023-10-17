@@ -455,8 +455,8 @@ models <- list(homclass,full1,rob2,int_homo)
 texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,
                                 float.pos="h!",
                   include.thresholds=FALSE,
-                  custom.coef.map=coefmap,
-                  groups = coefgroup,
+                  # custom.coef.map=coefmap,
+                  # groups = coefgroup,
                   custom.gof.rows=gofrow,
                   include.loglik = FALSE,include.aic = FALSE,
                   # custom.gof.names = gof1
@@ -566,14 +566,26 @@ ggplot() +
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,gridExtra,papaja)        
 # Predicted values 
 
-plot_predictions(int_homo, condition = c("homclass","class3")) +
-  facet_grid(~factor(class3, levels=c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)")))+
+# plot_predictions(int_homo, condition = c("homclass","class3")) +
+#   facet_grid(~factor(class3, levels=c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)")))+
+#   labs(caption = paste0("N=",nobs(int_homo),", Countries=",lme4::ngrps(int_homo))) +
+#   xlab("Network homogeneity")+
+#   ylab("Redistributive preferences") +
+#   theme(legend.position = "none", legend.title = element_blank())
+#   # scale_fill_grey(start = 0.40, end = 0.6) +
+#   # scale_color_grey(start = 0.40, end = 0.6)
+
+df_pred1 <- plot_predictions(int_homo, condition = c("homclass","class3"),draw = F) 
+# names(df_pred1)
+df_pred1 %>% 
+ggplot(aes(y =estimate,x=homclass, fill=class3, color=class3,ymin=conf.low, ymax=conf.high)) +
+  geom_line(size=0.75) +
+  geom_point(size=1.5) +
+  geom_ribbon(alpha=0.2,size=0.5,linetype=1) +
   labs(caption = paste0("N=",nobs(int_homo),", Countries=",lme4::ngrps(int_homo))) +
   xlab("Network homogeneity")+
   ylab("Redistributive preferences") +
-  theme(legend.position = "none", legend.title = element_blank())
-  # scale_fill_grey(start = 0.40, end = 0.6) +
-  # scale_color_grey(start = 0.40, end = 0.6)
+  theme(legend.position = "bottom", legend.title = element_blank())
 ```
 
 \pagebreak
@@ -630,47 +642,59 @@ pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjlabelled,haven,stringr,sjPlot)
 rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 dfreg <- df1 %>% dplyr::select(redist,
-                        class3=dclass3,
-                        homclass=homclass2,
-                        # homclass=eindex,
-                        # homclass=ingroup,
-                        Q05pcm,
+                        class3,
+                        homclass,
                         Q03pcm,
-                        gini_disp,
-                        gini_mkt,
-                        # giniot=gini,
-                        giniot=gv_spen,
-                        rgdpna,
                         edyears,
                         female,
                         agenum,
-                        country2,
                         union,
-                        workst,oecd) %>% 
+                        workst,
+                        WEIGHT,
+                        region,
+                        "gini_disp",
+                        "gini_mkt",
+                        rgdpna,
+                        oecd,
+                        country2,country
+                        ) %>% 
   mutate(logrgdpna=log(rgdpna),
-         age2=agenum^2,
-         edyears2=edyears^2) %>%
-  # filter(!country2 %in% c("Turkey","Estonia")) %>%
+         edyears2=edyears^2,
+         age2=agenum^2) %>%
+  # filter(!country2 %in% c("CHN")) %>%
+  # filter(!country2 %in% c("TWN")) %>%
+  # filter(!country2 %in% c("JPN")) %>%
+  # filter(!country2 %in% c("ZAF")) %>%
+  # filter(!country2 %in% c("PHL")) %>%
+  # filter(!country2 %in% c("FIN")) %>%
+  # filter(!country2 %in% c("USA")) %>%
+  # filter(!country2 %in% c("GBR")) %>%
+  # filter(!country2 %in% c("ISL")) %>%
+  # filter(!country2 %in% c("TUR","EST")) %>%
+  # filter(!country2 %in% c("MEX")) %>%
+# filter(!country2 %in% c("HUN")) %>%
   # filter(MAINSTAT %in% c(1,2)) %>%
-  # filter(agenum %in% c(25:65)) %>%
-  filter(oecd=="OECD") %>% 
+  # filter(agenum %in% c(25:65)) %>% # Paskov & Weisstanner
+  # filter(PARTLIV %in% c(0,1,2,3)) %>%
+  # filter(!region %in% c("Northern America","South America")) %>%
+  # filter(Q03pcm!="Missing") %>%
+    filter(oecd=="OECD") %>%
   na.omit()
 # T03dim(dfreg)
 
 main <- "redist~class3+ homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ (1|country2)"
 base <- lmer(formula(main),data=dfreg,weights = WEIGHT)
 giniD_gdp<- update(base, . ~ . +gini_disp+logrgdpna)
-giniD_rs <-update(base, . ~ . - (1|country2) + (homclass|country2))
-anova(giniD_gdp,giniD_rs)
-giniD_int<- lmer(formula(paste0(main,"+homclass*gini_disp+logrgdpna","+(homclass|country2)")),data=dfreg)
+giniD_rs <- update(giniD_gdp, . ~ . - (1|country2) + (homclass|country2))
+# anova(giniD_gdp,giniD_rs)
+giniD_int<- update(giniD_rs, . ~ . + homclass*gini_disp + (homclass|country2))
 # summary(giniD_int)
 
-giniM_gdp<- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ gini_mkt + logrgdpna+ (1|country2),data=dfreg)
-giniM_rs<- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ gini_mkt + logrgdpna+ (1+homclass|country2),data=dfreg)
+giniM_gdp<- update(base, . ~ . +gini_mkt+logrgdpna)
+giniM_rs <- update(giniM_gdp, . ~ . - (1|country2) + (homclass|country2))
 # anova(giniM_gdp,giniM_rs)
-giniM_int <- lmer(redist~class3+ homclass*gini_mkt+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ gini_mkt + logrgdpna+ (1+homclass|country2),data=dfreg)
-# anova(giniOT_gdp,giniOT_rs)
-
+giniM_int <- update(giniM_rs, . ~ . + homclass*gini_mkt + (homclass|country2))
+summary(giniM_int)
 models <- list(giniD_gdp,giniD_rs,giniD_int,
                giniM_gdp,giniM_rs,giniM_int)
 
@@ -779,49 +803,63 @@ pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr,gr
 rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 dfreg <- df1 %>% dplyr::select(redist,
-                        class3=dclass3,
-                        homclass=homclass2,
-                        # homclass=homclass_res,
-                        Q05pcm,
+                        class3,
+                        homclass,
                         Q03pcm,
-                        gini_disp,
-                        gini_mkt,
-                        giniot=gini,
-                        giniindex,ttheilge1,
-                        gv_spen=gv_spen,
-                        top10,
-                        middle50,
-                        palmaratio,
-                        d10d1,
-                        rgdpna,
-                        individualism,
                         edyears,
                         female,
                         agenum,
-                        country2,
                         union,
                         workst,
-                        oecd
+                        WEIGHT,
+                        region,
+                        "gini_disp",
+                        "gini_mkt",
+                        rgdpna,
+                        oecd,
+                        country2,country,
+                        palmaratio,
+                        top10,
+                        middle50,
+                        d10d1,
+                        giniindex,
+                        ttheilge1
                         ) %>% 
   mutate(logrgdpna=log(rgdpna),
-         age2=agenum^2,
-         edyears2=edyears^2) %>%
-    # filter(!country2 %in% c("Turkey","Estonia")) %>%
+         edyears2=edyears^2,
+         age2=agenum^2) %>%
+  # filter(!country2 %in% c("CHN")) %>%
+  # filter(!country2 %in% c("TWN")) %>%
+  # filter(!country2 %in% c("JPN")) %>%
+  # filter(!country2 %in% c("ZAF")) %>%
+  # filter(!country2 %in% c("PHL")) %>%
+  # filter(!country2 %in% c("THA")) %>%
+  # filter(!country2 %in% c("USA")) %>%
+  # filter(!country2 %in% c("GBR")) %>%
+  # filter(!country2 %in% c("ISL")) %>%
+  # filter(!country2 %in% c("TUR","EST")) %>%
+  # filter(!country2 %in% c("MEX")) %>%
+# filter(!country2 %in% c("HUN")) %>%
   # filter(MAINSTAT %in% c(1,2)) %>%
-  # filter(agenum %in% c(25:65)) %>%
-  # filter(oecd=="OECD") %>% 
+  # filter(agenum %in% c(25:65)) %>% # Paskov & Weisstanner
+  # filter(PARTLIV %in% c(0,1,2,3)) %>%
+  # filter(!region %in% c("Northern America","South America")) %>%
+  # filter(Q03pcm!="Missing") %>%
+    # filter(oecd=="OECD") %>%
   na.omit()
 
 
-int_palma <- lmer(redist~class3+ homclass*palmaratio+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+logrgdpna + (1+homclass|country2),data=dfreg)
-int_pc10  <- lmer(redist~class3+ homclass*top10+edyears+ Q03pcm+ workst+ union+ female+agenum +age2+logrgdpna +(1+homclass|country2),data=dfreg)
-int_pc50  <- lmer(redist~class3+homclass*middle50+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+logrgdpna +(1+homclass|country2),data=dfreg)
-int_d10d1<- lmer(redist~class3+ homclass*d10d1+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+logrgdpna +(1+homclass|country2),data=dfreg)
-int_gini_wiid  <- lmer(redist~class3+ homclass*giniindex+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+logrgdpna +(1+homclass|country2),data=dfreg)
-int_theil  <- lmer(redist~class3+ homclass*ttheilge1+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+logrgdpna +(1+homclass|country2),data=dfreg)
+main <- "redist~class3+ homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ logrgdpna +(homclass|country2)"
+base <- lmer(formula(main),data=dfreg,weights = WEIGHT)
+int_palma <- update(base, . ~ . +homclass*palmaratio)
+int_pc10  <- update(base, . ~ . +homclass*top10)
+int_pc50  <- update(base, . ~ . +homclass*middle50)
+int_d10d1 <- update(base, . ~ . +homclass*d10d1)
+int_gini_wiid <- update(base, . ~ . +homclass*giniindex)
+int_theil  <- update(base, . ~ . +homclass*ttheilge1)
 
-models_m <- list(int_palma,int_pc10,int_pc50,int_d10d1
-                 # int_gini_wiid,int_theil
+models_m <- list(int_palma,int_pc10,int_pc50,int_d10d1,
+                 int_gini_wiid,int_theil
                  )
 
 cap1=c("Cross-level interaction for Network homogeneity and Economic Inequality")
@@ -834,16 +872,16 @@ list(homclass = "Class-based network homogeneity",
   "homclass:top10"    = "Homogeneity x top 10",
   middle50             = "Share National Income -  bottom 50%",
   "homclass:middle50"    = "Homogeneity x bottom 50",
-  individualism         = "Individualism Index*",
-  "homclass:individualism" = "Homogeneity x Individualism",
-  gv_spen               = "Gov. Spending (% GDP)*",
-  "homclass:gv_spen"      = "Homogeneity x Gov. Spend.",
+  # individualism         = "Individualism Index*",
+  # "homclass:individualism" = "Homogeneity x Individualism",
+  # gv_spen               = "Gov. Spending (% GDP)*",
+  # "homclass:gv_spen"      = "Homogeneity x Gov. Spend.",
     d10d1             = "Ratio D10/D01",
   "homclass:d10d1"    = "Homogeneity x Ratio D10/D01"  
 )
 texreg::knitreg(models_m,scalebox = 0.75,
                 float.pos="h!",                
-                custom.coef.map = customcoef,
+                # custom.coef.map = customcoef,
                 caption.above = T,caption = cap1)
 ```
 

@@ -1108,7 +1108,8 @@ df1 <- df1 %>%
   mutate(oesch16spo = isco88_to_oesch(isco88spo, self_employed_spo, n_employees_spo, n_classes = 16,to_factor = T,label=T),
          oesch8spo = isco88_to_oesch(isco88spo, self_employed_spo, n_employees_spo, n_classes = 8,to_factor = T,label=T))
 
-frq(df1$oesch16)
+frq(df1$oesch8spo)
+frq(df1$oesch8)
 
 df1$oesch16 <- as_labelled(df1$oesch16)
 df1$oesch16spo <- as_labelled(df1$oesch16spo)
@@ -1140,6 +1141,8 @@ df1$oesch16spo <- as_labelled(df1$oesch16spo)
 
 df1$oesch3res <- car::recode(df1$oesch16,recode="c(1,2,9,10,5,6,13,14)=1;c(3,4,11)=2;c(7,8,12,15,16)=3")
 df1$oesch3spo <- car::recode(df1$oesch16spo,recode="c(1,2,9,10,5,6,13,14)=1;c(3,4,11)=2;c(7,8,12,15,16)=3")
+
+sjPlot::tab_xtab(df1$oesch3res,df1$oesch3spo,show.na = T)
 ```
 
 
