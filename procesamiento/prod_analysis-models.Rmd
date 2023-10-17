@@ -1245,9 +1245,6 @@ ggsave(plot = last_plot(),filename = "mar_homclass_gini.png",device = "png",
 #        path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
 ```
 
-
-
-
 ```{r isei, eval=FALSE, include=FALSE}
 if (!require("pacman")) install.packages("pacman") # instalar pacman
 pacman::p_load(sjmisc,ggplot2,lme4,interplot)

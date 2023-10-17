@@ -383,49 +383,43 @@ pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,s
 rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 dfreg <- df1 %>% dplyr::select(redist,
-                        class3=dclass3,
-                        class5,
-                        homclass=homclass2,
+                        class3=digclass3,
+                        homclass,
                         Q03pcm,
-                        # Q03pcm=Q03rm,
-                        # Q03pcm=Q03rm,
-                        # Q03pcm=zincpc,
-                        # Q03rm=
-                        # isei08,
-                        rgdpna,
                         edyears,
                         female,
                         agenum,
-                        country2,country,
                         union,
                         workst,
-                        # isolation,  
-                        MAINSTAT,
-                        # activities,
                         # WEIGHT,
                         region,
                         "gini_disp",
-                        "gini_mkt",oecd
+                        "gini_mkt",
+                        rgdpna,
+                        oecd,
+                        country2,country
                         ) %>% 
   mutate(logrgdpna=log(rgdpna),
          age2=agenum^2,
          edyears2=edyears^2) %>%
   # filter(!country2 %in% c("CHN")) %>%
   # filter(!country2 %in% c("TWN")) %>%
+  # filter(!country2 %in% c("JPN")) %>%
   # filter(!country2 %in% c("ZAF")) %>%
+  # filter(!country2 %in% c("PHL")) %>%
   # filter(!country2 %in% c("FIN")) %>%
   # filter(!country2 %in% c("USA")) %>%
   # filter(!country2 %in% c("GBR")) %>%
   # filter(!country2 %in% c("ISL")) %>%
   # filter(!country2 %in% c("TUR","EST")) %>%
+  # filter(!country2 %in% c("MEX")) %>%
   # filter(MAINSTAT %in% c(1,2)) %>%
   # filter(agenum %in% c(25:65)) %>% # Paskov & Weisstanner
   # filter(PARTLIV %in% c(0,1,2,3)) %>%
-  # filter(region %in% c("Northern America","South America")) %>%
+  # filter(!region %in% c("Northern America","South America")) %>%
   # filter(Q03pcm!="Missing") %>%
     # filter(oecd=="OECD") %>%
   na.omit()
-
 # frq(df1$region)
 # frq(dfreg$country2)
 
@@ -436,21 +430,15 @@ homclass <- lmer(redist~homclass + (1|country2),data=dfreg)
 full1 <- lmer(redist~ class3 +homclass+ female+agenum + age2+(1|country2),data=dfreg)
 rob1 <- lmer(redist~class3+ homclass+ edyears+ female+ agenum+ age2+(1|country2),data=dfreg)
 rob2 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ female+ agenum +age2+(1|country2),data=dfreg)
-rob3 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ workst + union+ female+agenum +age2 +  (1|country2),data=dfreg)
+rob3 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ workst + union+ female+agenum +age2 + (1|country2),data=dfreg)
 rob4 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ workst + union+ female+agenum +age2 + (homclass|country2),data=dfreg)
 # anova(rob3,rob4)
-
 # plot_model(rob4,type = "re",show.values = T)
 
 # Interactions segregation x class
 int_homo <- lmer(redist~class3*homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ (1|country2),data=dfreg)
 # int_homo2 <- lmer(redist~class3*homclass+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+  (homclass + class3*homclass|country2),data=dfreg)
-# anova(int_homo,int_homo2)
-# plot_model(int_homo2,type = "re",show.values = F,vline.color = "black")
 
-# models <- list(homclass,class,full1,
-#                # rob1,rob2,
-#                rob4)
 cap1 <- "Multilevel regression for redistributive preferences, network homogeneity and social class" 
 coefmap <-  list(homclass ="Class-based network homogeneity",
                  'class3Intermediate class (III+IV)' ='Intermediate Class',

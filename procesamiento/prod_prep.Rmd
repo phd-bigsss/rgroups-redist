@@ -634,8 +634,8 @@ df1$class11d <-
                          levels = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
                          labels =  c("I", "II", "IIIab", "IVa", "IVb", 
                                      "IVc", "V", "VI", "VIIa", "VIIb")) 
-frq(df1$class11d)
 sjlabelled::set_label(df1$class11d) <- "Social Class"
+frq(df1$class11d)
 
 # Class Scheme 3 classes
 df1$class3 <- car::recode(df1$class11d,as.factor = T,
@@ -808,31 +808,46 @@ sjlabelled::set_label(df1$class6spo) <- "Social Class (Spouse)"
 
 
 ```{r class-from-stata2}
-# Load the data created in stata------------------------------------------------
 # Class R´s and Spouse----------------------------------------------------------
-df1$digclass10 <- car::recode(df1$digclass10, "7=8; 8=9; 9=10; 10=11; 11=7")
-df1$digclass10 <- sjlabelled::set_labels(df1$digclass10, levels = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11),
-                        labels = c("I", "II", "IIIa", "IIIb", "IVa", "IVb", "IVc", "V", "VI", "VIIa", "VIIb"))
+frq(df1$digclass10)
 
-sjlabelled::set_label(df1$digclass10) <- "Social Class - respondent"
+# df1$class10 <- car::recode(df1$class10, "7=8; 8=9; 9=10; 10=11; 11=7")
+df1$digclass10f <- as_factor(df1$digclass10)
+frq(df1$digclass10f)
 
-#frq(df1$class10)
+df1$digclass10f <- factor(df1$digclass10f,
+                       levels = c("higher controllers","lo controllers",
+                                 "routine nonmanual",
+                                 "sempl with emp","sempl without empl","selfempl farm",
+                                 "manual supervisor","skilled manual","semi-unskilld manual","farm labor"),
+                       labels = c("I", "II", "IIIab", "IVa", "IVb", "IVc", "V", "VI", "VIIa", "VIIb"))
 
-df1$digclass10spo <- car::recode(df1$digclass10spo, "7=8; 8=9; 9=10; 10=11; 11=7")
-df1$digclass10spo <- sjlabelled::set_labels(df1$digclass10spo, levels = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11),
-                        labels = c("I", "II", "IIIa", "IIIb", "IVa", "IVb", "IVc", "V", "VI", "VIIa", "VIIb"))
 
-sjlabelled::set_label(df1$digclass10spo) <- "Social Class - spouse"
+df1$digclass10f <- as_labelled(df1$digclass10f)
+sjlabelled::set_label(df1$digclass10f) <- "Social Class - respondent"
+frq(df1$digclass10f)
 
-#frq(df1$class10spo)
+df1$digclass10spof <- as_factor(df1$digclass10spo)
+frq(df1$digclass10spof)
 
+df1$digclass10spof <-factor(df1$digclass10spof,
+                       levels = c("higher controllers","lo controllers",
+                                 "routine nonmanual",
+                                 "sempl with emp","sempl without empl","selfempl farm",
+                                 "manual supervisor","skilled manual","semi-unskilld manual","farm labor"),
+                       labels = c("I", "II", "IIIab", "IVa", "IVb", "IVc", "V", "VI", "VIIa", "VIIb"))
+
+df1$digclass10spof <- as_labelled(df1$digclass10spof)
+sjlabelled::set_label(df1$digclass10spof) <- "Social Class - spouse"
+
+frq(df1$digclass10spof)
 #if NA in class of respondent, replace with spouse
 
-#frq(df1$class10)
-#frq(df1$class10spo)
+frq(df1$digclass10f)
+frq(df1$digclass10spof)
 
-df1$digclass11 <- ifelse(is.na(df1$digclass10),df1$digclass10spo,df1$digclass10)
-#frq(df1$class11)
+df1$digclass11 <- ifelse(is.na(df1$digclass10f),df1$digclass10spof,df1$digclass10f)
+frq(df1$class11)
 
 # if NA in respondents it is assumed to be lower than spouse
 # now, with the cases in we have information for respondent and spouse
@@ -841,16 +856,16 @@ df1$digclass11 <- ifelse(is.na(df1$digclass10),df1$digclass10spo,df1$digclass10)
 # Replace the highest class by dominance criteria 
 # Keep the highest of two values:
 df1$digclass11d <- pmax(df1$digclass11, #social class respondent + spouse vs:
-                       df1$digclass10spo,#social class spouse
-                       na.rm = T) # if NA, do nothing
-
+                     df1$digclass10spof,#social class spouse
+                     na.rm = T) # if NA, do nothing
+frq(df1$digclass11d)
 df1$digclass11d <- 
   sjlabelled::set_labels(df1$digclass11d,
-                         levels = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11),
-                         labels =  c("I", "II", "IIIa", "IIIb", "IVa", "IVb", 
+                         levels = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+                         labels =  c("I", "II", "IIIab", "IVa", "IVb", 
                                      "IVc", "V", "VI", "VIIa", "VIIb")) 
-frq(df1$digclass11d)
 sjlabelled::set_label(df1$digclass11d) <- "Social Class"
+frq(df1$digclass11d)
 
 # Class Scheme 3 classes
 df1$digclass3 <- car::recode(df1$digclass11d,as.factor = T,
@@ -1022,7 +1037,7 @@ sjlabelled::set_label(df1$digclass6spo) <- "Social Class (Spouse)"
 
 # Class using R
 
-```{r digclass}
+```{r digclass-egp}
 # install.packages("devtools")
 # devtools::install_git("https://code.europa.eu/digclass/digclass.git")
 library("DIGCLASS")
@@ -1078,7 +1093,26 @@ df1$dclass3 <- car::recode(df1$dclass11d,as.factor = T,
 sjlabelled::set_label(df1$dclass3) <- "Social Class"
 frq(df1$dclass3)
 frq(df1$class3)
+frq(df1$digclass3)
 ```
+
+
+```{r oesch-class}
+df1 <- df1 %>% 
+  mutate(oesch16 = isco88_to_oesch(isco88r, self_employed, n_employees, n_classes = 16,to_factor = T,label=T),
+         oesch8 = isco88_to_oesch(isco88r, self_employed, n_employees, n_classes = 8,to_factor = T,label=T))
+
+frq(df1$oesch16)
+frq(df1$oesch8)
+
+df1 <- df1 %>% 
+  mutate(oesch8spo = isco88_to_oesch(isco88spo, self_employed_spo, n_employees_spo, n_classes = 16,to_factor = T,label=T),
+         oesch8spo = isco88_to_oesch(isco88spo, self_employed_spo, n_employees_spo, n_classes = 8,to_factor = T,label=T))
+
+frq(df1$oesch8)
+frq(df1$oesch8spo)
+```
+
 
 # Networks
 
@@ -1414,6 +1448,7 @@ as.numeric(
 sjlabelled::set_label(df1$hindex_10) <- "D-index: 10 ocupations"
 ```
 
+- using my original coding
 ```{r homogeneity-v01}
 # EI homophily index
 df1$ingroup <- NA 
@@ -1536,7 +1571,73 @@ sjlabelled::set_label(df1$homclass_res) <- "Class homogeneity (R's)"
 ```
 
 
+- Using my edited original coding. I recoded the variables from n_employees y self_employed. The class scheme changed a bit, where the Service class was overestimated. This should be better:
+
 ```{r homogeneity-v02}
+# EI homophily index
+df1$ingroup <- NA 
+df1 %>% select(digclass3,n_high,n_middle,n_low,ingroup)
+df1$ingroup <- ifelse(df1$digclass3=="Service Class (I+II)",df1$n_high,df1$ingroup)
+df1$ingroup <- ifelse(df1$digclass3=="Intermediate class (III+IV)",df1$n_middle,df1$ingroup)
+df1$ingroup <- ifelse(df1$digclass3=="Working Class (V+VI+VII)",df1$n_low,df1$ingroup)
+#frq(df1$ingroup)
+
+df1$outgroup <- NA 
+df1 %>% select(digclass3,n_high,n_middle,n_low,outgroup)
+df1$outgroup <- ifelse(df1$digclass3=="Service Class (I+II)",rowSums(df1[,c("n_low","n_middle")],na.rm = T),df1$outgroup)
+df1$outgroup <- ifelse(df1$digclass3=="Intermediate class (III+IV)",rowSums(df1[,c("n_low","n_high")],na.rm = T),df1$outgroup)
+df1$outgroup <- ifelse(df1$digclass3=="Working Class (V+VI+VII)",rowSums(df1[,c("n_middle","n_high")],na.rm=T),df1$outgroup)
+#frq(df1$outgroup)
+
+# df1$eindex<- (df1$outgroup-df1$ingroup)/(df1$outgroup+df1$ingroup)
+df1$eindex2<- (df1$ingroup-df1$outgroup)/(df1$outgroup+df1$ingroup)
+sjlabelled::set_label(df1$eindex2) <- "EI homophily index"
+#frq(df1$eindex)
+hist.default(df1$eindex2)
+df1$eindex2_gc <- group_center(x = df1$eindex2,grp = df1$country)
+hist.default(df1$eindex2_gc)
+
+df1 %>% select(dclass3,n_high,n_middle,n_low,outgroup,ingroup,eindex)
+df1$homclass2 <- as.numeric(df1$ingroup/df1$know_total)
+sjlabelled::set_label(df1$homclass3) <- "Class homogeneity"
+df1$homclass2_gc <- group_center(x = df1$homclass2,grp = df1$country)
+# View(df1[,c("homclass","homclass_gc")])
+# Weighted EI index
+# https://arxiv.org/pdf/2109.00348.pdf
+
+```
+
+```{r homogeneity-resp-v02}
+# EI homophily index
+df1$ingroup_res <- NA 
+df1 %>% select(ddigclass3res,n_high,n_middle,n_low,ingroup_res)
+df1$ingroup_res <- ifelse(df1$digclass3res=="Service Class (I+II)",df1$n_high,df1$ingroup_res)
+df1$ingroup_res <- ifelse(df1$digclass3res=="Intermediate class (III+IV)",df1$n_middle,df1$ingroup_res)
+df1$ingroup_res <- ifelse(df1$digclass3res=="Working Class (V+VI+VII)",df1$n_low,df1$ingroup_res)
+# frq(df1$ingroup_res)
+
+df1$outgroup_res <- NA 
+df1 %>% select(digclass3res,n_high,n_middle,n_low,outgroup_res)
+df1$outgroup_res <- ifelse(df1$digclass3res=="Service Class (I+II)",rowSums(df1[,c("n_low","n_middle")],na.rm = T),df1$outgroup_res)
+df1$outgroup_res <- ifelse(df1$digclass3res=="Intermediate class (III+IV)",rowSums(df1[,c("n_low","n_high")],na.rm = T),df1$outgroup_res)
+df1$outgroup_res <- ifelse(df1$digclass3res=="Working Class (V+VI+VII)",rowSums(df1[,c("n_middle","n_high")],na.rm=T),df1$outgroup_res)
+# frq(df1$outgroup_res)
+
+df1$eindex_res<- (df1$ingroup_res-df1$outgroup_res)/(df1$outgroup_res+df1$ingroup_res)
+sjlabelled::set_label(df1$eindex_res) <- "EI homophily index (R's)"
+# frq(df1$eindex)
+# hist.default(df1$eindex)
+
+df1 %>% select(digclass3res,n_high,n_middle,n_low,outgroup_res,ingroup_res,eindex_res)
+df1$homclass_res <- as.numeric(df1$ingroup_res/df1$know_total)
+sjlabelled::set_label(df1$homclass_res) <- "Class homogeneity (R's)"
+# Weighted EI index
+# https://arxiv.org/pdf/2109.00348.pdf
+```
+
+
+
+```{r homogeneity-R-digclass}
 # EI homophily index
 df1$ingroup <- NA 
 df1 %>% select(class3,n_high,n_middle,n_low,ingroup)
@@ -1553,17 +1654,17 @@ df1$outgroup <- ifelse(df1$dclass3=="Working Class (V+VI+VII)",rowSums(df1[,c("n
 #frq(df1$outgroup)
 
 # df1$eindex<- (df1$outgroup-df1$ingroup)/(df1$outgroup+df1$ingroup)
-df1$eindex2<- (df1$ingroup-df1$outgroup)/(df1$outgroup+df1$ingroup)
-sjlabelled::set_label(df1$eindex2) <- "EI homophily index"
+df1$eindex3<- (df1$ingroup-df1$outgroup)/(df1$outgroup+df1$ingroup)
+sjlabelled::set_label(df1$eindex3) <- "EI homophily index"
 #frq(df1$eindex)
 hist.default(df1$eindex)
 df1$eindex_gc <- group_center(x = df1$eindex,grp = df1$country)
 hist.default(df1$eindex_gc)
 
 df1 %>% select(dclass3,n_high,n_middle,n_low,outgroup,ingroup,eindex)
-df1$homclass2 <- as.numeric(df1$ingroup/df1$know_total)
-sjlabelled::set_label(df1$homclass2) <- "Class homogeneity"
-df1$homclass2_gc <- group_center(x = df1$homclass2,grp = df1$country)
+df1$homclass3 <- as.numeric(df1$ingroup/df1$know_total)
+sjlabelled::set_label(df1$homclass3) <- "Class homogeneity"
+df1$homclass3_gc <- group_center(x = df1$homclass3,grp = df1$country)
 # View(df1[,c("homclass","homclass_gc")])
 # Weighted EI index
 # https://arxiv.org/pdf/2109.00348.pdf
@@ -1571,7 +1672,6 @@ df1$homclass2_gc <- group_center(x = df1$homclass2,grp = df1$country)
 
 # Thus, an EI score of -1 means complete homophily- the individual only has relationships with actors of the same “type” as they themselves are. An EI score of 1 means complete heterophily- all the alters are of a different “type” than they themselves are. Finally, an EI score of 0 means that an equal number of alters are of both the same “type” as the ego, and different types
 ```
-
 
 
 (i)  the highest status job accessed (upper reachability),
@@ -1681,8 +1781,6 @@ df1$activities<- rowMeans(df1[,c("act_lei","act_pol","act_vol")],na.rm = T)
 sjlabelled::set_label(df1$activities) <- "Participation in social activities"
 # summary(df1$activities)
 ```
-
-
 
 # Demographics
 
