@@ -1,11 +1,11 @@
 clear
-use "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\input\data\proc\ocup_respondent-spouse.dta" 
+*use "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\input\data\proc\ocup_respondent-spouse.dta" 
+use "C:\documentos-pcloud\rgroups-redist\input\data\proc\ocup_respondent-spouse.dta" 
+
+
  
 *ssc install isko
 *help isko
-
-
-save "P:\papers\ess-merit\input\data\proc\ELSOC_egp-isei-siops.dta", replace
 
 *iskolab
 
@@ -33,6 +33,20 @@ iskoegp class10spo , isko(isco88spo) sempl(sempspo) supvis(supvisspo)
 tabulate class10spo
 codebook class10spo
 
-drop isco88r-supvisspo
-save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\input\data\proc\class_respondent-spouse.dta", replace
+codebook self_employed
+tab n_employees
 
+iskoegp digclass10 , isko(isco88r) sempl(self_employed) supvis(n_employees)
+tabulate digclass10
+codebook digclass10
+
+iskoegp digclass10spo , isko(isco88spo) sempl(self_employed_spo) supvis(n_employees_spo)
+tabulate digclass10spo
+codebook digclass10spo
+
+tab class10 
+tab digclass10
+
+drop isco88r-n_employees_spo
+*save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\input\data\proc\class_respondent-spouse.dta", replace
+save "C:\documentos-pcloud\rgroups-redist\input\data\proc\class_respondent-spouse.dta", replace

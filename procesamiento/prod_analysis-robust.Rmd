@@ -18,6 +18,8 @@ output:
     keep_tex: false
     pandoc_args:
       - --template=input/mytemplate.tex #custom template para usar autores con afiliacion  
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -50,9 +52,9 @@ rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 df1$redistF <- as.factor(df1$redist)
 dfreg <- df1 %>% dplyr::select(redist=redistF,
-                        class3,
-                        class5,
-                        homclass,
+                        class3=dclass3,
+                        # class5,
+                        homclass=homclass2,
                         Q03pcm,
                         # Q03pcm=Q03rm,
                         # Q03pcm=Q03rm,
@@ -72,7 +74,7 @@ dfreg <- df1 %>% dplyr::select(redist=redistF,
                         # WEIGHT,
                         region,
                         "gini_disp",
-                        "gini_mkt"
+                        "gini_mkt",
                         ) %>% 
   mutate(logrgdpna=log(rgdpna),
          age2=agenum^2,
@@ -143,12 +145,6 @@ texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,
                   # custom.gof.names = gof1
                 )
 
-
-
-avg_slopes(
-  int_homo,
-  by = "class3",
-  variables = "homclass")
 ```
 
 ```{r ord-strongties,results='asis', cache=T}
@@ -394,4 +390,374 @@ texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,
                 )
 ```
 
+# OCDE countries
+
+```{r mod-homclass,results='asis', cache=T}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr)  
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+dfreg <- df1 %>% dplyr::select(
+                        redist,
+                        class3,
+                        class5,
+                        homclass,
+                        Q03pcm,
+                        # Q03pcm=Q03rm,
+                        # Q03pcm=Q03rm,
+                        # Q03pcm=zincpc,
+                        # Q03rm=
+                        # isei08,
+                        rgdpna,
+                        edyears,
+                        female,
+                        agenum,
+                        country2,country,
+                        union,
+                        # # isolation,  
+                        # # MAINSTAT,
+                        # # activities,
+                        # # WEIGHT,
+                        "gini_disp",
+                        "gini_mkt",
+                        oecd,
+                        MAINSTAT,
+                        WORK
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna),
+         age2=agenum^2,
+         edyears2=edyears^2) %>%
+  # filter(!country2 %in% c("CHN")) %>%
+  # filter(!country2 %in% c("TWN")) %>%
+  # filter(!country2 %in% c("ZAF")) %>%
+  # filter(!country2 %in% c("FIN")) %>%
+  # filter(!country2 %in% c("USA")) %>%
+  # filter(!country2 %in% c("GBR")) %>%
+  # filter(!country2 %in% c("ISL")) %>%
+  # filter(!country2 %in% c("TUR","EST")) %>%
+  # filter(MAINSTAT %in% c(1,2,3,4) & WORK %in% c(1,2) ) %>%
+  filter(agenum %in% c(25:65)) %>% # Paskov & Weisstanner
+  # filter(PARTLIV %in% c(0,1,2,3)) %>%
+  # filter(region %in% c("Northern America","South America")) %>%
+  # filter(Q03pcm!="Missing") %>%
+  filter(oecd=="OECD") %>%
+  dplyr::select(-MAINSTAT,-WORK) %>%
+  na.omit()
+
+# lineal
+base <- lmer(redist~1 + (1|country2),data=dfreg); icc1<- performance::icc(base)
+class <- lmer(redist~ class3+ (1|country2),data=dfreg)
+homclass <- lmer(redist~homclass + (1|country2),data=dfreg)
+full1 <- lmer(redist~ class3 +homclass+ female+agenum + age2+(1|country2),data=dfreg)
+rob1 <- lmer(redist~class3+ homclass+ edyears+ female+ agenum+ age2+(1|country2),data=dfreg)
+rob2 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ female+ agenum +age2+(1|country2),data=dfreg)
+rob3 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ union+ female+agenum +age2 +  (1|country2),data=dfreg)
+rob4 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ union+ female+agenum +age2 + (homclass|country2),data=dfreg)
+anova(rob3,rob4)
+
+# plot_model(rob4,type = "re",show.values = T)
+
+# Interactions segregation x class
+int_homo <- lmer(redist~class3*homclass+ edyears+ Q03pcm+ union+ female+agenum +age2+ (1|country2),data=dfreg)
+# int_homo2 <- lmer(redist~class3*homclass+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+  (homclass + class3*homclass|country2),data=dfreg)
+# anova(int_homo,int_homo2)
+# plot_model(int_homo2,type = "re",show.values = F,vline.color = "black")
+
+# models <- list(homclass,class,full1,
+#                # rob1,rob2,
+#                rob4)
+cap1 <- "Multilevel regression for redistributive preferences, network homogeneity and social class" 
+coefmap <-  list(homclass ="Class-based network homogeneity",
+                 'class3Intermediate class (III+IV)' ='Intermediate Class',
+                 'class3Working Class (V+VI+VII)' ='Working Class',
+                 "Q03pcmT02" = "Middle",
+                 "Q03pcmT03" = "High",
+                 "edyears" = 'Education in years',
+                  # "workstNot in paid work"="Not in labor force",
+                 "unionYes" = 'Union membership: Yes',
+                 'class3Intermediate class (III+IV):homclass'='Homogeneity x Intermediate Class',
+                 'class3Working Class (V+VI+VII):homclass'='Homogeneity x Working Class'
+                 )
+coefgroup <- list("Social Class (ref: Service Class)"=2:3,
+                  "Income Tercile (ref: Low)"=4:5,
+                  "Homogeneity x Social Class"=9:10
+                  )
+gofrow <-  list(Controls=c("No","No","No","Yes","Yes"))
+gof1<-  c(NA,NA,"Num. Countries:","Var: Group",NA)
+
+models <- list(homclass,class,full1,rob3,int_homo)
+texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,
+                                float.pos="h!",
+                  include.thresholds=FALSE,
+                  custom.coef.map=coefmap,
+                  # groups = coefgroup,
+                  custom.gof.rows=gofrow,
+                  include.loglik = FALSE,include.aic = FALSE,
+                  custom.gof.names = gof1
+                )
+```
+
+```{r coefplot,eval=FALSE, include=FALSE}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,dotwhisker,ggplot2,broom.mixed) 
+
+
+m1_df <-
+    broom.mixed::tidy(rob3) %>% filter(term %in%  c("class3Intermediate class (III+IV)",
+                                                    "class3Working Class (V+VI+VII)",
+                                                    "homclass")) %>% mutate(model = "Model 1")
+m2_df <-
+    broom.mixed::tidy(int_homo) %>% filter(term %in%  c("class3Intermediate class (III+IV)",
+                                                        "class3Working Class (V+VI+VII)",
+                                                        "homclass",
+                                                        "class3Intermediate class (III+IV):homclass",
+                                                        "class3Working Class (V+VI+VII):homclass")) %>% mutate(model = "Model 2")
+
+two_models <- rbind(m1_df)
+
+
+  dwplot(two_models,
+       vline = geom_vline(xintercept = 0,colour = "black",linetype = 1,size=0.01),
+       style = "dotwhisker",
+       dot_args =  list(size=5),
+       whisker_args = list(size=2),
+       vars_order = c("homclass",
+                      "class3Intermediate class (III+IV)",
+          "class3Working Class (V+VI+VII)",
+          "class3Intermediate class (III+IV):homclass",
+          "class3Working Class (V+VI+VII):homclass")) %>% 
+
+     relabel_predictors(
+        c("homclass"="Class based network homogeneity",
+          "class3Intermediate class (III+IV)"="Intermediate Class (ref: Service class)",
+          "class3Working Class (V+VI+VII)"="Working Class",
+          "class3Intermediate class (III+IV):homclass"="Homogeneity x Intermediate Class",
+          "class3Working Class (V+VI+VII):homclass"="Homogeneity x Working Class"))+
+      ggtitle("Multilevel regression for Network segregation, social class and redistributive preferences") +
+  labs(caption = paste0("N=",nobs(int_homo),", Countries=",lme4::ngrps(int_homo))) +
+  theme(
+        plot.title = element_text(face = "bold"),
+        legend.position = c(0.007, 0.01),
+        legend.justification = c(0, 0),
+        legend.background = element_rect(colour = "grey80"),
+        legend.title = element_blank(),
+        axis.text.y.left = element_text(face = "bold",size = 12)
+  )
+```
+
+```{r marg1,fig.dim=c(4.1,2.6),fig.cap=c("Conditional marginal effects of Network homogeneity on redistributive preferences"),out.width = "75%"}
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr)   
+# Conditional Marginal effect
+interplot <- 
+interplot::interplot(m = int_homo,var1 = "homclass",var2="class3")
+df_int <- interplot$data
+df_int <- df_int[c(1,2,4),]
+df_int$value <- c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)")
+df_int$value <- factor(df_int$value,ordered = T,
+                       levels = c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)")) 
+
+df_int %>% 
+ggplot() +
+  geom_point(aes(x = value,y = coef1)) + 
+  geom_errorbar(aes(x = value, ymin = lb, ymax = ub),color="black",width=0.1,size=1) +
+  labs(caption = paste0("N=",nobs(int_homo),", Countries=",lme4::ngrps(int_homo))) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10))+
+  ylab("Class-based homogeneity")+
+  xlab("Social Class")+
+  ggtitle("Redistributive preferences") +
+  geom_hline(yintercept = 0) + 
+  labs(caption = paste0("N=",nobs(int_homo),", Countries=",lme4::ngrps(int_homo))) +    
+  theme(plot.title = element_text(size = 8))  
+```
+
+```{r pred1,fig.height=3.6,fig.width=5.7,fig.cap=c("Conditional linear Predictions for network homogeneity on redistributive Preferences"),out.width = '75%'}
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,gridExtra,papaja)      
+# Predicted values 
+plot_predictions(int_homo, condition = c("homclass","class3")) +
+  facet_grid(~factor(class3, levels=c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)")))+
+  labs(caption = paste0("N=",nobs(int_homo),", Countries=",lme4::ngrps(int_homo))) +
+  xlab("Network homogeneity")+
+  ylab("Redistributive preferences") +
+  theme(legend.position = "none", legend.title = element_blank())
+  # scale_fill_grey(start = 0.40, end = 0.6) +
+  # scale_color_grey(start = 0.40, end = 0.6)
+```
+
+```{r mod-intermacro,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjlabelled,haven,stringr,sjPlot)  
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+dfreg <- df1 %>% dplyr::select(redist,
+                        class3,
+                        homclass=homclass_gc,
+                        # homclass=eindex,
+                        # homclass=ingroup,
+                        Q05pcm,
+                        Q03pcm,
+                        gini_disp,
+                        gini_mkt,
+                        rgdpna,
+                        edyears,
+                        female,
+                        agenum,
+                        country2,
+                        union,
+                        oecd,
+                        MAINSTAT, WORK
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna),
+         age2=agenum^2,
+         edyears2=edyears^2) %>%
+  # filter(!country2 %in% c("CHN")) %>%
+  # filter(!country2 %in% c("TWN")) %>%
+  # filter(!country2 %in% c("ZAF")) %>%
+  # filter(!country2 %in% c("FIN")) %>%
+  # filter(!country2 %in% c("USA")) %>%
+  # filter(!country2 %in% c("GBR")) %>%
+  # filter(!country2 %in% c("ISL")) %>%
+  # filter(!country2 %in% c("TUR","EST")) %>%
+  # filter(MAINSTAT %in% c(1,2,3,4) & WORK %in% c(1,2)) %>%
+  filter(agenum %in% c(25:65)) %>% # Paskov & Weisstanner
+  # filter(PARTLIV %in% c(0,1,2,3)) %>%
+  # filter(region %in% c("Northern America","South America")) %>%
+  # filter(Q03pcm!="Missing") %>%
+  filter(oecd=="OECD") %>%
+  na.omit()
+main <- "redist~class3+ homclass+ edyears+ Q03pcm+ union+ female+agenum +age2"
+
+giniD_gdp<-lmer(formula(paste0(main,"+gini_disp+logrgdpna","+(1|country2)")),data=dfreg)
+giniD_rs <-lmer(formula(paste0(main,"+gini_disp+logrgdpna","+(homclass|country2)")),data=dfreg)
+anova(giniD_gdp,giniD_rs)
+giniD_int<- lmer(formula(paste0(main,"+homclass*gini_disp+logrgdpna","+(homclass|country2)")),data=dfreg)
+# summary(giniD_int)
+
+giniM_gdp<- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ union+ female+agenum +age2+ gini_mkt + logrgdpna+ (1|country2),data=dfreg)
+giniM_rs<- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ union+ female+agenum +age2+ gini_mkt + logrgdpna+ (1+homclass|country2),data=dfreg)
+anova(giniM_gdp,giniM_rs)
+giniM_int <- lmer(redist~class3+ homclass*gini_mkt+ edyears+ Q03pcm+ union+ female+agenum +age2+ gini_mkt + logrgdpna+ (1+homclass|country2),data=dfreg)
+
+models <- list(giniD_gdp,giniD_rs,giniD_int,
+               giniM_gdp,giniM_rs,giniM_int)
+
+texreg::knitreg(models,
+                caption=paste("(\\#tab:modinter1)","Cross-level interaction for Network homogeneity and Economic Inequality"),
+                caption.above=T,float.pos="h!",
+                # include.thresholds=FALSE,
+                custom.coef.map=list(homclass="Network Homogeneity",
+                                     logrgdpna="log GDP","gini_disp"="Gini (Disposable) ",
+                                     "homclass:gini_disp"="Homogeneity x Gini (D)",
+                                     "gini_mkt"="Gini (Market) ",
+                                     "homclass:gini_mkt"="Homogeneity x Gini (M)"),
+                  # groups = coefgroup,
+                  # custom.gof.rows=gofrow,
+                  include.loglik = FALSE,include.aic = FALSE,
+                  # custom.gof.names = gof1
+                )
+```
+
+
+```{r mod-other-macro,fig.height=3,fig.width=6,out.width='70%',results='asis', cache=T}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr,gridExtra)  
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+dfreg <- df1 %>% dplyr::select(redist,
+                        class3,
+                        homclass=homclass_gc,
+                        # homclass=homclass_res,
+                        Q05pcm,
+                        Q03pcm,
+                        gini_disp,
+                        gini_mkt,
+                        giniot=gini,
+                        giniindex,ttheilge1,
+                        gv_spen=gv_spen,
+                        top10,
+                        middle50,
+                        palmaratio,
+                        d10d1,
+                        rgdpna,
+                        individualism,
+                        edyears,
+                        female,
+                        agenum,
+                        country2,
+                        union,
+                        MAINSTAT,WORK,
+                        oecd
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna),
+         age2=agenum^2,
+         edyears2=edyears^2) %>%
+  # filter(!country2 %in% c("CHN")) %>%
+  # filter(!country2 %in% c("TWN")) %>%
+  # filter(!country2 %in% c("ZAF")) %>%
+  # filter(!country2 %in% c("FIN")) %>%
+  # filter(!country2 %in% c("USA")) %>%
+  # filter(!country2 %in% c("GBR")) %>%
+  # filter(!country2 %in% c("ISL")) %>%
+  # filter(!country2 %in% c("TUR","EST")) %>%
+  # filter(MAINSTAT %in% c(1,2,3,4) & WORK %in% c(1,2) ) %>%
+  filter(agenum %in% c(25:65)) %>% # Paskov & Weisstanner
+  # filter(PARTLIV %in% c(0,1,2,3)) %>%
+  # filter(region %in% c("Northern America","South America")) %>%
+   filter(oecd=="OECD") %>%
+   # dplyr::select(-MAINSTAT,-WORK) %>%
+   na.omit()
+
+int_palma <- lmer(redist~class3+ homclass*palmaratio+ edyears+ Q03pcm+ union+ female+agenum +age2+logrgdpna + (1+homclass|country2),data=dfreg)
+int_pc10  <- lmer(redist~class3+ homclass*top10+edyears+ Q03pcm+  union+ female+agenum +age2+logrgdpna +(1+homclass|country2),data=dfreg)
+int_pc50  <- lmer(redist~class3+homclass*middle50+ edyears+ Q03pcm+  union+ female+agenum +age2+logrgdpna +(1+homclass|country2),data=dfreg)
+int_d10d1<- lmer(redist~class3+ homclass*d10d1+ edyears+ Q03pcm+  union+ female+agenum +age2+logrgdpna +(1+homclass|country2),data=dfreg)
+int_gini_wiid  <- lmer(redist~class3+ homclass*giniindex+ edyears+ Q03pcm+  union+ female+agenum +age2+logrgdpna +(1+homclass|country2),data=dfreg)
+int_theil  <- lmer(redist~class3+ homclass*ttheilge1+ edyears+ Q03pcm+  union+ female+agenum +age2+logrgdpna +(1+homclass|country2),data=dfreg)
+
+int_gvspen  <- lmer(redist~class3+ homclass*gv_spen+ edyears+ Q03pcm+  union+ female+agenum +age2+logrgdpna +(1+homclass|country2),data=dfreg)
+
+
+models_m <- list(int_palma,int_pc10,int_pc50,int_d10d1,
+                 int_gini_wiid,int_theil,int_gvspen
+                 )
+
+cap1=c("Cross-level interaction for Network homogeneity and Economic Inequality")
+customcoef <- 
+list(homclass = "Class-based network homogeneity",
+  logrgdpna           = "log GDP",
+  palmaratio               = "Palma Ratio",
+  "homclass:palmawd"      = "Homogeneity x Palma Ratio",
+  top10             = "Share National Income - top 10%",
+  "homclass:top10"    = "Homogeneity x top 10",
+  middle50             = "Share National Income -  bottom 50%",
+  "homclass:middle50"    = "Homogeneity x bottom 50",
+  individualism         = "Individualism Index*",
+  "homclass:individualism" = "Homogeneity x Individualism",
+  gv_spen               = "Gov. Spending (% GDP)*",
+  "homclass:gv_spen"      = "Homogeneity x Gov. Spend.",
+    d10d1             = "Ratio D10/D01",
+  "homclass:d10d1"    = "Homogeneity x Ratio D10/D01"  
+)
+texreg::knitreg(models_m,scalebox = 0.75,
+                float.pos="h!",
+                # custom.coef.map = customcoef,
+                caption.above = T,caption = cap1)
+```
+
+```{r}
+interplot::interplot(m = int_palma,var1 = "homclass",var2="palmaratio") +
+  ylab("Class-based homogeneity coefficient")+ geom_hline(yintercept = 0)
+
+interplot::interplot(m = int_d10d1,var1 = "homclass",var2="d10d1") +
+  ylab("Class-based homogeneity coefficient")+ geom_hline(yintercept = 0)
+
+interplot::interplot(m = int_gini_wiid,var1 = "homclass",var2="giniindex") +
+  ylab("Class-based homogeneity coefficient")+ geom_hline(yintercept = 0)
+
+interplot::interplot(m = int_theil,var1 = "homclass",var2="ttheilge1") +
+  ylab("Class-based homogeneity coefficient")+ geom_hline(yintercept = 0)
+
+interplot::interplot(m = int_gvspen,var1 = "homclass",var2="gv_spen") +
+  ylab("Class-based homogeneity coefficient")+ geom_hline(yintercept = 0)
+
+```
 

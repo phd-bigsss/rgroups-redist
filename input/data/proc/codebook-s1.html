@@ -803,7 +803,7 @@
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">115</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">EMPREL</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">Employment relationship</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">0<br>1<br>2<br>3<br>4<br>8<br>9</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">0<br>1<br>2<br>3<br>4<br>8<br>9<br>NA(n)</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">NAP (Code 3 in WORK)<br>Employee<br>Self-employed without employees<br>Self-employed with employees<br>Working for own family's business<br>Don't know<br>No answer</td>
 </tr>
 <tr>
@@ -817,14 +817,14 @@
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">117</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">WRKSUP</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">Supervise other employees</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">0<br>1<br>2<br>8<br>9</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">0<br>1<br>2<br>8<br>9<br>NA(a)<br>NA(d)<br>NA(n)</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">NAP (Code 3 in WORK, US: Code 2,3 in WORK)<br>Yes<br>No<br>Don't know<br>No answer</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">118</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">NSUP</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Number of other employees supervised</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">0<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>19<br>30<br>9995<br>9998<br>9999</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">0<br>1<br>19<br>2<br>3<br>30<br>4<br>5<br>6<br>7<br>8<br>9<br>9995<br>9998<br>9999<br><span style="omit">&lt;...&gt;</span></td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">NAP (code 2, 0 in WRKSUP)<br>1 employee (SR: 0-1 subord., not supervised)<br>2<br>3<br>4 employees (SR: 2-5 subordinates)<br>5<br>6<br>7<br>8<br>9 employees (SR: 6-11 subordinates)<br>19 employees (SR: 12-25 subordinates)<br>30 employees (SR: More than 25 subordinates)<br>9995 employees or  more<br>Don't know<br>No answer</td>
 </tr>
 <tr>
@@ -887,7 +887,7 @@
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">127</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">SPWRKSUP</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">Spouse, partner: supervise other employees</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">0<br>1<br>2<br>8<br>9</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">0<br>1<br>2<br>8<br>9<br>NA(a)<br>NA(d)<br>NA(n)</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">NAP (C.0,3 SPWORK), CN,GB,US: NAP (C.0,2,3 SPWORK), NAV (NZ)<br>Yes<br>No<br>Don't know<br>No answer</td>
 </tr>
 <tr>
@@ -2543,238 +2543,209 @@
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">373</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">emprel</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">Employment relationship</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">0<br>1<br>2<br>3<br>4<br>8<br>NA(n)</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">NAP (Code 3 in WORK)<br>Employee<br>Self-employed without employees<br>Self-employed with employees<br>Working for own family's business<br>Don't know</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">nemploy</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">Self-employed: how many employees</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">0<br>1<br>9995<br>NA(d)<br>NA(n)</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">NAP (Code 1, 2, 4, 0 in EMPREL)<br>1 employee<br>9995 employees or more</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">374</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">nemploy</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Self-employed: how many employees</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">0<br>1<br>9995<br>NA(d)<br>NA(n)</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">NAP (Code 1, 2, 4, 0 in EMPREL)<br>1 employee<br>9995 employees or more</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">partliv</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Living in steady partnership</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">1<br>2<br>3<br>NA(n)<br>NA(r)</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Yes, have partner; live in same household<br>Yes, have partner; don't live in same household<br>No partner</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">375</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">wrksup</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">Supervise other employees</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">1<br>2<br>NA(a)<br>NA(d)<br>NA(n)</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">Yes<br>No</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">spwork</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">Spouse, partner: currently, formerly or never in<br>paid work</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">1<br>2<br>3<br>7<br>8<br>9<br>NA(n)</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">Currently in paid work<br>Currently not in paid work, paid work in the past<br>Never had paid work<br>Refused<br>Don't know<br>No answer</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">376</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">nsup</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Number of other employees supervised</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">1<br>9995<br>NA(b)<br>NA(n)</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">1 employee<br>9995 employees or  more</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">spwrkhrs</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Spouse, partner: hours worked weekly</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">1<br>96<br>NA(a)<br>NA(d)<br>NA(n)</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">One hour<br>96 hours or more</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">377</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">partliv</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">Living in steady partnership</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">1<br>2<br>3<br>NA(n)<br>NA(r)</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">Yes, have partner; live in same household<br>Yes, have partner; don't live in same household<br>No partner</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">spmainst</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">Spouse, partner: main status</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>NA(a)<br>NA(n)</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">In paid work<br>Unemployed and looking for a job<br>In education<br>Apprentice or trainee<br>Permanently sick or disabled<br>Retired<br>Domestic work<br>In compulsory military service or community service<br>Other</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">378</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">spwork</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Spouse, partner: currently, formerly or never in<br>paid work</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">1<br>2<br>3<br>7<br>8<br>9<br>NA(n)</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Currently in paid work<br>Currently not in paid work, paid work in the past<br>Never had paid work<br>Refused<br>Don't know<br>No answer</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">TR_RELIG</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Country specific religious affiliation or<br>denomination: Turkey</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">0<br>300<br>500<br>690<br>950<br>990<br>997<br>999</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">No religion<br>Orthodox; Eastern Orthodox<br>Jewish<br>Muslim, Mohammedan, Islam<br>Other Religions<br>NAP, other countries<br>Refused<br>No answer</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">379</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">spwrkhrs</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">Spouse, partner: hours worked weekly</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">1<br>96<br>NA(a)<br>NA(d)<br>NA(n)</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">One hour<br>96 hours or more</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">religgrp</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">Groups of religious affiliations (derived from<br>nat_RELIG)</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">0<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>97<br>98<br>99</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">No religion<br>Catholic<br>Protestant<br>Orthodox<br>Other Christian<br>Jewish<br>Islamic<br>Buddhist<br>Hindu<br>Other Asian Religions<br>Other Religions<br>Refused<br>Information insufficient<br>No answer</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">380</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">spemprel</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Spouse, partner: employment relationship</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">0<br>1<br>2<br>3<br>4<br>9</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">NAP (Code 0, 3 in SPWORK)<br>Employee<br>Self-employed without employees<br>Self-employed with employees<br>Working for own family's business<br>No answer</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">attend</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Attendance of religious services</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>97<br>98<br>NA(n)</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Several times a week or more often (incl. every day, several times a day)<br>Once a week<br>2 or 3 times a month<br>Once a month<br>Several times a year<br>Once a year<br>Less frequently than once a year<br>Never<br>Refused<br>Don't know</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">381</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">spwrksup</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">Spouse, partner: supervise other employees</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">1<br>2<br>NA(a)<br>NA(d)<br>NA(n)</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">Yes<br>No</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">TR_PRTY</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">Country specific party voted for in last general<br>election: Turkey</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">0<br>1<br>11<br>12<br>2<br>3<br>4<br>5<br>95<br>97<br>98<br>990<br>NA(i)<br>NA(n)</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">NAP (Code 0, 2, 7 in VOTE_LE)<br>Justice and Development party (AKP)<br>Republican Peoples Party (CHP)<br>Peoples' Democratic Party (HDP)<br>Good Party (IYIP)<br>Nationalist Action Party (MHP)<br>People Alliance (AKP, MHP)<br>Nation Alliance (CHP, IYIP, SP)<br>Other party<br>Refused<br>Don't know, don't remember<br>NAP, other countries</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">382</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">spmainst</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Spouse, partner: main status</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>NA(a)<br>NA(n)</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">In paid work<br>Unemployed and looking for a job<br>In education<br>Apprentice or trainee<br>Permanently sick or disabled<br>Retired<br>Domestic work<br>In compulsory military service or community service<br>Other</td>
-</tr>
-<tr>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">383</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">TR_RELIG</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">Country specific religious affiliation or<br>denomination: Turkey</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">0<br>300<br>500<br>690<br>950<br>990<br>997<br>999</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">No religion<br>Orthodox; Eastern Orthodox<br>Jewish<br>Muslim, Mohammedan, Islam<br>Other Religions<br>NAP, other countries<br>Refused<br>No answer</td>
-</tr>
-<tr>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">384</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">religgrp</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Groups of religious affiliations (derived from<br>nat_RELIG)</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">0<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>97<br>98<br>99</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">No religion<br>Catholic<br>Protestant<br>Orthodox<br>Other Christian<br>Jewish<br>Islamic<br>Buddhist<br>Hindu<br>Other Asian Religions<br>Other Religions<br>Refused<br>Information insufficient<br>No answer</td>
-</tr>
-<tr>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">385</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">attend</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">Attendance of religious services</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>97<br>98<br>NA(n)</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">Several times a week or more often (incl. every day, several times a day)<br>Once a week<br>2 or 3 times a month<br>Once a month<br>Several times a year<br>Once a year<br>Less frequently than once a year<br>Never<br>Refused<br>Don't know</td>
-</tr>
-<tr>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">386</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">TR_PRTY</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Country specific party voted for in last general<br>election: Turkey</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">0<br>1<br>11<br>12<br>2<br>3<br>4<br>5<br>95<br>97<br>98<br>990<br>NA(i)<br>NA(n)</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">NAP (Code 0, 2, 7 in VOTE_LE)<br>Justice and Development party (AKP)<br>Republican Peoples Party (CHP)<br>Peoples' Democratic Party (HDP)<br>Good Party (IYIP)<br>Nationalist Action Party (MHP)<br>People Alliance (AKP, MHP)<br>Nation Alliance (CHP, IYIP, SP)<br>Other party<br>Refused<br>Don't know, don't remember<br>NAP, other countries</td>
-</tr>
-<tr>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">387</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">TR_ETHN1</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">Country specific ethnic group 1: Turkey</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">0<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>90<br>97<br>NA(d)<br>NA(n)</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">NAP, other countries<br>Turkish<br>Kurdish<br>Laz<br>Circassian<br>Georgian<br>Arabic<br>Roma/Gypsy<br>Bosnian<br>Other<br>Refused</td>
-</tr>
-<tr>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">388</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">TR_ETHN2</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Country specific ethnic group 2: Turkey</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">TR_ETHN1</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Country specific ethnic group 1: Turkey</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">0<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>90<br>97<br>NA(d)<br>NA(n)</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">NAP, other countries<br>Turkish<br>Kurdish<br>Laz<br>Circassian<br>Georgian<br>Arabic<br>Roma/Gypsy<br>Bosnian<br>Other<br>Refused</td>
 </tr>
 <tr>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">389</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">hhchildr</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">How many children in household: children between<br>[school age] and 17 years of ag</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">383</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">TR_ETHN2</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">Country specific ethnic group 2: Turkey</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">0<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>90<br>97<br>NA(d)<br>NA(n)</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">NAP, other countries<br>Turkish<br>Kurdish<br>Laz<br>Circassian<br>Georgian<br>Arabic<br>Roma/Gypsy<br>Bosnian<br>Other<br>Refused</td>
+</tr>
+<tr>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">384</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">hhchildr</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">How many children in household: children between<br>[school age] and 17 years of ag</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">0<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>97<br>NA(a)<br>NA(n)</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">No children<br>One child<br>Two children<br>Three children<br>Four children<br>Five children<br>Six children<br>Seven children<br>Eight children<br>Refused</td>
+</tr>
+<tr>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">385</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">hhtodd</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">How many toddlers in household: children up to<br>[school age -1] years</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">0<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>97<br>NA(a)<br>NA(n)</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">No children<br>One child<br>Two children<br>Three children<br>Four children<br>Five children<br>Six children<br>Seven children<br>Eight children<br>Refused</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">No toddlers<br>One toddler<br>Two toddlers<br>Three toddlers<br>Four toddlers<br>Five toddlers<br>Six toddlers<br>Seven toddlers<br>Eight toddlers<br>Refused</td>
+</tr>
+<tr>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">386</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">TR_RINC</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 0-25000</em></td>
+</tr>
+<tr>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">387</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">TR_INC</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 0-45000</em></td>
+</tr>
+<tr>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">388</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">marital</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Legal partnership status</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">1<br>2<br>3<br>4<br>5<br>6<br>NA(n)<br>NA(r)</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Married<br>Civil partnership<br>Separated from spouse/ civil partner (still legally married/ still legally in a civil partnership)<br>Divorced from spouse/ legally separated from civil partner<br>Widowed/ civil partner died<br>Never married/ never in a civil partnership, single</td>
+</tr>
+<tr>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">389</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">TR_REG</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">Country specific region: Turkey</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">0<br>1<br>10<br>11<br>12<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>NA(n)</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">NAP, other countries<br>Istanbul<br>Aegean<br>Mediterranean<br>Southeastern Anatolia<br>Western Anatolia<br>Eastern Marmara<br>Western Black Sea<br>Central Anatolia<br>Central Eastern Anatolia<br>Eastern Black Sea<br>Western Marmara<br>North Eastern Anatolia</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">390</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">hhtodd</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">How many toddlers in household: children up to<br>[school age -1] years</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">0<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>97<br>NA(a)<br>NA(n)</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">No toddlers<br>One toddler<br>Two toddlers<br>Three toddlers<br>Four toddlers<br>Five toddlers<br>Six toddlers<br>Seven toddlers<br>Eight toddlers<br>Refused</td>
-</tr>
-<tr>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">391</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">TR_RINC</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 0-25000</em></td>
-</tr>
-<tr>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">392</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">TR_INC</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">caseid</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 0-45000</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 2-3539</em></td>
 </tr>
 <tr>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">393</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">marital</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">Legal partnership status</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">1<br>2<br>3<br>4<br>5<br>6<br>NA(n)<br>NA(r)</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">Married<br>Civil partnership<br>Separated from spouse/ civil partner (still legally married/ still legally in a civil partnership)<br>Divorced from spouse/ legally separated from civil partner<br>Widowed/ civil partner died<br>Never married/ never in a civil partnership, single</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">392</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">dateyr</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">Date of interview: year of interview; YYYY (four<br>digits)</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">2016<br>2017<br>2018</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">Year 2016<br>Year 2017<br>Year 2018</td>
 </tr>
 <tr>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">394</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">TR_REG</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Country specific region: Turkey</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">0<br>1<br>10<br>11<br>12<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>NA(n)</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">NAP, other countries<br>Istanbul<br>Aegean<br>Mediterranean<br>Southeastern Anatolia<br>Western Anatolia<br>Eastern Marmara<br>Western Black Sea<br>Central Anatolia<br>Central Eastern Anatolia<br>Eastern Black Sea<br>Western Marmara<br>North Eastern Anatolia</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">393</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">datemo</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Date of interview: month of interview: MM (two<br>digits)</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">January<br>February<br>Mbackground-color:#eeeeeeh<br>April<br>May<br>June<br>July<br>August<br>September<br>October<br>November<br>December</td>
 </tr>
 <tr>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">395</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">caseid</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 2-3539</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">394</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">datedy</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">Date of interview: day of interview: DD (two<br>digits)</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">1<br>31</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">01.<br>31.</td>
+</tr>
+<tr>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">395</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">mode</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Administrative mode of data-collection</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">10<br>11<br>12<br>13<br>14<br>20<br>21<br>22<br>23<br>24<br>30<br>31<br>32<br>33<br>34<br><span style="omit">&lt;...&gt;</span></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Face-to-face, PAPI, no visuals<br>Face-to-face, PAPI, visuals<br>Face-to-face, PAPI, respondent reading questionnaire<br>Face-to-face, PAPI, interpreter or translator, no visuals<br>Face-to-face, PAPI, interpreter or translator, visuals<br>CAPI, computer assisted personal interview, no visuals<br>CAPI, computer assisted personal interview, visuals<br>CAPI, respondent reading questionnaire (paper or on monitor)<br>CAPI, interpreter or translator, no visuals<br>CAPI, interpreter or translator, visuals<br>Self completion, arrives with interviewer, interviewer attending<br>Self completion, arrives with interviewer, drops-off, picks up later<br>Self completion, arrives with interviewer, drops-off, mailed back by R<br>Self completion, mailed to, completed by R and hold for pick up<br>Self completion, mailed to, mailed back by Respondent<br><span style="omit">&lt;... truncated&gt;</span></td>
+</tr>
+<tr>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">396</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">redist</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">Preferences goverment redistribution</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">1<br>2<br>3<br>4<br>5</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">Strongly disagree<br>Disagree<br>Neither agree nor disagree<br>Agree<br>Strongly agree</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">397</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">dateyr</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Date of interview: year of interview; YYYY (four<br>digits)</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">2016<br>2017<br>2018</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Year 2016<br>Year 2017<br>Year 2018</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">whealth</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Welfare provision: health</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">1<br>2<br>3<br>4<br>5</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Family, relatives or friends<br>Religious organisations<br>Non-profit organisations/ charities/ cooperatives<br>Private companies/ for-profit organisations<br>Government</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">398</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">datemo</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">Date of interview: month of interview: MM (two<br>digits)</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">January<br>February<br>Mbackground-color:#eeeeeeh<br>April<br>May<br>June<br>July<br>August<br>September<br>October<br>November<br>December</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">wcarelder</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">Welfare provision: elderly care</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">1<br>2<br>3<br>4<br>5</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">Family, relatives or friends<br>Religious organisations<br>Non-profit organisations/ charities/ cooperatives<br>Private companies/ for-profit organisations<br>Government</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">399</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">datedy</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Date of interview: day of interview: DD (two<br>digits)</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">1<br>31</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">01.<br>31.</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">hhdepriv</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Household economic deprivation (household<br>difficulties)</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">1<br>2<br>3<br>4<br>5</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Very difficult<br>Fairly difficult<br>Neither easy nor difficult<br>Fairly easy<br>Very easy</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">400</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">mode</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">Administrative mode of data-collection</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">10<br>11<br>12<br>13<br>14<br>20<br>21<br>22<br>23<br>24<br>30<br>31<br>32<br>33<br>34<br><span style="omit">&lt;...&gt;</span></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">Face-to-face, PAPI, no visuals<br>Face-to-face, PAPI, visuals<br>Face-to-face, PAPI, respondent reading questionnaire<br>Face-to-face, PAPI, interpreter or translator, no visuals<br>Face-to-face, PAPI, interpreter or translator, visuals<br>CAPI, computer assisted personal interview, no visuals<br>CAPI, computer assisted personal interview, visuals<br>CAPI, respondent reading questionnaire (paper or on monitor)<br>CAPI, interpreter or translator, no visuals<br>CAPI, interpreter or translator, visuals<br>Self completion, arrives with interviewer, interviewer attending<br>Self completion, arrives with interviewer, drops-off, picks up later<br>Self completion, arrives with interviewer, drops-off, mailed back by R<br>Self completion, mailed to, completed by R and hold for pick up<br>Self completion, mailed to, mailed back by Respondent<br><span style="omit">&lt;... truncated&gt;</span></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">perineq</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">Perceived economic inequality (Inc. diff. too<br>large)</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">1<br>2<br>3<br>4<br>5</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">Strongly disagree<br>Disagree<br>Neither agree nor disagree<br>Agree<br>Strongly agree</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">401</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">redist</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Preferences goverment redistribution</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">prefineq</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Preference inequality (society has to be fair)</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">1<br>2<br>3<br>4<br>5</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Strongly disagree<br>Disagree<br>Neither agree nor disagree<br>Agree<br>Strongly agree</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">402</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">whealth</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">Welfare provision: health</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">1<br>2<br>3<br>4<br>5</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">Family, relatives or friends<br>Religious organisations<br>Non-profit organisations/ charities/ cooperatives<br>Private companies/ for-profit organisations<br>Government</td>
-</tr>
-<tr>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">403</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">wcarelder</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Welfare provision: elderly care</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">1<br>2<br>3<br>4<br>5</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Family, relatives or friends<br>Religious organisations<br>Non-profit organisations/ charities/ cooperatives<br>Private companies/ for-profit organisations<br>Government</td>
-</tr>
-<tr>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">404</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">hhdepriv</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">Household economic deprivation (household<br>difficulties)</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">1<br>2<br>3<br>4<br>5</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">Very difficult<br>Fairly difficult<br>Neither easy nor difficult<br>Fairly easy<br>Very easy</td>
-</tr>
-<tr>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">405</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">perineq</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Perceived economic inequality (Inc. diff. too<br>large)</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">1<br>2<br>3<br>4<br>5</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Strongly disagree<br>Disagree<br>Neither agree nor disagree<br>Agree<br>Strongly agree</td>
-</tr>
-<tr>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">406</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">prefineq</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">Preference inequality (society has to be fair)</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">pertransfer</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">Perception about welfare (people become lazy)</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">1<br>2<br>3<br>4<br>5</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">Strongly disagree<br>Disagree<br>Neither agree nor disagree<br>Agree<br>Strongly agree</td>
 </tr>
 <tr>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">407</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">pertransfer</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Perception about welfare (people become lazy)</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">1<br>2<br>3<br>4<br>5</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Strongly disagree<br>Disagree<br>Neither agree nor disagree<br>Agree<br>Strongly agree</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">403</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">egal3</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Redistributive attitudes (3 items)</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 0.0-100.0</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">408</td>
@@ -2845,7 +2816,7 @@
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">418</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">incomepcap</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 0.0-11000000.0</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 1-3</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">419</td>
@@ -2863,7 +2834,8 @@
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">421</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Q03pc</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 1-3</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Q01<br>Q02<br>Q03<br>Q04<br>Q05<br>Missing</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">422</td>
@@ -2881,58 +2853,57 @@
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">424</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">Q05pcm</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">Q01<br>Q02<br>Q03<br>Q04<br>Q05<br>Missing</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 1-10</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">425</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Q03pcm</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">T01<br>T02<br>T03<br>Missing</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 1-5</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">426</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">incomer</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 0.0-20000000.0</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 1-3</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">427</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">D10r</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 1-10</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: -2.1-27.8</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">428</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">Q05r</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 1-5</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: -Inf-16.8</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">429</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Q03r</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 1-3</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Q01<br>Q02<br>Q03<br>Q04<br>Q05<br>Missing</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">430</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">zincpcr</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: -2.1-27.8</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">T01<br>T02<br>T03<br>Missing</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">431</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">logincr</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: -Inf-16.8</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 0.0-11000000.0</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">432</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">Q05rm</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">Q01<br>Q02<br>Q03<br>Q04<br>Q05<br>Missing</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 0-72</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">433</td>
@@ -2945,7 +2916,7 @@
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">434</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">incomerep</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 0.0-11000000.0</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">Primary or less<br>Secondary<br>Post-secondary non-terciary<br>Terciary or higher</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">435</td>
@@ -2964,7 +2935,7 @@
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">edcat</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Educational level</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Primary or less<br>Secondary<br>Post-secondary non-terciary<br>Terciary or higher</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">In paid work<br>Not in paid work</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">438</td>
@@ -3023,20 +2994,19 @@
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">446</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">supvisspo</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 0-9</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 0-9995</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">447</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">isco88r</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 0-9333</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 0-1</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">448</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">semp</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">1<br>2</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;">Self-employed<br>Employee</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 0-1</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">449</td>
@@ -3047,6 +3017,20 @@
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">450</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">class10</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">1<br>2<br>3<br>4<br>5<br>7<br>8<br>9<br>10<br>11</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">higher controllers<br>lo controllers<br>routine nonmanual<br>sempl with emp<br>sempl without empl<br>manual supervisor<br>skilled manual<br>semi-unskilld manual<br>farm labor<br>selfempl farm</td>
+</tr>
+<tr>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">453</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">class10spo</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">1<br>2<br>3<br>4<br>5<br>7<br>8<br>9<br>10<br>11</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">higher controllers<br>lo controllers<br>routine nonmanual<br>sempl with emp<br>sempl without empl<br>manual supervisor<br>skilled manual<br>semi-unskilld manual<br>farm labor<br>selfempl farm</td>
+</tr>
+<tr>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">454</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;">digclass10</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">Social Class - respondent</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">I<br>II<br>IIIa<br>IIIb<br>IVa<br>IVb<br>IVc<br>V<br>VI<br>VIIa<br>VIIb</td>
@@ -3062,14 +3046,14 @@
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">452</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">class11</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 1-11</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 1-10</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">453</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">class11d</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Social Class</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11</td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">I<br>II<br>IIIa<br>IIIb<br>IVa<br>IVb<br>IVc<br>V<br>VI<br>VIIa<br>VIIb</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10</td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">I<br>II<br>IIIab<br>IVa<br>IVb<br>IVc<br>V<br>VI<br>VIIa<br>VIIb</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">454</td>
@@ -3756,7 +3740,7 @@
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">561</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">outgroup_res</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 0-7</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 0-4</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">562</td>
@@ -3774,7 +3758,7 @@
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">564</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">isei_sd</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 0.0-120.4</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 0-7</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">565</td>
@@ -3892,79 +3876,80 @@
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">583</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">palmaratio</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 0.8-10.1</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">Male<br>Female</td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">584</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">bottom40meanincome</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 1785.6-34230.1</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 24.5-66.9</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">585</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">middle50meanincome</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 5980.0-74582.4</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 11.0-91.5</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">586</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">top10meanincome</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 24786.9-183089.6</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 10.2-90.8</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">587</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">gdppercapita</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 6182.9-69103.6</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 10.7-195.2</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">588</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">gdpgrowthrates</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: -0.3-6.3</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 5.2-37.1</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">589</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">gdptotal</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 10430863428.7-20240365157626.9</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 317.9-2469.8</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">590</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">gdpasofglobalmean</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 38.2-426.8</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 80.8-536.5</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">591</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">gdpshare</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 0.0-16.6</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 5.3-24.5</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">592</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">population</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 334395.0-1421021696.0</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 40.9-57.0</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">593</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">d10d1</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 5.5-184.2</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 19.8-53.8</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">594</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">gini_disp</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 23.5-62.5</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top;" colspan="2"><em>range: 0.8-10.1</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">595</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee">gini_mkt</td>
 <td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee"></td>
-<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 32.7-71.1</em></td>
+<td style="padding:0.2cm; text-align:left; vertical-align:top; background-color:#eeeeee" colspan="2"><em>range: 1785.6-34230.1</em></td>
 </tr>
 <tr>
 <td style="padding:0.2cm; text-align:left; vertical-align:top;">596</td>

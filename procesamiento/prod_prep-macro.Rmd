@@ -112,12 +112,22 @@ pendata$ccode <- countrycode::countrycode(sourcevar = pendata$countrycode,origin
 pen_2017 <- pendata %>% filter(ccode %in% countries$ccode,year %in% 2017) %>% select(ccode,everything(),-country,-countrycode,-currency_unit,-year)
 ```
 
+*OCDE data*
+```{r ocde}
+ocde<- 
+  read.csv(file = here::here("input/data/original/ocde-countries.csv"),sep = ",")
+
+ocde$ccode <- countrycode::countrycode(sourcevar = ocde$iso3n,origin = "iso3c",destination = "iso3n")
+ocde <- ocde[,c("ccode","oecd")]
+```
+
+
 ```{r merge}
 macro_data <- 
   left_join(wiid_2017,solt_2017) %>%
   left_join(pen_2017) %>% 
-  left_join(otero)
-
+  left_join(otero) %>%
+  left_join(ocde) 
 df1$ccode <- as.numeric(df1$country)
 df2 <- left_join(df1,macro_data,by="ccode")
 df2 <- 

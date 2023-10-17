@@ -7,7 +7,6 @@ link-citations: yes         # citas linkeadas
 date: "`r format(Sys.Date(), '%d %B %Y')`"
 author:
 - name: Julio Iturra-Sanhueza
-- name: Julio Iturra-Sanhueza
 #   affiliation: University of Bremen
 #   email: jiturra@uni-bremen.de
 #   number: 1
@@ -256,7 +255,7 @@ rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 dfreg <- df1 %>% dplyr::select(redist,
                         class3, 
-                        homclass,
+                        homclass=homclass2,
                         # homclass=eindex,
                         Q05pcm,
                         Q03pcm,
@@ -384,9 +383,9 @@ pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,s
 rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 dfreg <- df1 %>% dplyr::select(redist,
-                        class3,
+                        class3=dclass3,
                         class5,
-                        homclass,
+                        homclass=homclass2,
                         Q03pcm,
                         # Q03pcm=Q03rm,
                         # Q03pcm=Q03rm,
@@ -401,12 +400,12 @@ dfreg <- df1 %>% dplyr::select(redist,
                         union,
                         workst,
                         # isolation,  
-                        # MAINSTAT,
+                        MAINSTAT,
                         # activities,
                         # WEIGHT,
                         region,
                         "gini_disp",
-                        "gini_mkt"
+                        "gini_mkt",oecd
                         ) %>% 
   mutate(logrgdpna=log(rgdpna),
          age2=agenum^2,
@@ -424,6 +423,7 @@ dfreg <- df1 %>% dplyr::select(redist,
   # filter(PARTLIV %in% c(0,1,2,3)) %>%
   # filter(region %in% c("Northern America","South America")) %>%
   # filter(Q03pcm!="Missing") %>%
+    # filter(oecd=="OECD") %>%
   na.omit()
 
 # frq(df1$region)
@@ -652,8 +652,8 @@ load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 df1$class3 <- relevel(df1$class3,ref =  "Intermediate class (III+IV)")
 df1$labst1 <-car::recode(df1$labst,"'No information'='Not in labour force'")
 dfreg <- df1 %>% dplyr::select(redist,
-                        class3,
-                        homclass=homclass_gc,
+                        class3=dclass3,
+                        homclass=homclass2,
                         # homclass=eindex,
                         # homclass=ingroup,
                         Q05pcm,
@@ -668,13 +668,14 @@ dfreg <- df1 %>% dplyr::select(redist,
                         agenum,
                         country2,
                         union,
-                        workst) %>% 
+                        workst,oecd) %>% 
   mutate(logrgdpna=log(rgdpna),
          age2=agenum^2,
          edyears2=edyears^2) %>%
   # filter(!country2 %in% c("Turkey","Estonia")) %>%
   # filter(MAINSTAT %in% c(1,2)) %>%
   # filter(agenum %in% c(25:65)) %>%
+  filter(oecd=="OECD") %>% 
   na.omit()
 # T03dim(dfreg)
 
@@ -714,7 +715,7 @@ texreg::knitreg(models,
 \pagebreak
 ```{r crosslevel}
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,gridExtra)       
-p1<- interplot::interplot(m = giniD_int,var1 = "homclass",var2="gini_disp")+
+p1<- interplot::interplot(m = giniD_int,var1 = "homclass",var2="gini_disp",ci = .95)+
   ylab("Class-based homogeneity coefficient")+ xlab("Gini disposable") + 
   geom_point()+ geom_hline(yintercept = 0)
 
@@ -729,6 +730,20 @@ dfreg %>% filter(gini_disp >= min(gini_sig$fake),gini_disp <= max(gini_sig$fake)
 table(dfreg$gini_disp)
 
 dfreg %>% filter(gini_disp %in%)
+
+gini_sig <- 
+p1$data %>% 
+  filter(ub>0 & lb >0) %>% 
+  dplyr::select(fake)
+
+conditional1<- 
+dfreg %>% 
+  # filter(gini_disp >= min(gini_sig$fake),gini_disp <= max(gini_sig$fake)) %>% 
+  dplyr::select(country2,gini_disp) %>% 
+  group_by(country2) %>% 
+  summarise(gini_disp=mean(gini_disp)) %>% 
+  arrange(gini_disp)
+
 
 p2<- interplot::interplot(m = giniM_int,var1 = "homclass",var2="gini_mkt") +
   ylab("Class-based homogeneity coefficient")+ xlab("Gini market") +geom_point()+ geom_hline(yintercept = 0)
@@ -790,8 +805,8 @@ pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr,gr
 rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 dfreg <- df1 %>% dplyr::select(redist,
-                        class3,
-                        homclass=homclass_gc,
+                        class3=dclass3,
+                        homclass=homclass2,
                         # homclass=homclass_res,
                         Q05pcm,
                         Q03pcm,
@@ -811,7 +826,8 @@ dfreg <- df1 %>% dplyr::select(redist,
                         agenum,
                         country2,
                         union,
-                        workst
+                        workst,
+                        oecd
                         ) %>% 
   mutate(logrgdpna=log(rgdpna),
          age2=agenum^2,
@@ -819,7 +835,8 @@ dfreg <- df1 %>% dplyr::select(redist,
     # filter(!country2 %in% c("Turkey","Estonia")) %>%
   # filter(MAINSTAT %in% c(1,2)) %>%
   # filter(agenum %in% c(25:65)) %>%
-   na.omit()
+  # filter(oecd=="OECD") %>% 
+  na.omit()
 
 
 int_palma <- lmer(redist~class3+ homclass*palmaratio+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+logrgdpna + (1+homclass|country2),data=dfreg)
@@ -1697,97 +1714,8 @@ texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,
                 )
 ```
 
-<<<<<<< HEAD
-\pagebreak 
 
-## Gov's spending and individualism
-
-```{r mod-spend-indv, results='asis'}
-if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr,gridExtra)  
-rm(list=ls())
-load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
-dfreg <- df1 %>% dplyr::select(redist,
-                        class3,
-                        homclass=homclass_gc,
-                        # homclass=homclass_res,
-                        Q05pcm,
-                        Q03pcm,
-                        gini_disp,
-                        gini_mkt,
-                        giniot=gini,
-                        giniindex,ttheilge1,
-                        gv_spen=gv_spen,
-                        top10,
-                        middle50,
-                        palmaratio,
-                        d10d1,
-                        rgdpna,
-                        individualism,
-                        edyears,
-                        female,
-                        agenum,
-                        country2,
-                        union,
-                        workst
-                        ) %>% 
-  mutate(logrgdpna=log(rgdpna),
-         age2=agenum^2,
-         edyears2=edyears^2) %>%
-    # filter(!country2 %in% c("Turkey","Estonia")) %>%
-  # filter(MAINSTAT %in% c(1,2)) %>%
-  # filter(agenum %in% c(25:65)) %>%
-   na.omit()
-int_indivi<- lmer(redist~class3+ homclass*individualism+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+logrgdpna + (1+homclass|country2),data=dfreg)
-int_govspe<- lmer(redist~class3+ homclass*gv_spen+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+logrgdpna + (1+homclass|country2),data=dfreg)
-models_m <- list(int_indivi,int_govspe)
-cap1=c("Cross-level interaction for Network homogeneity, Goverment Spending and Individualism")
-customcoef <- 
-list(homclass = "Class-based network homogeneity",
-  logrgdpna           = "log GDP",
-  individualism         = "Individualism Index*",
-  "homclass:individualism" = "Homogeneity x Individualism",
-  gv_spen               = "Gov. Spending (% GDP)*",
-  "homclass:gv_spen"      = "Homogeneity x Gov. Spend."
-)
-texreg::knitreg(models_m,scalebox = 1,
-                float.pos="h!",                
-                custom.coef.map = customcoef,
-                caption.above = T,caption = cap1)
-```
-
-```{r homclass-spend-indv, fig.height=6,fig.width=8,fig.cap=c("Cross-level interaction for Network homogeneity, Gov. Spending and Individualism"),out.width='100%',}
-p8<- interplot::interplot(m = int_indivi,var1 = "homclass",var2="individualism") +
-  xlab("Individualism Index*") + geom_point()+ geom_hline(yintercept = 0)+
-  labs(caption = paste0("N=",nobs(int_indivi),", Countries=",lme4::ngrps(int_indivi)))  
-
-predval8 <- 
-plot_predictions(int_indivi, condition = list("homclass",individualism=range),gray = F) +
-  labs(caption = paste0("N=",nobs(int_indivi),", Countries=",lme4::ngrps(int_indivi)),
-       linetype='Individualism') +
-  xlab("Class-based homogeneity")+
-  ylab("Redistributive preferences") +
-  theme(legend.position = "right")
-
-
-p9<- interplot::interplot(m = int_govspe,var1 = "homclass",var2="gv_spen") +
-  xlab("Gov. Spending (% GDP)*") + geom_point()+ geom_hline(yintercept = 0)+
-  labs(caption = paste0("N=",nobs(int_govspe),", Countries=",lme4::ngrps(int_govspe)))
-
-predval9 <- 
-plot_predictions(int_govspe, condition = list("homclass",gv_spen=range),gray = F) +
-  labs(caption = paste0("N=",nobs(int_govspe),", Countries=",lme4::ngrps(int_govspe)),
-       linetype='Gov.Spend') +
-  xlab("Class-based homogeneity")+
-  ylab("Redistributive preferences") +
-  theme(legend.position = "right")
-
-grid.arrange(p9,predval9,
-             p8,predval8,nrow = 2)
-```
-
-
-\pagebreak  
+\pagebreak
 
 ## Perceived Isolation
 
@@ -2041,8 +1969,6 @@ grid.arrange(p2,predval2,nrow = 1
              )
 ```
 
-=======
->>>>>>> 2e289b60bf0d198ccb4ec79f00ea6bbd88b5df44
 \pagebreak
 
 

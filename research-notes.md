@@ -85,3 +85,40 @@ naniar::mcar_test(data=dfreg)
 - solucionado el tema del income de Japon
 - resultados son robustos al eliminar la categoria de missing, pero se mantienen para mantener el N ya que se pierden cerca de 8000 casos al hacer listwise
 
+# 16.10.2023
+
+1. OCDE subsample 22 countries
+  - homclass: same direction as full sample, n.s
+  - homclass x class: robust results, same as full sample
+  - gini: NS
+  - homclass x gini: NS
+  - homclas x other economic inequality: NS
+
+2. OCDE + (25-65 + Active Labour market)
+  - homclas: NS
+  - homclass x class: robust
+  - gini: NS
+  - homclass x gini: NS
+  - homclass x other economic inequality: NS
+    
+Note: the cross-level interaction for homclass x gini_market is NS, but the direct slope it is. The AME shows that in countries with low market-income inequality the homclass is significant and positive.    
+
+Also in the models with alternative measures of economic inequality, the ratio D10D01 has a positive direct effect (aligned with theory)
+
+3. OCDE + (Active Labour market)
+  - homclas: NS
+  - homclass x class: robust
+  - gini: NS
+  - homclass x gini: NS
+  - homclass x other economic inequality: NS
+
+4. OCDE + (25-65)
+  - homclas: NS
+  - homclass x class: robust
+  - gini: NS
+  - homclass x gini: NS
+  - homclass x other economic inequality: NS
+
+Problemas con el esquema de clase: estoy subestimando la clase intermedia al parecer. El paquete de isko es bastante viejo así que creo que vale la pena usar el DIGCLASS que es más contemporaneo.
+
+
