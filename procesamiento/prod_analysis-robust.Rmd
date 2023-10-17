@@ -45,6 +45,7 @@ options(knitr.kable.NA = '') # NA en kable = ''
 ```{r ord-micro,results='asis', cache=T}
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal)  
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal)  
 rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 df1$redistF <- as.factor(df1$redist)
@@ -101,11 +102,18 @@ rob2 <- clmm(redist~class3+ homclass+ edyears+ Q03pcm+ female+ agenum +age2+(1|c
 rob3 <- clmm(redist~class3+ homclass+ edyears+ Q03pcm+ workst + union+ female+agenum +age2 +  (1|country2),data=dfreg)
 rob4 <- clmm(redist~class3+ homclass+ edyears+ Q03pcm+ workst + union+ female+agenum +age2 + (homclass|country2),data=dfreg)
 anova(rob3,rob4)
+rob1 <- clmm(redist~class3+ homclass+ edyears+ female+ agenum+ age2+(1|country2),data=dfreg)
+rob2 <- clmm(redist~class3+ homclass+ edyears+ Q03pcm+ female+ agenum +age2+(1|country2),data=dfreg)
+rob3 <- clmm(redist~class3+ homclass+ edyears+ Q03pcm+ workst + union+ female+agenum +age2 +  (1|country2),data=dfreg)
+rob4 <- clmm(redist~class3+ homclass+ edyears+ Q03pcm+ workst + union+ female+agenum +age2 + (homclass|country2),data=dfreg)
+anova(rob3,rob4)
 # Interactions segregation x class
+int_homo <- clmm(redist~class3*homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ (1|country2),data=dfreg)
 int_homo <- clmm(redist~class3*homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ (1|country2),data=dfreg)
 
 cap1 <- "Multilevel regression for redistributive preferences, network homogeneity and social class" 
 coefmap <-  list(homclass ="Class-based network homogeneity",
+                 'class3Intermediate class (III+IV)' ='Intermediate Class',
                  'class3Intermediate class (III+IV)' ='Intermediate Class',
                  'class3Working Class (V+VI+VII)' ='Working Class',
                  "Q03pcmT02" = "Middle",
@@ -125,6 +133,7 @@ gof1<-  c(NA,NA,"Num. Countries:","Var: Group",NA)
 
 models <- list(homclass,class,full1,rob3,int_homo)
 texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,
+                                float.pos="h!",
                                 float.pos="h!",
                   include.thresholds=FALSE,
                   custom.coef.map=coefmap,

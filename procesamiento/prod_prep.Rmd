@@ -112,6 +112,26 @@ sjlabelled::set_label(df1$pertransfer) <- "Perception about welfare (people beco
 #frq(df1$pertransfer)
 ```
 
+# Index egalitarian attitudes
+```{r}
+df1 %>% select(redist,prefineq,perineq) %>% 
+  psych::cor2()
+df1 %>% select(redist,prefineq,perineq) %>% 
+  psych::alpha()
+
+df1$egal3<- rowMeans(df1[,c("redist","prefineq","perineq")],na.rm = T)
+df1$egal3 <- ((df1$egal3-min(df1$egal3,na.rm = T))/(max(df1$egal3,na.rm = T)-min(df1$egal3,na.rm = T)))*100
+
+sjlabelled::set_label(df1$egal3) <- "Redistributive attitudes (3 items)"
+hist.default(df1$egal3)
+
+df1$egal2<- rowMeans(df1[,c("redist","prefineq")],na.rm = T)
+df1$egal2 <- ((df1$egal2-min(df1$egal2,na.rm = T))/(max(df1$egal2,na.rm = T)-min(df1$egal2,na.rm = T)))*100
+sjlabelled::set_label(df1$egal2) <- "Redistributive attitudes (2 items)"
+hist.default(df1$egal2)
+```
+
+
 # Perceived integration
 
 ```{r}
