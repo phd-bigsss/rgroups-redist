@@ -14,12 +14,17 @@ editor_options:
   chunk_output_type: console
 ---
 
+```{r eval=FALSE, include=FALSE}
+knitr::knit(input = here::here("procesamiento/prod_prep.Rmd"));file.remove("prod_prep.md")
+```
+
 # Setup
 
 ```{r setup}
 knitr::opts_chunk$set(warning = FALSE, 
                       message = FALSE, 
-                      echo = TRUE 
+                      echo = TRUE,
+                      cache = T
                       )
 options(scipen=9999) # desactivar notacion cientifica
 ```
@@ -30,14 +35,10 @@ pacman::p_load(dplyr,sjmisc,GGally,sjlabelled,tidyverse,MLMusingR)
 df1 <- haven::read_dta(here::here("input/data/original/ZA6980_v2-0-0.dta"))
 dfTR <- haven::read_dta(here::here("input/data/original/ZA5521_v1-0-0.dta"))
 dfES <- haven::read_dta(here::here("input/data/original/ZA5962_v1-0-0.dta"))
-
-# relig <- haven::read_dta(here::here("input/data/original/ZA7570_v2-1-0.dta"))
-# religTR <- relig %>% filter(country==792)
-
-
+dfTR$weight <- 1
 df1 <- df1 %>% rename(topbot=TOPBOT)
 dfES <- dfES %>% rename(topbot=TOPBOT)
-#fix problem with variable names
+# fix problem with variable names
 dfTR <- dfTR %>% rename(SEX=sex,
                         DEGREE=degree,
                         EDUCYRS=educyrs,
@@ -52,7 +53,8 @@ dfTR <- dfTR %>% rename(SEX=sex,
                         NSUP=nsup,
                         WRKSUP=wrksup,
                         SPEMPREL=spemprel,
-                        SPWRKSUP=spwrksup)  
+                        SPWRKSUP=spwrksup)
+
 dfES$c_alphan <- NULL
 dfTR$c_alphan <- NULL
 df2 <- bind_rows(dfES,dfTR)
@@ -128,12 +130,12 @@ df1$egal3<- rowMeans(df1[,c("redist","prefineq","perineq")],na.rm = T)
 df1$egal3 <- ((df1$egal3-min(df1$egal3,na.rm = T))/(max(df1$egal3,na.rm = T)-min(df1$egal3,na.rm = T)))*100
 
 sjlabelled::set_label(df1$egal3) <- "Redistributive attitudes (3 items)"
-# hist.default(df1$egal3)
+# #hist.default(df1$egal3)
 
 df1$egal2<- rowMeans(df1[,c("redist","prefineq")],na.rm = T)
 df1$egal2 <- ((df1$egal2-min(df1$egal2,na.rm = T))/(max(df1$egal2,na.rm = T)-min(df1$egal2,na.rm = T)))*100
 sjlabelled::set_label(df1$egal2) <- "Redistributive attitudes (2 items)"
-# hist.default(df1$egal2)
+# #hist.default(df1$egal2)
 ```
 
 
@@ -1102,15 +1104,42 @@ df1 <- df1 %>%
   mutate(oesch16 = isco88_to_oesch(isco88r, self_employed, n_employees, n_classes = 16,to_factor = T,label=T),
          oesch8 = isco88_to_oesch(isco88r, self_employed, n_employees, n_classes = 8,to_factor = T,label=T))
 
-frq(df1$oesch16)
-frq(df1$oesch8)
-
 df1 <- df1 %>% 
-  mutate(oesch8spo = isco88_to_oesch(isco88spo, self_employed_spo, n_employees_spo, n_classes = 16,to_factor = T,label=T),
+  mutate(oesch16spo = isco88_to_oesch(isco88spo, self_employed_spo, n_employees_spo, n_classes = 16,to_factor = T,label=T),
          oesch8spo = isco88_to_oesch(isco88spo, self_employed_spo, n_employees_spo, n_classes = 8,to_factor = T,label=T))
 
-frq(df1$oesch8)
-frq(df1$oesch8spo)
+frq(df1$oesch16)
+
+df1$oesch16 <- as_labelled(df1$oesch16)
+df1$oesch16spo <- as_labelled(df1$oesch16spo)
+# # Upper-middle class
+#  [1] "'Large employers'"
+#  [2] "'Self-employed professionals'"
+# 
+#  [9] "'Higher-grade managers and administrators'"
+# [10] "'Lower-grade managers and administrators'"
+
+#  [5] "'Technical experts'"
+#  [6] "'Technicians'"
+# 
+# [13] "'Socio-cultural professionals'"
+# [14] "'Socio-cultural semi-professionals'"
+
+# # Lower-middle class
+#  [3] "'Small business owners with employees'"
+#  [4] "'Small business owners without employees'"
+# [11] "'Skilled clerks'"
+# 
+# # Working class
+#  [7] "'Skilled manual'"
+#  [8] "'Low-skilled manual'"
+# 
+# [12] "'Unskilled clerks'"
+# [15] "'Skilled service'"
+# [16] "'Low-skilled service'"
+
+df1$oesch3res <- car::recode(df1$oesch16,recode="c(1,2,9,10,5,6,13,14)=1;c(3,4,11)=2;c(7,8,12,15,16)=3")
+df1$oesch3spo <- car::recode(df1$oesch16spo,recode="c(1,2,9,10,5,6,13,14)=1;c(3,4,11)=2;c(7,8,12,15,16)=3")
 ```
 
 
@@ -1469,9 +1498,9 @@ df1$outgroup <- ifelse(df1$class3=="Working Class (V+VI+VII)",rowSums(df1[,c("n_
 df1$eindex<- (df1$ingroup-df1$outgroup)/(df1$outgroup+df1$ingroup)
 sjlabelled::set_label(df1$eindex) <- "EI homophily index"
 #frq(df1$eindex)
-hist.default(df1$eindex)
+#hist.default(df1$eindex)
 df1$eindex_gc <- group_center(x = df1$eindex,grp = df1$country)
-hist.default(df1$eindex_gc)
+#hist.default(df1$eindex_gc)
 
 df1 %>% select(class3,n_high,n_middle,n_low,outgroup,ingroup,eindex)
 df1$homclass <- as.numeric(df1$ingroup/df1$know_total)
@@ -1504,12 +1533,12 @@ df1$outgroup_s <- ifelse(df1$class3=="Working Class (V+VI+VII)",rowSums(df1[,c("
 df1$eindex_s<- (df1$ingroup_s-df1$outgroup_s)/(df1$outgroup_s+df1$ingroup_s)
 sjlabelled::set_label(df1$eindex_s) <- "EI homophily index (strong ties)"
 #frq(df1$eindex_s)
-hist.default(df1$eindex_s)
+#hist.default(df1$eindex_s)
 
 df1 %>% select(class3,n_high_s,n_middle_s,n_low_s,outgroup_s,ingroup_s,eindex_s)
 df1$homclass_s <- as.numeric(df1$ingroup_s/df1$know_total_s)
 sjlabelled::set_label(df1$homclass_s) <- "Class homogeneity (strong ties)"
-hist.default(df1$homclass_s)
+#hist.default(df1$homclass_s)
 ```
 
 ```{r homogeneity-weak-v01}
@@ -1531,12 +1560,12 @@ df1$outgroup_w <- ifelse(df1$class3=="Working Class (V+VI+VII)",rowSums(df1[,c("
 df1$eindex_w<- (df1$ingroup_w-df1$outgroup_w)/(df1$outgroup_w+df1$ingroup_w)
 sjlabelled::set_label(df1$eindex_w) <- "EI homophily index (weak ties)"
 frq(df1$eindex_w)
-hist.default(df1$eindex_w)
+#hist.default(df1$eindex_w)
 
 df1 %>% select(class3,n_high_w,n_middle_w,n_low_w,outgroup_w,ingroup_w,eindex_w)
 df1$homclass_w <- as.numeric(df1$ingroup_w/df1$know_total_w)
 sjlabelled::set_label(df1$homclass_w) <- "Class homogeneity (weak ties)"
-hist.default(df1$homclass_s)
+#hist.default(df1$homclass_s)
 ```
 
 ```{r homogeneity-resp-v01}
@@ -1558,7 +1587,7 @@ df1$outgroup_res <- ifelse(df1$class3res=="Working Class (V+VI+VII)",rowSums(df1
 df1$eindex_res<- (df1$ingroup_res-df1$outgroup_res)/(df1$outgroup_res+df1$ingroup_res)
 sjlabelled::set_label(df1$eindex_res) <- "EI homophily index (R's)"
 # frq(df1$eindex)
-# hist.default(df1$eindex)
+# #hist.default(df1$eindex)
 
 df1 %>% select(class3res,n_high,n_middle,n_low,outgroup_res,ingroup_res,eindex_res)
 df1$homclass_res <- as.numeric(df1$ingroup_res/df1$know_total)
@@ -1593,9 +1622,9 @@ df1$outgroup <- ifelse(df1$digclass3=="Working Class (V+VI+VII)",rowSums(df1[,c(
 df1$eindex2<- (df1$ingroup-df1$outgroup)/(df1$outgroup+df1$ingroup)
 sjlabelled::set_label(df1$eindex2) <- "EI homophily index"
 #frq(df1$eindex)
-hist.default(df1$eindex2)
+#hist.default(df1$eindex2)
 df1$eindex2_gc <- group_center(x = df1$eindex2,grp = df1$country)
-hist.default(df1$eindex2_gc)
+#hist.default(df1$eindex2_gc)
 
 df1 %>% select(dclass3,n_high,n_middle,n_low,outgroup,ingroup,eindex)
 df1$homclass2 <- as.numeric(df1$ingroup/df1$know_total)
@@ -1610,7 +1639,7 @@ df1$homclass2_gc <- group_center(x = df1$homclass2,grp = df1$country)
 ```{r homogeneity-resp-v02}
 # EI homophily index
 df1$ingroup_res <- NA 
-df1 %>% select(ddigclass3res,n_high,n_middle,n_low,ingroup_res)
+df1 %>% select(digclass3res,n_high,n_middle,n_low,ingroup_res)
 df1$ingroup_res <- ifelse(df1$digclass3res=="Service Class (I+II)",df1$n_high,df1$ingroup_res)
 df1$ingroup_res <- ifelse(df1$digclass3res=="Intermediate class (III+IV)",df1$n_middle,df1$ingroup_res)
 df1$ingroup_res <- ifelse(df1$digclass3res=="Working Class (V+VI+VII)",df1$n_low,df1$ingroup_res)
@@ -1623,19 +1652,17 @@ df1$outgroup_res <- ifelse(df1$digclass3res=="Intermediate class (III+IV)",rowSu
 df1$outgroup_res <- ifelse(df1$digclass3res=="Working Class (V+VI+VII)",rowSums(df1[,c("n_middle","n_high")],na.rm=T),df1$outgroup_res)
 # frq(df1$outgroup_res)
 
-df1$eindex_res<- (df1$ingroup_res-df1$outgroup_res)/(df1$outgroup_res+df1$ingroup_res)
+df1$eindex2_res<- (df1$ingroup_res-df1$outgroup_res)/(df1$outgroup_res+df1$ingroup_res)
 sjlabelled::set_label(df1$eindex_res) <- "EI homophily index (R's)"
 # frq(df1$eindex)
-# hist.default(df1$eindex)
+# #hist.default(df1$eindex)
 
 df1 %>% select(digclass3res,n_high,n_middle,n_low,outgroup_res,ingroup_res,eindex_res)
-df1$homclass_res <- as.numeric(df1$ingroup_res/df1$know_total)
-sjlabelled::set_label(df1$homclass_res) <- "Class homogeneity (R's)"
+df1$homclass2_res <- as.numeric(df1$ingroup_res/df1$know_total)
+sjlabelled::set_label(df1$homclass2_res) <- "Class homogeneity (R's)"
 # Weighted EI index
 # https://arxiv.org/pdf/2109.00348.pdf
 ```
-
-
 
 ```{r homogeneity-R-digclass}
 # EI homophily index
@@ -1657,9 +1684,9 @@ df1$outgroup <- ifelse(df1$dclass3=="Working Class (V+VI+VII)",rowSums(df1[,c("n
 df1$eindex3<- (df1$ingroup-df1$outgroup)/(df1$outgroup+df1$ingroup)
 sjlabelled::set_label(df1$eindex3) <- "EI homophily index"
 #frq(df1$eindex)
-hist.default(df1$eindex)
+#hist.default(df1$eindex)
 df1$eindex_gc <- group_center(x = df1$eindex,grp = df1$country)
-hist.default(df1$eindex_gc)
+#hist.default(df1$eindex_gc)
 
 df1 %>% select(dclass3,n_high,n_middle,n_low,outgroup,ingroup,eindex)
 df1$homclass3 <- as.numeric(df1$ingroup/df1$know_total)
@@ -1799,4 +1826,5 @@ df1$female <- car::recode(as.numeric(df1$SEX),"2='Female';1='Male';9=NA",
 
 ```{r}
 save(df1,file = here::here("input/data/proc/study1.RData"))
+knitr::knit(input = here::here("procesamiento/prod_prep-macro.Rmd"));file.remove("prod_prep-macro.md")
 ```

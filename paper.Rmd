@@ -255,7 +255,7 @@ rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 dfreg <- df1 %>% dplyr::select(redist,
                         class3, 
-                        homclass=homclass2,
+                        homclass=homclass,
                         # homclass=eindex,
                         Q05pcm,
                         Q03pcm,
@@ -383,7 +383,7 @@ pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,s
 rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 dfreg <- df1 %>% dplyr::select(redist,
-                        class3=digclass3,
+                        class3,
                         homclass,
                         Q03pcm,
                         edyears,
@@ -391,7 +391,7 @@ dfreg <- df1 %>% dplyr::select(redist,
                         agenum,
                         union,
                         workst,
-                        # WEIGHT,
+                        WEIGHT,
                         region,
                         "gini_disp",
                         "gini_mkt",
@@ -400,8 +400,8 @@ dfreg <- df1 %>% dplyr::select(redist,
                         country2,country
                         ) %>% 
   mutate(logrgdpna=log(rgdpna),
-         age2=agenum^2,
-         edyears2=edyears^2) %>%
+         edyears2=edyears^2,
+         age2=agenum^2) %>%
   # filter(!country2 %in% c("CHN")) %>%
   # filter(!country2 %in% c("TWN")) %>%
   # filter(!country2 %in% c("JPN")) %>%
@@ -413,6 +413,7 @@ dfreg <- df1 %>% dplyr::select(redist,
   # filter(!country2 %in% c("ISL")) %>%
   # filter(!country2 %in% c("TUR","EST")) %>%
   # filter(!country2 %in% c("MEX")) %>%
+# filter(!country2 %in% c("HUN")) %>%
   # filter(MAINSTAT %in% c(1,2)) %>%
   # filter(agenum %in% c(25:65)) %>% # Paskov & Weisstanner
   # filter(PARTLIV %in% c(0,1,2,3)) %>%
@@ -420,24 +421,16 @@ dfreg <- df1 %>% dplyr::select(redist,
   # filter(Q03pcm!="Missing") %>%
     # filter(oecd=="OECD") %>%
   na.omit()
-# frq(df1$region)
-# frq(dfreg$country2)
 
-# lineal
-base <- lmer(redist~1 + (1|country2),data=dfreg); icc1<- performance::icc(base)
-class <- lmer(redist~ class3+ (1|country2),data=dfreg)
-homclass <- lmer(redist~homclass + (1|country2),data=dfreg)
-full1 <- lmer(redist~ class3 +homclass+ female+agenum + age2+(1|country2),data=dfreg)
-rob1 <- lmer(redist~class3+ homclass+ edyears+ female+ agenum+ age2+(1|country2),data=dfreg)
-rob2 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ female+ agenum +age2+(1|country2),data=dfreg)
-rob3 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ workst + union+ female+agenum +age2 + (1|country2),data=dfreg)
-rob4 <- lmer(redist~class3+ homclass+ edyears+ Q03pcm+ workst + union+ female+agenum +age2 + (homclass|country2),data=dfreg)
-# anova(rob3,rob4)
-# plot_model(rob4,type = "re",show.values = T)
-
+# Models 
+base <- lmer(redist~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)
+homclass<- update(base, . ~ . +homclass)
+full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
+rob1 <- update(full1, . ~ . + class3+edyears+ Q03pcm+union+workst)
+rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
+# anova(rob1,rob2)
 # Interactions segregation x class
-int_homo <- lmer(redist~class3*homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ (1|country2),data=dfreg)
-# int_homo2 <- lmer(redist~class3*homclass+ edyears+ Q03pcm+ labst1+ union+ female+agenum +age2+  (homclass + class3*homclass|country2),data=dfreg)
+int_homo <- update(rob1, . ~ . +class3*homclass)
 
 cap1 <- "Multilevel regression for redistributive preferences, network homogeneity and social class" 
 coefmap <-  list(homclass ="Class-based network homogeneity",
@@ -446,19 +439,19 @@ coefmap <-  list(homclass ="Class-based network homogeneity",
                  "Q03pcmT02" = "Middle",
                  "Q03pcmT03" = "High",
                  "edyears" = 'Education in years',
-                  "workstNot in paid work"="Not in labor force",
+                 "workstNot in paid work"="Not in labor force",
                  "unionYes" = 'Union membership: Yes',
-                 'class3Intermediate class (III+IV):homclass'='Homogeneity x Intermediate Class',
-                 'class3Working Class (V+VI+VII):homclass'='Homogeneity x Working Class'
+                 'homclass:class3Intermediate class (III+IV)'='Homogeneity x Intermediate Class',
+                 'homclass:class3Working Class (V+VI+VII)'='Homogeneity x Working Class'
                  )
 coefgroup <- list("Social Class (ref: Service Class)"=2:3,
                   "Income Tercile (ref: Low)"=4:5,
                   "Homogeneity x Social Class"=9:10
                   )
-gofrow <-  list(Controls=c("No","No","No","Yes","Yes"))
-gof1<-  c(NA,NA,"Num. Countries:","Var: Group",NA)
+gofrow <-  list(Controls=c("No","Yes","Yes","Yes"))
+gof1<-  c(NA,NA,"Num. Countries:","Var: Group",NA,NA)
 
-models <- list(homclass,class,full1,rob3,int_homo)
+models <- list(homclass,full1,rob2,int_homo)
 texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,
                                 float.pos="h!",
                   include.thresholds=FALSE,
@@ -466,7 +459,7 @@ texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,
                   groups = coefgroup,
                   custom.gof.rows=gofrow,
                   include.loglik = FALSE,include.aic = FALSE,
-                  custom.gof.names = gof1
+                  # custom.gof.names = gof1
                 )
 ```
 
@@ -476,9 +469,10 @@ pacman::p_load(dplyr,dotwhisker,ggplot2,broom.mixed)
 
 
 m1_df <-
-    broom.mixed::tidy(rob3) %>% filter(term %in%  c("class3Intermediate class (III+IV)",
+    broom.mixed::tidy(rob1) %>% filter(term %in%  c("class3Intermediate class (III+IV)",
                                                     "class3Working Class (V+VI+VII)",
-                                                    "homclass")) %>% mutate(model = "Model 1")
+                                                    "homclass")) 
+# %>% mutate(model = "Model 1")
 m2_df <-
     broom.mixed::tidy(int_homo) %>% filter(term %in%  c("class3Intermediate class (III+IV)",
                                                         "class3Working Class (V+VI+VII)",
@@ -489,7 +483,7 @@ m2_df <-
 two_models <- rbind(m1_df)
 
 
-  dwplot(two_models,
+  dwplot(m1_df,
        vline = geom_vline(xintercept = 0,colour = "black",linetype = 1,size=0.01),
        style = "dotwhisker",
        dot_args =  list(size=5),
@@ -510,14 +504,13 @@ two_models <- rbind(m1_df)
   labs(caption = paste0("N=",nobs(int_homo),", Countries=",lme4::ngrps(int_homo))) +
   theme(
         plot.title = element_text(face = "bold"),
-        legend.position = c(0.007, 0.01),
-        legend.justification = c(0, 0),
-        legend.background = element_rect(colour = "grey80"),
-        legend.title = element_blank(),
+        # legend.position = c(0.007, 0.01),
+        # legend.justification = c(0, 0),
+        # legend.background = element_rect(colour = "grey80"),
+        # legend.title = element_blank(),
         axis.text.y.left = element_text(face = "bold",size = 12)
   )
 ```
-
 
 ```{r leverage1, eval=FALSE, include=FALSE}
 pacman::p_load(influence.ME,lattice)
@@ -543,7 +536,6 @@ plot(influence, which="cook",
 sigtest1<- sigtest(influence, test=-1.96)
 sigtest1$homclass
 ```
-
 
 ```{r marg1,fig.dim=c(4.1,2.6),fig.cap=c("Conditional marginal effects of Network homogeneity on redistributive preferences"),out.width = "75%"}
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr)   
@@ -637,8 +629,6 @@ if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjlabelled,haven,stringr,sjPlot)  
 rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
-df1$class3 <- relevel(df1$class3,ref =  "Intermediate class (III+IV)")
-df1$labst1 <-car::recode(df1$labst,"'No information'='Not in labour force'")
 dfreg <- df1 %>% dplyr::select(redist,
                         class3=dclass3,
                         homclass=homclass2,
@@ -667,11 +657,11 @@ dfreg <- df1 %>% dplyr::select(redist,
   na.omit()
 # T03dim(dfreg)
 
-main <- "redist~class3+ homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2"
-
-giniD_gdp<-lmer(formula(paste0(main,"+gini_disp+logrgdpna","+(1|country2)")),data=dfreg)
-giniD_rs <-lmer(formula(paste0(main,"+gini_disp+logrgdpna","+(homclass|country2)")),data=dfreg)
-# anova(giniD_gdp,giniD_rs)
+main <- "redist~class3+ homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ (1|country2)"
+base <- lmer(formula(main),data=dfreg,weights = WEIGHT)
+giniD_gdp<- update(base, . ~ . +gini_disp+logrgdpna)
+giniD_rs <-update(base, . ~ . - (1|country2) + (homclass|country2))
+anova(giniD_gdp,giniD_rs)
 giniD_int<- lmer(formula(paste0(main,"+homclass*gini_disp+logrgdpna","+(homclass|country2)")),data=dfreg)
 # summary(giniD_int)
 
@@ -714,10 +704,6 @@ p1$data %>%
 
 dfreg %>% filter(gini_disp >= min(gini_sig$fake),gini_disp <= max(gini_sig$fake)) %>% dplyr::select(country2)
 
-
-table(dfreg$gini_disp)
-
-dfreg %>% filter(gini_disp %in%)
 
 gini_sig <- 
 p1$data %>% 
