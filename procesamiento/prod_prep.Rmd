@@ -15,7 +15,8 @@ editor_options:
 ---
 
 ```{r eval=FALSE, include=FALSE}
-knitr::knit(input = here::here("procesamiento/prod_prep.Rmd"));file.remove("prod_prep.md")
+# knitr::knit(input = here::here("procesamiento/prod_prep.Rmd"));file.remove("prod_prep.md")
+# knitr::knit(input = here::here("procesamiento/prod_prep-macro.Rmd"));file.remove("prod_prep-macro.md")
 ```
 
 # Setup
@@ -1108,15 +1109,11 @@ df1 <- df1 %>%
   mutate(oesch16spo = isco88_to_oesch(isco88spo, self_employed_spo, n_employees_spo, n_classes = 16,to_factor = T,label=T),
          oesch8spo = isco88_to_oesch(isco88spo, self_employed_spo, n_employees_spo, n_classes = 8,to_factor = T,label=T))
 
-frq(df1$oesch8spo)
-frq(df1$oesch8)
-
-df1$oesch16 <- as_labelled(df1$oesch16)
-df1$oesch16spo <- as_labelled(df1$oesch16spo)
-# # Upper-middle class
+# Traditional Upper-middle class
 #  [1] "'Large employers'"
 #  [2] "'Self-employed professionals'"
 # 
+# Salaried middle class
 #  [9] "'Higher-grade managers and administrators'"
 # [10] "'Lower-grade managers and administrators'"
 
@@ -1124,7 +1121,7 @@ df1$oesch16spo <- as_labelled(df1$oesch16spo)
 #  [6] "'Technicians'"
 # 
 # [13] "'Socio-cultural professionals'"
-# [14] "'Socio-cultural semi-professionals'"
+# [14] "'Socio-cultural semi-professionals'" 
 
 # # Lower-middle class
 #  [3] "'Small business owners with employees'"
@@ -1139,12 +1136,98 @@ df1$oesch16spo <- as_labelled(df1$oesch16spo)
 # [15] "'Skilled service'"
 # [16] "'Low-skilled service'"
 
-df1$oesch3res <- car::recode(df1$oesch16,recode="c(1,2,9,10,5,6,13,14)=1;c(3,4,11)=2;c(7,8,12,15,16)=3")
-df1$oesch3spo <- car::recode(df1$oesch16spo,recode="c(1,2,9,10,5,6,13,14)=1;c(3,4,11)=2;c(7,8,12,15,16)=3")
+# reorder Oesch's scheme in a (semi)hierarchical order
+oesch_hierar <- 
+c("'Large employers'","'Self-employed professionals'",
+  "'Higher-grade managers and administrators'",
+  "'Lower-grade managers and administrators'",
+  "'Technical experts'","'Technicians'",
+  "'Socio-cultural professionals'","'Socio-cultural semi-professionals'",
+  "'Small business owners with employees'","'Small business owners without employees'","'Skilled clerks'",
+  "'Skilled manual'","'Skilled service'",
+  "'Low-skilled service'","'Unskilled clerks'","'Low-skilled manual'")
 
-sjPlot::tab_xtab(df1$oesch3res,df1$oesch3spo,show.na = T)
+
+# Respondent social class ------------------------------------------------------
+df1$oesch16 <- factor(df1$oesch16,
+                      levels = oesch_hierar)
+frq(df1$oesch16)
+
+# Partner social class ---------------------------------------------------------
+df1$oesch16spo <- factor(df1$oesch16spo,
+                      levels = oesch_hierar)
+frq(df1$oesch16spo)
+
+
+#   Given that the Oesch's Scheme consider the vertical (skills) and horizontal (work-logic) as the main distinction between classes
+# I will colapse in 4 classes that allow to distinguish between hierarchical differences 
+
+# 1. Traditional Upper-middle class
+# 2. Salaried middle-class
+# 3. Lower middle class
+# 4. Working Class
+
+df1$oesch4 <- NA
+df1$oesch4[df1$oesch16 %in%c("'Large employers'","'Self-employed professionals'")] <- 4
+df1$oesch4[df1$oesch16 %in%c("'Higher-grade managers and administrators'",
+                             "'Lower-grade managers and administrators'",
+                             "'Technical experts'","'Technicians'",
+                             "'Socio-cultural professionals'",
+                             "'Socio-cultural semi-professionals'")] <- 3
+df1$oesch4[df1$oesch16 %in%c( "'Small business owners with employees'",
+                              "'Small business owners without employees'",
+                              "'Skilled clerks'")] <- 2
+
+df1$oesch4[df1$oesch16 %in%c("'Low-skilled service'",
+                             "'Unskilled clerks'",
+                             "'Low-skilled manual'")] <- 1
+
+frq(df1$oesch4) # higher number is the hierarchical order of the four main classes
+
+
+df1$oesch4spo <- NA
+df1$oesch4spo[df1$oesch16spo %in%c("'Large employers'","'Self-employed professionals'")] <- 4
+df1$oesch4spo[df1$oesch16spo %in%c("'Higher-grade managers and administrators'",
+                             "'Lower-grade managers and administrators'",
+                             "'Technical experts'","'Technicians'",
+                             "'Socio-cultural professionals'",
+                             "'Socio-cultural semi-professionals'")] <- 3
+df1$oesch4spo[df1$oesch16spo %in%c( "'Small business owners with employees'",
+                              "'Small business owners without employees'",
+                              "'Skilled clerks'")] <- 2
+
+df1$oesch4spo[df1$oesch16spo %in%c("'Low-skilled service'",
+                             "'Unskilled clerks'",
+                             "'Low-skilled manual'")] <- 1
+frq(df1$oesch4spo)
+#if NA in class of respondent, replace with spouse
+df1$oesch4_dom  <- ifelse(is.na(df1$oesch4),df1$oesch4spo,df1$oesch4)
+frq(df1$oesch4_dom)
+# if NA in respondents it is assumed to be lower than spouse
+# now, with the cases in we have information for respondent and spouse
+# we replace the value by the highest one
+
+# Replace the highest class by dominance criteria 
+# Keep the highest of two values:
+df1$oesch4_dom <- pmax(df1$oesch4, #social class respondent
+                       df1$oesch4spo,#social class spouse
+                       na.rm = T) # if NA, do nothing
+frq(df1$oesch4_dom)
+df1$oesch4_dom <- as_numeric(df1$oesch4_dom)
+frq(df1$oesch4_dom)
+
+# 3-class scheme Oesch
+df1$oesch3 <- car::recode(df1$oesch4,"3:4='Upper-middle Class';2='Lower-middle Class';1='Working Class'",
+                          as.factor = T,levels = c("Upper-middle Class","Lower-middle Class","Working Class"))
+frq(df1$oesch3)
+df1$oesch3spo <- car::recode(df1$oesch4spo,"3:4='Upper-middle Class';2='Lower-middle Class';1='Working Class'",
+                          as.factor = T,levels = c("Upper-middle Class","Lower-middle Class","Working Class"))
+frq(df1$oesch3spo)
+
+df1$oesch3_dom <- car::recode(df1$oesch4_dom,"3:4='Upper-middle Class';2='Lower-middle Class';1='Working Class'",
+                          as.factor = T,levels = c("Upper-middle Class","Lower-middle Class","Working Class"))
+frq(df1$oesch3_dom)
 ```
-
 
 # Networks
 
@@ -1829,5 +1912,4 @@ df1$female <- car::recode(as.numeric(df1$SEX),"2='Female';1='Male';9=NA",
 
 ```{r}
 save(df1,file = here::here("input/data/proc/study1.RData"))
-knitr::knit(input = here::here("procesamiento/prod_prep-macro.Rmd"));file.remove("prod_prep-macro.md")
 ```
