@@ -1,5 +1,6 @@
 ---
 title: "Multilevel regression models"
+subtitle: "Full sample"
 date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
 output: 
   html_document: 
@@ -420,7 +421,7 @@ giniD_gdp<- update(base, . ~ . +gini_disp+logrgdpna)
 giniD_rs <- update(giniD_gdp, . ~ . - (1|country2) + (homclass|country2))
 # anova(giniD_gdp,giniD_rs)
 giniD_int<- update(giniD_rs, . ~ . + homclass*gini_disp + (homclass|country2))
-# summary(giniD_int)
+summary(giniD_int)
 
 giniM_gdp<- update(base, . ~ . +gini_mkt+logrgdpna)
 giniM_rs <- update(giniM_gdp, . ~ . - (1|country2) + (homclass|country2))
@@ -446,7 +447,7 @@ texreg::knitreg(models,
                 )
 ```
 
-```{r mod-other-macro-ordinal,fig.height=3,fig.width=6,out.width='70%',results='asis', cache=T}
+```{r mod-other-macro-binary,fig.height=3,fig.width=6,out.width='70%',results='asis', cache=T}
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr,gridExtra)  
 rm(list=ls())
