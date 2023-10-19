@@ -514,16 +514,18 @@ two_models <- rbind(m1_df)
   
 ggplot(
   m1_df,
-  aes(x = estimate, y = term, colour=term)) +
+  aes(x = estimate, y = term)) +
   geom_vline(xintercept = 0) +
-  geom_pointrange(aes(xmin = conf.low, xmax = conf.high)) +
-  # scale_x_continuous(labels = label_percent()) +
+  geom_errorbar(aes(xmin = conf.low, xmax = conf.high),size=1, width=0.2) +
+  geom_point(shape=21, size=3, fill="white") +
+  scale_y_discrete(labels=c("Working Class (V+VI+VII)",
+                            "Intermediate class (III+IV)",  
+                            "Class-based homogeneity")) +
   guides(color = "none") +
   labs(caption = paste0("N=",nobs(int_homo),", Countries=",lme4::ngrps(int_homo))) +
   theme(
-        axis.text.y.left = element_text(face = "bold",size = 12)
+        axis.text.y.left = element_text(face = "plain",size = 12)
   )
-  
   
 ```
 
