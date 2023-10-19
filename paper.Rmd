@@ -449,17 +449,17 @@ coefgroup <- list("Social Class (ref: Service Class)"=2:3,
                   "Homogeneity x Social Class"=9:10
                   )
 gofrow <-  list(Controls=c("No","Yes","Yes","Yes"))
-gof1<-  c(NA,NA,"Num. Countries:","Var: Group",NA,NA)
+gof1<-  c(NA,NA,"Num. Countries:","Var: Group",NA)
 
-models <- list(homclass,full1,rob2,int_homo)
+models <- list(homclass,full1,rob1,int_homo)
 texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,
                                 float.pos="h!",
                   include.thresholds=FALSE,
-                  # custom.coef.map=coefmap,
-                  # groups = coefgroup,
+                  custom.coef.map=coefmap,
+                  groups = coefgroup,
                   custom.gof.rows=gofrow,
                   include.loglik = FALSE,include.aic = FALSE,
-                  # custom.gof.names = gof1
+                  custom.gof.names = gof1
                 )
 ```
 
@@ -472,6 +472,7 @@ m1_df <-
     broom.mixed::tidy(rob1) %>% filter(term %in%  c("class3Intermediate class (III+IV)",
                                                     "class3Working Class (V+VI+VII)",
                                                     "homclass")) 
+
 # %>% mutate(model = "Model 1")
 m2_df <-
     broom.mixed::tidy(int_homo) %>% filter(term %in%  c("class3Intermediate class (III+IV)",
@@ -481,7 +482,6 @@ m2_df <-
                                                         "class3Working Class (V+VI+VII):homclass")) %>% mutate(model = "Model 2")
 
 two_models <- rbind(m1_df)
-
 
   dwplot(m1_df,
        vline = geom_vline(xintercept = 0,colour = "black",linetype = 1,size=0.01),
