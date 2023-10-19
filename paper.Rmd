@@ -457,7 +457,7 @@ texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,
                   include.thresholds=FALSE,
                   custom.coef.map=coefmap,
                   groups = coefgroup,
-                  custom.gof.rows=gofrow,
+                  custom.gof.rows=gofrow,   
                   include.loglik = FALSE,include.aic = FALSE,
                   custom.gof.names = gof1
                 )
@@ -469,7 +469,7 @@ pacman::p_load(dplyr,dotwhisker,ggplot2,broom.mixed)
 
 
 m1_df <-
-    broom.mixed::tidy(rob1) %>% filter(term %in%  c("class3Intermediate class (III+IV)",
+    broom.mixed::tidy(rob1,conf.int = TRUE) %>% filter(term %in%  c("class3Intermediate class (III+IV)",
                                                     "class3Working Class (V+VI+VII)",
                                                     "homclass")) 
 
@@ -510,6 +510,21 @@ two_models <- rbind(m1_df)
         # legend.title = element_blank(),
         axis.text.y.left = element_text(face = "bold",size = 12)
   )
+  
+  
+ggplot(
+  m1_df,
+  aes(x = estimate, y = term, colour=term)) +
+  geom_vline(xintercept = 0) +
+  geom_pointrange(aes(xmin = conf.low, xmax = conf.high)) +
+  # scale_x_continuous(labels = label_percent()) +
+  guides(color = "none") +
+  labs(caption = paste0("N=",nobs(int_homo),", Countries=",lme4::ngrps(int_homo))) +
+  theme(
+        axis.text.y.left = element_text(face = "bold",size = 12)
+  )
+  
+  
 ```
 
 ```{r leverage1, eval=FALSE, include=FALSE}
