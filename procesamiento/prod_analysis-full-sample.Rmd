@@ -56,7 +56,7 @@ base <- glmer(redist~1 + (1|country2),data=dfreg,weights = WEIGHT,family = "bino
 homclass<- update(base, . ~ . +homclass)
 full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
 rob1 <- update(full1, . ~ . + class3+edyears+ Q03pcm+union+workst)
-rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2),nAGQ = 5L)
+rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
 # anova(rob1,rob2)
 # Interactions segregation x class
 int_homo <- update(rob1, . ~ . +class3*homclass)
@@ -236,7 +236,7 @@ base <- glmer(redist~1 + (1|country2),data=dfreg,weights = WEIGHT,family = "bino
 homclass<- update(base, . ~ . +homclass)
 full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
 rob1 <- update(full1, . ~ . + class3+edyears+ Q03pcm+union+workst)
-rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2),nAGQ = 5L)
+rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
 # anova(rob1,rob2)
 # Interactions segregation x class
 int_homo <- update(rob1, . ~ . +class3*homclass)
@@ -417,7 +417,7 @@ base <- glmer(redist~1 + (1|country2),data=dfreg,weights = WEIGHT,family = "bino
 homclass<- update(base, . ~ . +homclass)
 full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
 rob1 <- update(full1, . ~ . + class3+edyears+ Q03pcm+union+workst)
-rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2),nAGQ = 5L)
+rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
 # anova(rob1,rob2)
 # Interactions segregation x class
 int_homo <- update(rob1, . ~ . +class3*homclass)
