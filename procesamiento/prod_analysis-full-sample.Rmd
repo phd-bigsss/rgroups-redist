@@ -62,7 +62,7 @@ rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
 int_homo <- update(rob1, . ~ . +class3*homclass)
 
 models <- list(homclass,full1,rob1,int_homo)
-save( models,file = here::here("output/fullsample-logit-homclass-full-individual.RData"))
+save(models,file = here::here("output/fullsample-logit-homclass-full-individual.RData"),compress = "gzip")
 ```
 
 ```{r mod-intermacro-binary,results='asis'}
@@ -133,7 +133,7 @@ save(giniD_gdp,giniD_rs,giniD_int,
                  giniM_gdp,giniM_rs,giniM_int,
                  int_palma,int_pc10,int_pc50,int_d10d1,
                  int_gini_wiid,int_theil,
-     file = here::here("output/fullsample-logit-homclass-full-macro.RData"))
+     file = here::here("output/fullsample-logit-homclass-full-macro.RData"),compress = "gzip")
 ```
 
 ## Strong ties
@@ -177,7 +177,7 @@ rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
 int_homo <- update(rob1, . ~ . +class3*homclass)
 
 models <- list(homclass,full1,rob1,int_homo)
-save(models,file = here::here("output/fullsample-logit-homclass-strong-individual.RData"))
+save(models,file = here::here("output/fullsample-logit-homclass-strong-individual.RData"),compress = "gzip")
 ```
 
 ```{r mod-intermacro-binary-strong-ties,results='asis'}
@@ -248,7 +248,7 @@ save(giniD_gdp,giniD_rs,giniD_int,
                  giniM_gdp,giniM_rs,giniM_int,
                  int_palma,int_pc10,int_pc50,int_d10d1,
                  int_gini_wiid,int_theil,
-     file = here::here("output/fullsample-logit-homclass-strong-macro.RData"))
+     file = here::here("output/fullsample-logit-homclass-strong-macro.RData"),compress = "gzip")
 ```
 
 ## Weak ties
@@ -292,7 +292,7 @@ rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
 int_homo <- update(rob1, . ~ . +class3*homclass)
 
 models <- list(homclass,full1,rob1,int_homo)
-save( models,file = here::here("output/fullsample-logit-homclass-weak-individual.RData"))
+save( models,file = here::here("output/fullsample-logit-homclass-weak-individual.RData"),compress = "gzip")
 ```
 
 ```{r mod-intermacro-binary-weak-ties,results='asis'}
@@ -362,7 +362,7 @@ save(giniD_gdp,giniD_rs,giniD_int,
                  giniM_gdp,giniM_rs,giniM_int,
                  int_palma,int_pc10,int_pc50,int_d10d1,
                  int_gini_wiid,int_theil,
-     file = here::here("output/fullsample-logit-homclass-weak-macro.RData"))
+     file = here::here("output/fullsample-logit-homclass-weak-macro.RData"),compress = "gzip")
 ```
 
 # Ordinal
@@ -414,7 +414,7 @@ rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
 # Interactions segregation x class
 int_homo <- update(rob1, . ~ . +class3*homclass)
 models <- list(homclass,full1,rob1,int_homo)
-save( models,file = here::here("output/fullsample-ologit-homclass-full-individual.RData"))
+save( models,file = here::here("output/fullsample-ologit-homclass-full-individual.RData"),compress = "gzip")
 ```
 
 ```{r mod-intermacro-ordinal,results='asis'}
@@ -486,7 +486,7 @@ save(giniD_gdp,giniD_rs,giniD_int,
                  giniM_gdp,giniM_rs,giniM_int,
                  int_palma,int_pc10,int_pc50,int_d10d1,
                  int_gini_wiid,int_theil,
-     file = here::here("output/fullsample-ologit-homclass-full-macro.RData"))
+     file = here::here("output/fullsample-ologit-homclass-full-macro.RData"),compress = "gzip")
 ```
 
 ## Strong ties
@@ -537,7 +537,7 @@ rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
 int_homo <- update(rob1, . ~ . +class3*homclass)
 
 models <- list(homclass,full1,rob1,int_homo)
-save( models,file = here::here("output/fullsample-ologit-homclass-strong-individual.RData"))
+save( models,file = here::here("output/fullsample-ologit-homclass-strong-individual.RData"),compress = "gzip")
 ```
 
 ```{r mod-intermacro-ordinal-strong-ties,results='asis'}
@@ -608,7 +608,7 @@ save(giniD_gdp,giniD_rs,giniD_int,
                  giniM_gdp,giniM_rs,giniM_int,
                  int_palma,int_pc10,int_pc50,int_d10d1,
                  int_gini_wiid,int_theil,
-     file = here::here("output/fullsample-ologit-homclass-strong-macro.RData"))
+     file = here::here("output/fullsample-ologit-homclass-strong-macro.RData"),compress = "gzip")
 ```
 
 ## Weak ties
@@ -659,16 +659,7 @@ rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
 int_homo <- update(rob1, . ~ . +class3*homclass)
 
 models <- list(homclass,full1,rob1,int_homo)
-save( models,file = here::here("output/fullsample-ologit-homclass-weak-individual.RData"))
-texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,
-                                float.pos="h!",
-                  include.thresholds=FALSE,
-                  custom.coef.map=coefmap,
-                  groups = coefgroup,
-                  custom.gof.rows=gofrow,
-                  include.loglik = FALSE,include.aic = FALSE,
-                  # custom.gof.names = gof1
-                )
+save( models,file = here::here("output/fullsample-ologit-homclass-weak-individual.RData"),compress = "gzip")
 ```
 
 ```{r mod-intermacro-ordinal-weak-ties,results='asis'}
@@ -739,6 +730,6 @@ save(giniD_gdp,giniD_rs,giniD_int,
                  giniM_gdp,giniM_rs,giniM_int,
                  int_palma,int_pc10,int_pc50,int_d10d1,
                  int_gini_wiid,int_theil,
-     file = here::here("output/fullsample-ologit-homclass-weak-macro.RData"))
+     file = here::here("output/fullsample-ologit-homclass-weak-macro.RData"),compress = "gzip")
 ```
 
