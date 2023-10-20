@@ -194,10 +194,10 @@ texreg::knitreg(models_m,scalebox = 0.75,
                 custom.coef.map = customcoef,
                 caption.above = T,caption = cap1)
 
-save( list(giniD_gdp,giniD_rs,giniD_int,
+save(giniD_gdp,giniD_rs,giniD_int,
                  giniM_gdp,giniM_rs,giniM_int,
                  int_palma,int_pc10,int_pc50,int_d10d1,
-                 int_gini_wiid,int_theil),
+                 int_gini_wiid,int_theil,
      file = here::here("output/fullsample-logit-homclass-full-macro.RData"))
 ```
 
@@ -375,10 +375,10 @@ texreg::knitreg(models_m,scalebox = 0.75,
                 custom.coef.map = customcoef,
                 caption.above = T,caption = cap1)
 
-save( list(giniD_gdp,giniD_rs,giniD_int,
+save(giniD_gdp,giniD_rs,giniD_int,
                  giniM_gdp,giniM_rs,giniM_int,
                  int_palma,int_pc10,int_pc50,int_d10d1,
-                 int_gini_wiid,int_theil),
+                 int_gini_wiid,int_theil,
      file = here::here("output/fullsample-logit-homclass-strong-macro.RData"))
 ```
 
@@ -556,10 +556,10 @@ texreg::knitreg(models_m,scalebox = 0.75,
                 custom.coef.map = customcoef,
                 caption.above = T,caption = cap1)
 
-save( list(giniD_gdp,giniD_rs,giniD_int,
+save(giniD_gdp,giniD_rs,giniD_int,
                  giniM_gdp,giniM_rs,giniM_int,
                  int_palma,int_pc10,int_pc50,int_d10d1,
-                 int_gini_wiid,int_theil),
+                 int_gini_wiid,int_theil,
      file = here::here("output/fullsample-logit-homclass-weak-macro.RData"))
 ```
 
@@ -746,10 +746,10 @@ texreg::knitreg(models_m,scalebox = 0.75,
                 float.pos="h!",                
                 custom.coef.map = customcoef,
                 caption.above = T,caption = cap1)
-save( list(giniD_gdp,giniD_rs,giniD_int,
+save(giniD_gdp,giniD_rs,giniD_int,
                  giniM_gdp,giniM_rs,giniM_int,
                  int_palma,int_pc10,int_pc50,int_d10d1,
-                 int_gini_wiid,int_theil),
+                 int_gini_wiid,int_theil,
      file = here::here("output/fullsample-ologit-homclass-full-macro.RData"))
 ```
 
@@ -935,10 +935,10 @@ texreg::knitreg(models_m,scalebox = 0.75,
                 custom.coef.map = customcoef,
                 caption.above = T,caption = cap1)
 
-save( list(giniD_gdp,giniD_rs,giniD_int,
+save(giniD_gdp,giniD_rs,giniD_int,
                  giniM_gdp,giniM_rs,giniM_int,
                  int_palma,int_pc10,int_pc50,int_d10d1,
-                 int_gini_wiid,int_theil),
+                 int_gini_wiid,int_theil,
      file = here::here("output/fullsample-ologit-homclass-strong-macro.RData"))
 ```
 
@@ -1124,10 +1124,10 @@ texreg::knitreg(models_m,scalebox = 0.75,
                 custom.coef.map = customcoef,
                 caption.above = T,caption = cap1)
 
-save( list(giniD_gdp,giniD_rs,giniD_int,
+save(giniD_gdp,giniD_rs,giniD_int,
                  giniM_gdp,giniM_rs,giniM_int,
                  int_palma,int_pc10,int_pc50,int_d10d1,
-                 int_gini_wiid,int_theil),
+                 int_gini_wiid,int_theil,
      file = here::here("output/fullsample-ologit-homclass-weak-macro.RData"))
 ```
 
