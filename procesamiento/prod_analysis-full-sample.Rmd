@@ -81,7 +81,7 @@ gofrow <-  list(Controls=c("No","Yes","Yes","Yes"))
 gof1<-  c(NA,NA,"Num. Countries:","Var: Group",NA,NA)
 
 models <- list(homclass,full1,rob1,int_homo)
-save(list = models,file = here::here("output/fullsample-logit-homclass-full-individual.RData"))
+save( models,file = here::here("output/fullsample-logit-homclass-full-individual.RData"))
 texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,
                                 float.pos="h!",
                   include.thresholds=FALSE,
@@ -194,7 +194,7 @@ texreg::knitreg(models_m,scalebox = 0.75,
                 custom.coef.map = customcoef,
                 caption.above = T,caption = cap1)
 
-save(list = list(giniD_gdp,giniD_rs,giniD_int,
+save( list(giniD_gdp,giniD_rs,giniD_int,
                  giniM_gdp,giniM_rs,giniM_int,
                  int_palma,int_pc10,int_pc50,int_d10d1,
                  int_gini_wiid,int_theil),
@@ -261,7 +261,7 @@ gofrow <-  list(Controls=c("No","Yes","Yes","Yes"))
 gof1<-  c(NA,NA,"Num. Countries:","Var: Group",NA,NA)
 
 models <- list(homclass,full1,rob1,int_homo)
-save(list = models,file = here::here("output/fullsample-logit-homclass-strong-individual.RData"))
+save( models,file = here::here("output/fullsample-logit-homclass-strong-individual.RData"))
 texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,
                                 float.pos="h!",
                   include.thresholds=FALSE,
@@ -375,7 +375,7 @@ texreg::knitreg(models_m,scalebox = 0.75,
                 custom.coef.map = customcoef,
                 caption.above = T,caption = cap1)
 
-save(list = list(giniD_gdp,giniD_rs,giniD_int,
+save( list(giniD_gdp,giniD_rs,giniD_int,
                  giniM_gdp,giniM_rs,giniM_int,
                  int_palma,int_pc10,int_pc50,int_d10d1,
                  int_gini_wiid,int_theil),
@@ -442,7 +442,7 @@ gofrow <-  list(Controls=c("No","Yes","Yes","Yes"))
 gof1<-  c(NA,NA,"Num. Countries:","Var: Group",NA,NA)
 
 models <- list(homclass,full1,rob1,int_homo)
-save(list = models,file = here::here("output/fullsample-logit-homclass-weak-individual.RData"))
+save( models,file = here::here("output/fullsample-logit-homclass-weak-individual.RData"))
 texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,
                                 float.pos="h!",
                   include.thresholds=FALSE,
@@ -556,7 +556,7 @@ texreg::knitreg(models_m,scalebox = 0.75,
                 custom.coef.map = customcoef,
                 caption.above = T,caption = cap1)
 
-save(list = list(giniD_gdp,giniD_rs,giniD_int,
+save( list(giniD_gdp,giniD_rs,giniD_int,
                  giniM_gdp,giniM_rs,giniM_int,
                  int_palma,int_pc10,int_pc50,int_d10d1,
                  int_gini_wiid,int_theil),
@@ -632,7 +632,7 @@ gofrow <-  list(Controls=c("No","Yes","Yes","Yes"))
 gof1<-  c(NA,NA,"Num. Countries:","Var: Group",NA,NA)
 
 models <- list(homclass,full1,rob1,int_homo)
-save(list = models,file = here::here("output/fullsample-ologit-homclass-full-individual.RData"))
+save( models,file = here::here("output/fullsample-ologit-homclass-full-individual.RData"))
 texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,
                                 float.pos="h!",
                   include.thresholds=FALSE,
@@ -746,7 +746,7 @@ texreg::knitreg(models_m,scalebox = 0.75,
                 float.pos="h!",                
                 custom.coef.map = customcoef,
                 caption.above = T,caption = cap1)
-save(list = list(giniD_gdp,giniD_rs,giniD_int,
+save( list(giniD_gdp,giniD_rs,giniD_int,
                  giniM_gdp,giniM_rs,giniM_int,
                  int_palma,int_pc10,int_pc50,int_d10d1,
                  int_gini_wiid,int_theil),
@@ -820,7 +820,7 @@ gofrow <-  list(Controls=c("No","Yes","Yes","Yes"))
 gof1<-  c(NA,NA,"Num. Countries:","Var: Group",NA,NA)
 
 models <- list(homclass,full1,rob1,int_homo)
-save(list = models,file = here::here("output/fullsample-ologit-homclass-strong-individual.RData"))
+save( models,file = here::here("output/fullsample-ologit-homclass-strong-individual.RData"))
 texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,
                                 float.pos="h!",
                   include.thresholds=FALSE,
@@ -935,7 +935,7 @@ texreg::knitreg(models_m,scalebox = 0.75,
                 custom.coef.map = customcoef,
                 caption.above = T,caption = cap1)
 
-save(list = list(giniD_gdp,giniD_rs,giniD_int,
+save( list(giniD_gdp,giniD_rs,giniD_int,
                  giniM_gdp,giniM_rs,giniM_int,
                  int_palma,int_pc10,int_pc50,int_d10d1,
                  int_gini_wiid,int_theil),
@@ -1009,7 +1009,7 @@ gofrow <-  list(Controls=c("No","Yes","Yes","Yes"))
 gof1<-  c(NA,NA,"Num. Countries:","Var: Group",NA,NA)
 
 models <- list(homclass,full1,rob1,int_homo)
-save(list = models,file = here::here("output/fullsample-ologit-homclass-weak-individual.RData"))
+save( models,file = here::here("output/fullsample-ologit-homclass-weak-individual.RData"))
 texreg::knitreg(models,caption=paste("(\\#tab:modredist)",cap1),caption.above=T,
                                 float.pos="h!",
                   include.thresholds=FALSE,
@@ -1124,7 +1124,7 @@ texreg::knitreg(models_m,scalebox = 0.75,
                 custom.coef.map = customcoef,
                 caption.above = T,caption = cap1)
 
-save(list = list(giniD_gdp,giniD_rs,giniD_int,
+save( list(giniD_gdp,giniD_rs,giniD_int,
                  giniM_gdp,giniM_rs,giniM_int,
                  int_palma,int_pc10,int_pc50,int_d10d1,
                  int_gini_wiid,int_theil),
