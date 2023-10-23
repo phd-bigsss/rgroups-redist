@@ -19,6 +19,381 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 options(scipen=9999) # desactivar notacion cientifica
 ```
 
+# Numeric
+
+## Full network
+
+```{r mod-homclass-numeric,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal)  
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+dfreg <- df1 %>% dplyr::select(redist,
+                        class3,
+                        homclass,
+                        Q03pcm,
+                        edyears,
+                        female,
+                        agenum,
+                        union,
+                        workst,
+                        WEIGHT,
+                        region,
+                        "gini_disp",
+                        "gini_mkt",
+                        rgdpna,
+                        oecd,
+                        country2,country
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna),
+         edyears2=edyears^2,
+         age2=agenum^2) %>%
+  na.omit()
+
+# Models 
+base <- lmer(redist~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)
+homclass<- update(base, . ~ . +homclass)
+full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
+rob1 <- update(full1, . ~ . + class3+edyears+ Q03pcm+union+workst)
+rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
+# anova(rob1,rob2)
+# Interactions segregation x class
+int_homo <- update(rob1, . ~ . +class3*homclass)
+
+models <- list(homclass,full1,rob1,int_homo)
+save(models,file = here::here("output/fullsample-numeric-homclass-full-individual.RData"),compress = "gzip")
+```
+
+```{r mod-intermacro-numeric,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal)  
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+dfreg <- df1 %>% dplyr::select(redist,
+                               class3,
+                        homclass,
+                        Q03pcm,
+                        edyears,
+                        female,
+                        agenum,
+                        union,
+                        workst,
+                        WEIGHT,
+                        region,
+                        "gini_disp",
+                        "gini_mkt",
+                        rgdpna,
+                        oecd,
+                        country2,country,
+                        palmaratio,
+                        top10,
+                        middle50,
+                        d10d1,
+                        giniindex,
+                        ttheilge1
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna),
+         edyears2=edyears^2,
+         age2=agenum^2) %>%
+  na.omit()
+
+# Homoclass x Gini--------------------------------------------------------------
+main <- "redist~class3+homclass+edyears+Q03pcm+workst+union+female+agenum+age2+(1|country2)"
+base <- glmer(formula(main),data=dfreg,weights = WEIGHT)
+giniD_gdp<- update(base, . ~ . +gini_disp+logrgdpna)
+giniD_rs <- update(giniD_gdp, . ~ . - (1|country2) + (homclass|country2))
+# anova(giniD_gdp,giniD_rs)
+giniD_int<- update(giniD_rs, . ~ . + homclass*gini_disp + (homclass|country2))
+# summary(giniD_int)
+
+giniM_gdp<- update(base, . ~ . +gini_mkt+logrgdpna)
+giniM_rs <- update(giniM_gdp, . ~ . - (1|country2) + (homclass|country2))
+# anova(giniM_gdp,giniM_rs)
+giniM_int <- update(giniM_rs, . ~ . + homclass*gini_mkt + (homclass|country2))
+summary(giniM_int)
+models <- list(giniD_gdp,giniD_rs,giniD_int,
+               giniM_gdp,giniM_rs,giniM_int)
+
+# Homoclass x Other Economic Inequality-----------------------------------------
+main <- "redist~class3+homclass+edyears+Q03pcm+workst+union+female+agenum+age2+logrgdpna+(homclass|country2)"
+base <- glmer(formula(main),data=dfreg,weights = WEIGHT,family = "binomial")
+int_palma <- update(base, . ~ . +homclass*palmaratio)
+int_pc10  <- update(base, . ~ . +homclass*top10)
+int_pc50  <- update(base, . ~ . +homclass*middle50)
+int_d10d1 <- update(base, . ~ . +homclass*d10d1)
+int_gini_wiid <- update(base, . ~ . +homclass*giniindex)
+int_theil  <- update(base, . ~ . +homclass*ttheilge1)
+
+models_m <- list(int_palma,int_pc10,int_pc50,int_d10d1,
+                 int_gini_wiid,int_theil
+                 )
+save(giniD_gdp,giniD_rs,giniD_int,
+                 giniM_gdp,giniM_rs,giniM_int,
+                 int_palma,int_pc10,int_pc50,int_d10d1,
+                 int_gini_wiid,int_theil,
+     file = here::here("output/fullsample-numeric-homclass-full-macro.RData"),compress = "gzip")
+```
+
+```{r}
+load(here::here("output/fullsample-numeric-homclass-full-individual.RData"))
+texreg::knitreg(models)
+
+load(here::here("output/fullsample-numeric-homclass-full-macro.RData"))
+texreg::knitreg(list(giniD_int,giniM_int,int_palma,int_pc10,int_pc50,int_d10d1,
+                 int_gini_wiid,int_theil))
+```
+
+
+
+## Strong ties
+
+```{r mod-homclass-numeric-strong-ties,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal)  
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+dfreg <- df1 %>% dplyr::select(redist,
+                        class3,
+                        homclass=homclass_s,
+                        Q03pcm,
+                        edyears,
+                        female,
+                        agenum,
+                        union,
+                        workst,
+                        WEIGHT,
+                        region,
+                        "gini_disp",
+                        "gini_mkt",
+                        rgdpna,
+                        oecd,
+                        country2,country
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna),
+         edyears2=edyears^2,
+         age2=agenum^2) %>%
+  na.omit()
+
+# Models 
+base <- lmer(redist~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)
+homclass<- update(base, . ~ . +homclass)
+full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
+rob1 <- update(full1, . ~ . + class3+edyears+ Q03pcm+union+workst)
+rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
+# anova(rob1,rob2)
+# Interactions segregation x class
+int_homo <- update(rob1, . ~ . +class3*homclass)
+
+models <- list(homclass,full1,rob1,int_homo)
+save(models,file = here::here("output/fullsample-numeric-homclass-strong-individual.RData"),compress = "gzip")
+```
+
+```{r mod-intermacro-numeric-strong-ties,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr,gridExtra)  
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+dfreg <- df1 %>% dplyr::select(redist,
+                        class3,
+                        homclass=homclass_s,
+                        Q03pcm,
+                        edyears,
+                        female,
+                        agenum,
+                        union,
+                        workst,
+                        WEIGHT,
+                        region,
+                        "gini_disp",
+                        "gini_mkt",
+                        rgdpna,
+                        oecd,
+                        country2,country,
+                        palmaratio,
+                        top10,
+                        middle50,
+                        d10d1,
+                        giniindex,
+                        ttheilge1
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna),
+         edyears2=edyears^2,
+         age2=agenum^2) %>%
+  na.omit()
+
+# Homoclass x Gini--------------------------------------------------------------
+main <- "redist~class3+homclass+edyears+Q03pcm+workst+union+female+agenum+age2+(1|country2)"
+base <- lmer(formula(main),data=dfreg,weights = WEIGHT)
+giniD_gdp<- update(base, . ~ . +gini_disp+logrgdpna)
+giniD_rs <- update(giniD_gdp, . ~ . - (1|country2) + (homclass|country2))
+# anova(giniD_gdp,giniD_rs)
+giniD_int<- update(giniD_rs, . ~ . + homclass*gini_disp + (homclass|country2))
+summary(giniD_int)
+
+giniM_gdp<- update(base, . ~ . +gini_mkt+logrgdpna)
+giniM_rs <- update(giniM_gdp, . ~ . - (1|country2) + (homclass|country2))
+# anova(giniM_gdp,giniM_rs)
+giniM_int <- update(giniM_rs, . ~ . + homclass*gini_mkt + (homclass|country2))
+summary(giniM_int)
+models <- list(giniD_gdp,giniD_rs,giniD_int,
+               giniM_gdp,giniM_rs,giniM_int)
+
+# Homoclass x Other Economic Inequality-----------------------------------------
+main <- "redist~class3+homclass+edyears+Q03pcm+workst+union+female+agenum+age2+logrgdpna+(homclass|country2)"
+base <- lmer(formula(main),data=dfreg,weights = WEIGHT)
+int_palma <- update(base, . ~ . +homclass*palmaratio)
+int_pc10  <- update(base, . ~ . +homclass*top10)
+int_pc50  <- update(base, . ~ . +homclass*middle50)
+int_d10d1 <- update(base, . ~ . +homclass*d10d1)
+int_gini_wiid <- update(base, . ~ . +homclass*giniindex)
+int_theil  <- update(base, . ~ . +homclass*ttheilge1)
+
+models_m <- list(int_palma,int_pc10,int_pc50,int_d10d1,
+                 int_gini_wiid,int_theil
+                 )
+save(giniD_gdp,giniD_rs,giniD_int,
+                 giniM_gdp,giniM_rs,giniM_int,
+                 int_palma,int_pc10,int_pc50,int_d10d1,
+                 int_gini_wiid,int_theil,
+     file = here::here("output/fullsample-numeric-homclass-strong-macro.RData"),compress = "gzip")
+```
+
+
+
+```{r}
+load(here::here("output/fullsample-numeric-homclass-strong-individual.RData"))
+texreg::knitreg(models)
+
+load(here::here("output/fullsample-numeric-homclass-strong-macro.RData"))
+texreg::knitreg(list(giniD_int,giniM_int,int_palma,int_pc10,int_pc50,int_d10d1,
+                 int_gini_wiid,int_theil))
+```
+
+## Weak ties
+
+```{r mod-homclass-numeric-strong-ties,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal)  
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+dfreg <- df1 %>% dplyr::select(redist,
+                        class3,
+                        homclass=homclass_w,
+                        Q03pcm,
+                        edyears,
+                        female,
+                        agenum,
+                        union,
+                        workst,
+                        WEIGHT,
+                        region,
+                        "gini_disp",
+                        "gini_mkt",
+                        rgdpna,
+                        oecd,
+                        country2,country
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna),
+         edyears2=edyears^2,
+         age2=agenum^2) %>%
+  na.omit()
+
+# Models 
+base <- lmer(redist~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)
+homclass<- update(base, . ~ . +homclass)
+full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
+rob1 <- update(full1, . ~ . + class3+edyears+ Q03pcm+union+workst)
+rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
+# anova(rob1,rob2)
+# Interactions segregation x class
+int_homo <- update(rob1, . ~ . +class3*homclass)
+
+models <- list(homclass,full1,rob1,int_homo)
+save(models,file = here::here("output/fullsample-numeric-homclass-weak-individual.RData"),compress = "gzip")
+```
+
+```{r mod-intermacro-numeric-strong-ties,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr,gridExtra)  
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+dfreg <- df1 %>% dplyr::select(redist,
+                        class3,
+                        homclass=homclass_w,
+                        Q03pcm,
+                        edyears,
+                        female,
+                        agenum,
+                        union,
+                        workst,
+                        WEIGHT,
+                        region,
+                        "gini_disp",
+                        "gini_mkt",
+                        rgdpna,
+                        oecd,
+                        country2,country,
+                        palmaratio,
+                        top10,
+                        middle50,
+                        d10d1,
+                        giniindex,
+                        ttheilge1
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna),
+         edyears2=edyears^2,
+         age2=agenum^2) %>%
+  na.omit()
+
+# Homoclass x Gini--------------------------------------------------------------
+main <- "redist~class3+homclass+edyears+Q03pcm+workst+union+female+agenum+age2+(1|country2)"
+base <- lmer(formula(main),data=dfreg,weights = WEIGHT)
+giniD_gdp<- update(base, . ~ . +gini_disp+logrgdpna)
+giniD_rs <- update(giniD_gdp, . ~ . - (1|country2) + (homclass|country2))
+# anova(giniD_gdp,giniD_rs)
+giniD_int<- update(giniD_rs, . ~ . + homclass*gini_disp + (homclass|country2))
+summary(giniD_int)
+
+giniM_gdp<- update(base, . ~ . +gini_mkt+logrgdpna)
+giniM_rs <- update(giniM_gdp, . ~ . - (1|country2) + (homclass|country2))
+# anova(giniM_gdp,giniM_rs)
+giniM_int <- update(giniM_rs, . ~ . + homclass*gini_mkt + (homclass|country2))
+summary(giniM_int)
+models <- list(giniD_gdp,giniD_rs,giniD_int,
+               giniM_gdp,giniM_rs,giniM_int)
+
+# Homoclass x Other Economic Inequality-----------------------------------------
+main <- "redist~class3+homclass+edyears+Q03pcm+workst+union+female+agenum+age2+logrgdpna+(homclass|country2)"
+base <- lmer(formula(main),data=dfreg,weights = WEIGHT)
+int_palma <- update(base, . ~ . +homclass*palmaratio)
+int_pc10  <- update(base, . ~ . +homclass*top10)
+int_pc50  <- update(base, . ~ . +homclass*middle50)
+int_d10d1 <- update(base, . ~ . +homclass*d10d1)
+int_gini_wiid <- update(base, . ~ . +homclass*giniindex)
+int_theil  <- update(base, . ~ . +homclass*ttheilge1)
+
+models_m <- list(int_palma,int_pc10,int_pc50,int_d10d1,
+                 int_gini_wiid,int_theil
+                 )
+save(giniD_gdp,giniD_rs,giniD_int,
+                 giniM_gdp,giniM_rs,giniM_int,
+                 int_palma,int_pc10,int_pc50,int_d10d1,
+                 int_gini_wiid,int_theil,
+     file = here::here("output/fullsample-numeric-homclass-weak-macro.RData"),compress = "gzip")
+```
+
+```{r}
+load(here::here("output/fullsample-numeric-homclass-weak-individual.RData"))
+texreg::knitreg(models)
+
+load(here::here("output/fullsample-numeric-homclass-weak-macro.RData"))
+texreg::knitreg(list(giniD_int,giniM_int,int_palma,int_pc10,int_pc50,int_d10d1,
+                 int_gini_wiid,int_theil))
+```
+
+
+
+
 # Binary logit 
 
 ## Full network
@@ -136,6 +511,15 @@ save(giniD_gdp,giniD_rs,giniD_int,
      file = here::here("output/fullsample-logit-homclass-full-macro.RData"),compress = "gzip")
 ```
 
+```{r}
+load(here::here("output/fullsample-logit-homclass-full-individual.RData"))
+texreg::knitreg(models)
+
+load(here::here("output/fullsample-logit-homclass-full-macro.RData"))
+texreg::knitreg(list(giniD_int,giniM_int,int_palma,int_pc10,int_pc50,int_d10d1,
+                 int_gini_wiid,int_theil))
+```
+
 ## Strong ties
 
 ```{r mod-homclass-binary-strong-ties,results='asis'}
@@ -249,6 +633,15 @@ save(giniD_gdp,giniD_rs,giniD_int,
                  int_palma,int_pc10,int_pc50,int_d10d1,
                  int_gini_wiid,int_theil,
      file = here::here("output/fullsample-logit-homclass-strong-macro.RData"),compress = "gzip")
+```
+
+```{r}
+load(here::here("output/fullsample-logit-homclass-strong-individual.RData"))
+texreg::knitreg(models)
+
+load(here::here("output/fullsample-logit-homclass-strong-macro.RData"))
+texreg::knitreg(list(giniD_int,giniM_int,int_palma,int_pc10,int_pc50,int_d10d1,
+                 int_gini_wiid,int_theil))
 ```
 
 ## Weak ties
@@ -365,6 +758,18 @@ save(giniD_gdp,giniD_rs,giniD_int,
      file = here::here("output/fullsample-logit-homclass-weak-macro.RData"),compress = "gzip")
 ```
 
+```{r}
+load(here::here("output/fullsample-logit-homclass-weak-individual.RData"))
+texreg::knitreg(models)
+
+load(here::here("output/fullsample-logit-homclass-weak-macro.RData"))
+texreg::knitreg(list(giniD_int,giniM_int,int_palma,int_pc10,int_pc50,int_d10d1,
+                 int_gini_wiid,int_theil))
+```
+
+
+
+
 # Ordinal
 
 ## Full network 
@@ -452,7 +857,7 @@ dfreg <- df1 %>% dplyr::select(redistOR,
   na.omit()
 
 # Homoclass x Gini--------------------------------------------------------------
-main <- "redist~class3+ homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ (1|country2)"
+main <- "redistOR~class3+ homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ (1|country2)"
 base <- clmm(formula(main),data=dfreg,weights = WEIGHT,Hess = T)
 giniD_gdp<- update(base, . ~ . +gini_disp+logrgdpna)
 giniD_rs <- update(giniD_gdp, . ~ . - (1|country2) + (homclass|country2))
@@ -488,6 +893,12 @@ save(giniD_gdp,giniD_rs,giniD_int,
                  int_gini_wiid,int_theil,
      file = here::here("output/fullsample-ologit-homclass-full-macro.RData"),compress = "gzip")
 ```
+
+```{r}
+load(here::here("output/fullsample-ologit-homclass-full-individual.RData"))
+texreg::knitreg(models)
+```
+
 
 ## Strong ties
 
@@ -575,7 +986,7 @@ dfreg <- df1 %>% dplyr::select(redistOR,
   na.omit()
 
 # Homoclass x Gini--------------------------------------------------------------
-main <- "redist~class3+ homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ (1|country2)"
+main <- "redistOR~class3+ homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ (1|country2)"
 base <- clmm(formula(main),data=dfreg,weights = WEIGHT,Hess = T)
 giniD_gdp<- update(base, . ~ . +gini_disp+logrgdpna)
 giniD_rs <- update(giniD_gdp, . ~ . - (1|country2) + (homclass|country2))
@@ -609,6 +1020,11 @@ save(giniD_gdp,giniD_rs,giniD_int,
                  int_palma,int_pc10,int_pc50,int_d10d1,
                  int_gini_wiid,int_theil,
      file = here::here("output/fullsample-ologit-homclass-strong-macro.RData"),compress = "gzip")
+```
+
+```{r}
+load(here::here("output/fullsample-ologit-homclass-strong-individual.RData"))
+texreg::knitreg(models)
 ```
 
 ## Weak ties
@@ -697,7 +1113,7 @@ dfreg <- df1 %>% dplyr::select(redistOR,
   na.omit()
 
 # Homoclass x Gini--------------------------------------------------------------
-main <- "redist~class3+ homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ (1|country2)"
+main <- "redistOR~class3+ homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2+ (1|country2)"
 base <- clmm(formula(main),data=dfreg,weights = WEIGHT,Hess = T)
 giniD_gdp<- update(base, . ~ . +gini_disp+logrgdpna)
 giniD_rs <- update(giniD_gdp, . ~ . - (1|country2) + (homclass|country2))
@@ -733,3 +1149,7 @@ save(giniD_gdp,giniD_rs,giniD_int,
      file = here::here("output/fullsample-ologit-homclass-weak-macro.RData"),compress = "gzip")
 ```
 
+```{r}
+load(here::here("output/fullsample-ologit-homclass-weak-individual.RData"))
+texreg::knitreg(models)
+```
