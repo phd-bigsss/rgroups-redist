@@ -399,18 +399,18 @@ dfreg <- df1 %>% dplyr::select(redistOR,
   na.omit()
 
 # Models 
-# base <- clmm(redistF~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)
-# homclass<- update(base, . ~ . +homclass)
-# full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
-# rob1 <- update(full1, . ~ . + edyears+ Q03pcm+union+workst)
-# rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
-# Bayesian ordinal logit
-# brms::brm()
-base <- brm(redistOR~1 + (1|country2),data=dfreg,family=cumulative("logit"))
+base <- clmm(redistF~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)
 homclass<- update(base, . ~ . +homclass)
 full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
 rob1 <- update(full1, . ~ . + edyears+ Q03pcm+union+workst)
 rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
+# Bayesian ordinal logit
+# brms::brm()
+# base <- brm(redistOR~1 + (1|country2),data=dfreg,family=cumulative("logit"))
+# homclass<- update(base, . ~ . +homclass)
+# full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
+# rob1 <- update(full1, . ~ . + edyears+ Q03pcm+union+workst)
+# rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
 # Interactions segregation x class
 int_homo <- update(rob1, . ~ . +class3*homclass)
 models <- list(homclass,full1,rob1,int_homo)
@@ -520,19 +520,19 @@ dfreg <- df1 %>% dplyr::select(redistOR,
          age2=agenum^2) %>%
   na.omit()
 
-# Models 
-# base <- clmm(redistF~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)
-# homclass<- update(base, . ~ . +homclass)
-# full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
-# rob1 <- update(full1, . ~ . + edyears+ Q03pcm+union+workst)
-# rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
-# Bayesian ordinal logit
-# brms::brm()
-base <- brm(redistOR~1 + (1|country2),data=dfreg,family=cumulative("logit"))
+## Models 
+base <- clmm(redistF~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)
 homclass<- update(base, . ~ . +homclass)
 full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
 rob1 <- update(full1, . ~ . + edyears+ Q03pcm+union+workst)
 rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
+# Bayesian ordinal logit
+# brms::brm()
+# base <- brm(redistOR~1 + (1|country2),data=dfreg,family=cumulative("logit"))
+# homclass<- update(base, . ~ . +homclass)
+# full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
+# rob1 <- update(full1, . ~ . + edyears+ Q03pcm+union+workst)
+# rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
 # Interactions segregation x class
 int_homo <- update(rob1, . ~ . +class3*homclass)
 
@@ -643,18 +643,18 @@ dfreg <- df1 %>% dplyr::select(redistOR,
   na.omit()
 
 # Models 
-# base <- clmm(redistF~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)
-# homclass<- update(base, . ~ . +homclass)
-# full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
-# rob1 <- update(full1, . ~ . + edyears+ Q03pcm+union+workst)
-# rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
-# Bayesian ordinal logit
-# brms::brm()
-base <- brm(redistOR~1 + (1|country2),data=dfreg,family=cumulative("logit"))
+base <- clmm(redistF~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)
 homclass<- update(base, . ~ . +homclass)
 full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
 rob1 <- update(full1, . ~ . + edyears+ Q03pcm+union+workst)
 rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
+# Bayesian ordinal logit
+# brms::brm()
+# base <- brm(redistOR~1 + (1|country2),data=dfreg,family=cumulative("logit"))
+# homclass<- update(base, . ~ . +homclass)
+# full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
+# rob1 <- update(full1, . ~ . + edyears+ Q03pcm+union+workst)
+# rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
 # Interactions segregation x class
 int_homo <- update(rob1, . ~ . +class3*homclass)
 
