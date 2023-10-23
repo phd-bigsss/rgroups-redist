@@ -399,7 +399,7 @@ dfreg <- df1 %>% dplyr::select(redistOR,
   na.omit()
 
 # Models 
-base <- clmm(redistF~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)
+base <- clmm(redistOR~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)
 homclass<- update(base, . ~ . +homclass)
 full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
 rob1 <- update(full1, . ~ . + edyears+ Q03pcm+union+workst)
@@ -521,7 +521,7 @@ dfreg <- df1 %>% dplyr::select(redistOR,
   na.omit()
 
 ## Models 
-base <- clmm(redistF~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)
+base <- clmm(redistOR~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)
 homclass<- update(base, . ~ . +homclass)
 full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
 rob1 <- update(full1, . ~ . + edyears+ Q03pcm+union+workst)
@@ -643,7 +643,7 @@ dfreg <- df1 %>% dplyr::select(redistOR,
   na.omit()
 
 # Models 
-base <- clmm(redistF~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)
+base <- clmm(redistOR~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)
 homclass<- update(base, . ~ . +homclass)
 full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
 rob1 <- update(full1, . ~ . + edyears+ Q03pcm+union+workst)
