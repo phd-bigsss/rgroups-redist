@@ -403,7 +403,7 @@ base <- clmm(redistF~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- perfo
 homclass<- update(base, . ~ . +homclass)
 full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
 rob1 <- update(full1, . ~ . + edyears+ Q03pcm+union+workst)
-rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
+# rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
 # Bayesian ordinal logit
 # brms::brm()
 # base <- brm(redistOR~1 + (1|country2),data=dfreg,family=cumulative("logit"))
@@ -525,7 +525,7 @@ base <- clmm(redistF~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- perfo
 homclass<- update(base, . ~ . +homclass)
 full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
 rob1 <- update(full1, . ~ . + edyears+ Q03pcm+union+workst)
-rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
+# rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
 # Bayesian ordinal logit
 # brms::brm()
 # base <- brm(redistOR~1 + (1|country2),data=dfreg,family=cumulative("logit"))
@@ -647,7 +647,7 @@ base <- clmm(redistF~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- perfo
 homclass<- update(base, . ~ . +homclass)
 full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
 rob1 <- update(full1, . ~ . + edyears+ Q03pcm+union+workst)
-rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
+# rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
 # Bayesian ordinal logit
 # brms::brm()
 # base <- brm(redistOR~1 + (1|country2),data=dfreg,family=cumulative("logit"))
