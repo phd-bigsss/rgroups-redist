@@ -357,7 +357,6 @@ ggplot(aes(y=homclass, x=class3_1)) +
 grid.arrange(predis,p1,p2,p3,nrow = 2)
 ```
 
-
 \pagebreak
 
 ## Individual level
@@ -402,24 +401,6 @@ dfreg <- df1 %>% dplyr::select(redist,
   mutate(logrgdpna=log(rgdpna),
          edyears2=edyears^2,
          age2=agenum^2) %>%
-  # filter(!country2 %in% c("CHN")) %>%
-  # filter(!country2 %in% c("TWN")) %>%
-  # filter(!country2 %in% c("JPN")) %>%
-  # filter(!country2 %in% c("ZAF")) %>%
-  # filter(!country2 %in% c("PHL")) %>%
-  # filter(!country2 %in% c("FIN")) %>%
-  # filter(!country2 %in% c("USA")) %>%
-  # filter(!country2 %in% c("GBR")) %>%
-  # filter(!country2 %in% c("ISL")) %>%
-  # filter(!country2 %in% c("TUR","EST")) %>%
-  # filter(!country2 %in% c("MEX")) %>%
-# filter(!country2 %in% c("HUN")) %>%
-  # filter(MAINSTAT %in% c(1,2)) %>%
-  # filter(agenum %in% c(25:65)) %>% # Paskov & Weisstanner
-  # filter(PARTLIV %in% c(0,1,2,3)) %>%
-  # filter(!region %in% c("Northern America","South America")) %>%
-  # filter(Q03pcm!="Missing") %>%
-    # filter(oecd=="OECD") %>%
   na.omit()
 
 # Models 
@@ -599,6 +580,7 @@ ggplot(aes(y =estimate,x=homclass, fill=class3, color=class3,ymin=conf.low, ymax
   geom_line(size=0.75) +
   geom_point(size=1.5) +
   geom_ribbon(alpha=0.2,size=0.5,linetype=1) +
+  facet_grid(~factor(class3, levels=c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)"))) +
   labs(caption = paste0("N=",nobs(int_homo),", Countries=",lme4::ngrps(int_homo))) +
   xlab("Network homogeneity")+
   ylab("Redistributive preferences") +
@@ -650,8 +632,7 @@ ggplot(aes(y=homclass, x=gini_mkt)) +
 grid.arrange(p1,p2,nrow = 1)
 ```
 
-  <!-- - expected: in unequal countries the effect of network segregation and perceived isolation will be stronger  -->
-
+<!-- - expected: in unequal countries the effect of network segregation and perceived isolation will be stronger  -->
 
 ```{r mod-intermacro,results='asis'}
 if (!require("pacman")) install.packages("pacman")
@@ -678,24 +659,6 @@ dfreg <- df1 %>% dplyr::select(redist,
   mutate(logrgdpna=log(rgdpna),
          edyears2=edyears^2,
          age2=agenum^2) %>%
-  # filter(!country2 %in% c("CHN")) %>%
-  # filter(!country2 %in% c("TWN")) %>%
-  # filter(!country2 %in% c("JPN")) %>%
-  # filter(!country2 %in% c("ZAF")) %>%
-  # filter(!country2 %in% c("PHL")) %>%
-  # filter(!country2 %in% c("FIN")) %>%
-  # filter(!country2 %in% c("USA")) %>%
-  # filter(!country2 %in% c("GBR")) %>%
-  # filter(!country2 %in% c("ISL")) %>%
-  # filter(!country2 %in% c("TUR","EST")) %>%
-  # filter(!country2 %in% c("MEX")) %>%
-# filter(!country2 %in% c("HUN")) %>%
-  # filter(MAINSTAT %in% c(1,2)) %>%
-  # filter(agenum %in% c(25:65)) %>% # Paskov & Weisstanner
-  # filter(PARTLIV %in% c(0,1,2,3)) %>%
-  # filter(!region %in% c("Northern America","South America")) %>%
-  # filter(Q03pcm!="Missing") %>%
-    filter(oecd=="OECD") %>%
   na.omit()
 # T03dim(dfreg)
 
@@ -711,7 +674,7 @@ giniM_gdp<- update(base, . ~ . +gini_mkt+logrgdpna)
 giniM_rs <- update(giniM_gdp, . ~ . - (1|country2) + (homclass|country2))
 # anova(giniM_gdp,giniM_rs)
 giniM_int <- update(giniM_rs, . ~ . + homclass*gini_mkt + (homclass|country2))
-summary(giniM_int)
+# summary(giniM_int)
 models <- list(giniD_gdp,giniD_rs,giniD_int,
                giniM_gdp,giniM_rs,giniM_int)
 
@@ -976,19 +939,6 @@ dfreg <- df1 %>% dplyr::select(redist=egal3,
   mutate(logrgdpna=log(rgdpna),
          age2=agenum^2,
          edyears2=edyears^2) %>%
-  # filter(!country2 %in% c("CHN")) %>%
-  # filter(!country2 %in% c("TWN")) %>%
-  # filter(!country2 %in% c("ZAF")) %>%
-  # filter(!country2 %in% c("FIN")) %>%
-  # filter(!country2 %in% c("USA")) %>%
-  # filter(!country2 %in% c("GBR")) %>%
-  # filter(!country2 %in% c("ISL")) %>%
-  # filter(!country2 %in% c("TUR","EST")) %>%
-  # filter(MAINSTAT %in% c(1,2)) %>%
-  # filter(agenum %in% c(25:65)) %>% # Paskov & Weisstanner
-  # filter(PARTLIV %in% c(0,1,2,3)) %>%
-  # filter(region %in% c("Northern America","South America")) %>%
-  # filter(Q03pcm!="Missing") %>%
   na.omit()
 
 # frq(df1$region)
@@ -1167,14 +1117,10 @@ load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 dfreg <- df1 %>% dplyr::select(redist=egal3,
                         class3,
                         homclass=homclass_gc,
-                        # homclass=eindex,
-                        # homclass=ingroup,
                         Q05pcm,
                         Q03pcm,
                         gini_disp,
                         gini_mkt,
-                        # giniot=gini,
-                        # giniot=gv_spen,
                         rgdpna,
                         edyears,
                         female,
@@ -1185,14 +1131,10 @@ dfreg <- df1 %>% dplyr::select(redist=egal3,
   mutate(logrgdpna=log(rgdpna),
          age2=agenum^2,
          edyears2=edyears^2) %>%
-  # filter(!country2 %in% c("Turkey","Estonia")) %>%
-  # filter(MAINSTAT %in% c(1,2)) %>%
-  # filter(agenum %in% c(25:65)) %>%
   na.omit()
 # T03dim(dfreg)
 
 main <- "redist~class3+ homclass+ edyears+ Q03pcm+ workst+ union+ female+agenum +age2"
-
 giniD_gdp<-lmer(formula(paste0(main,"+gini_disp+logrgdpna","+(1|country2)")),data=dfreg)
 giniD_rs <-lmer(formula(paste0(main,"+gini_disp+logrgdpna","+(homclass|country2)")),data=dfreg)
 # anova(giniD_gdp,giniD_rs)
@@ -1225,6 +1167,7 @@ texreg::knitreg(models,
 ```
 
 \pagebreak
+
 ```{r crosslevel-egal}
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,gridExtra)       
 p1<- interplot::interplot(m = giniD_int,var1 = "homclass",var2="gini_disp")+
@@ -1377,7 +1320,6 @@ grid.arrange(p3,p3.pred,p6,p6.pred,nrow = 2)
 ```
 
 \pagebreak
-
 
 ## Strong ties
 
@@ -1546,19 +1488,6 @@ dfreg <- df1 %>% dplyr::select(redist,
   mutate(logrgdpna=log(rgdpna),
          age2=agenum^2,
          edyears2=edyears^2) %>%
-  # filter(!country2 %in% c("CHN")) %>%
-  # filter(!country2 %in% c("TWN")) %>%
-  # filter(!country2 %in% c("ZAF")) %>%
-  # filter(!country2 %in% c("FIN")) %>%
-  # filter(!country2 %in% c("USA")) %>%
-  # filter(!country2 %in% c("GBR")) %>%
-  # filter(!country2 %in% c("ISL")) %>%
-  # filter(!country2 %in% c("TUR","EST")) %>%
-  # filter(MAINSTAT %in% c(1,2)) %>%
-  # filter(agenum %in% c(25:65)) %>% # Paskov & Weisstanner
-  # filter(PARTLIV %in% c(0,1,2,3)) %>%
-  # filter(region %in% c("Northern America","South America")) %>%
-  # filter(Q03pcm!="Missing") %>%
   na.omit()
 # dim(dfreg)
 
