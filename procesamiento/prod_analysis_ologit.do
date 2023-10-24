@@ -1,6 +1,5 @@
 use "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\input\data\proc\study1_country.dta"
-clear
-For the regression tables:
+*For the regression tables:
 *ssc install estout, replace
 *https://repec.sowi.unibe.ch/stata/estout/esttab.html
 
@@ -28,12 +27,9 @@ estimates store model6
 meglm redist c.homclass##c.ttheilge1 i.class3 female agenum edyears i.Q03pcm workst union logrgdpna ttheilge1|| country2: homclass, family(ordinal)
 estimates store model7
 
-cd 
-estimates use "output\fullsample-ologit-homclass-respondent-macro"
-
-estimates save "../output/fullsample-ologit-homclass-respondent-macro", replace
-
+estimates save fullsample-ologit-homclass-respondent-macro
 esttab model1 model2 model3 model4 model5 model6 model7, drop(logrgdpna 1.class3 2.class3 3.class3 female agenum edyears workst union 1.Q03pcm 2.Q03pcm 3.Q03pcm 4.Q03pcm )
+
 
 *# Ordinal logit weak ties -----------------------------------------------------
 
