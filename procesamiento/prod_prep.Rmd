@@ -454,7 +454,7 @@ frq(df1$workst)
 frq(df1$UNION)
 df1$union <- car::recode(as.numeric(df1$UNION),
                          recodes= "1:2='Yes';c(0,3,7)='No';8:9=NA",
-                         levels = c("No","Yes"))
+                         levels = c("No","Yes"),as.factor = T)
 frq(df1$union)
 ```
 

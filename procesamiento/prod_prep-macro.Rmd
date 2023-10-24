@@ -139,5 +139,6 @@ df2 %>% mutate(country2=countrycode::countrycode(sourcevar = ccode,origin = "iso
 
 ```{r save}
 save(df2,file = here::here("input/data/proc/study1_country.RData"))
+haven::write_dta(data = df2,path = here::here("input/data/proc/study1_country.dta"))
 sjPlot::view_df(df2,file =here::here("input/data/proc/codebook-s1.html") )
 ```
