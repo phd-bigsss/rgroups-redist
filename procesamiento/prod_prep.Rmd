@@ -1598,6 +1598,10 @@ df1$homclass_gc <- group_center(x = df1$homclass,grp = df1$country)
 
 
 # Thus, an EI score of -1 means complete homophily- the individual only has relationships with actors of the same “type” as they themselves are. An EI score of 1 means complete heterophily- all the alters are of a different “type” than they themselves are. Finally, an EI score of 0 means that an equal number of alters are of both the same “type” as the ego, and different types
+
+# Group means
+df1 <- df1 %>% group_by(country) %>% mutate(eindex_gm=mean(eindex,na.rm=T),
+                                            homclass_gm=mean(homclass,na.rm=T))  
 ```
 
 ```{r homogeneity-strong-v01}
@@ -1720,6 +1724,9 @@ df1$homclass2_gc <- group_center(x = df1$homclass2,grp = df1$country)
 # Weighted EI index
 # https://arxiv.org/pdf/2109.00348.pdf
 
+# Group means
+df1 <- df1 %>% group_by(country) %>% mutate(eindex2_gm=mean(eindex2,na.rm=T),
+                                            homclass2_gm=mean(homclass2,na.rm=T))
 ```
 
 ```{r homogeneity-resp-v02}
