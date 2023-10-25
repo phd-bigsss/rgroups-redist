@@ -1529,7 +1529,27 @@ library(RStata)
 options("RStata.StataPath" = "C:/Stata15/Stata-64")
 options("RStata.StataVersion" = 15)
 
-stata('estimates use output/fullsample-ologit-homclass-respondent-macro')
+stata("")
+
+
+clear all
+eret list
+estimates use 'C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-respondent-macro.est',  number(1)
+estimates store model1
+estimates use 'C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-respondent-macro.est',  number(2)
+estimates store model2
+estimates use 'C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-respondent-macro.est',  number(3)
+estimates store model3
+estimates use 'C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-respondent-macro.est',  number(4)
+estimates store model4
+estimates use 'C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-respondent-macro.est',  number(5)
+estimates store model5
+estimates use 'C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-respondent-macro.est',  number(6)
+estimates store model6
+estimates use 'C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-respondent-macro.est',  number(7)
+estimates store model7
+
+esttab model1 model2 model3 model4 model5 model6 model7, drop(logrgdpna 1.class3 2.class3 3.class3 female agenum edyears workst union 1.Q03pcm 2.Q03pcm 3.Q03pcm 4.Q03pcm )
 
 
 ```
