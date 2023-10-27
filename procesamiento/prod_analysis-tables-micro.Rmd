@@ -1,6 +1,6 @@
 ---
 title: "Additional analyses"
-subtitle: "Full sample"
+subtitle: "Micro level"
 date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
 css: "../input/css/custom.css" # custom CSS para html
 output: 

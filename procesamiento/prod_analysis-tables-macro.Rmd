@@ -1,6 +1,6 @@
 ---
-title: "Cross-level interactions"
-subtitle: "Full sample"
+title: "Additional analyses"
+subtitle: "Cross-level interactions"
 date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
 css: "../input/css/custom.css" # custom CSS para html
 output: 
@@ -74,8 +74,10 @@ htmlreg(
 ```
 
 ```{r full-clmm-macro,results='asis'}
-
+htmltools::includeHTML("../output/fullsample-ologit-homclass-full-strong-weak-macro.html")
 ```
+
+
 
 ## Non-confusian
 

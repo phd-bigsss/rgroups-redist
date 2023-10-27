@@ -1,5 +1,5 @@
 /* Multilevel ordinal logistica regression cross level interactions*/
-/* Full country sample*/
+/* Non confusian sample*/
 
 *# Ordinal logit full network ---------------------------------------------------
 {
@@ -12,6 +12,7 @@ use "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\input\data\proc
 
 gen logrgdpna = log(rgdpna)
 gen age2 = agenum*agenum
+keep if oecd == "OECD" 
 
 qui meglm redist c.homclass##c.gini_disp i.class3 female agenum age2 edyears i.Q03pcm workst union logrgdpna gini_disp [pweight=WEIGHT] || country2: homclass, family(ordinal)
 estimates store model1
@@ -39,35 +40,35 @@ estimates store model8
 
 estimates restore model1
 eret list
-estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-full-macro.est", replace
+estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-full-macro.est", replace
 
 estimates restore model2
 eret list
-estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-full-macro.est", append
+estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-full-macro.est", append
 
 estimates restore model3
 eret list
-estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-full-macro.est", append
+estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-full-macro.est", append
 
 estimates restore model4
 eret list
-estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-full-macro.est", append
+estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-full-macro.est", append
 
 estimates restore model5
 eret list
-estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-full-macro.est", append
+estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-full-macro.est", append
 
 estimates restore model6
 eret list
-estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-full-macro.est", append
+estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-full-macro.est", append
 
 estimates restore model7
 eret list
-estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-full-macro.est", append
+estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-full-macro.est", append
 
 estimates restore model8
 eret list
-estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-full-macro.est", append
+estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-full-macro.est", append
 }
 *# Ordinal logit strong ties ---------------------------------------------------
 {
@@ -80,7 +81,8 @@ use "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\input\data\proc
 
 gen logrgdpna = log(rgdpna)
 gen age2 = agenum*agenum
-replace homclass=homclass 
+replace homclass=homclass_s 
+keep if oecd == "OECD" 
 
 meglm redist c.homclass##c.gini_disp i.class3 female agenum age2 edyears i.Q03pcm workst union logrgdpna gini_disp [pweight=WEIGHT] || country2: homclass, family(ordinal)
 estimates store model1
@@ -108,35 +110,35 @@ estimates store model8
 
 estimates restore model1
 eret list
-estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-strong-macro.est", replace
+estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-strong-macro.est", replace
 
 estimates restore model2
 eret list
-estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-strong-macro.est", append
+estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-strong-macro.est", append
 
 estimates restore model3
 eret list
-estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-strong-macro.est", append
+estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-strong-macro.est", append
 
 estimates restore model4
 eret list
-estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-strong-macro.est", append
+estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-strong-macro.est", append
 
 estimates restore model5
 eret list
-estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-strong-macro.est", append
+estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-strong-macro.est", append
 
 estimates restore model6
 eret list
-estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-strong-macro.est", append
+estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-strong-macro.est", append
 
 estimates restore model7
 eret list
-estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-strong-macro.est", append
+estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-strong-macro.est", append
 
 estimates restore model8
 eret list
-estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-strong-macro.est", append
+estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-strong-macro.est", append
 
 }
 *# Ordinal logit weak ties -----------------------------------------------------
@@ -151,6 +153,8 @@ use "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\input\data\proc
 gen logrgdpna = log(rgdpna)
 gen age2 = agenum*agenum
 replace homclass=homclass_w
+keep if oecd == "OECD" 
+
 meglm redist c.homclass##c.gini_disp i.class3 female agenum age2 edyears i.Q03pcm workst union logrgdpna gini_disp [pweight=WEIGHT] || country2: homclass, family(ordinal)
 estimates store model1
 
@@ -177,35 +181,35 @@ estimates store model8
 
 estimates restore model1
 eret list
-estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-weak-macro.est", replace
+estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-weak-macro.est", replace
 
 estimates restore model2
 eret list
-estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-weak-macro.est", append
+estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-weak-macro.est", append
 
 estimates restore model3
 eret list
-estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-weak-macro.est", append
+estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-weak-macro.est", append
 
 estimates restore model4
 eret list
-estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-weak-macro.est", append
+estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-weak-macro.est", append
 
 estimates restore model5
 eret list
-estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-weak-macro.est", append
+estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-weak-macro.est", append
 
 estimates restore model6
 eret list
-estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-weak-macro.est", append
+estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-weak-macro.est", append
 
 estimates restore model7
 eret list
-estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-weak-macro.est", append
+estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-weak-macro.est", append
 
 estimates restore model8
 eret list
-estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-weak-macro.est", append
+estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-weak-macro.est", append
 }
 *# Ordinal logit R's class------------------------------------------------------
 {
@@ -219,6 +223,9 @@ estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\outp
 *gen logrgdpna = log(rgdpna)
 *gen age2 = agenum*agenum
 *replace homclass=homclass_res
+*keep if country2 != "TWN" 
+*keep if country2 != "CHN"
+*keep if country2 != "JPN"
 *meglm redist c.homclass##c.gini_disp i.class3 female agenum age2 edyears i.Q03pcm workst union logrgdpna gini_disp [pweight=WEIGHT] || country2: homclass, family(ordinal)
 *estimates store model1
 *
@@ -245,89 +252,89 @@ estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\outp
 *
 *estimates restore model1
 *eret list
-*estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-respondent-macro.est", replace
+*estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-respondent-macro.est", replace
 *
 *estimates restore model2
 *eret list
-*estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-respondent-macro.est", append
+*estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-respondent-macro.est", append
 *
 *estimates restore model3
 *eret list
-*estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-respondent-macro.est", append
+*estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-respondent-macro.est", append
 *
 *estimates restore model4
 *eret list
-*estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-respondent-macro.est", append
+*estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-respondent-macro.est", append
 *
 *estimates restore model5
 *eret list
-*estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-respondent-macro.est", append
+*estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-respondent-macro.est", append
 *
 *estimates restore model6
 *eret list
-*estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-respondent-macro.est", append
+*estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-respondent-macro.est", append
 *
 *estimates restore model7
 *eret list
-*estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-respondent-macro.est", append
+*estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-respondent-macro.est", append
 *
 *estimates restore model8
 *eret list
-*estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-respondent-macro.est", append
+*estimates save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-respondent-macro.est", append
 }
 
 *# Generate Tables--------------------------------------------------------------
 clear all
 eret list
-estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-full-macro.est,  number(1)
+estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-full-macro.est,  number(1)
 estimates store model1_f
-estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-full-macro.est,  number(2)
+estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-full-macro.est,  number(2)
 estimates store model2_f
-estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-full-macro.est,  number(3)
+estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-full-macro.est,  number(3)
 estimates store model3_f
-estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-full-macro.est,  number(4)
+estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-full-macro.est,  number(4)
 estimates store model4_f
-estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-full-macro.est,  number(5)
+estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-full-macro.est,  number(5)
 estimates store model5_f
-estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-full-macro.est,  number(6)
+estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-full-macro.est,  number(6)
 estimates store model6_f
-estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-full-macro.est,  number(7)
+estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-full-macro.est,  number(7)
 estimates store model7_f
-estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-full-macro.est,  number(8)
+estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-full-macro.est,  number(8)
 estimates store model8_f
 
-estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-strong-macro.est,  number(1)
+estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-strong-macro.est,  number(1)
 estimates store model1_s
-estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-strong-macro.est,  number(2)
+estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-strong-macro.est,  number(2)
 estimates store model2_s
-estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-strong-macro.est,  number(3)
+estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-strong-macro.est,  number(3)
 estimates store model3_s
-estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-strong-macro.est,  number(4)
+estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-strong-macro.est,  number(4)
 estimates store model4_s
-estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-strong-macro.est,  number(5)
+estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-strong-macro.est,  number(5)
 estimates store model5_s
-estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-strong-macro.est,  number(6)
+estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-strong-macro.est,  number(6)
 estimates store model6_s
-estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-strong-macro.est,  number(7)
+estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-strong-macro.est,  number(7)
 estimates store model7_s
-estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-strong-macro.est,  number(8)
+estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-strong-macro.est,  number(8)
 estimates store model8_s
 
-estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-weak-macro.est,  number(1)
+estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-weak-macro.est,  number(1)
 estimates store model1_w
-estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-weak-macro.est,  number(2)
+estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-weak-macro.est,  number(2)
 estimates store model2_w
-estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-weak-macro.est,  number(3)
+estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-weak-macro.est,  number(3)
 estimates store model3_w
-estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-weak-macro.est,  number(4)
+estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-weak-macro.est,  number(4)
 estimates store model4_w
-estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-weak-macro.est,  number(5)
+estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-weak-macro.est,  number(5)
 estimates store model5_w
-estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-weak-macro.est,  number(6)
+estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-weak-macro.est,  number(6)
 estimates store model6_w
-estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-weak-macro.est,  number(7)
+estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-weak-macro.est,  number(7)
 estimates store model7_w
-estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-weak-macro.est,  number(8)
+estimates use C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-weak-macro.est,  number(8)
 estimates store model8_w
 
 
@@ -335,7 +342,7 @@ esttab ///
  model1_f model2_f model3_f model4_f model5_f model6_f model7_f model8_f ///
  model1_s model2_s model3_s model4_s model5_s model6_s model7_s model8_s ///  
  model1_w model2_w model3_w model4_w model5_w model6_w model7_w model8_w /// 
- using C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-full-strong-weak-macro.html, replace ///
+ using C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\ocde-ologit-homclass-full-strong-weak-macro.html, replace ///
  title(Multilevel ordinal logit regression: full country sample cross-level interaction) ///
  legend label collabels(none) ///
  nodepvars ///
