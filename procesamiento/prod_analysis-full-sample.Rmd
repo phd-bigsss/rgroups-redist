@@ -1,5 +1,5 @@
 ---
-title: "Multilevel regression models"
+title: "Multilevel regression models micro level"
 subtitle: "Full sample"
 date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
 output: 
@@ -100,7 +100,7 @@ dfreg <- df1 %>% dplyr::select(redist,
 
 # Homoclass x Gini--------------------------------------------------------------
 main <- "redist~class3+homclass+edyears+Q03pcm+workst+union+female+agenum+age2+(1|country2)"
-base <- glmer(formula(main),data=dfreg,weights = WEIGHT)
+base <- lmer(formula(main),data=dfreg,weights = WEIGHT)
 giniD_gdp<- update(base, . ~ . +gini_disp+logrgdpna)
 giniD_rs <- update(giniD_gdp, . ~ . - (1|country2) + (homclass|country2))
 # anova(giniD_gdp,giniD_rs)
@@ -117,7 +117,7 @@ models <- list(giniD_gdp,giniD_rs,giniD_int,
 
 # Homoclass x Other Economic Inequality-----------------------------------------
 main <- "redist~class3+homclass+edyears+Q03pcm+workst+union+female+agenum+age2+logrgdpna+(homclass|country2)"
-base <- glmer(formula(main),data=dfreg,weights = WEIGHT,family = "binomial")
+base <- lmer(formula(main),data=dfreg,weights = WEIGHT)
 int_palma <- update(base, . ~ . +homclass*palmaratio)
 int_pc10  <- update(base, . ~ . +homclass*top10)
 int_pc50  <- update(base, . ~ . +homclass*middle50)
@@ -1063,7 +1063,7 @@ rob1 <- update(full1, . ~ . + edyears+ Q03pcm+union+workst)
 # Interactions segregation x class
 int_homo <- update(rob1, . ~ . +class3*homclass)
 models <- list(homclass,full1,rob1,int_homo)
-save( models,file = here::here("output/fullsample-ologit-homclass-full-individual.RData"),compress = "gzip")
+save(models,file = here::here("output/fullsample-ologit-homclass-full-individual.RData"),compress = "gzip")
 ```
 
 ```{r mod-intermacro-ordinal, eval=FALSE, include=FALSE, results='asis'}
@@ -1192,7 +1192,7 @@ rob1 <- update(full1, . ~ . + edyears+ Q03pcm+union+workst)
 int_homo <- update(rob1, . ~ . +class3*homclass)
 
 models <- list(homclass,full1,rob1,int_homo)
-save( models,file = here::here("output/fullsample-ologit-homclass-strong-individual.RData"),compress = "gzip")
+save(models,file = here::here("output/fullsample-ologit-homclass-strong-individual.RData"),compress = "gzip")
 ```
 
 ```{r mod-intermacro-ordinal-strong-ties, eval=FALSE, include=FALSE, results='asis'}
@@ -1517,40 +1517,5 @@ save(giniD_gdp,giniD_rs,giniD_int,
 ```{r}
 load(here::here("output/fullsample-ologit-homclass-respondent.RData"))
 texreg::knitreg(models)
-```
-
-# Ologit Stata
-
-See https://ignacioriveros1.github.io/r/2020/03/22/r_and_stata.html 
-
-```{r}
-# install.packages('RStata')
-library(RStata) 
-options("RStata.StataPath" = "C:/Stata15/Stata-64")
-options("RStata.StataVersion" = 15)
-
-stata("")
-
-
-clear all
-eret list
-estimates use 'C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-respondent-macro.est',  number(1)
-estimates store model1
-estimates use 'C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-respondent-macro.est',  number(2)
-estimates store model2
-estimates use 'C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-respondent-macro.est',  number(3)
-estimates store model3
-estimates use 'C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-respondent-macro.est',  number(4)
-estimates store model4
-estimates use 'C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-respondent-macro.est',  number(5)
-estimates store model5
-estimates use 'C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-respondent-macro.est',  number(6)
-estimates store model6
-estimates use 'C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\output\fullsample-ologit-homclass-respondent-macro.est',  number(7)
-estimates store model7
-
-esttab model1 model2 model3 model4 model5 model6 model7, drop(logrgdpna 1.class3 2.class3 3.class3 female agenum edyears workst union 1.Q03pcm 2.Q03pcm 3.Q03pcm 4.Q03pcm )
-
-
 ```
 

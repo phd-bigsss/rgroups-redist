@@ -1,0 +1,182 @@
+---
+title: "Additional analyses"
+subtitle: "Cross-level interactions"
+date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
+css: "../input/css/custom.css" # custom CSS para html
+output: 
+  html_document: 
+    toc: false
+    code_folding: hide
+    toc_float: 
+      collapsed: true
+      smooth_scroll: false
+      number_sections: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+options(scipen=9999) # desactivar notacion cientifica
+```
+
+```{css}
+body {
+    text-align: initial;
+    font-size: 20px;
+    font-family: "Times New Roman", Times, serif;
+}
+```
+
+## All countries
+
+```{r full-lmer-macro,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,texreg)  
+rm(list=ls())
+coef_map <-
+  list(
+    homclass = "Homogeneity",
+    logrgdpna = "log GDP",
+    "gini_disp" = "GiniD ",
+    "homclass:gini_disp" = "Hom:Gini(D)",
+    "gini_mkt" = "Gini(M) ",
+    "homclass:gini_mkt" = "Hom:Gini(M)",
+    palmaratio               = "Palma",
+    "homclass:palmawd"      = "Hom:Palma",
+    top10             = "Top 10%",
+    "homclass:top10"    = "Hom:top10",
+    middle50             = "Bott.50%",
+    "homclass:middle50"    = "Hom:bott50",
+    d10d1             = "D10/D01",
+    "homclass:d10d1"    = "Hom:D10D01",
+    giniindex             = "Gini(WIID)",
+    "homclass:giniindex"    = "Hom:Gini(WD)",
+    ttheilge1             = "Theil",
+    "homclass:ttheilge1"    = "Hom:Theil"
+  )
+
+load(here::here("output/fullsample-numeric-homclass-full-macro.RData"));fsample_num_full_mac<- list(giniD_int,giniM_int,int_palma,int_pc10,int_pc50,int_d10d1,int_gini_wiid,int_theil)
+load(here::here("output/fullsample-numeric-homclass-strong-macro.RData"));fsample_num_strong_mac<- list(giniD_int,giniM_int,int_palma,int_pc10,int_pc50,int_d10d1,int_gini_wiid,int_theil)
+load(here::here("output/fullsample-numeric-homclass-weak-macro.RData")); fsample_num_weak_mac<- list(giniD_int,giniM_int,int_palma,int_pc10,int_pc50,int_d10d1,int_gini_wiid,int_theil)
+
+htmlreg(
+  c(fsample_num_full_mac,fsample_num_strong_mac,fsample_num_weak_mac),
+  caption = "Multilevel linear regression: full country sample cross-level interaction",
+  caption.above = T,
+  custom.coef.map= coef_map,
+  custom.header = 
+    list(
+      "Full network"=1:8,
+      "Strong ties"=9:16,
+      "Weak ties"=17:24
+      ))
+```
+
+```{r full-clmm-macro,results='asis'}
+htmltools::includeHTML("../output/fullsample-ologit-homclass-full-strong-weak-macro.html")
+```
+
+
+
+## Non-confusian
+
+```{r nonconfusian-lmer-macro,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,texreg)  
+rm(list=ls())
+load(here::here("output/nonconfusian-numeric-homclass-full-macro.RData")); nconf_num_full_mac<- list(giniD_int,giniM_int,int_palma,int_pc10,int_pc50,int_d10d1,int_gini_wiid,int_theil)
+load(here::here("output/nonconfusian-numeric-homclass-strong-macro.RData"));nconf_num_strong_mac<- list(giniD_int,giniM_int,int_palma,int_pc10,int_pc50,int_d10d1,int_gini_wiid,int_theil)
+load(here::here("output/nonconfusian-numeric-homclass-weak-macro.RData")); nconf_num_weak_mac<- list(giniD_int,giniM_int,int_palma,int_pc10,int_pc50,int_d10d1,int_gini_wiid,int_theil)
+
+coef_map <-
+  list(
+    homclass = "Homogeneity",
+    logrgdpna = "log GDP",
+    "gini_disp" = "GiniD ",
+    "homclass:gini_disp" = "Hom:Gini(D)",
+    "gini_mkt" = "Gini(M) ",
+    "homclass:gini_mkt" = "Hom:Gini(M)",
+    palmaratio               = "Palma",
+    "homclass:palmawd"      = "Hom:Palma",
+    top10             = "Top 10%",
+    "homclass:top10"    = "Hom:top10",
+    middle50             = "Bott.50%",
+    "homclass:middle50"    = "Hom:bott50",
+    d10d1             = "D10/D01",
+    "homclass:d10d1"    = "Hom:D10D01",
+    giniindex             = "Gini(WIID)",
+    "homclass:giniindex"    = "Hom:Gini(WD)",
+    ttheilge1             = "Theil",
+    "homclass:ttheilge1"    = "Hom:Theil"
+  )
+
+htmlreg(
+  c(nconf_num_full_mac,nconf_num_strong_mac,nconf_num_weak_mac),
+  caption = "Multilevel linear regression: Non-confusian country sample cross-level interaction",
+  caption.above = T,
+  custom.coef.map= coef_map,
+  custom.header = 
+    list(
+      "Full network"=1:8,
+      "Strong ties"=9:16,
+      "Weak ties"=17:24
+      ))
+```
+
+```{r nonconfusian-clmm-macro,results='asis'}
+
+```
+
+## OECD
+
+```{r ocde-lmer-macro,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,texreg)  
+rm(list=ls())
+load(here::here("output/ocde-numeric-homclass-full-macro.RData")); ocde_num_full_mac<- list(giniD_int,giniM_int,int_palma,int_pc10,int_pc50,int_d10d1,int_gini_wiid,int_theil)
+load(here::here("output/ocde-numeric-homclass-strong-macro.RData"));ocde_num_strong_mac<- list(giniD_int,giniM_int,int_palma,int_pc10,int_pc50,int_d10d1,int_gini_wiid,int_theil)
+load(here::here("output/ocde-numeric-homclass-weak-macro.RData")); ocde_num_weak_mac<- list(giniD_int,giniM_int,int_palma,int_pc10,int_pc50,int_d10d1,int_gini_wiid,int_theil)
+
+coef_map <-
+  list(
+    homclass = "Homogeneity",
+    logrgdpna = "log GDP",
+    "gini_disp" = "GiniD ",
+    "homclass:gini_disp" = "Hom:Gini(D)",
+    "gini_mkt" = "Gini(M) ",
+    "homclass:gini_mkt" = "Hom:Gini(M)",
+    palmaratio               = "Palma",
+    "homclass:palmawd"      = "Hom:Palma",
+    top10             = "Top 10%",
+    "homclass:top10"    = "Hom:top10",
+    middle50             = "Bott.50%",
+    "homclass:middle50"    = "Hom:bott50",
+    d10d1             = "D10/D01",
+    "homclass:d10d1"    = "Hom:D10D01",
+    giniindex             = "Gini(WIID)",
+    "homclass:giniindex"    = "Hom:Gini(WD)",
+    ttheilge1             = "Theil",
+    "homclass:ttheilge1"    = "Hom:Theil"
+  )
+
+htmlreg(
+  c(ocde_num_full_mac,ocde_num_strong_mac,ocde_num_weak_mac),
+  caption = "Multilevel linear regression: OECD country sample cross-level interaction",
+  custom.coef.map= coef_map,
+  caption.above = T,
+  custom.header = 
+    list(
+      "Full network"=1:8,
+      "Strong ties"=9:16,
+      "Weak ties"=17:24
+      ))
+```
+
+```{r oecd-clmm-macro,results='asis'}
+
+```
+
+
+
+

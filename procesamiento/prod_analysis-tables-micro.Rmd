@@ -1,0 +1,164 @@
+---
+title: "Additional analyses"
+subtitle: "Micro level"
+date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
+css: "../input/css/custom.css" # custom CSS para html
+output: 
+  html_document: 
+    toc: false
+    code_folding: hide
+    toc_float: 
+      collapsed: true
+      smooth_scroll: false
+      number_sections: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+options(scipen=9999) # desactivar notacion cientifica
+```
+
+## All countries
+
+```{r full-lmer-micro,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,texreg)  
+rm(list=ls())
+
+load(here::here("output/fullsample-numeric-homclass-full-individual.RData")); fsample_num_full_ind<- models
+load(here::here("output/fullsample-numeric-homclass-strong-individual.RData"));fsample_num_strong_ind<- models
+load(here::here("output/fullsample-numeric-homclass-weak-individual.RData")); fsample_num_weak_ind<- models
+
+htmlreg(
+  c(fsample_num_full_ind,fsample_num_strong_ind,fsample_num_weak_ind),
+  caption = "Multilevel linear regression: full country sample",
+  caption.above = T,
+  custom.header = 
+    list(
+      "Full network"=1:4,
+      "Strong ties"=5:8,
+      "Weak ties"=9:12
+      ))
+```
+
+```{r full-clmm-micro,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,texreg,ordinal)  
+rm(list=ls())
+
+load(here::here("output/fullsample-ologit-homclass-full-individual.RData"));fsample_ologit_full_ind<- models
+load(here::here("output/fullsample-ologit-homclass-strong-individual.RData"));fsample_ologit_strong_ind<- models
+load(here::here("output/fullsample-ologit-homclass-weak-individual.RData"));fsample_ologit_weak_ind<- models
+
+htmlreg(
+  c(fsample_ologit_full_ind,
+    fsample_ologit_strong_ind,
+    fsample_ologit_weak_ind),
+  include.threshold=F,
+  caption = "Multilevel ordinal logistic regression: full country sample",
+  caption.above = T,
+  custom.header = 
+    list(
+      "Full network"=1:4,
+      "Strong ties"=5:8,
+      "Weak ties"=9:12
+      ))
+```
+
+## Non-confusian
+
+```{r nonconfusian-lmer-micro,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,texreg)  
+rm(list=ls())
+
+load(here::here("output/nonconfusian-numeric-homclass-full-individual.RData")); nconf_num_full_ind<- models
+load(here::here("output/nonconfusian-numeric-homclass-strong-individual.RData"));nconf_num_strong_ind<- models
+load(here::here("output/nonconfusian-numeric-homclass-weak-individual.RData")); nconf_num_weak_ind<- models
+
+htmlreg(
+  c(nconf_num_full_ind,nconf_num_strong_ind,nconf_num_weak_ind),
+  caption = "Multilevel linear regression: Non-confusian country sample",
+  caption.above = T,
+  custom.header = 
+    list(
+      "Full network"=1:4,
+      "Strong ties"=5:8,
+      "Weak ties"=9:12
+      ))
+```
+
+```{r nonconfusian-clmm-micro,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,texreg,ordinal)  
+rm(list=ls())
+
+load(here::here("output/nonconfusian-ologit-homclass-full-individual.RData"));nconf_ologit_full_ind<- models
+load(here::here("output/nonconfusian-ologit-homclass-strong-individual.RData"));nconf_ologit_strong_ind<- models
+load(here::here("output/nonconfusian-ologit-homclass-weak-individual.RData"));nconf_ologit_weak_ind<- models
+
+htmlreg(
+  c(nconf_ologit_full_ind,
+    nconf_ologit_strong_ind,
+    nconf_ologit_weak_ind),
+  include.threshold=F,
+  caption = "Multilevel ordinal logistic regression: Non-confusian country sample",
+  caption.above = T,
+  custom.header = 
+    list(
+      "Full network"=1:4,
+      "Strong ties"=5:8,
+      "Weak ties"=9:12
+      ))
+```
+
+## OECD
+
+```{r ocde-lmer-micro,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,texreg)  
+rm(list=ls())
+
+load(here::here("output/ocde-numeric-homclass-full-individual.RData")); ocde_num_full_ind<- models
+load(here::here("output/ocde-numeric-homclass-strong-individual.RData"));ocde_num_strong_ind<- models
+load(here::here("output/ocde-numeric-homclass-weak-individual.RData")); ocde_num_weak_ind<- models
+
+htmlreg(
+  c(ocde_num_full_ind,ocde_num_strong_ind,ocde_num_weak_ind),
+  caption = "Multilevel linear regression: OECD country sample",
+  caption.above = T,
+  custom.header = 
+    list(
+      "Full network"=1:4,
+      "Strong ties"=5:8,
+      "Weak ties"=9:12
+      ))
+```
+
+```{r oecd-clmm-micro,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,texreg)  
+rm(list=ls())
+
+load(here::here("output/ocde-ologit-homclass-full-individual.RData")); ocde_ologit_full_ind<- models
+load(here::here("output/ocde-ologit-homclass-strong-individual.RData"));ocde_ologit_strong_ind<- models
+load(here::here("output/ocde-ologit-homclass-weak-individual.RData")); ocde_ologit_weak_ind<- models
+
+htmlreg(
+  c(ocde_ologit_full_ind,ocde_ologit_strong_ind,ocde_ologit_weak_ind),
+  caption = "Multilevel ordinal logistic regression: OECD country sample",
+  caption.above = T,
+  include.threshold=F,
+  custom.header = 
+    list(
+      "Full network"=1:4,
+      "Strong ties"=5:8,
+      "Weak ties"=9:12
+      ))
+```
+
+
+
+
