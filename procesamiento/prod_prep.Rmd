@@ -646,8 +646,8 @@ df1$class3 <- car::recode(df1$class11d,as.factor = T,
                                       'Intermediate class (III+IV)',
                                       'Working Class (V+VI+VII)'), 
                             "1:2='Service Class (I+II)';
-                             3:7='Intermediate class (III+IV)';
-                             8:11='Working Class (V+VI+VII)'")
+                             3:7='Intermediate class (III+IV+V)';
+                             8:11='Working Class (VI+VII)'")
 
 sjlabelled::set_label(df1$class3) <- "Social Class"
 frq(df1$class3)
