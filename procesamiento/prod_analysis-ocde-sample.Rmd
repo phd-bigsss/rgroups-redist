@@ -1235,3 +1235,517 @@ save(models,file = here::here("output/ocde-ologit-homclass-respondent.RData"),co
 ```
 
 
+
+
+
+# Numeric -  Egalitarian Attitudes Index
+
+Cronbach's alpha is 0.7 for:
+ 
+1. It is the responsibility of the government to reduce the differences in income between people with high incomes and those with low incomes. 
+2. For a society to be fair, differences in people's standard of living should be small. 
+
+Note: the item "Differences in income in [COUNTRY] are too large" is not included because of two reasons. First, the item is fuzzy in terms of what is it measuring, "are" refers to a perception about inequality and "too large" as a normative judgement. Second, the literature has addressed this indicator as perceived or concerns about inequality. 
+
+<!----------------------------------------------------------------------------->
+
+## Full network
+
+```{r mod-homclass-numeric,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal)  
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+dfreg <- df1 %>% dplyr::select(
+                        egal=egal3,
+                        class3,
+                        homclass,
+                        Q03pcm,
+                        edyears,
+                        female,
+                        agenum,
+                        union,
+                        workst,
+                        WEIGHT,
+                        region,
+                        "gini_disp",
+                        "gini_mkt",
+                        rgdpna,
+                        oecd,
+                        country2,country
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna),
+         edyears2=edyears^2,
+         age2=agenum^2) %>%
+ filter(oecd=="OECD" & country2 != "SVN") %>% 
+  na.omit()
+
+# Models 
+base <- lmer(egal~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)
+homclass<- update(base, . ~ . +homclass)
+full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
+rob1 <- update(full1, . ~ . + class3+edyears+ Q03pcm+union+workst)
+rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
+# anova(rob1,rob2)
+# Interactions segregation x class
+int_homo <- update(rob1, . ~ . +class3*homclass)
+
+models <- list(homclass,full1,rob1,int_homo)
+save(models,file = here::here("output/ocde-egalitarian-homclass-full-individual.RData"),compress = "gzip")
+```
+
+```{r mod-intermacro-numeric,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal)  
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+dfreg <- df1 %>% dplyr::select(egal=egal2,
+                               class3,
+                        homclass,
+                        Q03pcm,
+                        edyears,
+                        female,
+                        agenum,
+                        union,
+                        workst,
+                        WEIGHT,
+                        region,
+                        "gini_disp",
+                        "gini_mkt",
+                        rgdpna,
+                        oecd,
+                        country2,country,
+                        palmaratio,
+                        top10,
+                        middle50,
+                        d10d1,
+                        giniindex,
+                        ttheilge1
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna),
+         edyears2=edyears^2,
+         age2=agenum^2) %>%
+  filter(oecd=="OECD" & country2 != "SVN") %>% 
+  na.omit()
+
+# Homoclass x Gini--------------------------------------------------------------
+main <- "egal~class3+homclass+edyears+Q03pcm+workst+union+female+agenum+age2+(1|country2)"
+base <- lmer(formula(main),data=dfreg,weights = WEIGHT)
+giniD_gdp<- update(base, . ~ . +gini_disp+logrgdpna)
+giniD_rs <- update(giniD_gdp, . ~ . - (1|country2) + (homclass|country2))
+# anova(giniD_gdp,giniD_rs)
+giniD_int<- update(giniD_rs, . ~ . + homclass*gini_disp + (homclass|country2))
+# summary(giniD_int)
+
+giniM_gdp<- update(base, . ~ . +gini_mkt+logrgdpna)
+giniM_rs <- update(giniM_gdp, . ~ . - (1|country2) + (homclass|country2))
+# anova(giniM_gdp,giniM_rs)
+giniM_int <- update(giniM_rs, . ~ . + homclass*gini_mkt + (homclass|country2))
+# summary(giniM_int)
+models <- list(giniD_gdp,giniD_rs,giniD_int,
+               giniM_gdp,giniM_rs,giniM_int)
+
+# Homoclass x Other Economic Inequality-----------------------------------------
+main <- "egal~class3+homclass+edyears+Q03pcm+workst+union+female+agenum+age2+logrgdpna+(homclass|country2)"
+base <- lmer(formula(main),data=dfreg,weights = WEIGHT)
+int_palma <- update(base, . ~ . +homclass*palmaratio)
+int_pc10  <- update(base, . ~ . +homclass*top10)
+int_pc50  <- update(base, . ~ . +homclass*middle50)
+int_d10d1 <- update(base, . ~ . +homclass*d10d1)
+int_gini_wiid <- update(base, . ~ . +homclass*giniindex)
+int_theil  <- update(base, . ~ . +homclass*ttheilge1)
+
+models_m <- list(int_palma,int_pc10,int_pc50,int_d10d1,
+                 int_gini_wiid,int_theil
+                 )
+save(giniD_gdp,giniD_rs,giniD_int,
+                 giniM_gdp,giniM_rs,giniM_int,
+                 int_palma,int_pc10,int_pc50,int_d10d1,
+                 int_gini_wiid,int_theil,
+     file = here::here("output/ocde-egalitarian-homclass-full-macro.RData"),compress = "gzip")
+```
+
+```{r}
+load(here::here("output/ocde-egalitarian-homclass-full-individual.RData"))
+texreg::knitreg(models)
+
+load(here::here("output/ocde-egalitarian-homclass-full-macro.RData"))
+texreg::knitreg(list(giniD_int,giniM_int,int_palma,int_pc10,int_pc50,int_d10d1,
+                 int_gini_wiid,int_theil))
+```
+
+## Strong ties
+
+```{r mod-homclass-numeric-strong-ties,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal)  
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+dfreg <- df1 %>% dplyr::select(egal=egal2,
+                        class3,
+                        homclass=homclass_s,
+                        Q03pcm,
+                        edyears,
+                        female,
+                        agenum,
+                        union,
+                        workst,
+                        WEIGHT,
+                        region,
+                        "gini_disp",
+                        "gini_mkt",
+                        rgdpna,
+                        oecd,
+                        country2,country
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna),
+         edyears2=edyears^2,
+         age2=agenum^2) %>%
+  filter(oecd=="OECD" & country2 != "SVN") %>%   
+  na.omit()
+
+# Models 
+base <- lmer(egal~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)
+homclass<- update(base, . ~ . +homclass)
+full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
+rob1 <- update(full1, . ~ . + class3+edyears+ Q03pcm+union+workst)
+rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
+# anova(rob1,rob2)
+# Interactions segregation x class
+int_homo <- update(rob1, . ~ . +class3*homclass)
+
+models <- list(homclass,full1,rob1,int_homo)
+save(models,file = here::here("output/ocde-egalitarian-homclass-strong-individual.RData"),compress = "gzip")
+```
+
+```{r mod-intermacro-numeric-strong-ties,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr,gridExtra)  
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+dfreg <- df1 %>% dplyr::select(egal=egal2,
+                        class3,
+                        homclass=homclass_s,
+                        Q03pcm,
+                        edyears,
+                        female,
+                        agenum,
+                        union,
+                        workst,
+                        WEIGHT,
+                        region,
+                        "gini_disp",
+                        "gini_mkt",
+                        rgdpna,
+                        oecd,
+                        country2,country,
+                        palmaratio,
+                        top10,
+                        middle50,
+                        d10d1,
+                        giniindex,
+                        ttheilge1
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna),
+         edyears2=edyears^2,
+         age2=agenum^2) %>%
+filter(oecd=="OECD" & country2 != "SVN") %>% 
+  na.omit()
+
+# Homoclass x Gini--------------------------------------------------------------
+main <- "egal~class3+homclass+edyears+Q03pcm+workst+union+female+agenum+age2+(1|country2)"
+base <- lmer(formula(main),data=dfreg,weights = WEIGHT)
+giniD_gdp<- update(base, . ~ . +gini_disp+logrgdpna)
+giniD_rs <- update(giniD_gdp, . ~ . - (1|country2) + (homclass|country2))
+# anova(giniD_gdp,giniD_rs)
+giniD_int<- update(giniD_rs, . ~ . + homclass*gini_disp + (homclass|country2))
+summary(giniD_int)
+
+giniM_gdp<- update(base, . ~ . +gini_mkt+logrgdpna)
+giniM_rs <- update(giniM_gdp, . ~ . - (1|country2) + (homclass|country2))
+# anova(giniM_gdp,giniM_rs)
+giniM_int <- update(giniM_rs, . ~ . + homclass*gini_mkt + (homclass|country2))
+summary(giniM_int)
+models <- list(giniD_gdp,giniD_rs,giniD_int,
+               giniM_gdp,giniM_rs,giniM_int)
+
+# Homoclass x Other Economic Inequality-----------------------------------------
+main <- "egal~class3+homclass+edyears+Q03pcm+workst+union+female+agenum+age2+logrgdpna+(homclass|country2)"
+base <- lmer(formula(main),data=dfreg,weights = WEIGHT)
+int_palma <- update(base, . ~ . +homclass*palmaratio)
+int_pc10  <- update(base, . ~ . +homclass*top10)
+int_pc50  <- update(base, . ~ . +homclass*middle50)
+int_d10d1 <- update(base, . ~ . +homclass*d10d1)
+int_gini_wiid <- update(base, . ~ . +homclass*giniindex)
+int_theil  <- update(base, . ~ . +homclass*ttheilge1)
+
+models_m <- list(int_palma,int_pc10,int_pc50,int_d10d1,
+                 int_gini_wiid,int_theil
+                 )
+save(giniD_gdp,giniD_rs,giniD_int,
+                 giniM_gdp,giniM_rs,giniM_int,
+                 int_palma,int_pc10,int_pc50,int_d10d1,
+                 int_gini_wiid,int_theil,
+     file = here::here("output/ocde-egalitarian-homclass-strong-macro.RData"),compress = "gzip")
+```
+
+```{r}
+load(here::here("output/ocde-egalitarian-homclass-strong-individual.RData"))
+texreg::knitreg(models)
+
+load(here::here("output/ocde-egalitarian-homclass-strong-macro.RData"))
+texreg::knitreg(list(giniD_int,giniM_int,int_palma,int_pc10,int_pc50,int_d10d1,
+                 int_gini_wiid,int_theil))
+```
+
+## Weak ties
+
+```{r mod-homclass-numeric-strong-ties,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal)  
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+dfreg <- df1 %>% dplyr::select(egal=egal2,
+                        class3,
+                        homclass=homclass_w,
+                        Q03pcm,
+                        edyears,
+                        female,
+                        agenum,
+                        union,
+                        workst,
+                        WEIGHT,
+                        region,
+                        "gini_disp",
+                        "gini_mkt",
+                        rgdpna,
+                        oecd,
+                        country2,country
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna),
+         edyears2=edyears^2,
+         age2=agenum^2) %>%
+filter(oecd=="OECD" & country2 != "SVN") %>% 
+  na.omit()
+
+# Models 
+base <- lmer(egal~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)
+homclass<- update(base, . ~ . +homclass)
+full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
+rob1 <- update(full1, . ~ . + class3+edyears+ Q03pcm+union+workst)
+rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
+# anova(rob1,rob2)
+# Interactions segregation x class
+int_homo <- update(rob1, . ~ . +class3*homclass)
+
+models <- list(homclass,full1,rob1,int_homo)
+save(models,file = here::here("output/ocde-egalitarian-homclass-weak-individual.RData"),compress = "gzip")
+```
+
+```{r mod-intermacro-numeric-strong-ties,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr,gridExtra)  
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+dfreg <- df1 %>% dplyr::select(egal=egal2,
+                        class3,
+                        homclass=homclass_w,
+                        Q03pcm,
+                        edyears,
+                        female,
+                        agenum,
+                        union,
+                        workst,
+                        WEIGHT,
+                        region,
+                        "gini_disp",
+                        "gini_mkt",
+                        rgdpna,
+                        oecd,
+                        country2,country,
+                        palmaratio,
+                        top10,
+                        middle50,
+                        d10d1,
+                        giniindex,
+                        ttheilge1
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna),
+         edyears2=edyears^2,
+         age2=agenum^2) %>%
+  filter(oecd=="OECD" & country2 != "SVN") %>% 
+  na.omit()
+
+# Homoclass x Gini--------------------------------------------------------------
+main <- "egal~class3+homclass+edyears+Q03pcm+workst+union+female+agenum+age2+(1|country2)"
+base <- lmer(formula(main),data=dfreg,weights = WEIGHT)
+giniD_gdp<- update(base, . ~ . +gini_disp+logrgdpna)
+giniD_rs <- update(giniD_gdp, . ~ . - (1|country2) + (homclass|country2))
+# anova(giniD_gdp,giniD_rs)
+giniD_int<- update(giniD_rs, . ~ . + homclass*gini_disp + (homclass|country2))
+summary(giniD_int)
+
+giniM_gdp<- update(base, . ~ . +gini_mkt+logrgdpna)
+giniM_rs <- update(giniM_gdp, . ~ . - (1|country2) + (homclass|country2))
+# anova(giniM_gdp,giniM_rs)
+giniM_int <- update(giniM_rs, . ~ . + homclass*gini_mkt + (homclass|country2))
+summary(giniM_int)
+models <- list(giniD_gdp,giniD_rs,giniD_int,
+               giniM_gdp,giniM_rs,giniM_int)
+
+# Homoclass x Other Economic Inequality-----------------------------------------
+main <- "egal~class3+homclass+edyears+Q03pcm+workst+union+female+agenum+age2+logrgdpna+(homclass|country2)"
+base <- lmer(formula(main),data=dfreg,weights = WEIGHT)
+int_palma <- update(base, . ~ . +homclass*palmaratio)
+int_pc10  <- update(base, . ~ . +homclass*top10)
+int_pc50  <- update(base, . ~ . +homclass*middle50)
+int_d10d1 <- update(base, . ~ . +homclass*d10d1)
+int_gini_wiid <- update(base, . ~ . +homclass*giniindex)
+int_theil  <- update(base, . ~ . +homclass*ttheilge1)
+
+models_m <- list(int_palma,int_pc10,int_pc50,int_d10d1,
+                 int_gini_wiid,int_theil
+                 )
+save(giniD_gdp,giniD_rs,giniD_int,
+                 giniM_gdp,giniM_rs,giniM_int,
+                 int_palma,int_pc10,int_pc50,int_d10d1,
+                 int_gini_wiid,int_theil,
+     file = here::here("output/ocde-egalitarian-homclass-weak-macro.RData"),compress = "gzip")
+```
+
+```{r}
+load(here::here("output/ocde-egalitarian-homclass-weak-individual.RData"))
+texreg::knitreg(models)
+
+load(here::here("output/ocde-egalitarian-homclass-weak-macro.RData"))
+texreg::knitreg(list(giniD_int,giniM_int,int_palma,int_pc10,int_pc50,int_d10d1,
+                 int_gini_wiid,int_theil))
+```
+## R's class 
+
+```{r mod-homclass-numeric-respondent,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal)  
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+dfreg <- df1 %>% dplyr::select(egal=egal2,
+                        class3=class3res,
+                        homclass=homclass_res,
+                        class3spo,
+                        Q03pcm,
+                        edyears,
+                        female,
+                        agenum,
+                        union,
+                        workst,
+                        WEIGHT,
+                        region,
+                        "gini_disp",
+                        "gini_mkt",
+                        rgdpna,
+                        oecd,
+                        country2,country
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna),
+         edyears2=edyears^2,
+         age2=agenum^2) %>%
+  filter(oecd=="OECD" & country2 != "SVN") 
+
+# Models 
+base <- lmer(egal~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)
+homclass<- update(base, . ~ . +homclass)
+full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
+rob1 <- update(full1, . ~ . + class3+edyears+ Q03pcm+union+workst+class3spo)
+rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
+# anova(rob1,rob2)
+# Interactions segregation x class
+int_homo <- update(rob1, . ~ . +class3*homclass)
+
+models <- list(homclass,full1,rob1,int_homo)
+save(models,file = here::here("output/ocde-egalitarian-homclass-respondent.RData"),compress = "gzip")
+```
+
+```{r mod-intermacro-numeric-respondent,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,sjPlot,sjlabelled,haven,stringr,gridExtra)  
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+dfreg <- df1 %>% dplyr::select(egal=egal2,
+                        class3=class3res,
+                        class3spo,
+                        homclass=homclass_res,
+                        Q03pcm,
+                        edyears,
+                        female,
+                        agenum,
+                        union,
+                        workst,
+                        WEIGHT,
+                        region,
+                        "gini_disp",
+                        "gini_mkt",
+                        rgdpna,
+                        oecd,
+                        country2,country,
+                        palmaratio,
+                        top10,
+                        middle50,
+                        d10d1,
+                        giniindex,
+                        ttheilge1
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna),
+         edyears2=edyears^2,
+         age2=agenum^2) %>%
+  filter(oecd=="OECD" & country2 != "SVN")
+
+# Homoclass x Gini--------------------------------------------------------------
+main <- "egal~class3+homclass+edyears+Q03pcm+workst+union+female+agenum+age2+class3spo+(1|country2)"
+base <- lmer(formula(main),data=dfreg,weights = WEIGHT)
+giniD_gdp<- update(base, . ~ . +gini_disp+logrgdpna)
+giniD_rs <- update(giniD_gdp, . ~ . - (1|country2) + (homclass|country2))
+# anova(giniD_gdp,giniD_rs)
+giniD_int<- update(giniD_rs, . ~ . + homclass*gini_disp + (homclass|country2))
+summary(giniD_int)
+
+giniM_gdp<- update(base, . ~ . +gini_mkt+logrgdpna)
+giniM_rs <- update(giniM_gdp, . ~ . - (1|country2) + (homclass|country2))
+# anova(giniM_gdp,giniM_rs)
+giniM_int <- update(giniM_rs, . ~ . + homclass*gini_mkt + (homclass|country2))
+summary(giniM_int)
+models <- list(giniD_gdp,giniD_rs,giniD_int,
+               giniM_gdp,giniM_rs,giniM_int)
+
+# Homoclass x Other Economic Inequality-----------------------------------------
+main <- "egal~class3+homclass+edyears+Q03pcm+workst+union+female+agenum+age2+logrgdpna+ class3spo +(homclass|country2)"
+base <- lmer(formula(main),data=dfreg,weights = WEIGHT)
+int_palma <- update(base, . ~ . +homclass*palmaratio)
+int_pc10  <- update(base, . ~ . +homclass*top10)
+int_pc50  <- update(base, . ~ . +homclass*middle50)
+int_d10d1 <- update(base, . ~ . +homclass*d10d1)
+int_gini_wiid <- update(base, . ~ . +homclass*giniindex)
+int_theil  <- update(base, . ~ . +homclass*ttheilge1)
+
+models_m <- list(int_palma,int_pc10,int_pc50,int_d10d1,
+                 int_gini_wiid,int_theil
+                 )
+save(giniD_gdp,giniD_rs,giniD_int,
+                 giniM_gdp,giniM_rs,giniM_int,
+                 int_palma,int_pc10,int_pc50,int_d10d1,
+                 int_gini_wiid,int_theil,
+     file = here::here("output/ocde-egalitarian-homclass-respondent-macro.RData"),compress = "gzip")
+```
+
+```{r}
+load(here::here("output/ocde-egalitarian-homclass-respondent.RData"))
+texreg::knitreg(models)
+
+load(here::here("output/ocde-egalitarian-homclass-respondent-macro.RData"))
+texreg::knitreg(list(giniD_int,giniM_int,int_palma,int_pc10,int_pc50,int_d10d1,
+                 int_gini_wiid,int_theil))
+
+
+marginaleffects::plot_predictions(giniD_int, condition = list("homclass",gini_disp=range),gray = F)
+marginaleffects::plot_predictions(int_gini_wiid, condition = list("homclass",giniindex=range),gray = F)
+marginaleffects::plot_predictions(giniM_int, condition = list("homclass",gini_mkt=range),gray = F)
+```

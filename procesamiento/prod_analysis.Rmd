@@ -637,10 +637,6 @@ ggsave(plot = last_plot(),filename = "macro_service_homo.png",device = "png",
 
 ```
 
-
-
-
-
 # Check on homogeneity
 
 ```{r}
@@ -649,16 +645,25 @@ pacman::p_load(dplyr,haven,sjmisc,GGally,ggplot2)
 load(here::here("input/data/proc/study1_country.RData"))
 
 test <- df2
-
 frq(df2$class11d)
-
 test$egp3_v1 <- car::recode(test$class11d,"1:2=1;c(3,4,5,6)=2;7:10=3",as.factor = T,levels = c(1,2,3))
 test$egp3_v2 <- car::recode(test$digclass11d,"1:2=1;c(3,4,5,6)=2;7:10=3",as.factor = T,levels = c(1,2,3))
-test$egp3_v3 <- car::recode(test$dclass11d,"1:2=1;c(3,4,5,6)=2;7:10=3",as.factor = T,levels = c(1,2,3))
+
+# I   II IIIa IIIb  IVa  IVb  IVc    V   VI VIIa VIIb 
+#   1    2    3    4    5    6    7    8    9   10   11 
+frq(df2$dclass11d)
+test$egp3_v3 <- car::recode(test$dclass11d,"1:2=1;c(3,4,5,6,7,8)=2;9:11=3",as.factor = T,levels = c(1,2,3))
+test$egp3_v4 <- car::recode(test$dclass11d,"1:2=1;c(3,5,6,7,8)=2;c(4,9,10,11)=3",as.factor = T,levels = c(1,2,3))
+
+# Service class II to middle class
+test$egp3_v5 <- car::recode(test$dclass11d,"1=1;c(2,3,5,6,7,8)=2;c(4,9,10,11)=3",as.factor = T,levels = c(1,2,3))
+
 
 frq(test$egp3_v1)
 frq(test$egp3_v2)
 frq(test$egp3_v3)
+frq(test$egp3_v4)
+frq(test$egp3_v5)
 frq(test$class3)
 
 test$ingroup1 <- NA 
@@ -672,29 +677,45 @@ test$ingroup2 <- ifelse(test$egp3_v2==2,test$n_middle,test$ingroup2)
 test$ingroup2 <- ifelse(test$egp3_v2==3,test$n_low,test$ingroup2)
 
 test$ingroup3 <- NA 
-test$ingroup3 <- ifelse(test$egp3_v3==1,test$n_high,test$ingroup2)
-test$ingroup3 <- ifelse(test$egp3_v3==2,test$n_middle,test$ingroup2)
-test$ingroup3 <- ifelse(test$egp3_v3==3,test$n_low,test$ingroup2)
+test$ingroup3 <- ifelse(test$egp3_v3==1,test$n_high,test$ingroup3)
+test$ingroup3 <- ifelse(test$egp3_v3==2,test$n_middle,test$ingroup3)
+test$ingroup3 <- ifelse(test$egp3_v3==3,test$n_low,test$ingroup3)
+
+#ingroup with Routine non-manual IIIa as middle class and IIIb as working class
+test$ingroup4 <- NA 
+test$ingroup4 <- ifelse(test$egp3_v4==1,test$n_high,test$ingroup4)
+test$ingroup4 <- ifelse(test$egp3_v4==2,test$n_middle,test$ingroup4)
+test$ingroup4 <- ifelse(test$egp3_v4==3,test$n_low,test$ingroup4)
+
+
+#ingroup with Service II + Routine non-manual IIIa as middle class and IIIb as working class
+test$ingroup5 <- NA 
+test$ingroup5 <- ifelse(test$egp3_v5==1,test$n_high,test$ingroup4)
+test$ingroup5 <- ifelse(test$egp3_v5==2,test$n_middle,test$ingroup4)
+test$ingroup5 <- ifelse(test$egp3_v5==3,test$n_low,test$ingroup4)
 
 test$homclass_v1 <- as.numeric(test$ingroup1/test$know_total)
-
 test$homclass_v2 <- as.numeric(test$ingroup2/test$know_total)
-
 test$homclass_v3 <- as.numeric(test$ingroup3/test$know_total)
+test$homclass_v4 <- as.numeric(test$ingroup4/test$know_total)
+test$homclass_v5 <- as.numeric(test$ingroup5/test$know_total)
 
-sjPlot::plot_frq(test$homclass_v1,type = "density")
-sjPlot::plot_frq(test$homclass_v2,type = "density")
-sjPlot::plot_frq(test$homclass_v3,type = "density")
-sjPlot::plot_frq(df2$homclass)
+sjPlot::plot_frq(test$homclass_v1,type = "bar")
+sjPlot::plot_frq(test$homclass_v2)
+sjPlot::plot_frq(test$homclass_v3,type = "bar")
+sjPlot::plot_frq(test$homclass_v4,type = "bar")
+sjPlot::plot_frq(test$homclass_v5,type = "bar")
+
+hist.default(df2$homclass)
 ```
 
 ```{r}
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal,texreg)  
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
-dfreg <- test %>% dplyr::select(
-                        class3=class6,
-                        homclass=homclass,
+dfreg <- test %>% dplyr::select(redist,
+                        class3,
+                        homclass,
                         Q03pcm,
                         edyears,
                         female,
@@ -714,9 +735,11 @@ dfreg <- test %>% dplyr::select(
          age2=agenum^2) %>%
   na.omit()
 
+hist.default(dfreg$homclass,main = "Class-based network homogeneity",xlab = NULL)
+
 # Models 
-base <- lmer(homclass~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)
-homclass<- update(base, . ~ . +class3)
+base <- lmer(redist~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)
+homclass<- update(base, . ~ . +homclass)
 full1 <- update(homclass, . ~ . + female+agenum+age2)
 rob1 <- update(full1, . ~ . + class3+edyears+ Q03pcm+union+workst)
 rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
@@ -724,8 +747,9 @@ rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
 # Interactions segregation x class
 int_homo <- update(rob1, . ~ . +class3*homclass)
 
-models <- list(homclass,full1,rob1,int_homo)
-knitreg(list(homclass,full1,rob1))
+models <- list(homclass,rob1,int_homo)
+
+knitreg(list(homclass,full1,rob1,int_homo))
 ```
 
 

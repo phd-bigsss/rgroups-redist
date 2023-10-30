@@ -67,6 +67,27 @@ htmlreg(
       ))
 ```
 
+```{r full-lmer-micro-egalitarian,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,texreg)  
+rm(list=ls())
+
+load(here::here("output/fullsample-egalitarian-homclass-full-individual.RData")); fsample_num_full_ind<- models
+load(here::here("output/fullsample-egalitarian-homclass-strong-individual.RData"));fsample_num_strong_ind<- models
+load(here::here("output/fullsample-egalitarian-homclass-weak-individual.RData")); fsample_num_weak_ind<- models
+
+htmlreg(
+  c(fsample_num_full_ind,fsample_num_strong_ind,fsample_num_weak_ind),
+  caption = "Multilevel linear regression: full country sample - egalitarian preferences index",
+  caption.above = T,
+  custom.header = 
+    list(
+      "Full network"=1:4,
+      "Strong ties"=5:8,
+      "Weak ties"=9:12
+      ))
+```
+
 ## Non-confusian
 
 ```{r nonconfusian-lmer-micro,results='asis'}
@@ -114,6 +135,28 @@ htmlreg(
       ))
 ```
 
+```{r nonconfusian-lmer-micro-egalitarian,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,texreg)  
+rm(list=ls())
+
+load(here::here("output/nonconfusian-egalitarian-homclass-full-individual.RData")); fsample_num_full_ind<- models
+load(here::here("output/nonconfusian-egalitarian-homclass-strong-individual.RData"));fsample_num_strong_ind<- models
+load(here::here("output/nonconfusian-egalitarian-homclass-weak-individual.RData")); fsample_num_weak_ind<- models
+
+knitreg(
+  c(fsample_num_full_ind,fsample_num_strong_ind,fsample_num_weak_ind),
+  caption = "Multilevel linear regression: Non-confusian sample - egalitarian preferences index",
+  caption.above = T,
+  custom.header = 
+    list(
+      "Full network"=1:4,
+      "Strong ties"=5:8,
+      "Weak ties"=9:12
+      ))
+```
+
+
 ## OECD
 
 ```{r ocde-lmer-micro,results='asis'}
@@ -159,6 +202,26 @@ htmlreg(
       ))
 ```
 
+```{r oecd-lmer-micro-egalitarian,results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,texreg)  
+rm(list=ls())
+
+load(here::here("output/ocde-egalitarian-homclass-full-individual.RData")); fsample_num_full_ind<- models
+load(here::here("output/ocde-egalitarian-homclass-strong-individual.RData"));fsample_num_strong_ind<- models
+load(here::here("output/ocde-egalitarian-homclass-weak-individual.RData")); fsample_num_weak_ind<- models
+
+knitreg(
+  c(fsample_num_full_ind,fsample_num_strong_ind,fsample_num_weak_ind),
+  caption = "Multilevel linear regression: OECD country sample - egalitarian preferences index",
+  caption.above = T,
+  custom.header = 
+    list(
+      "Full network"=1:4,
+      "Strong ties"=5:8,
+      "Weak ties"=9:12
+      ))
+```
 
 
 
