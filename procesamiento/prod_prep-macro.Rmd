@@ -24,7 +24,7 @@ knitr::opts_chunk$set(warning = FALSE,
 options(scipen=9999) # desactivar notacion cientifica
 if (!require("pacman")) install.packages("pacman") # instalar pacman
 load(here::here("input/data/proc/study1.RData"))
-pacman::p_load(dplyr,sjmisc,sjPlot,sjlabelled,tidyverse,haven)
+pacman::p_load(dplyr,sjmisc,sjPlot,sjlabelled,tidyverse,haven,MLMusingR)
 ```
 
 # Country level
@@ -136,6 +136,84 @@ df2 %>% mutate(country2=countrycode::countrycode(sourcevar = ccode,origin = "iso
                region=countrycode::countrycode(sourcevar = ccode,origin = "iso3n",destination = "region23")) %>% 
   select(ccode,country2,country3,everything())
 ```
+
+# centering micro level
+
+
+```{r}
+df2 <- 
+df2 %>% 
+  mutate(to_dummy(female),
+         to_dummy(union),
+         to_dummy(workst),
+         # dummy for categorical variables-------------------------------------
+         to_dummy(class3),to_dummy(class3spo),to_dummy(class3res),to_dummy(Q03pcm))
+
+df2$female_gc = group_center(df2$female_2, grp = df2$country2)
+df2$union_gc = group_center(df2$union_2, grp = df2$country2)
+df2$workst_gc = group_center(df2$workst_2, grp = df2$country2)
+df2$edyears_gc = group_center(df2$edyears, grp = df2$country2)
+df2$agenum_gc = group_center(df2$agenum, grp = df2$country2)
+
+# EGP: dominance
+df2$class3_ser_gc = group_center(df2$class3_1, grp = df2$country2)
+df2$class3_mid_gc = group_center(df2$class3_2, grp = df2$country2)
+df2$class3_wor_gc = group_center(df2$class3_3, grp = df2$country2)
+# EGP: Respondent
+df2$class3res_ser_gc = group_center(df2$class3res_1, grp = df2$country2)
+df2$class3res_mid_gc = group_center(df2$class3res_2, grp = df2$country2)
+df2$class3res_wor_gc = group_center(df2$class3res_3, grp = df2$country2)
+# EGP: Respondent
+df2$class3spo_ser_gc = group_center(df2$class3spo_1, grp = df2$country2)
+df2$class3spo_mid_gc = group_center(df2$class3spo_2, grp = df2$country2)
+df2$class3spo_wor_gc = group_center(df2$class3spo_3, grp = df2$country2)
+# Household Income Tercile
+df2$Q03pcm_1_gc = group_center(df2$Q03pcm_1, grp = df2$country2)
+df2$Q03pcm_2_gc = group_center(df2$Q03pcm_2, grp = df2$country2)
+df2$Q03pcm_3_gc = group_center(df2$Q03pcm_3, grp = df2$country2)
+df2$Q03pcm_NA_gc = group_center(df2$Q03pcm_4, grp = df2$country2)
+
+names(df2)
+# drop dummies
+df2 <- 
+  df2 %>% 
+  select(-c(female_1,female_2,union_1,union_2,workst_1,workst_2,
+            class3_1,class3_2,class3_3,class3res_1,class3res_2,class3res_3,
+            class3spo_1,class3spo_2,class3spo_3,
+            Q03pcm_1,Q03pcm_2,Q03pcm_2,Q03pcm_4))
+names(df2)
+```
+
+
+# centering macro level
+
+```{r}
+df2$gini_disp_c <- center(df2$gini_disp)
+df2$gini_mkt_c <- center(df2$gini_mkt)
+df2$palmaratio_c <- center(df2$palmaratio)
+df2$top10_c <- center(df2$top10)
+df2$middle50_c <- center(df2$middle50)
+df2$d10d1_c <- center(df2$d10d1)
+df2$giniindex_c <- center(df2$giniindex)
+df2$ttheilge1_c <- center(df2$ttheilge1)
+df2$rgdpna_c <- center(df2$rgdpna)
+
+
+df2$gini_disp_z <- center(df2$gini_disp)
+df2$gini_mkt_z <- center(df2$gini_mkt)
+df2$palmaratio_z <- center(df2$palmaratio)
+df2$top10_z <- center(df2$top10)
+df2$middle50_z <- center(df2$middle50)
+df2$d10d1_z <- center(df2$d10d1)
+df2$giniindex_z <- center(df2$giniindex)
+df2$ttheilge1_z <- center(df2$ttheilge1)
+df2$rgdpna_z <- center(log(df2$rgdpna))
+
+
+df2 %>% 
+  select(country3,ends_with("_c")) %>% group_by(country3) %>% summarise_all(.funs = mean) %>% View()
+```
+
 
 ```{r save}
 save(df2,file = here::here("input/data/proc/study1_country.RData"))

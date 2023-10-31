@@ -26,7 +26,7 @@ options(scipen=9999) # desactivar notacion cientifica
 
 ```{r mod-homclass-numeric,results='asis'}
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal)  
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal,MLMusingR)  
 rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 dfreg <- df1 %>% dplyr::select(redist,
