@@ -2,7 +2,42 @@ if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal,ggplot2)  
 rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
-dfreg <- df1 %>% dplyr::select(redist=egal2,
+df1$egal <- df1$redist+df1$prefineq
+
+# Porcentaje de varianza explicada
+fit1<- psych::fa(df1[,c("redist","prefineq")],nfactors = 1,rotate = "varimax",missing = F,weight = df1$WEIGHT)
+fit1$loadings
+fs<- as.data.frame(fit1$scores)
+names(fs) <- c("lvegal")
+df1 <- bind_cols(df1,fs)
+
+df1[,c("redist","prefineq","lvegal")] %>% sjPlot::tab_corr()
+summary(df1$lvegal)
+
+model1 <- 
+'cfaegal=~ redist +prefineq ' 
+
+
+fit1 <- lavaan::cfa(model1,data = df1,sampling.weights = "WEIGHT",cluster = "country2",missing = "ML")
+summary(fit1)
+predicted2 <- lavaan::lavPredict(fit1,newdata = df1)  
+
+idx <- lavaan::lavInspect(fit1, "case.idx")
+fscores <- lavaan::lavPredict(fit1)
+## loop over factors
+for (fs in colnames(fscores)) {
+  df1[idx, fs] <- fscores[ , fs]
+}
+
+summary(df1$cfaegal)
+summary(df1$egal2)
+summary(df1$lvegal)
+
+df1[,c("egal2","cfaegal","lvegal")] %>% cor(use = "na.or.complete")
+
+dfreg <- df1 %>% dplyr::select(egal2=egal2,
+                               redist,
+                               prefineq,
                                class3_ser_gc,
                                class3_mid_gc,
                                class3_wor_gc,
@@ -56,24 +91,24 @@ mutate(logrgdpna=log(rgdpna),
        age2=agenum^2) %>%
   # mutate(homclass=group_center(homclass,country2))  %>%
   # filter(!country2 %in% c("TWN","CHN","JPN")) %>%
-  # filter(oecd=="OECD" & country2!="SVN") %>%
+  # filter(oecd=="OECD" & country2!="SVN") %>% 
   filter(country2!="SVN") %>% 
   na.omit()
 
-base <- lmer(redist~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)
+
+base <- lmer(egal2~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)
 homclass<- update(base, . ~ . +homclass)
 full1 <- update(homclass, . ~ . +class3_mid_gc+class3_wor_gc +female+agenum+age2)
 rob1 <- update(full1, . ~ . + edyears+ Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+union+workst)
 rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
 
-# anova(rob1,rob2)
 # Interactions segregation x class
 int_homo <- update(rob1, . ~ . +class3_mid_gc*homclass+class3_wor_gc*homclass)
 models <- list(homclass,full1,rob1,int_homo)
 texreg::knitreg(models,stars = c(.001, .01, .05, .1),symbol = '\u2020')
 
   # Homoclass x Other Economic Inequality-----------------------------------------
-main <- "redist~class3_mid_gc+class3_wor_gc+homclass+edyears+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+workst+union+female+agenum+age2+(homclass|country2)"
+main <- "egal2~class3_mid_gc+class3_wor_gc+homclass+edyears+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+workst+union+female+agenum+age2+(homclass|country2)"
 base <- lmer(formula(main),data=dfreg,weights = WEIGHT)
 
 int_ginid <- update(base, . ~ . +homclass*gini_disp)
@@ -121,7 +156,7 @@ load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 df1$redistOR <- ordered(x = df1$redist)
 dfreg <- df1 %>% dplyr::select(redistOR,
                                class3,
-                               homclass,
+                               homclass=homclass_gc,
                                Q03pcm,
                                edyears,
                                female,
