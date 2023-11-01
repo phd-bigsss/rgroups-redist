@@ -78,7 +78,7 @@ htmlreg(
 htmltools::includeHTML("../output/fullsample-ologit-homclass-full-strong-weak-macro.html")
 ```
 
-```{r full-lmer-macro,results='asis'}
+```{r full-lmer-egalitarian-macro,results='asis'}
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,texreg)  
 rm(list=ls())
@@ -260,10 +260,6 @@ htmlreg(
       ))
 ```
 
-```{r oecd-clmm-macro,results='asis'}
-
-```
-
 ```{r ocde-lmer-egalitarian-macro,results='asis'}
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,texreg)  
@@ -296,7 +292,7 @@ load(here::here("output/ocde-egalitarian-homclass-weak-macro.RData")); ocde_num_
 
 knitreg(
   c(ocde_num_full_mac,ocde_num_strong_mac,ocde_num_weak_mac),
-  caption = "Multilevel linear regression: full country samp <- <- <- <- <- <- <- <- le cross-level interaction - egalitarian index",
+  caption = "Multilevel linear regression: full country sample cross-level interaction - egalitarian index",
   caption.above = T,
   stars = c(.001, .01, .05, .1),
   symbol = '\\dagger',
