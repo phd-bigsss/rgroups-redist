@@ -4,25 +4,28 @@ subtitle: "Micro level"
 date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
 css: "../input/css/custom.css" # custom CSS para html
 output: 
-  html_document: 
+  bookdown::html_document2: 
     toc: false
-    code_folding: hide
-    toc_float: 
-      collapsed: true
-      smooth_scroll: false
-      number_sections: true
+    # toc_float: 
+    #   collapsed: true
+    #   smooth_scroll: false
+    #   number_sections: true
 editor_options: 
   chunk_output_type: console
 ---
 
-```{r setup}
-knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```{r echo=FALSE}
+knitr::opts_chunk$set(
+	message = FALSE,
+	warning = FALSE,
+  echo=FALSE, results='asis'
+)
 options(scipen=9999) # desactivar notacion cientifica
 ```
 
-## All countries
+# All countries 
 
-```{r full-lmer-micro,results='asis'}
+```{r full-lmer-micro, echo=FALSE, results='asis'}
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,texreg)  
 rm(list=ls())
@@ -88,7 +91,7 @@ htmlreg(
       ))
 ```
 
-## Non-confusian
+# Non-confusian 
 
 ```{r nonconfusian-lmer-micro,results='asis'}
 if (!require("pacman")) install.packages("pacman")
@@ -156,8 +159,7 @@ knitreg(
       ))
 ```
 
-
-## OECD
+# OECD 
 
 ```{r ocde-lmer-micro,results='asis'}
 if (!require("pacman")) install.packages("pacman")

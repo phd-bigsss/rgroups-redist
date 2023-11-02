@@ -1,5 +1,5 @@
 ---
-title: "Análisis de datos"
+title: "Analysis Descriptives"
 date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
 output: 
   html_document: 
@@ -191,7 +191,6 @@ ggsave(plot = last_plot(),filename = "pint_class3.png",device = "png",
        path = here::here("output"),width = 1,height = 1,units = "cm",scale = 15)
 ```
 
-
 # Descriptive x country
 
 ```{r redistribution}
@@ -365,7 +364,7 @@ ggsave(plot = last_plot(),filename = "wcareelder_cn.png",device = "png",
 
 ```{r class5}
 if (!require("pacman")) install.packages("pacman") # instalar pacman
-pacman::p_load(dplyr,sjmisc,GGally,ggplot2)
+pacman::p_load(dplyr,sjmisc,GGally,ggplot2,haven)
 load(here::here("input/data/proc/study1.RData"))
 df1$country2 <- countrycode::countrycode(sourcevar = df1$country,origin = "iso3n",destination = "country.name")
 percentage_data <- df1 %>%
@@ -465,7 +464,7 @@ load(here::here("input/data/proc/study1.RData"))
 # df1$class6 <- forcats::fct_rev(factor(df1$class6,ordered = T))
 cormat1 <- 
 df1 %>% 
-    select('redist',homclass,homclass_s,homclass_w,pi_nteg,class3,) %>% 
+    select('redist',homclass,homclass_s,homclass_w,,class3,) %>% 
   na.omit() %>% 
   polycor::hetcor(parallel = T)
 
@@ -639,7 +638,10 @@ ggsave(plot = last_plot(),filename = "macro_service_homo.png",device = "png",
 
 # Check on homogeneity
 
-```{r}
+- checking how different the measures for homogeneity are.
+- the original one is the best oneó
+
+```{r check-homogeneity}
 if (!require("pacman")) install.packages("pacman") # instalar pacman
 pacman::p_load(dplyr,haven,sjmisc,GGally,ggplot2)
 load(here::here("input/data/proc/study1_country.RData"))
@@ -707,9 +709,7 @@ sjPlot::plot_frq(test$homclass_v4,type = "bar")
 sjPlot::plot_frq(test$homclass_v5,type = "bar")
 
 hist.default(df2$homclass)
-```
 
-```{r}
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal,texreg)  
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2

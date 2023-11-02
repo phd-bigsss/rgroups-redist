@@ -1,0 +1,279 @@
+---
+title: "Estimations plots"
+subtitle: "Full sample"
+date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
+output: 
+  bookdown::html_document2: 
+    toc: yes
+    code_folding: hide
+    toc_float: 
+      collapsed: true
+      smooth_scroll: false
+      number_sections: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+options(scipen=9999) # desactivar notacion cientifica
+```
+
+```{r}
+set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
+options(ggplot2.discrete.fill = set1)
+options(ggplot2.discrete.colour = set1)
+ggplot2::theme_set(theme_bw())
+ggplot2::theme_update(text=element_text(size=15,  family="serif"))  
+```
+
+# Preferences for Goverment redistribution
+
+```{r full-redist-est}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,texreg,broom.mixed,ggplot2,haven)  
+rm(list=ls())
+
+load(here::here("output/fullsample-numeric-homclass-full-individual.RData")); fsample_num_full_ind<- models
+load(here::here("output/fullsample-numeric-homclass-strong-individual.RData"));fsample_num_strong_ind<- models
+load(here::here("output/fullsample-numeric-homclass-weak-individual.RData")); fsample_num_weak_ind<- models
+
+coef <- c("homclass","class3Intermediate class (III+IV)","class3Working Class (V+VI+VII)")
+
+df_p_full<- 
+bind_rows(
+  fsample_num_full_ind[[3]] %>% 
+    broom.mixed::tidy(conf.int = T) %>% 
+    filter(term %in% coef) %>% 
+    mutate(group ="Full network"),
+  fsample_num_strong_ind[[3]] %>% 
+    broom.mixed::tidy(conf.int = T) %>% 
+    filter(term %in% coef) %>% 
+    mutate(group ="Strong ties"),
+  fsample_num_weak_ind[[3]] %>%
+    broom.mixed::tidy(conf.int = T) %>%
+    filter(term %in% coef) %>%
+    mutate(group ="Weak ties")
+)
+df_p_full$depvar <- "Full sample"
+```
+
+```{r nonconfusian-redist-est}
+load(here::here("output/nonconfusian-numeric-homclass-full-individual.RData")); nconf_num_full_ind<- models
+load(here::here("output/nonconfusian-numeric-homclass-strong-individual.RData"));nconf_num_strong_ind<- models
+load(here::here("output/nonconfusian-numeric-homclass-weak-individual.RData")); nconf_num_weak_ind<- models
+
+coef <- c("homclass","class3Intermediate class (III+IV)","class3Working Class (V+VI+VII)")
+
+df_p_nconf<- 
+bind_rows(
+  nconf_num_full_ind[[3]] %>% 
+    broom.mixed::tidy(conf.int = T) %>% 
+    filter(term %in% coef) %>% 
+    mutate(group ="Full network"),
+  nconf_num_strong_ind[[3]] %>% 
+    broom.mixed::tidy(conf.int = T) %>% 
+    filter(term %in% coef) %>% 
+    mutate(group ="Strong ties"),
+  nconf_num_weak_ind[[3]] %>%
+    broom.mixed::tidy(conf.int = T) %>%
+    filter(term %in% coef) %>%
+    mutate(group ="Weak ties")
+)
+df_p_nconf$depvar <- "Non-Confusian"
+```
+
+```{r oecd-redist-est}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,texreg)  
+load(here::here("output/ocde-numeric-homclass-full-individual.RData")); ocde_num_full_ind<- models
+load(here::here("output/ocde-numeric-homclass-strong-individual.RData"));ocde_num_strong_ind<- models
+load(here::here("output/ocde-numeric-homclass-weak-individual.RData")); ocde_num_weak_ind<- models
+
+df_p_ocde<- 
+bind_rows(
+  ocde_num_full_ind[[3]] %>% 
+    broom.mixed::tidy(conf.int = T) %>% 
+    filter(term %in% coef) %>% 
+    mutate(group ="Full network"),
+  ocde_num_strong_ind[[3]] %>% 
+    broom.mixed::tidy(conf.int = T) %>% 
+    filter(term %in% coef) %>% 
+    mutate(group ="Strong ties"),
+  ocde_num_weak_ind[[3]] %>%
+    broom.mixed::tidy(conf.int = T) %>%
+    filter(term %in% coef) %>%
+    mutate(group ="Weak ties")
+)
+df_p_ocde$depvar <- "OECD"
+```
+
+```{r coefplot-redist}
+df_p<- bind_rows(df_p_full,df_p_nconf,df_p_ocde)
+df_p$term <- 
+  factor(df_p$term,
+         levels = c("class3Working Class (V+VI+VII)",
+                    "class3Intermediate class (III+IV)",
+                    "homclass"))
+df_p$group <- factor(df_p$group,levels = c("Weak ties","Strong ties","Full network"))
+
+ggplot(df_p,
+       aes(x = estimate, y = term, color = group)) +
+  geom_vline(xintercept = 0) +
+  geom_errorbar(
+    aes(xmin = conf.low, xmax = conf.high),
+    size = 1,
+    width = 0.2,
+    position = position_dodge(0.5)
+  ) +
+  geom_point(
+    shape = 21,
+    size = 3,
+    fill = "white",
+    position = position_dodge(0.5)
+  ) +
+  facet_grid(~depvar)+
+  scale_y_discrete(
+    labels = c(
+      "Working Class (VI+VII)",
+      "Intermediate class (III+IV+V)",
+      "Class-based homogeneity"
+    )
+  )+
+  scale_color_discrete(guide = guide_legend(reverse = TRUE))+
+  labs(
+    # caption = paste0("N=", nobs(int_homo), ", Countries=", lme4::ngrps(int_homo)),
+    color = "Model",
+    x="Coefficients (fixed effects)",y=NULL,
+    title = "Preferences for Goverment redistribution") +
+  theme(axis.text.y.left = element_text(face = "plain", size = 12))
+ggsave(plot = last_plot(),filename = "coefplot-redist.png",device = "png",
+       path = here::here("output/images"),width = 2,height = 1,units = "cm",scale = 15)
+```
+
+# Egalitarian economic preferences 
+
+```{r full-redist-est}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,texreg,broom.mixed,ggplot2,haven)  
+rm(list=ls())
+
+load(here::here("output/fullsample-egalitarian-homclass-full-individual.RData")); fsample_egal_full_ind<- models
+load(here::here("output/fullsample-egalitarian-homclass-strong-individual.RData"));fsample_egal_strong_ind<- models
+load(here::here("output/fullsample-egalitarian-homclass-weak-individual.RData")); fsample_egal_weak_ind<- models
+
+coef <- c("homclass","class3Intermediate class (III+IV)","class3Working Class (V+VI+VII)")
+
+df_p_full<- 
+bind_rows(
+  fsample_egal_full_ind[[3]] %>% 
+    broom.mixed::tidy(conf.int = T) %>% 
+    filter(term %in% coef) %>% 
+    mutate(group ="Full network"),
+  fsample_egal_strong_ind[[3]] %>% 
+    broom.mixed::tidy(conf.int = T) %>% 
+    filter(term %in% coef) %>% 
+    mutate(group ="Strong ties"),
+  fsample_egal_weak_ind[[3]] %>%
+    broom.mixed::tidy(conf.int = T) %>%
+    filter(term %in% coef) %>%
+    mutate(group ="Weak ties")
+)
+df_p_full$depvar <- "Full sample"
+```
+
+```{r nonconfusian-redist-est}
+load(here::here("output/nonconfusian-egalitarian-homclass-full-individual.RData")); nconf_egal_full_ind<- models
+load(here::here("output/nonconfusian-egalitarian-homclass-strong-individual.RData"));nconf_egal_strong_ind<- models
+load(here::here("output/nonconfusian-egalitarian-homclass-weak-individual.RData")); nconf_egal_weak_ind<- models
+
+coef <- c("homclass","class3Intermediate class (III+IV)","class3Working Class (V+VI+VII)")
+
+df_p_nconf<- 
+bind_rows(
+  nconf_egal_full_ind[[3]] %>% 
+    broom.mixed::tidy(conf.int = T) %>% 
+    filter(term %in% coef) %>% 
+    mutate(group ="Full network"),
+  nconf_egal_strong_ind[[3]] %>% 
+    broom.mixed::tidy(conf.int = T) %>% 
+    filter(term %in% coef) %>% 
+    mutate(group ="Strong ties"),
+  nconf_egal_weak_ind[[3]] %>%
+    broom.mixed::tidy(conf.int = T) %>%
+    filter(term %in% coef) %>%
+    mutate(group ="Weak ties")
+)
+df_p_nconf$depvar <- "Non-Confusian"
+```
+
+```{r oecd-redist-est}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,texreg)  
+load(here::here("output/ocde-egalitarian-homclass-full-individual.RData")); ocde_egal_full_ind<- models
+load(here::here("output/ocde-egalitarian-homclass-strong-individual.RData"));ocde_egal_strong_ind<- models
+load(here::here("output/ocde-egalitarian-homclass-weak-individual.RData")); ocde_egal_weak_ind<- models
+
+df_p_ocde<- 
+bind_rows(
+  ocde_egal_full_ind[[3]] %>% 
+    broom.mixed::tidy(conf.int = T) %>% 
+    filter(term %in% coef) %>% 
+    mutate(group ="Full network"),
+  ocde_egal_strong_ind[[3]] %>% 
+    broom.mixed::tidy(conf.int = T) %>% 
+    filter(term %in% coef) %>% 
+    mutate(group ="Strong ties"),
+  ocde_egal_weak_ind[[3]] %>%
+    broom.mixed::tidy(conf.int = T) %>%
+    filter(term %in% coef) %>%
+    mutate(group ="Weak ties")
+)
+df_p_ocde$depvar <- "OECD"
+```
+
+```{r coefplot-egal}
+df_p<- bind_rows(df_p_full,df_p_nconf,df_p_ocde)
+df_p$term <- 
+  factor(df_p$term,
+         levels = c("class3Working Class (V+VI+VII)",
+                    "class3Intermediate class (III+IV)",
+                    "homclass"))
+df_p$group <- factor(df_p$group,levels = c("Weak ties","Strong ties","Full network"))
+
+ggplot(df_p,
+       aes(x = estimate, y = term, color = group)) +
+  geom_vline(xintercept = 0) +
+  geom_errorbar(
+    aes(xmin = conf.low, xmax = conf.high),
+    size = 1,
+    width = 0.2,
+    position = position_dodge(0.5)
+  ) +
+  geom_point(
+    shape = 21,
+    size = 3,
+    fill = "white",
+    position = position_dodge(0.5)
+  ) +
+  facet_grid(~depvar)+
+  scale_y_discrete(
+    labels = c(
+      "Working Class (VI+VII)",
+      "Intermediate class (III+IV+V)",
+      "Class-based homogeneity"
+    )
+  )+
+  scale_color_discrete(guide = guide_legend(reverse = TRUE))+
+  labs(
+    # caption = paste0("N=", nobs(int_homo), ", Countries=", lme4::ngrps(int_homo)),
+    color = "Model",
+    x="Coefficients (fixed effects)",y=NULL,
+    title = "Egalitarian Economic Preferences (Index)") +
+  theme(axis.text.y.left = element_text(face = "plain", size = 12))
+
+ggsave(plot = last_plot(),filename = "coefplot-egal.png",device = "png",
+       path = here::here("output/images"),width = 2,height = 1,units = "cm",scale = 15)
+```
+
+
