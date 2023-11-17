@@ -99,18 +99,9 @@ ggplot2::theme_set(theme_minimal())
 ggplot2::theme_update(text=element_text(size=10,  family="serif"))  
 ```
 
-
-```{r}
-set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
-options(ggplot2.discrete.fill = set1)
-options(ggplot2.discrete.colour = set1)
-ggplot2::theme_set(theme_minimal())
-ggplot2::theme_update(text=element_text(size=10,  family="serif"))  
-```
-
 #  Introduction
 
-The escalating economic inequality and the current sanitary crisis have threatened social cohesion among citizens. However, these consequences have been unevenly experienced across the social structure. The upper and intermediate classes, benefiting from privileged access to social resources, have shown resilience. Conversely, working-class families have faced deteriorating material conditions, leading to a heightened sense of marginalisation and increasing the demand for welfare support. Particularly, social resources through network ties have been suggested to have a direct link with an individual’s welfare through instrumental and expressive outcomes, such as providing information or help in moments of need. Consequently, inequalities in access to certain social positions (i.e. occupations) are translated into a lack of social resources beyond individual economic and cultural capital. Additionally, it has been argued that social isolation not only plays a role in terms of resources but given that higher levels of segregation can bolster opinions, it is argued that being isolated from other social classes can polarise attitudes mainly in the working and upper-middle classes. Employing data from the International Social Survey Programme - Social Networks  this research aims to understand to what extent the demand for redistribution is linked to social ties. To addresss this, ego-centred social networks are used to represent the degree of class-based homogeneity of social ties. The results of multilevel estimations show that being socially segregated increases demand for redistribution. Additionally, this influence is conditional to social class, where the working and intermediate classes with highly homogeneous networks demand more governmental redistribution than the upper class. At the macro level, as the current distribution of economic resources influences the opportunity structure, it has been hypothesised that income inequality could bolster the influence of social segregation on the demand for redistribution. However, cross-level interactions do not provide supporting evidence on this behalf. 
+The escalating economic inequality and the current sanitary crisis have threatened social cohesion among citizens. However, these consequences have been unevenly experienced across the social structure. The upper and intermediate classes, benefiting from privileged access to social resources, have shown resilience. Conversely, working-class families have faced deteriorating material conditions, leading to a heightened sense of marginalization and increasing the demand for welfare support. Particularly, social resources through network ties have been suggested to have a direct link with an individual's welfare through instrumental and expressive outcomes, such as providing information or help in moments of need. Consequently, inequalities in access to certain social positions (i.e. occupations) are translated into a lack of social resources beyond individual economic and cultural capital. Additionally, it has been argued that social isolation not only plays a role in terms of resources but given that higher levels of segregation can bolster opinions, it is argued that being isolated from other social classes can polarise attitudes mainly in the working and upper-middle classes. Employing data from the International Social Survey Programme - Social Networks this research aims to understand to what extent the demand for redistribution is linked to social ties. To address this, ego-centered social networks are used to represent the degree of class-based homogeneity of social ties. The results of multilevel estimations show that being socially segregated increases demand for redistribution. Additionally, this influence is conditional to social class, where the working and intermediate classes with highly homogeneous networks demand more governmental redistribution than the upper class. At the macro level, as the current distribution of economic resources influences the opportunity structure, it has been hypothesized that income inequality could bolster the influence of social segregation on the demand for redistribution. However, cross-level interactions do not provide supporting evidence on this behalf. 
 
 <!-- * network segregation decreases  attachment to society (Otero et al., 2022)  -->
 
@@ -131,14 +122,18 @@ The escalating economic inequality and the current sanitary crisis have threaten
 
 <!-- The literature have discussed two complementary social mechanisms that could explain what role does social ties play in shaping people's demand for redistribution.  -->
 
-## Class interests and redistribution
+## The role of social class on attitudes towards economic inequality and redistribution
 
-The following paragraph will briefly present the class-preference link. While previous research have focus more extensevely on the economic dimension of social class such as employment relations and occupation, the focus of this research is idea  to argue that the patterns of social interactions (social ties) are also a constituent dimension of how classes shape their interests.    
+Paragraph 1: class-attitude link
 
-- The "Democratic" class struggle [@edlund_democratic_2015]
+- The moral economy of class - the attitudinal domain of redistribution and the role of the state [@Svallfors2006] / Svallfors, S. (2006). The moral economy of class: Class and attitudes in comparative perspective. Stanford University Press. https://doi.org/10.1515/9781503625624
 
-- Class interests in the economic domain [@lindh_class_2020]
-- The moral economy of class - the attitudinal domain of redistribution and the role of the state [@Svallfors2006]
+- Class interests in the economic, socio-cultural and political domains [@lindh_class_2020]
+
+- The "Democratic" class struggle [@edlund_democratic_2015] and the role of the welfare state 
+
+The main mechanism to be shown is the economic interests, normative dimension, risk exposure and sociability (classes are defined in a relational way by definition)
+
 
 <!-- en paises donde el bienestar material a incrementado y las diferencias entre las clases ha disminuido se espera que el conflicto distributivo sea menor.  
 
@@ -198,19 +193,24 @@ International Social Survey - Social Networks 2017
 
 **Variables**
 
-_Redistributive preferences_
+_Support for redistribution_. For measuring people's attitudes toward redistribution, an Egalitarian Economic Preferences Index is calculated based on two indicators [@svallfors_government_2013]. The first corrresponds to (1) "It is the responsibility of the government to reduce the differences in income between people with high incomes and those with low incomes" , followed by (2) "For a society to be fair, differences in people's standard of living should be small" . Each item corresponds to a five-point Likert scale indicating the level of agreement on each statement from "Strongly agree" (1), "Agree" (2), "Neither agree nor disagree" (2), "Disagree" (3) and "Strongly disagree." (5), which show an acceptable internal consistency ($\alpha$= 0.7). Consequently, the first step is to reverse code both indicators; therefore, higher values represent greater support for redistribution. The following step is computing the average value of both indicators and standardizing it as an indicator from 0 to 100.
 
-A widely used method for evaluating people's views on redistribution is by employing a standard measure commonly found in the literature. The measure involves asking respondents to indicate their level of agreement with the statement, "It is the responsibility of the government to decrease the income gap between individuals with high and low incomes." Respondents are asked to indicate their level of agreement on a scale of one to five, with one being "Strongly agree" and five being "Strongly disagree." In this case, a reverse code is utilized to interpret higher values as indicating greater support for redistribution.
 
-_Social Class_
+This is a measure of about respondents’ principled support for redistribution (redistribution in principle)
 
-A synthetic version of the EGP class was used, including three main classes: Service class (I+II), Intermediate class (III+IV) and Working class (V+VI+VII)
+<!-- Svallfors, Stefan. 2013. ‘Government Quality, Egalitarianism, and Attitudes to Taxes and Social Spending: A European Comparison’. European Political Science Review 5(3):363–80. doi: 10.1017/S175577391200015X. -->
+
+
+[Points x clase social] con un custom facet por paises (agrupado) 
+
+_Social Class_. A synthetic version of the EGP class was used, including three main classes: Service class (I+II), Intermediate class (III+IV) and Working class (V+VI+VII).
+
+Declare the class scheme used, according to the class voting and the political attitude literature, even when the EGP class scheme was originally created for the study of social mobility in industrialized societies the rationale 
+
 
 <!-- -  in this research the *unit* for class is assumed as the family unit.  -->
 
-_Class-based network homogeneity_
-
-For measuring the personal network of the respondent, a short version of the position generator was included in the survey, which presents a set of ten occupations that seek to represent the hierarchical status order in society [@joye_measuring_2019], declaring four possible response alternatives: "Family or relative", "Close friend", "Someone else I know" or "No one". For this research, a binary variable is created by coding the first three categories as 1 and the last one as 0, representing if the person knows (or not) one of the occupations. The following text corresponds to the original phrasing of the questionnaire:  
+_Class-based network homogeneity_. For measuring the personal network of the respondent, a short version of the position generator was included in the survey, which presents a set of ten occupations that seek to represent the hierarchical status order in society, declaring four possible response alternatives: "Family or relative", "Close friend", "Someone else I know" or "No one". For this research, a binary variable is created by coding the first three categories as 1 and the last one as 0, representing if the person knows (or not) one of the occupations. The following text corresponds to the original phrasing of the questionnaire:  
 
 > *Here is a list of jobs that people you know may have. These people could be family or relatives, close friends or someone else you know. By "knowing" a person, we mean that you know him/her by name and well enough to contact him/her. If you know several people who have a job from the list below, please only tick the box for the person who you feel closest to. Each of these jobs could be held by a woman or a man.*
 
@@ -231,11 +231,14 @@ Consequently, we calculate the number of contacts that belong to a similar class
 
 $$H_i= \frac{\text{Ingroup}}{(\text{Ingroup}+\text{Outgroup})}$$ 
 
-_Perceived Isolation_ 
+[Plot de paises en eje X]
 
-"The next questions are about how you feel about different aspects of your life. For each one, please indicate how often during the past 4 weeks you have felt that way. How often in the past 4 weeks have you felt that..." 1) "companionship lacking?",(2) "isolated from others?" and (3) "left out?". 
+- paises ordenados por tipos x ejemplo regiones del mundo 
 
-The response categories are  (1)"Never", (2)"Rarely", (3) "Sometimes", (4)"Often" and  (5)"Very often". As the indicators show an acceptable internal consistency ($\alpha$=.85), an index of the three items was created. Positive values indicate higher perceived isolation. 
+- eje Y es homogeneity, group por clase social (point type)
+
+- esto mejor que sea como resultados de un modelo lineal para que sean estimaciones en vez de mean values brutos. 
+
 
 **Methods**
 

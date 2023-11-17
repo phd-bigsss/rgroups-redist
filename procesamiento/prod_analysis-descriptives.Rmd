@@ -398,7 +398,6 @@ ggsave(plot = last_plot(),filename = "class5_cn.png",device = "png",
        path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
 ```
 
-
 ```{r class3}
 if (!require("pacman")) install.packages("pacman") # instalar pacman
 pacman::p_load(dplyr,sjmisc,GGally,ggplot2)
@@ -521,6 +520,65 @@ ggplot(aes(x = class6, y = hindex_10))+
 
 levels(df1$class5)
 ```
+
+```{r redist-class-country}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,
+               sjlabelled,haven,stringr,ordinal,texreg)  
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+dfreg <- df1 %>% dplyr::select(egal2,redist,
+                        class3=digclass3,
+                        homclass,
+                        Q03pcm,
+                        edyears,
+                        female,
+                        agenum,
+                        union,
+                        workst,
+                        WEIGHT,
+                        region,
+                        "gini_disp",
+                        "gini_mkt",
+                        rgdpna,
+                        oecd,
+                        country2,country,country3,region,
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna),
+         edyears2=edyears^2,
+         age2=agenum^2) %>%
+  na.omit() %>% 
+  filter(oecd=="OECD")
+
+df_mean <- 
+dfreg %>% 
+  group_by(country3) %>% 
+  summarise(egal2_c=mean(egal2))
+
+df_region <- 
+dfreg %>% 
+  group_by(region,country3) %>% 
+  summarise(n())
+
+
+df_plot <- 
+dfreg %>% 
+  group_by(country3,class3) %>% 
+  summarise(egal2=mean(egal2),homclass=mean(homclass)) %>% 
+  left_join(df_mean) %>%
+  left_join(df_region) %>% 
+  arrange(egal2_c)
+
+df_plot %>% 
+ggplot()+
+  geom_point(aes(x = reorder(country3, egal2_c),y = egal2,shape=class3,color=class3)) +
+  scale_shape_manual(values = c(6, 15, 16)) +
+  scale_color_manual(values = c("blue", "#E7B800", "red")) +
+ # geom_point(aes(x = country3,y = egal2_c)) +    
+  theme_bw() +
+  theme(legend.position = "bottom",
+        axis.text.x=element_text(angle=90)) 
+```
+
 
 # macro correlations
 
