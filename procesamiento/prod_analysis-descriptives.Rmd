@@ -20,6 +20,16 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 options(scipen=9999) # desactivar notacion cientifica
 ```
 
+
+```{r}
+set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
+options(ggplot2.discrete.fill = set1)
+options(ggplot2.discrete.colour = set1)
+ggplot2::theme_set(theme_bw())
+ggplot2::theme_update(text=element_text(size=15,  family="serif"))  
+```
+
+
 # Descriptive
 
 ```{r ineq-attitudes}
@@ -64,131 +74,64 @@ ggsave(plot = last_plot(),filename = "ineq-attitudes.png",device = "png",
        path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
 ```
 
-```{r welfare}
-if (!require("pacman")) install.packages("pacman") # instalar pacman
-pacman::p_load(dplyr,sjmisc,GGally,ggplot2,scales)
-load(here::here("input/data/proc/study1.RData"))
-df1 %>%
-    dplyr::select(whealth,wcarelder) %>%
-    na.omit() %>% 
-    sjPlot::plot_likert(geom.colors = "PuBu",
-                        grid.range  =  c (1 , 1),
-                        # title = "a. Perception meritocratic",
-                          geom.size = c(0.62),
-                          catcount = 5,
-                          expand.grid = T,
-                          # values  =  "sum.outside",
-                          reverse.colors = T,
-                          reverse.scale = T,
-                          show.n = FALSE,show.prc.sign = T,
-                        title = 'Who do you think should primarily provide...') +
-    scale_colour_discrete(labels = function(x) str_wrap(x, width = 10))+
-    ggplot2::theme(legend.position = "bottom")
-
-ggsave(plot = last_plot(),filename = "welf-attitudes.png",device = "png",
-       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 16)
-```
-
-```{r perc-integration}
-if (!require("pacman")) install.packages("pacman") # instalar pacman
-pacman::p_load(dplyr,sjmisc,GGally,ggplot2,scales)
-load(here::here("input/data/proc/study1.RData"))
-df1 %>%
-    dplyr::select(starts_with("pi_")) %>%
-    na.omit() %>% 
-    sjPlot::plot_likert(geom.colors = "PuBu",
-                        grid.range  =  c (0.2 , 1),
-                        # title = "a. Perception meritocratic",
-                          geom.size = c(0.62),
-                          catcount = 5,
-                          expand.grid = T,
-                          # values  =  "sum.outside",
-                          reverse.colors = T,
-                          reverse.scale = T,
-                          show.n = FALSE,show.prc.sign = T,sort.frq = "pos.asc",
-                        title = 'How often in the past 4 weeks have you felt that...') +
-    scale_colour_discrete(labels = function(x) str_wrap(x, width = 10))+ 
-    ggplot2::theme(legend.position = "bottom")
-
-ggsave(plot = last_plot(),filename = "perc-integration.png",device = "png",
-       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
-
-df1 %>%
-    dplyr::select(starts_with("pi_")) %>% 
-  psych::alpha()
-```
-
-```{r}
-if (!require("pacman")) install.packages("pacman") # instalar pacman
-pacman::p_load(dplyr,sjmisc,GGally,ggplot2,scales)
-load(here::here("input/data/proc/study1.RData"))
-df1$pi_nteg<- rowMeans(df1[,c("pi_compa","pi_isola","pi_left")],na.rm = T)
-dfcor <- 
-df1 %>%
-    dplyr::select(pi_nteg,class6,sstatus,redist) %>% 
-  as.data.frame()
-
-levels(df1$class6)
-table(df1$know_total)
-table(df1$n_high)
-table(df1$n_middle)
-table(df1$n_low)
-
-# dfcor$hhdepriv <- as.factor(dfcor$hhdepriv)
-# dfcor$sstatus <- as.numeric(dfcor$sstatus)
-cormat<- polycor::hetcor(dfcor,parallel = T,thresholds = F)
-
-jpeg(file=here::here("output/network-structure.jpeg"),units = "cm",width = 17,height = 15,res = 300)
-# Set up the layout for the multi-panel plot
-par(mfrow = c(1, 1))
-# Create the histograms
-# hist(df1$prestige, main = sjlabelled::get_label(df1$prestige),xlab = NULL)
-# hist(df1$diversity, main = sjlabelled::get_label(df1$diversity),xlab = NULL)
-hist(df1$homclass, main = sjlabelled::get_label(df1$homclass),xlab = NULL)
-dev.off()
-
-sjPlot::plot_frq(df1$class3,show.n = F) +
-  theme_grey()
-ggsave(plot = last_plot(),filename = "class6.png",device = "png",
-       path = here::here("output"),width = 1.5,height = 1,units = "cm",scale = 10)
+```{r redist-index}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,
+               sjlabelled,haven,stringr,ordinal,texreg,likert)  
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+dfreg <- df1 %>% dplyr::select(redist,prefineq,
+                        class3=class3,
+                        homclass,
+                        Q03pcm,
+                        edyears,
+                        female,
+                        agenum,
+                        union,
+                        workst,
+                        WEIGHT,
+                        region,
+                        "gini_disp",
+                        "gini_mkt",
+                        rgdpna,
+                        oecd,
+                        country2,country,country3,region,
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna),
+         edyears2=edyears^2,
+         age2=agenum^2) %>%
+  na.omit()
 
 
-jpeg(file=here::here("output/n_known.jpeg"),units = "cm",width = 15,height = 15,res = 300)
-# Set up the layout for the multi-panel plot
-par(mfrow = c(2, 2))
-
-# Create the histograms
-hist(df1$n_low, main = sjlabelled::get_label(df1$n_low),xlab = NULL)
-hist(df1$n_middle, main = sjlabelled::get_label(df1$n_middle),xlab = NULL)
-hist(df1$n_high, main = sjlabelled::get_label(df1$n_high),xlab = NULL)
-hist(df1$know_total, main = sjlabelled::get_label(df1$know_total),xlab = NULL)
-# hist(df1$prestige, main = sjlabelled::get_label(df1$prestige),xlab = NULL)
-# hist(df1$diversity, main = sjlabelled::get_label(df1$diversity),xlab = NULL)
-dev.off()
+labels <- get_labels(dfreg$redist)
 
 
+dfreg$redist <- factor(dfreg$redist,levels = 1:5,labels = labels)
+set_label(dfreg$redist) <- "(b) It is the responsibility of the government to reduce the differences in income between people with high incomes and those with low incomes."
 
-sjPlot::plot_grpfrq(var.cnt = df1$know_total,var.grp = df1$class3,type = 'box',geom.colors = "Blues")
-ggsave(plot = last_plot(),filename = "known_total_class6.png",device = "png",
-       path = here::here("output"),width = 1,height = 1,units = "cm",scale = 15)
+dfreg$prefineq <- factor(dfreg$prefineq,levels = 1:5,labels = labels)
+set_label(dfreg$prefineq) <- "(a) For a society to be fair, differences in people’s standard of living should be small."
 
-sjPlot::plot_grpfrq(var.cnt = df1$diversity,var.grp = df1$class3,type = 'box',geom.colors = "Blues")
-ggsave(plot = last_plot(),filename = "diversity_class6.png",device = "png",
-       path = here::here("output"),width = 1,height = 1,units = "cm",scale = 15)
+set1 <- c("#5586B4","#D30132","#999999","#004481","#1C2747")
 
-sjPlot::plot_grpfrq(var.cnt = df1$prestige,var.grp = df1$class3,type = 'box',geom.colors = "Blues")
-ggsave(plot = last_plot(),filename = "prestige_class6.png",device = "png",
-       path = here::here("output"),width = 1,height = 1,units = "cm",scale = 15)
+# sjlabelled::set_label(df2) <- paste0(varlab, " (n = ",summarise_all(df2,~ sum(!is.na(.))),")")
 
+as.data.frame(dfreg) %>%
+  dplyr::select(prefineq, redist) %>%
+  setNames(get_label(.)) %>%
+  likert() %>%
+plot(
+  low.color = "#D30132",
+  high.color = '#5586B4',
+  center = 3,
+  wrap = 30,
+  # plot.percents = TRUE,
+  text.size = 3
+) +
+  labs(title = "Redistributive preferences",caption = "\u03b1 = 0.70")
 
-sjPlot::plot_grpfrq(var.cnt = df1$homclass,var.grp = df1$class3,type = 'box',geom.colors = "Blues")
-ggsave(plot = last_plot(),filename = "homclass_class6.png",device = "png",
-       path = here::here("output"),width = 1,height = 1,units = "cm",scale = 15)
+ggsave(plot = last_plot(),filename = "redist_index.png",device = "png",
+       path = here::here("output/images"),width = 1.5,height = 0.75,units = "cm",scale = 18)
 
-sjlabelled::set_label(df1$pi_nteg) <- "Perceived social isolation"
-sjPlot::plot_grpfrq(var.cnt = df1$pi_nteg,var.grp = df1$class3,type = 'box',geom.colors = "Blues",ylim = c(1,5))
-ggsave(plot = last_plot(),filename = "pint_class3.png",device = "png",
-       path = here::here("output"),width = 1,height = 1,units = "cm",scale = 15)
 ```
 
 # Descriptive x country
@@ -205,8 +148,6 @@ df1 %>%
   group_by(country2, ) %>%
   summarise(redist = mean(redist, na.rm = T)) %>% 
   View()
-
-
 
 percentage_data <- df1 %>%
   group_by(country2, redistF) %>%
@@ -244,6 +185,7 @@ df1$pi_nteg<- rowMeans(df1[,c("pi_compa","pi_isola","pi_left")],na.rm = T)
 resits_count <- df1 %>%
   group_by(country,country2) %>%
   summarise(redist = mean(redist,na.rm = T),
+            egal
             homclass = mean(homclass,na.rm = T),
             pi_nteg = mean(pi_nteg,na.rm = T),
             pi_ntegm = median(pi_nteg,na.rm = T)
@@ -284,250 +226,13 @@ ggsave(plot = last_plot(),filename = "p_isolat_cn.png",device = "png",
        path = here::here("output"),width = 1,height = 1,units = "cm",scale = 20)
 ```
 
-```{r health}
-if (!require("pacman")) install.packages("pacman") # instalar pacman
-pacman::p_load(dplyr,sjmisc,GGally,ggplot2)
-load(here::here("input/data/proc/study1.RData"))
-df1$country2 <- countrycode::countrycode(sourcevar = df1$country,origin = "iso3n",destination = "country.name")
-
-df1$whealthF <- factor(df1$whealth,levels = 1:5,labels = sjlabelled::get_labels(df1$whealth))
-
-percentage_data <- df1 %>%
-  group_by(country2, whealthF) %>%
-  summarise(count = n()) %>%
-  group_by(country2) %>%
-  na.omit() %>% 
-  mutate(percentage = count / sum(count)) %>% 
-  arrange(country2,whealthF,percentage) %>% 
-  mutate(pct_lab = paste0(round(percentage*100,1),"%")) %>% 
-  mutate(pct_lab=ifelse(!whealthF %in% c("Government"),NA,pct_lab))
-
-order <- 
-percentage_data %>% 
-  filter(whealthF=="Government") %>% 
-  arrange(percentage) %>% 
-  select(country2)
-
-order$orden <- 1:32
-ggplot(percentage_data, aes(x=country2,y=percentage*100,fill=whealthF,group=whealthF,label = pct_lab))+
-  geom_bar(stat = 'identity') +
-  geom_text(position = position_fill(vjust = 90)) + 
-  scale_y_continuous(name=NULL,labels = scales::percent_format(scale = 1),limits = c(0,101), expand = c(0, 0)) +
-  scale_x_discrete(limits=order$country2,name=NULL) +  
-  scale_fill_ordinal(guide = guide_legend(reverse = TRUE)) +
-  theme_classic() +
-  ggtitle(label= "Who do you think should primarily provide: health") + 
-  theme(legend.position = 'bottom',legend.title = element_blank())  +
-  coord_flip()
-
-ggsave(plot = last_plot(),filename = "whealth_cn.png",device = "png",
-       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
-```
-
-```{r elderlycare}
-if (!require("pacman")) install.packages("pacman") # instalar pacman
-pacman::p_load(dplyr,sjmisc,GGally,ggplot2)
-load(here::here("input/data/proc/study1.RData"))
-df1$country2 <- countrycode::countrycode(sourcevar = df1$country,origin = "iso3n",destination = "country.name")
-df1$wcarelderF <- factor(df1$wcarelder,levels = 1:5,labels = sjlabelled::get_labels(df1$wcarelder))
-percentage_data <- df1 %>%
-  group_by(country2, wcarelderF) %>%
-  summarise(count = n()) %>%
-  group_by(country2) %>%
-  na.omit() %>% 
-  mutate(percentage = count / sum(count)) %>% 
-  arrange(country2,wcarelderF,percentage) %>% 
-  mutate(pct_lab = paste0(round(percentage*100,1),"%")) %>% 
-  mutate(pct_lab=ifelse(!wcarelderF %in% c("Government"),NA,pct_lab))
-
-order <- 
-percentage_data %>% 
-  filter(wcarelderF=="Government") %>% 
-  arrange(percentage) %>% 
-  select(country2)
-
-order$orden <- 1:32
-ggplot(percentage_data, aes(x=country2,y=percentage*100,fill=wcarelderF,group=wcarelderF,label = pct_lab))+
-  geom_bar(stat = 'identity') +
-  geom_text(position = position_fill(vjust = 95)) + 
-  scale_y_continuous(name=NULL,labels = scales::percent_format(scale = 1),limits = c(0,101), expand = c(0, 0)) +
-  scale_x_discrete(limits=order$country2,name=NULL) +  
-  scale_fill_ordinal(guide = guide_legend(reverse = TRUE)) +
-  theme_classic() +
-  ggtitle(label= "Who do you think should primarily provide: elderly care") + 
-  theme(legend.position = 'bottom',legend.title = element_blank())  +
-  coord_flip()
-
-ggsave(plot = last_plot(),filename = "wcareelder_cn.png",device = "png",
-       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
-```
-
-```{r class5}
-if (!require("pacman")) install.packages("pacman") # instalar pacman
-pacman::p_load(dplyr,sjmisc,GGally,ggplot2,haven)
-load(here::here("input/data/proc/study1.RData"))
-df1$country2 <- countrycode::countrycode(sourcevar = df1$country,origin = "iso3n",destination = "country.name")
-percentage_data <- df1 %>%
-  group_by(country2, class5) %>%
-  summarise(count = n()) %>%
-  group_by(country2) %>%
-  na.omit() %>% 
-  mutate(percentage = count / sum(count)) %>% 
-  arrange(country2,class5,percentage)
-
-percentage_data$class5 <- forcats::fct_rev(percentage_data$class5)
-
-order <- 
-percentage_data %>% 
-  filter(class5=="Service class (I+II)") %>% 
-  arrange(percentage) %>% 
-  select(country2)
-
-order$orden <- 1:32
-ggplot(percentage_data, aes(x=country2,y=percentage*100,fill=class5,group=class5))+
-  geom_bar(stat = 'identity')+
-  scale_y_continuous(name=NULL,labels = scales::percent_format(scale = 1),limits = c(0,101), expand = c(0, 0)) +
-  scale_x_discrete(limits=order$country2,name=NULL) +  
-  scale_fill_ordinal(guide = guide_legend(reverse = TRUE)) +
-  theme_classic() +
-  ggtitle(label= "Social class by country") + 
-  theme(legend.position = 'bottom',legend.title = element_blank())  +
-  coord_flip()
-
-ggsave(plot = last_plot(),filename = "class5_cn.png",device = "png",
-       path = here::here("output"),width = 2,height = 1,units = "cm",scale = 15)
-```
-
-```{r class3}
-if (!require("pacman")) install.packages("pacman") # instalar pacman
-pacman::p_load(dplyr,sjmisc,GGally,ggplot2)
-load(here::here("input/data/proc/study1.RData"))
-
-df1$country2 <- sjlabelled::to_character(df1$country) 
-percentage_data <- df1 %>%
-  group_by(country2, class3) %>%
-  summarise(count = n()) %>%
-  group_by(country2) %>%
-  na.omit() %>% 
-  mutate(percentage = count / sum(count)) %>% 
-  arrange(country2,class3,percentage)
-
-percentage_data$class3 <- forcats::fct_rev(percentage_data$class3)
-
-order <- 
-percentage_data %>% 
-  filter(class3=="Working Class (V+VI+VII)") %>% 
-  arrange(percentage) %>% 
-  select(country2)
-
-order$orden <- 1:32
-ggplot(percentage_data, aes(x=country2,y=percentage,fill=class3,group=class3))+
-  geom_bar(stat = 'identity')+
-  # geom_text(aes(label=number_of_errors),position = position_stack(0.5))+
-  scale_y_continuous(labels = NULL) +
-  scale_x_discrete(limits=order$country2) +  
-  scale_fill_ordinal() +
-  theme_classic() +
-  theme(legend.position = 'bottom')  +
-  coord_flip()
-```
-
-```{r correlation-socap}
-if (!require("pacman")) install.packages("pacman") # instalar pacman
-pacman::p_load(dplyr,sjmisc,ggplot2)
-load(here::here("input/data/proc/study1.RData"))
-# df1$class6 <- forcats::fct_rev(factor(df1$class6,ordered = T))
-cormat1 <- 
-df1 %>% 
-    select('redist',wcarelder,whealth,isei_tot,isei_max,isei_range,"class6") %>% 
-  na.omit() %>% 
-  polycor::hetcor(parallel = T)
-
-  corrplot::corrplot(cormat1$correlations,
-    method = "color",
-    addCoef.col = "#000390",
-    type = "upper",
-    tl.col = "black",
-    col=colorRampPalette(c("white","#0068DC"))(12),
-    bg = "white",
-    na.label = "-")
-  text(4.7, 0.6, paste0("Source: Authors calculation based on ISSP 2017",
-                             " (N = ",")"),   
-       cex = 0.75)
-```
-
-```{r correlation-segregation}
-if (!require("pacman")) install.packages("pacman") # instalar pacman
-pacman::p_load(dplyr,sjmisc,ggplot2)
-load(here::here("input/data/proc/study1.RData"))
-# df1$class6 <- forcats::fct_rev(factor(df1$class6,ordered = T))
-cormat1 <- 
-df1 %>% 
-    select('redist',homclass,homclass_s,homclass_w,,class3,) %>% 
-  na.omit() %>% 
-  polycor::hetcor(parallel = T)
-
-  corrplot::corrplot(cormat1$correlations,
-    method = "color",
-    addCoef.col = "#000390",
-    type = "upper",
-    tl.col = "black",
-    col=colorRampPalette(c("white","#0068DC"))(12),
-    bg = "white",
-    na.label = "-")
-  text(4.7, 0.6, paste0("Source: Authors calculation based on ISSP 2017",
-                             " (N = ",")"),   
-       cex = 0.75)
-```
-
-```{r}
-if (!require("pacman")) install.packages("pacman") # instalar pacman
-pacman::p_load(dplyr,sjmisc,GGally,ggplot2,scales)
-load(here::here("input/data/proc/study1.RData"))
-df1$country2 <- sjlabelled::to_character(df1$country)
-library(scales)
-
-df1 %>% 
-  filter(!is.na(class5)) %>%
-ggplot(aes(x = class5, y = isei_avg))+
-  geom_boxplot(outlier.shape = NA)+
-  stat_summary(fun.y=mean, geom="point", shape=20, size=2, color="red", fill="red")+
-  ylim(25, 75) +
-  facet_wrap(.~country2, scales = "free")+ 
-  scale_x_discrete(labels=c("I+II","IIIa+b","IVa+b+c","V+VI","VIIa+b"))+
-  ggtitle(sjlabelled::get_label(df1$isei_avg))+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-df1 %>% 
-  # filter(!is.na(class5)) %>% 
-ggplot(aes(x = class5, y = hindex_10))+
-  geom_boxplot(outlier.shape = NA)+
-  stat_summary(fun.y=mean, geom="point", shape=20, size=2, color="red", fill="red")+
-  ylim(0, 1) +
-  facet_wrap(.~country2, scales = "free")+ 
-  scale_x_discrete(labels=c("I+II","IIIa+b","IVa+b+c","V+VI","VIIa+b"))+
-  ggtitle(sjlabelled::get_label(df1$hindex_10))+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-df1 %>% 
-  filter(!is.na(class6)) %>% 
-ggplot(aes(x = class6, y = hindex_10))+
-  geom_boxplot(outlier.shape = NA)+
-  facet_wrap(.~country2, scales = "free")+ 
-  scale_x_discrete(labels=c("I","II","IIIa+b","IVa+b+c","V+VI","VIIa+b"))+
-  ggtitle(sjlabelled::get_label(df1$hindex_10))+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-levels(df1$class5)
-```
-
-```{r redist-class-country}
+```{r redist-homclass-class-country}
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,
                sjlabelled,haven,stringr,ordinal,texreg)  
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 dfreg <- df1 %>% dplyr::select(egal2,redist,
-                        class3=digclass3,
+                        class3=class3,
                         homclass,
                         Q03pcm,
                         edyears,
@@ -546,19 +251,22 @@ dfreg <- df1 %>% dplyr::select(egal2,redist,
   mutate(logrgdpna=log(rgdpna),
          edyears2=edyears^2,
          age2=agenum^2) %>%
-  na.omit() %>% 
-  filter(oecd=="OECD")
+  na.omit()
 
 df_mean <- 
 dfreg %>% 
   group_by(country3) %>% 
-  summarise(egal2_c=mean(egal2))
+  summarise(egal2_c=mean(egal2),homclass_c=mean(homclass),gini_mkt=mean(gini_mkt),gini_disp=mean(gini_disp))
 
 df_region <- 
 dfreg %>% 
   group_by(region,country3) %>% 
   summarise(n())
 
+df_full <- 
+dfreg %>% 
+  group_by(class3) %>% 
+  summarise(egal2=mean(egal2),homclass=mean(homclass),homclass_c=0.3910297,egal2_c=68.81757, country3="All")
 
 df_plot <- 
 dfreg %>% 
@@ -566,38 +274,91 @@ dfreg %>%
   summarise(egal2=mean(egal2),homclass=mean(homclass)) %>% 
   left_join(df_mean) %>%
   left_join(df_region) %>% 
-  arrange(egal2_c)
+  arrange(gini_mkt)
+df_plot <- 
+df_plot %>% 
+  bind_rows(df_full)
+
+df_plot$class3 <- factor(df_plot$class3,levels = levels(df_plot$class3),labels = c("Service Class (I+II)","Intermediate Class (III+IV+V)","Working Class (VI+VII)"))
+
+table(df_plot$class3)
 
 df_plot %>% 
 ggplot()+
   geom_point(aes(x = reorder(country3, egal2_c),y = egal2,shape=class3,color=class3)) +
+  geom_hline(yintercept = 68.81757,linetype=2)+ 
+  geom_point(aes(x = reorder(country3, egal2_c),y = egal2_c),alpha=1,shape=4) +
   scale_shape_manual(values = c(6, 15, 16)) +
   scale_color_manual(values = c("blue", "#E7B800", "red")) +
- # geom_point(aes(x = country3,y = egal2_c)) +    
+  labs(title = "Redistributive preferences (index) and social class by country",x=NULL,y="Redistributive Preferences") +
   theme_bw() +
   theme(legend.position = "bottom",
-        axis.text.x=element_text(angle=90)) 
-```
+        axis.text.x=element_text(angle=45,hjust = 1),
+        legend.title = element_blank()) 
 
+ggsave(plot = last_plot(),filename = "macro_class_redist.png",device = "png",
+       path = here::here("output/images"),width = 1.5,height = 0.9,units = "cm",scale = 16)
+
+df_plot %>% 
+ggplot()+
+  geom_point(aes(x = reorder(country3, homclass_c),y = homclass,shape=class3,color=class3)) +
+  geom_hline(yintercept = 0.3910297,linetype=2)+ 
+  geom_point(aes(x = reorder(country3, homclass_c),y = homclass_c),alpha=1,shape=4) +
+  scale_shape_manual(values = c(6, 15, 16)) +
+  scale_color_manual(values = c("blue", "#E7B800", "red")) +
+  labs(title = "Class-based network homogeneity and social class by country",x=NULL,y="Redistributive Preferences") +
+  theme_bw() +
+  theme(legend.position = "bottom",
+        axis.text.x=element_text(angle=45,hjust = 1),
+        legend.title = element_blank()) 
+
+ggsave(plot = last_plot(),filename = "macro_class_homclass.png",device = "png",
+       path = here::here("output/images"),width = 1.5,height = 0.9,units = "cm",scale = 16)
+
+```
 
 # macro correlations
 
 ```{r}
 if (!require("pacman")) install.packages("pacman") # instalar pacman
-pacman::p_load(dplyr,sjmisc,ggplot2,haven)
-load(here::here("input/data/proc/study1_country.RData"))
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,
+               sjlabelled,haven,stringr,ordinal,texreg)  
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+dfreg <- df1 %>% dplyr::select(egal2,redist,
+                        class3=class3,
+                        homclass,
+                        Q03pcm,
+                        edyears,
+                        female,
+                        agenum,
+                        union,
+                        workst,
+                        WEIGHT,
+                        region,
+                        "gini_disp",
+                        "gini_mkt",
+                        rgdpna,
+                        oecd,
+                        country2,country,country3,region,
+                        ) %>% 
+  mutate(logrgdpna=log(rgdpna),
+         edyears2=edyears^2,
+         age2=agenum^2) %>%
+  na.omit()
+
+
 df2$country2 <- countrycode::countrycode(sourcevar = df2$country,origin = "iso3n",destination = "country.name")
 df2$country3 <- countrycode::countrycode(sourcevar = df2$country,origin = "iso3n",destination = "iso3c")
 df2 <- bind_cols(df2,sjmisc::to_dummy(x = df2$class3,suffix = "numeric"))
 
 macro_data <- df2 %>%
   group_by(country2,country3) %>%
-  summarise_at(c("redist","homclass","pi_isola","tr_courts","tr_inte","gini_disp","gini_mkt",
+  summarise_at(c("redist","egal2","homclass","pi_isola","tr_courts","tr_inte","gini_disp","gini_mkt",
                  "class3_1","class3_2","class3_3","gv_spen"), mean, na.rm = TRUE) %>% 
   as.data.frame()
 
 macro_data %>%  
-ggplot(aes(y=redist, x=homclass)) +
+ggplot(aes(y=egal2, x=homclass)) +
   # geom_point() +
   geom_text(label=as.character(macro_data$country3)) +
   # scale_x_continuous(limits = c(0,1))+
@@ -610,39 +371,7 @@ ggplot(aes(y=redist, x=homclass)) +
                                      macro_data$redist, use='complete.obs'),digits = 2)))
 
 ggsave(plot = last_plot(),filename = "macro_homo_redist.png",device = "png",
-       path = here::here("output"),width = 1,height = 1,units = "cm",scale = 20)
-
-macro_data %>%  
-ggplot(aes(y=redist, x=pi_isola)) +
-  # geom_point() +
-  geom_text(label=as.character(macro_data$country3)) +
-  # scale_x_continuous(limits = c(0,1))+
-  # scale_y_continuous(limits = c(1,5))+
-  geom_smooth(method = "lm",fullrange=TRUE) +
-  xlab("Perceived isolation")+
-  ylab("Redistributive preferences") +
-  labs(title = "Redistributive preferences and Perceived isolation",
-       caption =paste("r=",round(cor(macro_data$pi_isola,
-                                     macro_data$redist, use='complete.obs'),digits = 2)))
-
-ggsave(plot = last_plot(),filename = "macro_pisol_redist.png",device = "png",
-       path = here::here("output"),width = 1,height = 1,units = "cm",scale = 20)
-
-macro_data %>%  
-ggplot(aes(y=pi_isola, x=homclass)) +
-  # geom_point() +
-  geom_text(label=as.character(macro_data$country3)) +
-  # scale_x_continuous(limits = c(0,1))+
-  # scale_y_continuous(limits = c(1,5))+
-  geom_smooth(method = "lm",fullrange=TRUE) +
-  xlab("Class homogeneity")+
-  ylab("Perceived isolation") +
-  labs(title = "Perceived isolation and Class homogeneity",
-       caption =paste("r=",round(cor(macro_data$homclass,
-                                     macro_data$pi_isola),digits = 2)))
-ggsave(plot = last_plot(),filename = "macro_homo_pisol.png",device = "png",
-       path = here::here("output"),width = 1,height = 1,units = "cm",scale = 20)
-
+       path = here::here("output/images"),width = 1,height = 1,units = "cm",scale = 20)
 
 macro_data %>%  
 ggplot(aes(y=homclass, x=class3_3)) +
@@ -658,7 +387,7 @@ ggplot(aes(y=homclass, x=class3_3)) +
                                      macro_data$class3_3),digits = 2)))
 
 ggsave(plot = last_plot(),filename = "macro_working_homo.png",device = "png",
-       path = here::here("output"),width = 1,height = 1,units = "cm",scale = 20)
+       path = here::here("output/images"),width = 1,height = 1,units = "cm",scale = 20)
 
 macro_data %>%  
 ggplot(aes(y=homclass, x=class3_2)) +
@@ -667,14 +396,14 @@ ggplot(aes(y=homclass, x=class3_2)) +
   # scale_x_continuous(limits = c(0,1))+
   # scale_y_continuous(limits = c(1,5))+
   geom_smooth(method = "lm",fullrange=TRUE) +
-  xlab("Intermediate class (%)")+
+  xlab("Intermediate Class (%)")+
   ylab("Class homogeneity") +
-  labs(title = "Class homogeneity and Intermediate class (%)",
+  labs(title = "Class homogeneity and Intermediate Class (%)",
        caption =paste("r=",round(cor(macro_data$homclass,
                                      macro_data$class3_2),digits = 2)))
 
 ggsave(plot = last_plot(),filename = "macro_middle_homo.png",device = "png",
-       path = here::here("output"),width = 1,height = 1,units = "cm",scale = 20)
+       path = here::here("output/images"),width = 1,height = 1,units = "cm",scale = 20)
 
 macro_data %>%  
 ggplot(aes(y=homclass, x=class3_1)) +
@@ -690,7 +419,41 @@ ggplot(aes(y=homclass, x=class3_1)) +
                                      macro_data$class3_1),digits = 2)))
 
 ggsave(plot = last_plot(),filename = "macro_service_homo.png",device = "png",
-       path = here::here("output"),width = 1,height = 1,units = "cm",scale = 20)
+       path = here::here("output/images"),width = 1,height = 1,units = "cm",scale = 20)
+
+
+macro_data %>%  
+ggplot(aes(y=homclass, x=gini_disp)) +
+  # geom_point() +
+  geom_text(label=as.character(macro_data$country3)) +
+  # scale_x_continuous(limits = c(0,1))+
+  # scale_y_continuous(limits = c(1,5))+
+  geom_smooth(method = "lm",fullrange=TRUE) +
+  xlab("Gini (Disposable)")+
+  ylab("Class homogeneity") +
+  labs(title = "Class homogeneity and Gini (Disposable)",
+       caption =paste("r=",round(cor(macro_data$homclass,
+                                     macro_data$gini_disp),digits = 2)))
+
+ggsave(plot = last_plot(),filename = "macro_giniD_homo.png",device = "png",
+       path = here::here("output/images"),width = 1,height = 1,units = "cm",scale = 20)
+
+
+macro_data %>%  
+ggplot(aes(y=homclass, x=gini_mkt)) +
+  # geom_point() +
+  geom_text(label=as.character(macro_data$country3)) +
+  # scale_x_continuous(limits = c(0,1))+
+  # scale_y_continuous(limits = c(1,5))+
+  geom_smooth(method = "lm",fullrange=TRUE) +
+  xlab("Gini (Market)")+
+  ylab("Class homogeneity") +
+  labs(title = "Class homogeneity and Gini (Market)",
+       caption =paste("r=",round(cor(macro_data$homclass,
+                                     macro_data$gini_mkt),digits = 2)))
+
+ggsave(plot = last_plot(),filename = "macro_giniM_homo.png",device = "png",
+       path = here::here("output/images"),width = 1,height = 1,units = "cm",scale = 20)
 
 ```
 
