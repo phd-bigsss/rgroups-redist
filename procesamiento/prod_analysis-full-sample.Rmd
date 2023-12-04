@@ -1036,13 +1036,13 @@ Note: the item "Differences in income in [COUNTRY] are too large" is not include
 
 ```{r mod-homclass-numeric,results='asis'}
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal)  
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal,texreg)  
 rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 dfreg <- df1 %>% dplyr::select(
                         egal=egal2,
-                        class3,
-                        homclass,
+                        class3=class3res,
+                        homclass=homclass_res,
                         Q03pcm,
                         edyears,
                         female,

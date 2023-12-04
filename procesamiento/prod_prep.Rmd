@@ -122,11 +122,6 @@ sjlabelled::set_label(df1$pertransfer) <- "Perception about welfare (people beco
 
 # Index egalitarian attitudes
 ```{r}
-df1 %>% select(redist,prefineq,perineq) %>% 
-  psych::cor2()
-df1 %>% select(redist,prefineq,perineq) %>% 
-  psych::alpha()
-
 df1$egal3<- rowMeans(df1[,c("redist","prefineq","perineq")],na.rm = T)
 df1$egal3 <- ((df1$egal3-min(df1$egal3,na.rm = T))/(max(df1$egal3,na.rm = T)-min(df1$egal3,na.rm = T)))*100
 
@@ -567,7 +562,6 @@ frq(df1$is_supervisor_spo)
 frq(df1$self_employed_spo)
 frq(df1$n_employees_spo)
 
-df1 %>% select(isco88r, is_supervisor, self_employed,"semp", n_employees,"supvis")
 haven::write_dta(data = df1[c("id","isco88r","semp","supvis",
                               "is_supervisor","self_employed","n_employees",
                               "isco88spo","sempspo","supvisspo",
@@ -643,8 +637,8 @@ frq(df1$class11d)
 # Class Scheme 3 classes
 df1$class3 <- car::recode(df1$class11d,as.factor = T,
                             levels =c('Service Class (I+II)',
-                                      'Intermediate class (III+IV)',
-                                      'Working Class (V+VI+VII)'), 
+                                      'Intermediate class (III+IV+V)',
+                                      'Working Class (VI+VII)'), 
                             "1:2='Service Class (I+II)';
                              3:7='Intermediate class (III+IV+V)';
                              8:11='Working Class (VI+VII)'")
@@ -699,11 +693,11 @@ df1$class10
 # Class Scheme 3 classes
 df1$class3res <- car::recode(as.numeric(df1$class10),as.factor = T,
                             levels =c('Service Class (I+II)',
-                                      'Intermediate class (III+IV)',
-                                      'Working Class (V+VI+VII)'), 
+                                      'Intermediate class (III+IV+V)',
+                                      'Working Class (VI+VII)'), 
                             "1:2='Service Class (I+II)';
-                             3:7='Intermediate class (III+IV)';
-                             8:11='Working Class (V+VI+VII)'")
+                             3:7='Intermediate class (III+IV+V)';
+                             8:11='Working Class (VI+VII)'")
 
 sjlabelled::set_label(df1$class3res) <- "Social Class (R's)"
 # frq(df1$class3res)
@@ -757,11 +751,11 @@ df1$class10spo
 # Class Scheme 3 classes
 df1$class3spo <- car::recode(as.numeric(df1$class10spo),as.factor = T,
                             levels =c('Service Class (I+II)',
-                                      'Intermediate class (III+IV)',
-                                      'Working Class (V+VI+VII)'), 
+                                      'Intermediate class (III+IV+V)',
+                                      'Working Class (VI+VII)'), 
                             "1:2='Service Class (I+II)';
-                             3:7='Intermediate class (III+IV)';
-                             8:11='Working Class (V+VI+VII)'")
+                             3:7='Intermediate class (III+IV+V)';
+                             8:11='Working Class (VI+VII)'")
 
 sjlabelled::set_label(df1$class3spo) <- "Social Class (Spouse)"
 frq(df1$class3spo)
@@ -873,11 +867,11 @@ frq(df1$digclass11d)
 # Class Scheme 3 classes
 df1$digclass3 <- car::recode(df1$digclass11d,as.factor = T,
                             levels =c('Service Class (I+II)',
-                                      'Intermediate class (III+IV)',
-                                      'Working Class (V+VI+VII)'), 
+                                      'Intermediate class (III+IV+V)',
+                                      'Working Class (VI+VII)'), 
                             "1:2='Service Class (I+II)';
-                             3:7='Intermediate class (III+IV)';
-                             8:11='Working Class (V+VI+VII)'")
+                             3:7='Intermediate class (III+IV+V)';
+                             8:11='Working Class (VI+VII)'")
 
 sjlabelled::set_label(df1$digclass3) <- "Social Class"
 frq(df1$digclass3)
@@ -928,11 +922,11 @@ df1$digclass10
 # Class Scheme 3 classes
 df1$digclass3res <- car::recode(as.numeric(df1$digclass10),as.factor = T,
                             levels =c('Service Class (I+II)',
-                                      'Intermediate class (III+IV)',
-                                      'Working Class (V+VI+VII)'), 
+                                      'Intermediate class (III+IV+V)',
+                                      'Working Class (VI+VII)'), 
                             "1:2='Service Class (I+II)';
-                             3:7='Intermediate class (III+IV)';
-                             8:11='Working Class (V+VI+VII)'")
+                             3:7='Intermediate class (III+IV+V)';
+                             8:11='Working Class (VI+VII)'")
 
 sjlabelled::set_label(df1$digclass3res) <- "Social Class (R's)"
 # frq(df1$class3res)
@@ -986,11 +980,11 @@ df1$digclass10spo
 # Class Scheme 3 classes
 df1$digclass3spo <- car::recode(as.numeric(df1$digclass10spo),as.factor = T,
                             levels =c('Service Class (I+II)',
-                                      'Intermediate class (III+IV)',
-                                      'Working Class (V+VI+VII)'), 
+                                      'Intermediate class (III+IV+V)',
+                                      'Working Class (VI+VII)'), 
                             "1:2='Service Class (I+II)';
-                             3:7='Intermediate class (III+IV)';
-                             8:11='Working Class (V+VI+VII)'")
+                             3:7='Intermediate class (III+IV+V)';
+                             8:11='Working Class (VI+VII)'")
 
 sjlabelled::set_label(df1$digclass3spo) <- "Social Class (Spouse)"
 frq(df1$digclass3spo)
@@ -1087,11 +1081,11 @@ sjlabelled::set_label(df1$dclass11d) <- "Social Class"
 # Class Scheme 3 classes
 df1$dclass3 <- car::recode(df1$dclass11d,as.factor = T,
                             levels =c('Service Class (I+II)',
-                                      'Intermediate class (III+IV)',
-                                      'Working Class (V+VI+VII)'), 
+                                      'Intermediate class (III+IV+V)',
+                                      'Working Class (VI+VII)'), 
                             "1:2='Service Class (I+II)';
-                             3:7='Intermediate class (III+IV)';
-                             8:11='Working Class (V+VI+VII)'")
+                             3:7='Intermediate class (III+IV+V)';
+                             8:11='Working Class (VI+VII)'")
 
 sjlabelled::set_label(df1$dclass3) <- "Social Class"
 frq(df1$dclass3)
@@ -1569,15 +1563,15 @@ sjlabelled::set_label(df1$hindex_10) <- "D-index: 10 ocupations"
 df1$ingroup <- NA 
 df1 %>% select(class3,n_high,n_middle,n_low,ingroup)
 df1$ingroup <- ifelse(df1$class3=="Service Class (I+II)",df1$n_high,df1$ingroup)
-df1$ingroup <- ifelse(df1$class3=="Intermediate class (III+IV)",df1$n_middle,df1$ingroup)
-df1$ingroup <- ifelse(df1$class3=="Working Class (V+VI+VII)",df1$n_low,df1$ingroup)
+df1$ingroup <- ifelse(df1$class3=="Intermediate class (III+IV+V)",df1$n_middle,df1$ingroup)
+df1$ingroup <- ifelse(df1$class3=="Working Class (VI+VII)",df1$n_low,df1$ingroup)
 #frq(df1$ingroup)
 
 df1$outgroup <- NA 
 df1 %>% select(class3,n_high,n_middle,n_low,outgroup)
 df1$outgroup <- ifelse(df1$class3=="Service Class (I+II)",rowSums(df1[,c("n_low","n_middle")],na.rm = T),df1$outgroup)
-df1$outgroup <- ifelse(df1$class3=="Intermediate class (III+IV)",rowSums(df1[,c("n_low","n_high")],na.rm = T),df1$outgroup)
-df1$outgroup <- ifelse(df1$class3=="Working Class (V+VI+VII)",rowSums(df1[,c("n_middle","n_high")],na.rm=T),df1$outgroup)
+df1$outgroup <- ifelse(df1$class3=="Intermediate class (III+IV+V)",rowSums(df1[,c("n_low","n_high")],na.rm = T),df1$outgroup)
+df1$outgroup <- ifelse(df1$class3=="Working Class (VI+VII)",rowSums(df1[,c("n_middle","n_high")],na.rm=T),df1$outgroup)
 #frq(df1$outgroup)
 
 # df1$eindex<- (df1$outgroup-df1$ingroup)/(df1$outgroup+df1$ingroup)
@@ -1609,15 +1603,15 @@ df1 <- df1 %>% group_by(country) %>% mutate(eindex_gm=mean(eindex,na.rm=T),
 df1$ingroup_s<- NA 
 df1 %>% select(class3,n_high_s,n_middle_s,n_low_s,ingroup_s)
 df1$ingroup_s <- ifelse(df1$class3=="Service Class (I+II)",df1$n_high_s,df1$ingroup_s)
-df1$ingroup_s <- ifelse(df1$class3=="Intermediate class (III+IV)",df1$n_middle_s,df1$ingroup_s)
-df1$ingroup_s <- ifelse(df1$class3=="Working Class (V+VI+VII)",df1$n_low_s,df1$ingroup_s)
+df1$ingroup_s <- ifelse(df1$class3=="Intermediate class (III+IV+V)",df1$n_middle_s,df1$ingroup_s)
+df1$ingroup_s <- ifelse(df1$class3=="Working Class (VI+VII)",df1$n_low_s,df1$ingroup_s)
 #frq(df1$ingroup_s)
 
 df1$outgroup_s <- NA 
 df1 %>% select(class3,n_high_s,n_middle_s,n_low_s,outgroup_s)
 df1$outgroup_s <- ifelse(df1$class3=="Service Class (I+II)",rowSums(df1[,c("n_low_s","n_middle_s")],na.rm = T),df1$outgroup_s)
-df1$outgroup_s <- ifelse(df1$class3=="Intermediate class (III+IV)",rowSums(df1[,c("n_low_s","n_high_s")],na.rm = T),df1$outgroup_s)
-df1$outgroup_s <- ifelse(df1$class3=="Working Class (V+VI+VII)",rowSums(df1[,c("n_middle_s","n_high_s")],na.rm=T),df1$outgroup_s)
+df1$outgroup_s <- ifelse(df1$class3=="Intermediate class (III+IV+V)",rowSums(df1[,c("n_low_s","n_high_s")],na.rm = T),df1$outgroup_s)
+df1$outgroup_s <- ifelse(df1$class3=="Working Class (VI+VII)",rowSums(df1[,c("n_middle_s","n_high_s")],na.rm=T),df1$outgroup_s)
 #frq(df1$outgroup_s)
 
 df1$eindex_s<- (df1$ingroup_s-df1$outgroup_s)/(df1$outgroup_s+df1$ingroup_s)
@@ -1636,15 +1630,15 @@ sjlabelled::set_label(df1$homclass_s) <- "Class homogeneity (strong ties)"
 df1$ingroup_w<- NA 
 df1 %>% select(class3,n_high_w,n_middle_w,n_low_w,ingroup_w)
 df1$ingroup_w <- ifelse(df1$class3=="Service Class (I+II)",df1$n_high_w,df1$ingroup_w)
-df1$ingroup_w <- ifelse(df1$class3=="Intermediate class (III+IV)",df1$n_middle_w,df1$ingroup_w)
-df1$ingroup_w <- ifelse(df1$class3=="Working Class (V+VI+VII)",df1$n_low_w,df1$ingroup_w)
+df1$ingroup_w <- ifelse(df1$class3=="Intermediate class (III+IV+V)",df1$n_middle_w,df1$ingroup_w)
+df1$ingroup_w <- ifelse(df1$class3=="Working Class (VI+VII)",df1$n_low_w,df1$ingroup_w)
 # frq(df1$ingroup_w)
 
 df1$outgroup_w <- NA 
 df1 %>% select(class3,n_high_w,n_middle_w,n_low_w,outgroup_w)
 df1$outgroup_w <- ifelse(df1$class3=="Service Class (I+II)",rowSums(df1[,c("n_low_w","n_middle_w")],na.rm = T),df1$outgroup_w)
-df1$outgroup_w <- ifelse(df1$class3=="Intermediate class (III+IV)",rowSums(df1[,c("n_low_w","n_high_w")],na.rm = T),df1$outgroup_w)
-df1$outgroup_w <- ifelse(df1$class3=="Working Class (V+VI+VII)",rowSums(df1[,c("n_middle_w","n_high_w")],na.rm=T),df1$outgroup_w)
+df1$outgroup_w <- ifelse(df1$class3=="Intermediate class (III+IV+V)",rowSums(df1[,c("n_low_w","n_high_w")],na.rm = T),df1$outgroup_w)
+df1$outgroup_w <- ifelse(df1$class3=="Working Class (VI+VII)",rowSums(df1[,c("n_middle_w","n_high_w")],na.rm=T),df1$outgroup_w)
 # frq(df1$outgroup_w)
 
 df1$eindex_w<- (df1$ingroup_w-df1$outgroup_w)/(df1$outgroup_w+df1$ingroup_w)
@@ -1663,15 +1657,15 @@ sjlabelled::set_label(df1$homclass_w) <- "Class homogeneity (weak ties)"
 df1$ingroup_res <- NA 
 df1 %>% select(class3res,n_high,n_middle,n_low,ingroup_res)
 df1$ingroup_res <- ifelse(df1$class3res=="Service Class (I+II)",df1$n_high,df1$ingroup_res)
-df1$ingroup_res <- ifelse(df1$class3res=="Intermediate class (III+IV)",df1$n_middle,df1$ingroup_res)
-df1$ingroup_res <- ifelse(df1$class3res=="Working Class (V+VI+VII)",df1$n_low,df1$ingroup_res)
+df1$ingroup_res <- ifelse(df1$class3res=="Intermediate class (III+IV+V)",df1$n_middle,df1$ingroup_res)
+df1$ingroup_res <- ifelse(df1$class3res=="Working Class (VI+VII)",df1$n_low,df1$ingroup_res)
 # frq(df1$ingroup_res)
 
 df1$outgroup_res <- NA 
 df1 %>% select(class3res,n_high,n_middle,n_low,outgroup_res)
 df1$outgroup_res <- ifelse(df1$class3res=="Service Class (I+II)",rowSums(df1[,c("n_low","n_middle")],na.rm = T),df1$outgroup_res)
-df1$outgroup_res <- ifelse(df1$class3res=="Intermediate class (III+IV)",rowSums(df1[,c("n_low","n_high")],na.rm = T),df1$outgroup_res)
-df1$outgroup_res <- ifelse(df1$class3res=="Working Class (V+VI+VII)",rowSums(df1[,c("n_middle","n_high")],na.rm=T),df1$outgroup_res)
+df1$outgroup_res <- ifelse(df1$class3res=="Intermediate class (III+IV+V)",rowSums(df1[,c("n_low","n_high")],na.rm = T),df1$outgroup_res)
+df1$outgroup_res <- ifelse(df1$class3res=="Working Class (VI+VII)",rowSums(df1[,c("n_middle","n_high")],na.rm=T),df1$outgroup_res)
 # frq(df1$outgroup_res)
 
 df1$eindex_res<- (df1$ingroup_res-df1$outgroup_res)/(df1$outgroup_res+df1$ingroup_res)
@@ -1697,15 +1691,15 @@ sjlabelled::set_label(df1$homclass_res) <- "Class homogeneity (R's)"
 df1$ingroup <- NA 
 df1 %>% select(digclass3,n_high,n_middle,n_low,ingroup)
 df1$ingroup <- ifelse(df1$digclass3=="Service Class (I+II)",df1$n_high,df1$ingroup)
-df1$ingroup <- ifelse(df1$digclass3=="Intermediate class (III+IV)",df1$n_middle,df1$ingroup)
-df1$ingroup <- ifelse(df1$digclass3=="Working Class (V+VI+VII)",df1$n_low,df1$ingroup)
+df1$ingroup <- ifelse(df1$digclass3=="Intermediate class (III+IV+V)",df1$n_middle,df1$ingroup)
+df1$ingroup <- ifelse(df1$digclass3=="Working Class (VI+VII)",df1$n_low,df1$ingroup)
 #frq(df1$ingroup)
 
 df1$outgroup <- NA 
 df1 %>% select(digclass3,n_high,n_middle,n_low,outgroup)
 df1$outgroup <- ifelse(df1$digclass3=="Service Class (I+II)",rowSums(df1[,c("n_low","n_middle")],na.rm = T),df1$outgroup)
-df1$outgroup <- ifelse(df1$digclass3=="Intermediate class (III+IV)",rowSums(df1[,c("n_low","n_high")],na.rm = T),df1$outgroup)
-df1$outgroup <- ifelse(df1$digclass3=="Working Class (V+VI+VII)",rowSums(df1[,c("n_middle","n_high")],na.rm=T),df1$outgroup)
+df1$outgroup <- ifelse(df1$digclass3=="Intermediate class (III+IV+V)",rowSums(df1[,c("n_low","n_high")],na.rm = T),df1$outgroup)
+df1$outgroup <- ifelse(df1$digclass3=="Working Class (VI+VII)",rowSums(df1[,c("n_middle","n_high")],na.rm=T),df1$outgroup)
 #frq(df1$outgroup)
 
 # df1$eindex<- (df1$outgroup-df1$ingroup)/(df1$outgroup+df1$ingroup)
@@ -1734,15 +1728,15 @@ df1 <- df1 %>% group_by(country) %>% mutate(eindex2_gm=mean(eindex2,na.rm=T),
 df1$ingroup_res <- NA 
 df1 %>% select(digclass3res,n_high,n_middle,n_low,ingroup_res)
 df1$ingroup_res <- ifelse(df1$digclass3res=="Service Class (I+II)",df1$n_high,df1$ingroup_res)
-df1$ingroup_res <- ifelse(df1$digclass3res=="Intermediate class (III+IV)",df1$n_middle,df1$ingroup_res)
-df1$ingroup_res <- ifelse(df1$digclass3res=="Working Class (V+VI+VII)",df1$n_low,df1$ingroup_res)
+df1$ingroup_res <- ifelse(df1$digclass3res=="Intermediate class (III+IV+V)",df1$n_middle,df1$ingroup_res)
+df1$ingroup_res <- ifelse(df1$digclass3res=="Working Class (VI+VII)",df1$n_low,df1$ingroup_res)
 # frq(df1$ingroup_res)
 
 df1$outgroup_res <- NA 
 df1 %>% select(digclass3res,n_high,n_middle,n_low,outgroup_res)
 df1$outgroup_res <- ifelse(df1$digclass3res=="Service Class (I+II)",rowSums(df1[,c("n_low","n_middle")],na.rm = T),df1$outgroup_res)
-df1$outgroup_res <- ifelse(df1$digclass3res=="Intermediate class (III+IV)",rowSums(df1[,c("n_low","n_high")],na.rm = T),df1$outgroup_res)
-df1$outgroup_res <- ifelse(df1$digclass3res=="Working Class (V+VI+VII)",rowSums(df1[,c("n_middle","n_high")],na.rm=T),df1$outgroup_res)
+df1$outgroup_res <- ifelse(df1$digclass3res=="Intermediate class (III+IV+V)",rowSums(df1[,c("n_low","n_high")],na.rm = T),df1$outgroup_res)
+df1$outgroup_res <- ifelse(df1$digclass3res=="Working Class (VI+VII)",rowSums(df1[,c("n_middle","n_high")],na.rm=T),df1$outgroup_res)
 # frq(df1$outgroup_res)
 
 df1$eindex2_res<- (df1$ingroup_res-df1$outgroup_res)/(df1$outgroup_res+df1$ingroup_res)
@@ -1762,15 +1756,15 @@ sjlabelled::set_label(df1$homclass2_res) <- "Class homogeneity (R's)"
 df1$ingroup <- NA 
 df1 %>% select(class3,n_high,n_middle,n_low,ingroup)
 df1$ingroup <- ifelse(df1$dclass3=="Service Class (I+II)",df1$n_high,df1$ingroup)
-df1$ingroup <- ifelse(df1$dclass3=="Intermediate class (III+IV)",df1$n_middle,df1$ingroup)
-df1$ingroup <- ifelse(df1$dclass3=="Working Class (V+VI+VII)",df1$n_low,df1$ingroup)
+df1$ingroup <- ifelse(df1$dclass3=="Intermediate class (III+IV+V)",df1$n_middle,df1$ingroup)
+df1$ingroup <- ifelse(df1$dclass3=="Working Class (VI+VII)",df1$n_low,df1$ingroup)
 #frq(df1$ingroup)
 
 df1$outgroup <- NA 
 df1 %>% select(class3,n_high,n_middle,n_low,outgroup)
 df1$outgroup <- ifelse(df1$dclass3=="Service Class (I+II)",rowSums(df1[,c("n_low","n_middle")],na.rm = T),df1$outgroup)
-df1$outgroup <- ifelse(df1$dclass3=="Intermediate class (III+IV)",rowSums(df1[,c("n_low","n_high")],na.rm = T),df1$outgroup)
-df1$outgroup <- ifelse(df1$dclass3=="Working Class (V+VI+VII)",rowSums(df1[,c("n_middle","n_high")],na.rm=T),df1$outgroup)
+df1$outgroup <- ifelse(df1$dclass3=="Intermediate class (III+IV+V)",rowSums(df1[,c("n_low","n_high")],na.rm = T),df1$outgroup)
+df1$outgroup <- ifelse(df1$dclass3=="Working Class (VI+VII)",rowSums(df1[,c("n_middle","n_high")],na.rm=T),df1$outgroup)
 #frq(df1$outgroup)
 
 # df1$eindex<- (df1$outgroup-df1$ingroup)/(df1$outgroup+df1$ingroup)
@@ -1843,7 +1837,7 @@ sjlabelled::set_label(df1$prestige) <- "Network Contacts Prestige"
 sjlabelled::set_label(df1$diversity) <- "Network Contacts Diversity"
 ```
 
-```{r social distance, eval=FALSE, include=FALSE}
+```{r social distance, include=FALSE}
 df1$dis_busdriver <- df1$isei08 - df1$isei_busdriver
 df1$dis_ceo <- df1$isei08 - df1$isei_ceo
 df1$dis_cleaner <- df1$isei08 - df1$isei_cleaner
@@ -1858,13 +1852,15 @@ df1$dis_teacher <- df1$isei08 - df1$isei_teacher
 # 88 - 37  = 51
 # 88 - 17  = 71
 
-df1$socdist<- rowMeans(x = df1 %>% select(starts_with("dis_")),na.rm = T)
+df1$socdist<- rowMeans(x = df1[,c("dis_busdriver","dis_ceo","dis_cleaner",
+                                          "dis_hairbarber","dis_hrmanager","dis_lawyer",
+                                          "dis_mechanic","dis_nurse","dis_police","dis_teacher")],na.rm = T)
 sjlabelled::set_label(df1$socdist) <- "Social distance: ISEI (respondent - contacts)"
-# sjPlot::plot_#frq(df1$socdist,type = "histogram")
+sjPlot::plot_frq(df1$socdist,type = "histogram")
 
-# df1$socdist_tot<- (df1$isei08- df1$isei_avg)
-# sjPlot::plot_#frq(df1$socdist_tot,type = "histogram")
-# sjlabelled::set_label(df1$socdist_tot) <- "Social distance: ISEI (respondent - contacts)"
+df1$socdist_tot<- (df1$isei08- df1$isei_avg)
+sjlabelled::set_label(df1$socdist_tot) <- "Social distance: ISEI (respondent - avg contacts)"
+sjPlot::plot_frq(df1$socdist_tot,type = "histogram")
 
 #higher values represent higher socioeconomic distance from my contacts. In other words, higher values means that in average, my contacts are more different from me in terms of socioeconomic status (ISEI), while lower values represent higher homogeneity.
 ```
@@ -1913,6 +1909,7 @@ sjlabelled::set_label(df1$agenum) <- "Age in years"
 df1$female <- car::recode(as.numeric(df1$SEX),"2='Female';1='Male';9=NA",
                           levels = c('Male','Female'),as.factor = T)
 #frq(df1$female)
+
 ```
 
 

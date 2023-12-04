@@ -350,7 +350,9 @@ ggplot(aes(y =estimate,x=homclass, fill=class3, color=class3,ymin=conf.low, ymax
   geom_line(size=0.75) +
   geom_point(size=1) +
   geom_ribbon(alpha=0.2,size=0.5,linetype=1) +
-  facet_grid(~factor(class3, levels=c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)"),c("Service Class (I+II)","Intermediate class (III+IV+V)","Working Class (VI+VII)"))) +
+  facet_grid(~factor(class3, levels=
+                       c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)"),
+                     c("Working Class (VI+VII)","Intermediate class (III+IV+V)","Service Class (I+II)"))) +
   labs(caption = paste0("N=",nobs(int_homo),", Countries=",lme4::ngrps(int_homo))) +
   xlab("Network homogeneity (Full ties)")+
   ylab("Redistributive preferences") +
