@@ -134,52 +134,6 @@ sjlabelled::set_label(df1$egal2) <- "Redistributive attitudes (2 items)"
 # #hist.default(df1$egal2)
 ```
 
-
-# Perceived integration
-
-```{r}
-#frq(df1$v31)
-df1$pi_compa <- car::recode(df1$v31,recodes = "c(0,8,9)=NA")
-df1$pi_compa <- set_na(df1$pi_compa,na = c(0,8,9))
-# df1$pi_compa <- sjmisc::rec(x = df1$pi_compa,rec = "rev")
-sjlabelled::set_label(df1$pi_compa) <- "Perceived integration: companionship lacking"
-#frq(df1$pi_compa)
-
-#frq(df1$v32)
-df1$pi_isola <- car::recode(df1$v32,recodes = "c(0,8,9)=NA")
-df1$pi_isola <- set_na(df1$pi_isola,na = c(0,8,9))
-# df1$pi_isola <- sjmisc::rec(x = df1$pi_isola,rec = "rev")
-sjlabelled::set_label(df1$pi_isola) <- "Perceived integration: isolated from others"
-#frq(df1$pi_compa)
-
-#frq(df1$v33)
-df1$pi_left <- car::recode(df1$v33,recodes = "c(0,8,9)=NA")
-df1$pi_left <- set_na(df1$pi_left,na = c(0,8,9))
-# df1$pi_left <- sjmisc::rec(x = df1$pi_left,rec = "rev")
-sjlabelled::set_label(df1$pi_left) <- "Perceived integration: left out from activities"
-#frq(df1$pi_left)
-
-df1$isolation<- rowMeans(df1[,c("pi_compa","pi_isola","pi_left")],na.rm = T)
-sjlabelled::set_label(df1$isolation) <- "Perceived isolation"
-```
-
-# Trust
-
-```{r}
-df1$tr_inte <- car::recode(df1$v35,recodes = "c(0,8,9)=NA")
-df1$tr_inte <- set_na(df1$tr_inte,na = c(0,8,9))
-df1$tr_inte <- sjmisc::rec(x = df1$tr_inte,rec = "rev")
-sjlabelled::set_label(df1$tr_inte) <- "Interpersonal trust"
-frq(df1$tr_inte)
-
-df1$tr_courts <- car::recode(df1$v36,recodes = "c(98,99)=NA")
-df1$tr_courts <- set_na(df1$tr_courts,na = c(98,99))
-# df1$tr_courts <- sjmisc::rec(x = df1$tr_courts,rec = "rev")
-sjlabelled::set_label(df1$tr_courts) <- "Trust in courts"
-frq(df1$tr_courts)
-```
-
-
 # Social status
 
 ```{r income-hhold}
@@ -444,7 +398,6 @@ sjlabelled::set_label(df1$workst) <- "Work status"
 frq(df1$workst)
 ```
 
-
 ```{r union}
 frq(df1$UNION)
 df1$union <- car::recode(as.numeric(df1$UNION),
@@ -570,7 +523,7 @@ haven::write_dta(data = df1[c("id","isco88r","semp","supvis",
 ```
 
 
-```{r class-from-stata}
+```{r class-from-stata1}
 # Load the data created in stata------------------------------------------------
 df_class <- haven::read_dta(file = here::here("input/data/proc/class_respondent-spouse.dta"))
 df1 <- left_join(df1,df_class,by='id')
@@ -1865,39 +1818,6 @@ sjPlot::plot_frq(df1$socdist_tot,type = "histogram")
 #higher values represent higher socioeconomic distance from my contacts. In other words, higher values means that in average, my contacts are more different from me in terms of socioeconomic status (ISEI), while lower values represent higher homogeneity.
 ```
 
-
-# Community participation
-
-```{r}
-# frq(df1$v17)
-df1$act_lei <- car::recode(df1$v17,recodes = "c(0,8,9)=NA")
-df1$act_lei <- set_na(df1$act_lei,na = c(0,8,9))
-df1$act_lei <- sjmisc::rec(x = df1$act_lei,rec = "rev")
-sjlabelled::set_label(df1$act_lei) <- "Activities: groups for leisure, sports or culture"
-# frq(df1$act_lei)
-
-# frq(df1$v18)
-df1$act_pol <- car::recode(df1$v18,recodes = "c(0,8,9)=NA")
-df1$act_pol <- set_na(df1$act_pol,na = c(0,8,9))
-df1$act_pol <- sjmisc::rec(x = df1$act_pol,rec = "rev")
-sjlabelled::set_label(df1$act_pol) <- "Activities: political parties, groups, associations"
-# frq(df1$act_pol)
-
-# frq(df1$v19)
-df1$act_vol <- car::recode(df1$v19,recodes = "c(0,8,9)=NA")
-df1$act_vol <- set_na(df1$act_vol,na = c(0,8,9))
-df1$act_vol <- sjmisc::rec(x = df1$act_vol,rec = "rev")
-sjlabelled::set_label(df1$act_vol) <- "Activities: charitable or religious - voluntary"
-# frq(df1$act_vol)
-
-# cor(df1[,c("act_lei","act_pol","act_vol")],use="complete.obs")
-# psych::alpha(df1[,c("act_lei","act_pol","act_vol")])
-
-df1$activities<- rowMeans(df1[,c("act_lei","act_pol","act_vol")],na.rm = T)
-sjlabelled::set_label(df1$activities) <- "Participation in social activities"
-# summary(df1$activities)
-```
-
 # Demographics
 
 ```{r demographics}
@@ -1911,7 +1831,6 @@ df1$female <- car::recode(as.numeric(df1$SEX),"2='Female';1='Male';9=NA",
 #frq(df1$female)
 
 ```
-
 
 # Save
 
