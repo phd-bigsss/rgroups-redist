@@ -140,7 +140,7 @@ df2 %>% mutate(country2=countrycode::countrycode(sourcevar = ccode,origin = "iso
 # centering micro level
 
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 df2 <- 
 df2 %>% 
   mutate(to_dummy(female),
@@ -186,7 +186,7 @@ names(df2)
 
 # centering macro level
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 df2$gini_disp_c <- center(df2$gini_disp)
 df2$gini_mkt_c <- center(df2$gini_mkt)
 df2$palmaratio_c <- center(df2$palmaratio)

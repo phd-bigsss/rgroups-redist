@@ -127,7 +127,7 @@ plot(
   # plot.percents = TRUE,
   text.size = 3
 ) +
-  labs(title = "Redistributive preferences",caption = "\u03b1 = 0.70")
+  labs(title = "Redistributive preferences",caption = "r = 0.61")
 
 ggsave(plot = last_plot(),filename = "redist_index.png",device = "png",
        path = here::here("output/images"),width = 1.5,height = 0.75,units = "cm",scale = 18)
@@ -306,7 +306,7 @@ ggplot()+
   geom_point(aes(x = reorder(country3, homclass_c),y = homclass_c),alpha=1,shape=4) +
   scale_shape_manual(values = c(6, 15, 16)) +
   scale_color_manual(values = c("blue", "#E7B800", "red")) +
-  labs(title = "Class-based network homogeneity and social class by country",x=NULL,y="Redistributive Preferences") +
+  labs(title = "Class-based network homogeneity and social class by country",x=NULL,y="Class-based network homogeneity ") +
   theme_bw() +
   theme(legend.position = "bottom",
         axis.text.x=element_text(angle=45,hjust = 1),
@@ -460,7 +460,7 @@ ggsave(plot = last_plot(),filename = "macro_giniM_homo.png",device = "png",
 # Check on homogeneity
 
 - checking how different the measures for homogeneity are.
-- the original one is the best oneó
+- the original one is the best one
 
 ```{r check-homogeneity}
 if (!require("pacman")) install.packages("pacman") # instalar pacman
