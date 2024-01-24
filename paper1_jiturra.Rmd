@@ -1,0 +1,135 @@
+---
+title: "Class-based network segregation, Economic Inequality and Redistributive Preferences across societies"
+css: "input/css/custom.css" # custom CSS para html
+fontsize: 11pt
+linestretch: '1.5'          # interlineado 
+papersize: a4
+link-citations: yes         # citas linkeadas
+# date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+author:
+- name: Julio Iturra-Sanhueza
+#   affiliation: University of Bremen
+#   email: jiturra@uni-bremen.de
+#   number: 1
+# - name: Justin d'Ottawa
+#   affiliation: University of Ottawa
+#   number: 2
+# - name: Pedro Torres
+#   number: 1,2 
+# Nota: Autores que comparten filiacion, poner el mismo number y declarar filiación una sola vez.  
+# abstract: |
+#  The escalating economic inequality and the current sanitary crisis have threatened social cohesion among citizens. However, these consequences have been unevenly experienced across the social structure. The upper and intermediate classes, benefiting from privileged access to social resources, have shown resilience. Conversely, working-class families have faced deteriorating material conditions, leading to a heightened sense of marginalisation and increasing the demand for welfare support. Particularly, social resources through network ties have been suggested to have a direct link with an individual’s welfare through instrumental and expressive outcomes, such as providing information or help in moments of need. Consequently, inequalities in access to certain social positions (i.e. occupations) are translated into a lack of social resources beyond individual economic and cultural capital. Additionally, it has been argued that social isolation not only plays a role in terms of resources but given that higher levels of segregation can bolster opinions, it is argued that being isolated from other social classes can polarise attitudes mainly in the working and upper-middle classes. Employing data from the International Social Survey Programme - Social Networks  this research aims to understand to what extent the demand for redistribution is linked to social ties. To addresss this, ego-centred social networks are used to represent the degree of class-based homogeneity of social ties. The results of multilevel estimations show that being socially segregated increases demand for redistribution. Additionally, this influence is conditional to social class, where the working and intermediate classes with highly homogeneous networks demand more governmental redistribution than the upper class. At the macro level, as the current distribution of economic resources influences the opportunity structure, it has been hypothesised that income inequality could bolster the influence of social segregation on the demand for redistribution. However, cross-level interactions do not provide supporting evidence on this behalf. 
+#    **Keywords**: network segregation, redistributive preferences, economic inequality 
+output:
+  bookdown::pdf_document2:
+    template: null
+    toc: false
+    keep_tex: false
+    number_sections: false
+    pandoc_args:
+      - --template=input/mytemplate.tex #custom template para usar autores con afiliacion  
+  bookdown::html_document2:
+    toc: yes
+    code_folding: hide
+    number_sections: false
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+         
+always_allow_html: true      
+linkcolor: blue                         # enlaces y citas en color azul
+bibliography: input/bib/rgroup-redist.bib     # bibliografia en bibtex
+csl: input/bib/apa6.csl
+editor_options:
+  chunk_output_type: console            # en RStudio, mostrar output en consola
+geometry: "left=2.54cm,right=2.54cm,top=2.54cm,bottom=2.54cm" # márgenes de página
+header-includes:
+  - \usepackage{times}           # Times New Roman
+  - \usepackage{caption}
+  - \captionsetup[figure, table]{labelfont={bf},labelformat={default},labelsep=period}
+  - \usepackage{graphicx}
+  - \usepackage{float}
+  - \usepackage{booktabs}
+  - \usepackage{longtable}
+  - \usepackage{array}
+  - \usepackage{multirow}
+  - \usepackage{wrapfig}
+  - \usepackage{float}
+  - \usepackage{colortbl}
+  - \usepackage{pdflscape}
+  - \usepackage{tabu}
+  - \usepackage{threeparttable}
+  - \setlength\parindent{24pt} 
+---
+
+```{r eval=FALSE, include=FALSE}
+ # for render in pdf run rmarkdown::render_site("docs/paper.Rmd", output_format = "all")
+ # clean #in the yml
+ rmarkdown::render("paper1_jiturra.Rmd", output_format = "bookdown::pdf_document2")
+ rmarkdown::render("paper1_jiturra.Rmd", output_format = "bookdown::html_document2")
+ rmarkdown::render("paper1_jiturra.Rmd", output_format = "bookdown::word_document2")
+```
+
+
+<!-- - considerar ISEI08 como alternativa de social class por la correlacion con homogeneidad -->
+<!-- - darle una oportunidad al h-index -->
+<!--     - en general es prácticamente lo mismo que el indicador de homogeneidad -->
+<!-- - controlaria por social activities index () -->
+<!-- - social resources  -->
+    
+```{r setup, include=FALSE}
+if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
+if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
+pacman::p_load(knitr, kableExtra, dplyr, ggplot2,sjmisc,texreg) # librerias
+knitr::opts_chunk$set(warning = FALSE,  # mensaje de warning
+                      message = FALSE,  # mensajes/avisos de librerias  
+                      cache = F,    # cache de los chunks,usar analisis pesados
+                      out.width = '100%',
+                      fig.pos= "H",     # posicion figuras H = HERE
+                      fig.align = "center",
+                      echo = FALSE      # incluir chunk en output
+                      )
+options(scipen=999) # notacion cientifica
+rm(list=ls())       # limpiar workspace
+options(knitr.kable.NA = '') # NA en kable = ''
+```
+
+```{r}
+set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
+options(ggplot2.discrete.fill = set1)
+options(ggplot2.discrete.colour = set1)
+ggplot2::theme_set(theme_minimal())
+ggplot2::theme_update(text=element_text(size=10,  family="serif"))  
+```
+
+# Class-based mechanism on attitudes toward economic inequality and welfare
+
+key concepts: material interests, normative motivations, within-class differences,
+
+The link between social class and political attitudes constitutes one of the most significant findings in sociology. The conceptual basis of these studies lies in the organization of classes as social barriers delineated mainly by ownership of the means of production, autonomy over one's work, and control over the work of others [@Erikson1992]. This perspective has been adopted from research on social mobility, focusing on occupations and their contractual status as fundamental characteristics to distinguish social classes [@ishida_trends_2005;@hertel_relation_2019]. Besides the literature on stratification and mobility, classes also trace distinctions in other domains of social life concerning voting behavior [@mainwaring_left_2015;@evans_decline_1993], cultural preferences [@Chan2007], and political attitudes [@Svallfors2006]. Regarding the latter, according to @lindh_class_2020, research on the link between class position and political attitudes has developed more extensively regarding the economic domain, addressing the economic interests of classes with an emphasis on redistribution, social security, and the social service functions of the welfare state (p. 421). In addition, the study of attitudes has been highlighted in the sociocultural domain, including people's views on issues such as gender relations, race and ethnicity, environmentalism, and sexuality (p. 425), as well as in the political domain concerning the capacity of political institutions to respond to the demands of the citizenry. Consequently, two main competing mechanisms that have linked class to attitudes in the economic domain can be mentioned. On the one hand, into those linked to material-self interests, and on the other hand, the mechanisms associated with normative motivations and values. 
+ 
+First, the self-interest mechanism has functioned as a canonical model to explain redistributive preferences, where the material interests of those with the most to gain from redistribution conflict with those in positions of greater material well-being [@meltzer_rational_1981]. Similarly, an extension of the model has incorporated the dimension of economic risk (e.g., unemployment), paying attention to occupations as the unit that conveys it; consequently, positions with greater exposure to risk would tend to be more in favor of measures that mitigate labor market risks [@rehm_risks_2009]. Second, part of the literature on Western societies has highlighted the cognitive dimension in preference formation. On the one hand, it is suggested that people with limited material resources oppose redistributive measures due to the inability to successfully link their condition with the redistributive outcome because of a lack of information, distorting their views on fairness and misaligning their material interests from their preferences [@bartels_homer_2005;@hvidberg_social_2020]. On the other hand, part of the literature has paid more attention to high-income groups, suggesting that they are far from being monolithic towards inequality when expressing their preferences towards redistribution, arguing that although the rational interest model maintains its general implications, there are nuances within these groups regarding perceived negative externalities that inequality could have at a general level, which would ultimately motivate altruistic support towards redistribution [@rueda_who_2019,@dimick_models_2018].
+
+Material interests and normative orientations can be comprehended as competing mechanisms in preference formation. For example, basic human values such as self-transcendence, characterized by the pursuit of equality and concern for others [@Kulin2013], or humanitarianism, which puts human dignity at the center [@feldman_humanitarian_2001], would be linked to altruistic motivations and might ultimately explain egalitarian economic preferences. However, this link may be weakened according to the exposure to risk and the possession of resources, becoming more salient under conditions of greater security against market risks and material prosperity, such as those experienced by the upper classes, and weakening under conditions of greater vulnerability and material precariousness [@Maldonadoetal2019]. In a similar vein, class differences in skills and work logic might influence normative orientations that are ultimately expressed in political attitudes and behavior, being particularly salient among the professional class [@oesch_redrawing_2006]. Thus, the time that workers spend in their workplace, as well as the social interactions embedded in it, is argued that the work logic operates as a socialization agent according to the type of performed task, where those in interpersonal services tend to be more supportive of progressive political views than those in technical and managerial positions [@oesch_electoral_2018; @edlund_influence_2003]. However, related research has recently suggested that it is indeed challenging to disentangle whether work logic operates as a socialization agent, where reverse causality should be considered given that early-life socialization in the family context might motivate self-selection processes into specific career paths, or alternatively, decisions in the organizational hiring logic have to be taken into account considering that certain profiles might be preferred for interpersonal or managerial positions [@langsaether_more_2020]. 
+
+Critical views have argued that a disincentive of political attitude and behavior in relation to class position. The "death of class" thesis has argued that due to the increase of material welfare in post-industrial societies, the distributive struggle between classes has been waning, resulting in the salience of other group memberships, reorienting the political debate towards post-material issues [@clark_declining_1993;@inglehart_culture_1990]. Although the process of modernization has led to changes in citizens' concerns, it is feasible to argue that the distributive struggle between classes has not been completely displaced but cohabits with people's attitudes towards the position of women in society as well as their views on migration [@Svallfors2006]. As far as people's attitudes toward redistribution and the role of the state in providing social welfare are concerned, this thesis has suggested that class cleavage would lose relevance as the material welfare of society increases. However, the claimed blurring of the class cleavage has not had particularly strong empirical support in terms of people's preferences around the economic domain.
+
+	[Evidence on class and political attitudes]
+# Network segregation and social class	
+While previous research has focused more extensively on the economic dimension of social class, such as employment relations and occupation, patterns of social interactions are also a constituent dimension of how classes shape their political views toward economic inequality. Given that social classes are defined in terms of property, authority, and power, they can be understood as fundamentally relational. Therefore, it would be arguable that class positions are not merely distinguished by the labor market position, authority, and control over labor but are also relationally defined based on their patterns of sociability. Hereby, the scope of class analysis in the formation of attitudes and behavior can be extended further to the individual and household situation, stressing the role of social interactions and network segregation processes that might influence the internalization of shared norms, identity formation, and conflict between classes. 
+
+For stratification scholars, the study of segregation relates to the inequality in the distribution of status position and group membership heterogeneity as the observable patterns of association that shape interpersonal ties often referred to as relational networks [@blau_inequality_1977]. Indeed, one of the most significant findings on network research is the stronger contact frequency and tie formation between individuals of similar characteristics described as homophily [@mcpherson_birds_2001; @lazarsfeld_friendship_1954], demonstrating that associations are segregated according to the degree of demographic availability of social groups, as well as by status differentiation that intersect group membership [@bargsted_pautas_2020; @plaza_juntos_2022]. However, it has been argued that segregation is also affected by sociopsychological factors, where in-group dynamics tend to be reinforced when attitudes and behavior are concentrated in isolated social environments, decreasing the chances of interchange of world views and opinions [@visser_attitudes_2004; @diprete_segregation_2011]. Nonetheless, besides the importance of socialization preferences, it has been argued that the distribution of status positions and group diversity tend to be more dominant in structuring social activities that provide opportunities for opportunity for contact and consolidation of social networks [@feld_focused_1981; @mcpherson_network_2019]. As for social classes, it could be argued that classes represent social differentiation insofar as they not only consider differences in status resources but also comprise patterns of sociability so that segregation can also be observed in terms of the distribution of social ties regarding class positions.
+
+How classes are formed also provides insights regarding their social relations and sociability practices.  In sociology,  classes are understood as the common basis for action, given their labor market situation, that ultimately shapes their access to opportunities and resources [@weber_economy_1978]. According to habitus theory, classes seek to improve and maintain their position by stressing the importance of intergenerational transmission of resources, which is accomplished through the reproduction of socialization patterns and lifestyles expressed in tie formation between groups of similar status when it comes to partner and friendship choices, arguing that class *habitus* entails a series of distinctive practices pivoted in cultural capital as the basis for mutual recognition [@bourdieu_distinction_1984]. Symbolic resources such as skills and education credentials serve to reinforce status distinctions between upper and lower classes, granting access to socially segregated environments and increasing the likelihood of reproducing privileged positions at the expense of lower classes [@bourdieu_reproduccion_1981]. Ultimately, classes consolidate their demographic and cultural identities by mobilizing resources and shared sociability practices, ensuring intergenerational reproduction of their structural positions [@goldthorpe_sobre_1992]. Altogether, these processes further reinforce social distinctions between classes and contribute to the persistence of class structures. Hence, the socialization of common lifestyles and shared worldviews facilitates the consolidation of social classes. Access to social resources embedded in social networks follows a pattern of accumulation that reproduces pre-existing inequalities, in which class positions are vital in accounting for mechanisms of exclusion and segregation across the class structure.
+ 
+Previous research on social class and tie formation has suggested that class permeability, understood as the formation of cross-class social ties, is traced differently across property and authority boundaries. Empirically, evidence from Western industrialized countries has shown that the formation of friendship ties between owners and the working class is very less likely, in contrast to the tendency of higher tie formation between supervisors and workers, suggesting that the authority dimension is much less permeable than authority-based boundaries given that class interests increase the social distance between proprietors and workers, while the intermediate class position of supervisors and contact frequency with workers make friendship tie formation more likely [@wright_relative_1992]. Similarly, evidence from Chile has shown that the higher permeability of the intermediate classes contrasts with the more homogeneous networks of the working class, suggesting that their limited resources and lower capacity to be socially engaged ultimately result in a lack of social resources that isolate them from others, while the upper class is less permeable and homogenous as a result of its tendency to self-selection as a practice that ultimately seeks to reproduce their privileged status positions [@otero_open_2021]. 
+
+In contrast, cross-class embeddedness can be described regarding their social activities as well as through their changes across generations and time. In this regard, @pichler_social_2009 suggest that higher civic engagement in formal organizations increases the chances of bridging with diverse people among the upper class, in contrast to the working class, which tends to be more homogeneous in its civic engagement behavior. Similarly, other studies in Argentina and Croatia have exhibited that the upper and intermediate classes hold increasingly diverse and prestigious social environments than the working classes, where being socially mobile does help to improve both dimensions in tie formation, whereas it does not equalize the weight of class background compared to those intergenerationally stable in the upper class [@cepic_how_2020;@carrascosa_class_2023]. Additionally, the few longitudinal evidence suggests that networks change following a dynamic of cumulative advantages regarding its composition in terms of prestige and diversity, where upper classes improve in both dimensions while the lower class shows more stability across the life course [@volker_social_2020]. 
+
+Theoretically, these studies account for class-based network segregation as the degree of connectedness of an individual to different occupations is meant to vertically represent social resources embedded in social networks [@lin_social_2007]. Drawing on this approach, the attempts of stratification scholars have been focused on how social connections are distributed across the class structure as a matter of social integration [@blau_macrosociological_1977]. Therefore, _homogeneity_  is described as the lack of cross-class network ties. It is indeed conceptually more proximate to the homophily principle because it is anchored in ego’s class position. At the same time, _diversity_ is defined as the rate of dissimilar ties or simply the total ties to a certain group that does not necessarily count with a reference position to describe the network composition. Hence, both approaches provide a set of alternatives for the study of social class from a network perspective that has been increasingly discussed in the stratification literature as well as in the scholarly discussion about social class and political attitudes. 
+
+# Class boundaries and political attitudes
+
+
+# References
