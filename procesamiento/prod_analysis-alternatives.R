@@ -2,7 +2,7 @@ set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
 options(ggplot2.discrete.fill = set1)
 options(ggplot2.discrete.colour = set1)
 ggplot2::theme_set(ggplot2::theme_bw())
-ggplot2::theme_update(text=element_text(size=15,  family="serif"))
+ggplot2::theme_update(text=ggplot2::element_text(size=15,  family="serif"))
 
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal,texreg,MLMusingR)  
@@ -253,6 +253,8 @@ df_pred_giniM_gc <-
   )
 
 df_pred_giniM_gc <- as.data.frame(df_pred_giniM_gc)
+df_pred_giniM_gc$gini_mkt <- factor(df_pred_giniM_gc$gini_mkt,labels = c("Gini (-1SD)","Gini (Mean)", "Gini (+1SD)"))
+
 
 
 df_pred_giniM_gc %>% 
@@ -275,5 +277,85 @@ df_pred_giniM_gc %>%
 
 ggsave(plot = last_plot(),filename = "predict-egal-hom_class_giniM_fullsample_CWC.png",device = "png",
        path = here::here("output/images"),width = 2,height = 1,units = "cm",scale = 18)
+
+### Predicted values homo*class*GiniD ---------------------------------------
+# ginim_max<- round(max(dfreg$gini_mkt) ,2)
+# ginim_min<- round(min(dfreg$gini_mkt),2)
+
+ginid_max<- round(mean(dfreg$gini_disp) + sd(dfreg$gini_disp)  ,2)
+ginid_min<- round(min(dfreg$gini_disp) -sd(dfreg$gini_disp) ,2)
+ginid_mea<- round(mean(dfreg$gini_disp),2)
+
+df_pred_giniD_gc <-
+  predictions(
+    int_homo_giniD_gc,newdata = datagrid(
+      gini_disp = c(ginid_min, ginid_mea, ginid_max),
+      homclass_gc = seq(min(dfreg$homclass_gc), max(dfreg$homclass_gc), by= 0.1),
+      class3=levels(dfreg$class3)
+    )
+  )
+
+df_pred_giniD_gc <- as.data.frame(df_pred_giniD_gc)
+df_pred_giniD_gc$gini_disp <- factor(df_pred_giniD_gc$gini_disp,labels = c("Gini (-1SD)","Gini (Mean)", "Gini (+1SD)"))
+
+
+df_pred_giniD_gc %>% 
+  ggplot(aes(y=estimate,x=homclass_gc, fill=class3,color=class3,ymin=conf.low, ymax=conf.high)) +
+  geom_line(size=0.75) +
+  geom_point(size=2) +
+  geom_ribbon(alpha=0.1,size=1,linetype=1) +
+  facet_wrap(~gini_disp) +
+  labs(y = "Preferences for Redistribution",
+       x="Class-based network homogeneity (CWC)",
+       title = "Three-way interaccion effects for Preferences for Redistribution, Network segregation, Social class and Income Inequality") +
+  # scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
+  scale_x_continuous(sec.axis = sec_axis(~ . , name = "Income inequality (Disposable)", breaks = NULL, labels = NULL)) +
+  theme(legend.position="bottom",
+        legend.direction = "horizontal",
+        axis.text=element_text(size=15),
+        legend.title = element_blank(),
+        legend.background = element_blank(),
+        legend.box.background = element_rect(colour = "black"))
+
+ggsave(plot = last_plot(),filename = "predict-egal-hom_class_giniD_fullsample_CWC.png",device = "png",
+       path = here::here("output/images"),width = 2,height = 1,units = "cm",scale = 18)
+
+
+df_pred_giniD_gc_1 <- df_pred_giniD_gc %>% filter(class3!="Intermediate class (III+IV+V)")
+
+df_pred_giniD_gc_1 %>% 
+  ggplot(aes(y=estimate,x=homclass_gc, fill=class3,color=class3,ymin=conf.low, ymax=conf.high)) +
+  geom_line(size=0.75) +
+  geom_point(size=2) +
+  geom_ribbon(alpha=0.1,size=1,linetype=1) +
+  facet_wrap(~gini_disp) +
+  labs(y = "Preferences for Redistribution",
+       x="Class-based network homogeneity (CWC)",
+       title = "Three-way interaccion effects for Preferences for Redistribution, Network segregation, Social class and Income Inequality") +
+  # scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
+  scale_x_continuous(sec.axis = sec_axis(~ . , name = "Income inequality (Disposable)", breaks = NULL, labels = NULL)) +
+  theme(legend.position="bottom",
+        legend.direction = "horizontal",
+        axis.text=element_text(size=15),
+        legend.title = element_blank(),
+        legend.background = element_blank(),
+        legend.box.background = element_rect(colour = "black"))
+
+ggsave(plot = last_plot(),filename = "predict-egal-hom_class_giniD_fullsample_CWC_2.png",device = "png",
+       path = here::here("output/images"),width = 2,height = 1,units = "cm",scale = 18)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
