@@ -23,7 +23,7 @@ options(scipen=9999) # desactivar notacion cientifica
 set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
 options(ggplot2.discrete.fill = set1)
 options(ggplot2.discrete.colour = set1)
-ggplot2::theme_set(theme_minimal())
+ggplot2::theme_set(theme_bw())
 ggplot2::theme_update(text=element_text(size=15,  family="serif"))  
 ```
 
@@ -281,7 +281,13 @@ ggsave(plot = last_plot(),filename = "coefplot-egal.png",device = "png",
 ```
 
 ```{r coef-egal-fullsample}
-ggplot(df_p %>% filter(depvar=="Full sample"),
+coefplot1 <-  
+df_p %>% filter(depvar=="Full sample" & group =="Full network") %>% 
+  add_row(effect="fixed",group="Full network",term = "classService",depvar= "Full sample",.before = 2)
+
+coefplot1$term <- factor(coefplot1$term,levels = rev(c("homclass","classService","class3Intermediate class (III+IV)","class3Working Class (V+VI+VII)"))) 
+
+ggplot(coefplot1,
        aes(x = estimate, y = term, color = group)) +
   geom_vline(xintercept = 0) +
   geom_errorbar(
@@ -292,28 +298,32 @@ ggplot(df_p %>% filter(depvar=="Full sample"),
   ) +
   geom_point(
     shape = 21,
-    size = 3,
+    size = 5,
     fill = "white",
     position = position_dodge(0.5)
   ) +
   facet_grid(~depvar)+
   scale_y_discrete(
     labels = c(
-      "Working Class (VI+VII)",
-      "Intermediate class (III+IV+V)",
-      "Class-based homogeneity"
-    )
-  )+
+      "Working Class",
+      # str_wrap("Service Class: Intermediate class",width = 20)),
+       # bquote(bold("Social Class (Ref: Service Class)") Intermediate class"),
+    # "Social Class (Ref: Service Class)\n\nIntermediate class\n\n",
+    "Intermediate class",
+    bquote(bold("Social Class \n(Ref: Service Class)")),
+    "Class-based homogeneity"
+    ))+
   scale_color_discrete(guide = guide_legend(reverse = TRUE))+
   labs(
-    # caption = paste0("N=", nobs(int_homo), ", Countries=", lme4::ngrps(int_homo)),
+    # caption = paste0("N=", nobs(fsample_egal_full_ind), ", Countries=", lme4::ngrps(fsample_egal_full_ind)),
     color = "Model",
     x="Coefficients (fixed effects)",y=NULL,
-    title = "Redistributive Preferences (Index)") +
-  theme(axis.text.y.left = element_text(face = "plain", size = 12))
+    title = "Redistributive Preferences") +
+  theme(axis.text.y.left = element_text(face = "plain", size = 15),
+        legend.position="none")
+
 ggsave(plot = last_plot(),filename = "coefplot-egal-fullsample.png",device = "png",
        path = here::here("output/images"),width = 1.5,height = 1,units = "cm",scale = 15)
-
 ```
 
 ```{r inter-egal-fnet-fsample}

@@ -95,8 +95,13 @@ rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
 # Interactions segregation x class
 int_homo <- update(rob1, . ~ . +class3*homclass)
 
+segregation <- lmer(homclass~class3+edyears+ Q03pcm+union+workst+(1|country2),data=dfreg,weights = WEIGHT)
+segregation2<- lmer(homclass~class3+edyears+ Q03pcm+union+workst+gini_disp+(1|country2),data=dfreg,weights = WEIGHT)
+segregation3<- lmer(homclass~class3+edyears*gini_disp+ Q03pcm+union+workst+gini_disp+(edyears|country2),data=dfreg,weights = WEIGHT)
+
+knitreg(list(segregation,segregation2,segregation3))
 models <- list(homclass,full1,rob1,int_homo)
-knitreg(models)
+
 
 # Interacciones cross-level -----------------------------------------------
 ## Gini Market--------------------------------------------------------------
@@ -132,6 +137,31 @@ knitreg(list(int_homo_giniM,int_homo_giniD,
              int_homo_giniM_gc,int_homo_giniD_gc))
 
 summary(int_homo_giniD)
+
+
+
+models_int <- list(rob1,int_homo,int_homo_giniD_gc)
+htmlreg(models_int,
+          custom.coef.map = list("class3Intermediate class (III+IV+V)"="Intermediate Class",
+                                 "class3Working Class (VI+VII)" = "Working Class",
+                                 "homclass"="Class-based network homogeneity",
+                                 "homclass_gc"="Class-based network homogeneity",
+                                 "homclass:class3Intermediate class (III+IV+V)" = "Homogeneity x Intermediate Class",
+                                 "homclass:class3Working Class (VI+VII)"= "Homogeneity x Working Class",
+                                 "homclass_gc:class3Intermediate class (III+IV+V)" = "Homogeneity x Intermediate Class",
+                                 "homclass_gc:class3Working Class (VI+VII)"= "Homogeneity x Working Class",
+                                 "gini_disp" = "Income Inequality (Gini Disposable)",
+                                 "homclass_gc:gini_disp"= "Homogeneity x Inequality",
+                                 "class3Intermediate class (III+IV+V):gini_disp" = "Intermediate Class x Inequality",
+                                 "class3Working Class (VI+VII):gini_disp" = "Working Class x Inequality",
+                                 "homclass_gc:class3Intermediate class (III+IV+V):gini_disp" = "Homogeneity x Intermediate Class x Inequality",
+                                 "homclass_gc:class3Working Class (VI+VII):gini_disp" = "Homogeneity x Working Class x Inequality"
+                                 ),file = "tab_cross_level.html")
+
+
+                                      
+                                                                                        
+
 
 ### Predicted values homo*class*GiniM ---------------------------------------
 # ginim_max<- round(max(dfreg$gini_mkt) ,2)

@@ -324,28 +324,30 @@ if (!require("pacman")) install.packages("pacman") # instalar pacman
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,
                sjlabelled,haven,stringr,ordinal,texreg)  
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
-dfreg <- df1 %>% dplyr::select(egal2,redist,
-                        class3=class3,
-                        homclass,
-                        Q03pcm,
-                        edyears,
-                        female,
-                        agenum,
-                        union,
-                        workst,
-                        WEIGHT,
-                        region,
-                        "gini_disp",
-                        "gini_mkt",
-                        rgdpna,
-                        oecd,
-                        country2,country,country3,region,
-                        ) %>% 
-  mutate(logrgdpna=log(rgdpna),
-         edyears2=edyears^2,
-         age2=agenum^2) %>%
+dfreg <- df1 %>% dplyr::select(
+  egal2,
+  class3,
+  homclass,
+  Q03pcm,
+  edyears,
+  female,
+  agenum,
+  union,
+  workst,
+  WEIGHT,
+  region,
+  "gini_disp",
+  "gini_mkt",
+  d10d1,
+  rgdpna,
+  oecd,
+  country2, country
+) %>%
+  mutate(logrgdpna = log(rgdpna),
+         edyears2 = edyears ^ 2,
+         age2 = agenum ^ 2) %>%
+  filter(country2 != "SVN") %>%
   na.omit()
-
 
 df2$country2 <- countrycode::countrycode(sourcevar = df2$country,origin = "iso3n",destination = "country.name")
 df2$country3 <- countrycode::countrycode(sourcevar = df2$country,origin = "iso3n",destination = "iso3c")
@@ -353,7 +355,7 @@ df2 <- bind_cols(df2,sjmisc::to_dummy(x = df2$class3,suffix = "numeric"))
 
 macro_data <- df2 %>%
   group_by(country2,country3) %>%
-  summarise_at(c("redist","egal2","homclass","pi_isola","tr_courts","tr_inte","gini_disp","gini_mkt",
+  summarise_at(c("egal2","homclass","pi_isola","tr_courts","tr_inte","gini_disp","gini_mkt",
                  "class3_1","class3_2","class3_3","gv_spen"), mean, na.rm = TRUE) %>% 
   as.data.frame()
 
@@ -368,9 +370,9 @@ ggplot(aes(y=egal2, x=homclass)) +
   ylab("Redistributive preferences") +
   labs(title = "Redistributive preferences and Class homogeneity",
        caption =paste("r=",round(cor(macro_data$homclass,
-                                     macro_data$redist, use='complete.obs'),digits = 2)))
+                                     macro_data$egal2, use='complete.obs'),digits = 2)))
 
-ggsave(plot = last_plot(),filename = "macro_homo_redist.png",device = "png",
+ggsave(plot = last_plot(),filename = "macro_homo_egal.png",device = "png",
        path = here::here("output/images"),width = 1,height = 1,units = "cm",scale = 20)
 
 macro_data %>%  
