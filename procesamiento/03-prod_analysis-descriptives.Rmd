@@ -80,36 +80,38 @@ pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,
                sjlabelled,haven,stringr,ordinal,texreg,likert)  
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 dfreg <- df1 %>% dplyr::select(redist,prefineq,
-                        class3=class3,
-                        homclass,
-                        Q03pcm,
-                        edyears,
-                        female,
-                        agenum,
-                        union,
-                        workst,
-                        WEIGHT,
-                        region,
-                        "gini_disp",
-                        "gini_mkt",
-                        rgdpna,
-                        oecd,
-                        country2,country,country3,region,
-                        ) %>% 
-  mutate(logrgdpna=log(rgdpna),
-         edyears2=edyears^2,
-         age2=agenum^2) %>%
+  class3,
+  homclass,
+  Q03pcm,
+  edyears,
+  female,
+  agenum,
+  union,
+  workst,
+  WEIGHT,
+  region,
+  "gini_disp",
+  "gini_mkt",
+  d10d1,
+  rgdpna,
+  oecd,
+  country2, country
+) %>%
+  mutate(logrgdpna = log(rgdpna),
+         edyears2 = edyears ^ 2,
+         age2 = agenum ^ 2) %>%
+  filter(country2 != "SVN") %>%
   na.omit()
-
 
 labels <- get_labels(dfreg$redist)
 
+# polycor::hetcor(data = dfreg$redist,dfreg$prefineq)
 
 dfreg$redist <- factor(dfreg$redist,levels = 1:5,labels = labels)
-set_label(dfreg$redist) <- "(b) It is the responsibility of the government to reduce the differences in income between people with high incomes and those with low incomes."
+set_label(dfreg$redist) <- "(B) It is the responsibility of the government to reduce the differences in income between people with high incomes and those with low incomes."
 
 dfreg$prefineq <- factor(dfreg$prefineq,levels = 1:5,labels = labels)
-set_label(dfreg$prefineq) <- "(a) For a society to be fair, differences in people’s standard of living should be small."
+set_label(dfreg$prefineq) <- "(A) For a society to be fair, differences in people’s standard of living should be small."
 
 set1 <- c("#5586B4","#D30132","#999999","#004481","#1C2747")
 
@@ -123,16 +125,63 @@ plot(
   low.color = "#D30132",
   high.color = '#5586B4',
   center = 3,
-  wrap = 30,
+  wrap = 50,
   # plot.percents = TRUE,
-  text.size = 3
+  text.size = 3,
 ) +
   labs(title = "Redistributive preferences",caption = "r = 0.61")
 
 ggsave(plot = last_plot(),filename = "redist_index.png",device = "png",
-       path = here::here("output/images"),width = 1.5,height = 0.75,units = "cm",scale = 18)
+       path = here::here("output/images"),width = 1.7,height = 0.55,units = "cm",scale = 18)
 
 ```
+
+
+```{r n-ties}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,
+               sjlabelled,haven,stringr,ordinal,texreg)  
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+
+df1$idunique <- 1:dim(df1)[[1]]
+
+dfreg <- df1 %>% dplyr::select(idunique,egal2,
+  class3,
+  homclass,
+  Q03pcm,
+  edyears,
+  female,
+  agenum,
+  union,
+  workst,
+  WEIGHT,
+  region,
+  "gini_disp",
+  "gini_mkt",
+  d10d1,
+  rgdpna,
+  oecd,
+  country2, country, country3,region,
+) %>%
+  mutate(logrgdpna = log(rgdpna),
+         edyears2 = edyears ^ 2,
+         age2 = agenum ^ 2) %>%
+  filter(country2 != "SVN") %>%
+  na.omit() %>% 
+  left_join(df1[,c("idunique","n_high","n_middle","n_low")])
+
+
+
+phig<- sjPlot::plot_frq(data = dfreg$n_high,show.prc = F,show.n = F)
+pmid<- sjPlot::plot_frq(data = dfreg$n_middle,show.prc = F,show.n = F)
+plow<- sjPlot::plot_frq(data = dfreg$n_low,show.prc = F,show.n = F)
+
+cowplot::plot_grid(phig, pmid, plow, labels = NULL, nrow = 3,ncol = 1)
+
+ggsave(plot = last_plot(),filename = "n_status_class.png",device = "png",
+       path = here::here("output/images"),width = 0.5,height = 1,units = "cm",scale = 20)
+```
+
 
 # Descriptive x country
 
@@ -231,27 +280,34 @@ if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,
                sjlabelled,haven,stringr,ordinal,texreg)  
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
-dfreg <- df1 %>% dplyr::select(egal2,redist,
-                        class3=class3,
-                        homclass,
-                        Q03pcm,
-                        edyears,
-                        female,
-                        agenum,
-                        union,
-                        workst,
-                        WEIGHT,
-                        region,
-                        "gini_disp",
-                        "gini_mkt",
-                        rgdpna,
-                        oecd,
-                        country2,country,country3,region,
-                        ) %>% 
-  mutate(logrgdpna=log(rgdpna),
-         edyears2=edyears^2,
-         age2=agenum^2) %>%
+
+df1$idunique <- 1:dim(df1)[[1]]
+
+dfreg <- df1 %>% dplyr::select(idunique,egal2,
+  class3,
+  homclass,
+  Q03pcm,
+  edyears,
+  female,
+  agenum,
+  union,
+  workst,
+  WEIGHT,
+  region,
+  "gini_disp",
+  "gini_mkt",
+  d10d1,
+  rgdpna,
+  oecd,
+  country2, country, country3,region,
+) %>%
+  mutate(logrgdpna = log(rgdpna),
+         edyears2 = edyears ^ 2,
+         age2 = agenum ^ 2) %>%
+  filter(country2 != "SVN") %>%
   na.omit()
+
+df1[,c("n_high","n_middle","n_low")]
 
 df_mean <- 
 dfreg %>% 
@@ -290,8 +346,7 @@ ggplot()+
   geom_point(aes(x = reorder(country3, egal2_c),y = egal2_c),alpha=1,shape=4) +
   scale_shape_manual(values = c(6, 15, 16)) +
   scale_color_manual(values = c("blue", "#E7B800", "red")) +
-  labs(title = "Redistributive preferences (index) and social class by country",x=NULL,y="Redistributive Preferences") +
-  theme_bw() +
+  labs(title = "Redistributive preferences and social class by country",x=NULL,y="Redistributive Preferences") +
   theme(legend.position = "bottom",
         axis.text.x=element_text(angle=45,hjust = 1),
         legend.title = element_blank()) 
@@ -307,7 +362,6 @@ ggplot()+
   scale_shape_manual(values = c(6, 15, 16)) +
   scale_color_manual(values = c("blue", "#E7B800", "red")) +
   labs(title = "Class-based network homogeneity and social class by country",x=NULL,y="Class-based network homogeneity ") +
-  theme_bw() +
   theme(legend.position = "bottom",
         axis.text.x=element_text(angle=45,hjust = 1),
         legend.title = element_blank()) 
