@@ -15,8 +15,8 @@ editor_options:
 ---
 
 ```{r eval=FALSE, include=FALSE}
-# knitr::knit(input = here::here("procesamiento/prod_prep.Rmd"));file.remove("prod_prep.md")
-# knitr::knit(input = here::here("procesamiento/prod_prep-macro.Rmd"));file.remove("prod_prep-macro.md")
+knitr::knit(input = here::here("procesamiento/01-prod_prep-micro.Rmd"));file.remove("01-prod_prep-micro.md")
+knitr::knit(input = here::here("procesamiento/02-prod_prep-macro.Rmd"));file.remove("02-prod_prep-macro.md")
 ```
 
 # Setup
@@ -1236,8 +1236,8 @@ sjlabelled::set_label(df1$teacher) <- "Know: school teacher"
 #frq(df1$teacher)
 
 # Total of known occupations
-isei_ocupnames<- names(select(df1,busdriver:teacher))
-df1$know_total <- rowSums(x = select(df1,isei_ocupnames),na.rm = T)
+isei_ocupnames<- names(dplyr::select(df1,busdriver:teacher))
+df1$know_total <- rowSums(x = dplyr::select(df1,isei_ocupnames),na.rm = T)
 # summary(df1$know_total)
 sjlabelled::set_label(df1$know_total) <- 'Total of known occupations'
 ```
@@ -1543,6 +1543,17 @@ df1$homclass_gc <- group_center(x = df1$homclass,grp = df1$country)
 # Weighted EI index
 # https://arxiv.org/pdf/2109.00348.pdf
 
+df1<- df1 %>% group_by(country) %>% mutate(sum_know_total=sum(know_total))
+
+df1$know_total_weight <- df1$know_total/df1$sum_know_total
+df1$homclass_wght <- (as.numeric(df1$ingroup/df1$know_total*df1$know_total_weight))*1000 #the 1000 is for scaling purposes 
+
+summary(df1$homclass_wght)
+
+cor(df1[,c("homclass","homclass_wght","egal2")],use = "complete.obs")
+
+hist.default(df1$homclass)
+hist.default(df1$homclass_wght)
 
 # Thus, an EI score of -1 means complete homophily- the individual only has relationships with actors of the same “type” as they themselves are. An EI score of 1 means complete heterophily- all the alters are of a different “type” than they themselves are. Finally, an EI score of 0 means that an equal number of alters are of both the same “type” as the ego, and different types
 

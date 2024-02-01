@@ -13,6 +13,7 @@ dfreg <- df1 %>% dplyr::select(
   egal = egal2,
   class3,
   homclass,
+  homclass_wght,know_total,
   Q03pcm,
   edyears,
   female,
@@ -88,14 +89,15 @@ names(dfreg)
 # Models 
 base <- lmer(egal~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)
 homclass<- update(base, . ~ . +homclass)
-full1 <- update(homclass, . ~ . + class3+female+agenum+age2)
+homclass_know_total<- update(homclass, . ~ . +know_total)
+full1 <- update(homclass_know_total, . ~ . + class3+female+agenum+age2)
 rob1 <- update(full1, . ~ . + class3+edyears+ Q03pcm+union+workst)
 rob2 <- update(rob1, . ~ . -(1|country2) + (homclass|country2))
 # anova(rob1,rob2)
 # Interactions segregation x class
 int_homo <- update(rob1, . ~ . +class3*homclass)
 
-models <- list(homclass,full1,rob1,int_homo)
+models <- list(homclass,homclass_know_total,full1,rob1,int_homo)
 knitreg(models)
 
 # Interacciones cross-level -----------------------------------------------
