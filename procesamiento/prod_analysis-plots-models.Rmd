@@ -363,6 +363,8 @@ ggplot(aes(y =estimate,x=homclass, fill=class3, color=class3,ymin=conf.low, ymax
   facet_grid(~factor(class3, levels=
                        c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)"),
                      c("Working Class (VI+VII)","Intermediate class (III+IV+V)","Service Class (I+II)"))) +
+    scale_fill_manual(values=c("#377EB8","#4DAF4A","#E41A1C"))+
+  scale_color_manual(values=c("#377EB8","#4DAF4A","#E41A1C"))+
   labs(caption = paste0("N=",nobs(int_homo),", Countries=",lme4::ngrps(int_homo))) +
   xlab("Network homogeneity (Full ties)")+
   ylab("Redistributive preferences") +

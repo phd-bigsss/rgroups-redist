@@ -133,9 +133,11 @@ int_homo_giniD_gc <-
 knitreg(list(int_homo_giniM,int_homo_giniD,
              int_homo_giniM_gc,int_homo_giniD_gc))
 
-summary(int_homo_giniD)
+knitreg(int_homo_giniD)
 
 ### Predicted values homo*class*GiniM ---------------------------------------
+
+
 # ginim_max<- round(max(dfreg$gini_mkt) ,2)
 # ginim_min<- round(min(dfreg$gini_mkt),2)
 
@@ -172,6 +174,8 @@ df_pred_giniM %>%
        title = "Three-way interaccion effects for Preferences for Redistribution, Network segregation, Social class and Income Inequality") +
   # scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
   scale_x_continuous(sec.axis = sec_axis(~ . , name = "Income inequality (Market)", breaks = NULL, labels = NULL)) +
+  scale_fill_manual(values=c("#377EB8","#4DAF4A","#E41A1C"))+
+  scale_color_manual(values=c("#377EB8","#4DAF4A","#E41A1C"))+  
   theme(legend.position="bottom",
         legend.direction = "horizontal",
         axis.text=element_text(size=15),
@@ -220,6 +224,8 @@ df_pred_giniD %>%
        title = "Three-way interaccion effects for Preferences for Redistribution, Network segregation, Social class and Income Inequality") +
   # scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
   scale_x_continuous(sec.axis = sec_axis(~ . , name = "Income inequality (Disposable)", breaks = NULL, labels = NULL)) +
+  scale_fill_manual(values=c("#377EB8","#4DAF4A","#E41A1C"))+
+  scale_color_manual(values=c("#377EB8","#4DAF4A","#E41A1C"))+  
   theme(legend.position="bottom",
         legend.direction = "horizontal",
         axis.text=element_text(size=15),
@@ -270,6 +276,8 @@ df_pred_giniM_gc %>%
        title = "Three-way interaccion effects for Preferences for Redistribution, Network segregation, Social class and Income Inequality") +
   # scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
   scale_x_continuous(sec.axis = sec_axis(~ . , name = "Income inequality (Market)", breaks = NULL, labels = NULL)) +
+  scale_fill_manual(values=c("#377EB8","#4DAF4A","#E41A1C"))+
+  scale_color_manual(values=c("#377EB8","#4DAF4A","#E41A1C"))+  
   theme(legend.position="bottom",
         legend.direction = "horizontal",
         axis.text=element_text(size=15),
@@ -312,6 +320,8 @@ df_pred_giniD_gc %>%
        title = "Three-way interaccion effects for Preferences for Redistribution, Network segregation, Social class and Income Inequality") +
   # scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
   scale_x_continuous(sec.axis = sec_axis(~ . , name = "Income inequality (Disposable)", breaks = NULL, labels = NULL)) +
+  scale_fill_manual(values=c("#377EB8","#4DAF4A","#E41A1C"))+
+  scale_color_manual(values=c("#377EB8","#4DAF4A","#E41A1C"))+
   theme(legend.position="bottom",
         legend.direction = "horizontal",
         axis.text=element_text(size=15),
@@ -336,6 +346,8 @@ df_pred_giniD_gc_1 %>%
        title = "Three-way interaccion effects for Preferences for Redistribution, Network segregation, Social class and Income Inequality") +
   # scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
   scale_x_continuous(sec.axis = sec_axis(~ . , name = "Income inequality (Disposable)", breaks = NULL, labels = NULL)) +
+  scale_fill_manual(values=c("#377EB8","#E41A1C"))+
+  scale_color_manual(values=c("#377EB8","#E41A1C"))+
   theme(legend.position="bottom",
         legend.direction = "horizontal",
         axis.text=element_text(size=15),
