@@ -11,9 +11,10 @@ rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 dfreg <- df1 %>% dplyr::select(
   egal = egal2,
-  class3,
+  class3,class11d,class6,
   homclass,
   homclass_wght,know_total,
+  homclass2,
   Q03pcm,
   edyears,
   female,
@@ -36,6 +37,28 @@ dfreg <- df1 %>% dplyr::select(
   na.omit()
 
 
+sjPlot::plot_grpfrq(df1$homclass_wght,var.grp = df1$class11d,type = "boxplot",ylim = c(0,0.8))
+
+sjPlot::plot_grpfrq(df1$homclass,var.grp = df1$class11d,type = "boxplot",ylim = c(0,0.8))
+
+
+df1$homclass2
+
+
+sjPlot::plot_model(model = lmer(homclass~factor(class11d)+edyears+Q03pcm+female+(1|country2),data = dfreg),type = "pred",terms = "class11d")
+
+sjPlot::plot_model(model = lmer(homclass_wght~factor(class11d)+edyears+Q03pcm+female+(1|country2),data = dfreg),type = "pred",terms = "class11d")
+
+
+sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="SWE")),type = "pred",terms = "class6")
+
+sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="DEU")),type = "pred",terms = "class6")
+
+sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="USA")),type = "pred",terms = "class6")
+
+
+
+df1$class11d
 dfreg <- 
   dfreg %>% 
   mutate(to_dummy(female),
@@ -85,6 +108,8 @@ dfreg <-
             Q03pcm_1,Q03pcm_2,Q03pcm_2,Q03pcm_4))
 names(dfreg)
 
+
+# dfreg$homclass<- dfreg$homclass2
 
 # Models 
 base <- lmer(egal~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)

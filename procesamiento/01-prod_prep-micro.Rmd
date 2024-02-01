@@ -1676,7 +1676,7 @@ df1$eindex2_gc <- group_center(x = df1$eindex2,grp = df1$country)
 
 df1 %>% select(dclass3,n_high,n_middle,n_low,outgroup,ingroup,eindex)
 df1$homclass2 <- as.numeric(df1$ingroup/df1$know_total)
-sjlabelled::set_label(df1$homclass3) <- "Class homogeneity"
+sjlabelled::set_label(df1$homclass3) <- "Class homogeneity (isko - v2)"
 df1$homclass2_gc <- group_center(x = df1$homclass2,grp = df1$country)
 # View(df1[,c("homclass","homclass_gc")])
 # Weighted EI index
@@ -1741,7 +1741,7 @@ df1$eindex_gc <- group_center(x = df1$eindex,grp = df1$country)
 
 df1 %>% select(dclass3,n_high,n_middle,n_low,outgroup,ingroup,eindex)
 df1$homclass3 <- as.numeric(df1$ingroup/df1$know_total)
-sjlabelled::set_label(df1$homclass3) <- "Class homogeneity"
+sjlabelled::set_label(df1$homclass3) <- "Class homogeneity (DIGCLASS version)"
 df1$homclass3_gc <- group_center(x = df1$homclass3,grp = df1$country)
 # View(df1[,c("homclass","homclass_gc")])
 # Weighted EI index
