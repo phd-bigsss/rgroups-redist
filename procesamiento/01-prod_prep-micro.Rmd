@@ -1829,6 +1829,36 @@ sjPlot::plot_frq(df1$socdist_tot,type = "histogram")
 #higher values represent higher socioeconomic distance from my contacts. In other words, higher values means that in average, my contacts are more different from me in terms of socioeconomic status (ISEI), while lower values represent higher homogeneity.
 ```
 
+```{r}
+
+sjmisc::frq(df1$v46)
+
+table(df1$country,df1$v46)
+
+# (1+4)/2
+# (5+9)/2
+# (10+19)/2
+# (20+49)/2
+# (50+99)/2
+# 100
+
+df1$week_cont <- as.numeric(car::recode(df1$v46,"c(8,9)=NA;1=2.5;2=7;3=14.5;4=34.5;5=74.5;6=100"))
+
+sjmisc::frq(df1$week_cont)
+sjPlot::tab_corr(df1[,c("know_total","week_cont","homclass")])
+
+
+a <- df1 %>% dplyr::select("know_total","week_cont","homclass") 
+a$country <- NULL
+a$week_cont <- as.factor(a$week_cont)
+polycor::hetcor(data = as.data.frame(a))
+
+
+
+sjPlot::plot_grpfrq(var.grp = df1$class6,var.cnt = df1$know_total,type = "box",ylim = c(0,10))
+sjPlot::plot_grpfrq(var.grp = df1$class6,var.cnt = df1$week_cont,type = "box",ylim = c(2.5,100))
+```
+
 # Demographics
 
 ```{r demographics}

@@ -17,7 +17,7 @@ dfreg <- df1 %>% dplyr::select(
   homclass,
   # homclass=homclass2,
   # homclass=homclass3,
-  know_total,
+  know_total=week_cont,
   Q03pcm,
   edyears,
   female,
@@ -40,6 +40,8 @@ dfreg <- df1 %>% dplyr::select(
   filter(country2 != "SVN") %>% 
   na.omit()
 
+# dfreg$know_total<- as.factor(dfreg$know_total)
+dfreg$know_total<- log(dfreg$know_total)
 
 # sjPlot::plot_grpfrq(df1$homclass_wght,var.grp = df1$class11d,type = "boxplot",ylim = c(0,0.8))
 # sjPlot::plot_grpfrq(df1$homclass,var.grp = df1$class11d,type = "boxplot",ylim = c(0,0.8))
@@ -67,7 +69,7 @@ dfreg$edyears_gc = group_center(dfreg$edyears, grp = dfreg$country2)
 dfreg$agenum_gc = group_center(dfreg$agenum, grp = dfreg$country2)
 dfreg$age2_gc = group_center(dfreg$age2, grp = dfreg$country2)
 dfreg$homclass_gc = group_center(dfreg$homclass, grp = dfreg$country2)
-dfreg$know_total_gc = group_center(dfreg$know_total, grp = dfreg$country2)
+# dfreg$know_total_gc = group_center(dfreg$know_total, grp = dfreg$country2)
 
 
 # EGP: dominance

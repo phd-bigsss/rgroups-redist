@@ -99,10 +99,14 @@ options(knitr.kable.NA = '') # NA en kable = ''
 ```
 \pagestyle{fancy}
 \fancyhead[R]{ \thepage}
-\fancyhead[L]{Julio Iturra-Sanhueza}
+\fancyhead[L]{Research Article Draft}
 # Introduction
 
 [~500 words]
+
+- What is the role of class-based network segregation on redistributive preferences?
+
+- Does economic inequality play a role in the relationship between class-based network segregation and redistributive preferences?
 
 # Theoretical views on class, social networks, and redistributive preferences
 
@@ -122,7 +126,7 @@ While prior research has predominantly concentrated on examining the impact of s
 
 ## Class relations and social networks
 
-As social relations within the occupational structure serve as the foundation for class analysis, widening the examination to other dimensions of social life, such as family dynamics, the development of friendships, and diverse social activities, can significantly enrich the scope of class analysis, particularly concerning its relation to attitude formation. In this sense, social stratification scholars have paid attention to the intersection of status positions and group membership as the observable patterns of association referred to as relational networks [@blau_inequality_1977]. Empirically, homophily is one of the most significant findings in network research, whereas the likelihood of tie formation between individuals of similar characteristics is strong [@mcpherson_birds_2001; @lazarsfeld_friendship_1954], such as age and gender in tracing friendship and family ties, as well as the segregated social environments alongside ethnicity and socioeconomic status [@bargsted_pautas_2020; @plaza_juntos_2022]. In addition, psychosocial factors such as socialization preferences and group dynamics also play a role in segregation processes, considering that isolated social environments decrease the interchange of world views, reinforcing preferences towards in-group members and polarizing attitudes [@visser_attitudes_2004; @diprete_segregation_2011]. Nonetheless, without denying the relevance of socialization preferences, segregation has been predominantly explained through the lens of social differentiation in social activities as foci of contact opportunities that ultimately consolidate social networks [@feld_focused_1981; @mcpherson_network_2019]. From this scope, we argue that class relations not only represent resources-based distinctions, but patterns of sociability and exchange observed in the differentiation of social ties.
+As social relations within the occupational structure serve as the foundation for class analysis, widening our examination to other dimensions of social life, such as family dynamics, the development of friendships, and diverse social activities, can significantly enrich the scope of class analysis, particularly concerning its relevance in political attitudes formation. In principle, social stratification scholars have traditionally paid attention to _differentiation_ as the observable patterns of association given by the intersection of status and group membership, which can be understood as relational networks between positions [@blau_inequality_1977]. Empirically, homophily is one of the most significant findings in network research, whereas the likelihood of tie formation between individuals of similar characteristics is strong [@mcpherson_birds_2001; @lazarsfeld_friendship_1954] around demographic characteristics that trace friendship and family ties such as age and gender, as well as the segregated social environments alongside ethnicity and socioeconomic status [@bargsted_pautas_2020; @plaza_juntos_2022]. In addition, psychosocial factors such as socialization preferences and group dynamics also play a role in segregation processes, considering that isolated social environments decrease the interchange of world views, reinforcing in-group selectivity and value similarity [@visser_attitudes_2004;@homans_human_1951]. Nonetheless, without denying the relevance of socialization preferences, segregation has been predominantly explained through the lens of social differentiation in social activities as foci of contact opportunities that ultimately consolidate social networks [@feld_focused_1981; @mcpherson_network_2019]. From this scope, we argue that class relations not only represent resources-based distinctions, but patterns of sociability and exchange observed in the differentiation of social ties.
 
 How classes are formed also provides insights regarding their social relations and sociability practices. In sociology, classes are understood as the everyday basis for action, given their labor market situation, that ultimately shapes their access to opportunities and resources [@weber_economy_1978]. According to habitus theory, classes incur a series of distinctive practices pivoted in cultural capital as the basis for mutual recognition [@bourdieu_distinction_1984]. Thus, classes seek to improve their position through the intergenerational transmission of resources, whereas similarities in friendship and family choices play a crucial role in the reproduction privilege. Additionally, while symbolic resources reinforce status distinctions, access to exclusive social activities in the upper class increases segregation at the expense of excluding the lower classes [@bourdieu_reproduccion_1981]. Ultimately, classes consolidate their demographic and cultural identities by mobilizing resources and shared sociability practices, ensuring intergenerational reproduction of their structural positions [@goldthorpe_sobre_1992]. Hence, the socialization of common lifestyles and shared worldviews facilitates the consolidation of social classes, whereas social resources embedded in social networks follow a pattern of accumulation and exclusion that ultimately leads to social segregation in both the upper and the lower bounds of the social structure.
  
@@ -130,13 +134,48 @@ Previous research on social class and tie formation has suggested that class per
 
 In contrast, cross-class embeddedness can be described regarding their social activities as well as through their changes across generations and time. In this regard, @pichler_social_2009 suggest that higher civic engagement in formal organizations increases the chances of bridging with diverse people among the upper class, in contrast to the working class, which tends to be more homogeneous in its civic engagement behavior. Similarly, other studies in Europe and South America have exhibited that the upper and intermediate classes hold increasingly diverse and prestigious social environments than the working classes, where being socially mobile does help to improve both dimensions in tie formation, whereas it does not equalize the weight of class background compared to those intergenerationally stable in the upper class [@cepic_how_2020;@carrascosa_class_2023]. Additionally, the few longitudinal evidence suggests that networks change following a dynamic of cumulative advantages regarding its composition in terms of prestige and diversity, where upper classes improve in both dimensions while the lower class shows more stability across the life course [@volker_social_2020]. 
 
-Theoretically, these studies account for class-based network segregation as the degree of connectedness of an individual to different occupations is meant to represent social resources embedded in social networks vertically in the social structure [@lin_social_2007]. Drawing on this approach, the attempts of stratification scholars have been focused on how social connections are distributed across the class structure as a matter of social integration [@blau_macrosociological_1977]. Besides, _homogeneity_  is described as the lack of cross-class network ties. It is indeed conceptually more proximate to the homophily principle because it is anchored in ego’s class position. At the same time, _diversity_ is defined as the rate of dissimilar ties or simply the total ties to certain groups that do not necessarily count with a reference position to describe the network composition. Hence, both approaches provide a set of alternatives for the study of social class from a network perspective that has been increasingly discussed in the stratification literature as well as in the scholarly discussion about social class and political attitudes. 
+Theoretically, these studies account for class-based network segregation as the degree of connectedness of an individual to different occupations is meant to represent social resources embedded in social networks vertically in the social structure [@lin_social_2007]. Drawing on this approach, the attempts of stratification scholars have been focused on how social connections are distributed across the class structure as a matter of social integration [@blau_inequality_1977]. Besides, _homogeneity_  is described as the lack of cross-class network ties. It is indeed conceptually more proximate to the homophily principle because it is anchored in ego’s class position. At the same time, _diversity_ is defined as the rate of dissimilar ties or simply the total ties to certain groups that do not necessarily count with a reference position to describe the network composition. Hence, both approaches provide a set of alternatives for the study of social class from a network perspective that has been increasingly discussed in the stratification literature as well as in the scholarly discussion about social class and political attitudes. 
 
 ## Network segregation and attitudes toward redistribution 
 
 Apart from the individual approach to attitude formation, we argue that people also form their opinions in the economic domain on the basis of their social relations. Despite the limited research on the link between social ties and attitudes in the economic domain, we identify two broad theoretical approaches that have discussed the role of social networks in attitude formation.
 
-On the one hand, the _Reference Groups_ approach accentuates the role of beliefs about economic inequality rooted in social comparison processes as an explanation through which people form their opinions about redistributive policies [@condon_economic_2020]. This hypothesis can be traced to the studies on images of class and perceived class conflicts [@Evans1992;@KelleyEvans1995]. Here, the initial argument is that people form their beliefs through the individual, family, friends, and coworkers experiences instead of the whole society, which is described as an availability heuristic that systematically biases inferences about inequality based on the homophily of reference groups [@Evans1992, p. 467]. From this perspective, how people infer the social world is linked to the degree of segregation in their immediate social environment, which influences the intensity and character of the information, ultimately shaping inequality perceptions [@mijs_is_2021]. Thus, conversations with friends, family, and work colleagues shape inequality beliefs through experience sharing. Interestingly, research employing collaborative games has shown that the socioeconomic diversity of participants in conversations contributes to reconstructing more accurate images of income and wealth inequalities than isolated individuals [@summers_deliberating_2022]. However, we argue that this research field has been more focused on the cognitive or informational dimension of preference formation through inequality perceptions [see @cansunar_who_2021;@garcia-castro_perceived_2022] or the role of informational treatments [see @Cruces2011;@mccall_exposure_2017;@becker_significant_2021], rather than empirically addressing the role of class segregation in social networks and its claimed influence on attitudes towards inequality.
+On the one hand, one approach accentuates the role of beliefs about economic inequality rooted in social comparison processes as an explanation through which people form their opinions about redistributive policies [@condon_economic_2020]. This hypothesis can be traced to the studies on class images and perceived class conflicts [@Evans1992;@KelleyEvans1995]. Here, the initial argument is that people form their beliefs through the individual, family, friends, and coworkers experiences instead of the whole society, which is described as an availability heuristic that systematically biases inferences about inequality based on the homophily of reference groups [@Evans1992, p. 467]. From this perspective, how people infer the social world is linked to the degree of segregation in their immediate social environment, which influences the intensity and character of the information, ultimately shaping inequality perceptions [@mijs_is_2021]. Thus, experience sharing in conversations with socioeconomically diverse networks has been proved to contribute to the accuracy of the images of income and wealth inequalities in contrast to people in more isolated discussion networks [@summers_deliberating_2022]. Despite this, we argue that this research field has been more focused on the cognitive dimension of preference formation through inequality perceptions, either relying on surveys [e.g. @cansunar_who_2021;@garcia-castro_perceived_2022] or experimental manipulations [e.g. @Cruces2011;@becker_significant_2021], rather than empirically addressing the role of class segregation in social networks and its claimed influence on attitudes in the economic domain.
+
+On the other hand, a different approach has suggested that the observed patterns of social ties through a network approach provide a broader image of class relations that ultimately contribute to the consolidation of social norms and group identity [@kalmijn_social_2007, p. 550]. This claim resembles the fact that classes are characterized as collectivities with differences in their degrees of cohesion and solidarity, encompassing unequal status-based social interactions that are linked to the individual or household material well-being, cultural perspectives, and political preferences that structure the broader social experiences [@morris_attenuation_1996, p. 48].
+
+More direct evidence on social ties, class, and redistributive preferences in general populations will be discussed here. First, starting with the case of the United States [@lee_consider_2023], then Sweden [@lindh_missing_2021], and cross-country comparisons in Europe [@paskov_crossclass_2022]. Additionally, studies on network segregation on preferences for market distribution of social services [@beck_explorando_2019] and attitudes towards inequality in general [@otero_power_2023].
+
+## Economic Inequality, segregation, and redistributive preferences
+
+Income inequality can deteriorate social bonding and increase segregation.
+ 
+* status anxiety among the upper-classes [@wilkinson_spirit_2010] and lower interpersonal trust  [@kragten_income_2017] 
+
+* limited opportunities for social mobility consequently reduce class permeability in social networks [@otero_differences_2023] 
+
+
+However, it has been discussed that inequality might also increase egalitarian preferences among those in better material situations. 
+
+* concerns about the negative consequences (e.g. crime) of inequality on overall social welfare, particularly in high-status groups (Altruism) [@rueda_who_2019]
+ 
+* convergence in egalitarian preferences in the upper-classes can be normatively grounded according to views about equality of opportunities (Procedural Justice) [@sachweh_why_2019]
+
+\pagebreak 
+
+# Overview
+
+## At the micro-level:
+
+- (H1) Being segregated in similar class environments polarize own class interests:
+    * Segregated lower (upper) classes hold more (less) redistributive preferences
+
+## At the macro-level:
+
+- (H2a) Scenario A (booster): Inequality increases the influence of class segregation on redistributive preferences (polarization) 
+
+- (H2b) Scenario B (mitigation): Inequality diminishes the influence of class segregation on redistributive preferences (consensus) 
+
 
 
 # Data, variables and method
@@ -150,5 +189,12 @@ On the one hand, the _Reference Groups_ approach accentuates the role of beliefs
 # Discussion and conclusion
 
 
+`r if (is_latex_output()) '
+# References {-}
+'`
+```{=tex}
+\scriptsize
+\singlespacing
+```
 
-# References
+
