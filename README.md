@@ -1,10 +1,8 @@
-# paper1
+#  Class-based network segregation, Economic Inequality and Redistributive Preferences across societies
 
-title: Inequality, reference groups and redistributive preferences
+Author: Julio Iturra-Sanhueza
 
-author: Julio Iturra-Sanhueza
-
-
+https://phd-bigsss.github.io/rgroups-redist/paper1_jiturra.pdf 
 
 git clone https://github.com/phd-bigsss/rgroups-redist.git
 Username: jciturras
