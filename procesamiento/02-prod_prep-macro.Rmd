@@ -86,11 +86,11 @@ wiid %>%
 ```{r Solt}
 load(file = here::here("input/data/original/swiid9_5/swiid9_5.rda"))
 solt <- 
-swiid_summary %>% dplyr::select(country,year,gini_disp,gini_mkt) %>% dplyr::filter(year %in% c(2016))
+swiid_summary %>% dplyr::select(country,year,gini_disp,gini_mkt,abs_red,rel_red) %>% dplyr::filter(year %in% c(2016))
 solt$ccode <- countrycode::countrycode(sourcevar = solt$country,origin = "country.name",destination = "iso3n")
 solt$country <- NULL
 solt_2017 <-  solt %>% filter(ccode %in% countries$ccode) %>% 
-  select(ccode,gini_disp,gini_mkt)
+  dplyr::select(ccode,gini_disp,gini_mkt,abs_red,rel_red)
 ```
 
 
@@ -216,6 +216,6 @@ df2 %>%
 
 ```{r save}
 save(df2,file = here::here("input/data/proc/study1_country.RData"))
-haven::write_dta(data = df2,path = here::here("input/data/proc/study1_country.dta"))
+# haven::write_dta(data = df2,path = here::here("input/data/proc/study1_country.dta"))
 sjPlot::view_df(df2,file =here::here("input/data/proc/codebook-s1.html") )
 ```

@@ -17,7 +17,9 @@ dfreg <- df1 %>% dplyr::select(
   homclass,
   # homclass=homclass2,
   # homclass=homclass3,
-  know_total=week_cont,
+  # know_total=week_cont,
+  class6,
+  know_total,
   Q03pcm,
   edyears,
   female,
@@ -39,7 +41,9 @@ dfreg <- df1 %>% dplyr::select(
          age2 = agenum ^ 2) %>%
   filter(country2 != "SVN") %>% 
   na.omit()
-
+dfreg$abs_red <- dfreg$gini_mkt - dfreg$gini_disp 
+dfreg$rel_red <- dfreg$abs_red/dfreg$gini_mkt
+summary(dfreg$rel_red)
 # dfreg$know_total<- as.factor(dfreg$know_total)
 dfreg$know_total<- log(dfreg$know_total)
 
@@ -47,9 +51,18 @@ dfreg$know_total<- log(dfreg$know_total)
 # sjPlot::plot_grpfrq(df1$homclass,var.grp = df1$class11d,type = "boxplot",ylim = c(0,0.8))
 # sjPlot::plot_model(model = lmer(homclass~factor(class11d)+edyears+Q03pcm+female+(1|country2),data = dfreg),type = "pred",terms = "class11d")
 # sjPlot::plot_model(model = lmer(homclass_wght~factor(class11d)+edyears+Q03pcm+female+(1|country2),data = dfreg),type = "pred",terms = "class11d")
-# sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="SWE")),type = "pred",terms = "class6")
-# sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="DEU")),type = "pred",terms = "class6")
-# sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="USA")),type = "pred",terms = "class6")
+sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="SWE")),type = "pred",terms = "class6",title = "Sweden")
+sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="DEU")),type = "pred",terms = "class6",title = "Germany")
+sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="GBR")),type = "pred",terms = "class6",title = "Great Britain")
+sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="USA")),type = "pred",terms = "class6",title = "United States")
+
+
+cowplot::plot_grid(
+  sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="SWE")),type = "pred",terms = "class6",title = "Sweden"),
+  sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="DEU")),type = "pred",terms = "class6",title = "Germany"),
+  sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="GBR")),type = "pred",terms = "class6",title = "Great Britain"),
+  sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="USA")),type = "pred",terms = "class6",title = "United States")
+)
 
 dfreg <- 
   dfreg %>% 
@@ -69,7 +82,7 @@ dfreg$edyears_gc = group_center(dfreg$edyears, grp = dfreg$country2)
 dfreg$agenum_gc = group_center(dfreg$agenum, grp = dfreg$country2)
 dfreg$age2_gc = group_center(dfreg$age2, grp = dfreg$country2)
 dfreg$homclass_gc = group_center(dfreg$homclass, grp = dfreg$country2)
-# dfreg$know_total_gc = group_center(dfreg$know_total, grp = dfreg$country2)
+dfreg$know_total_gc = group_center(dfreg$know_total, grp = dfreg$country2)
 
 
 # EGP: dominance
@@ -141,15 +154,54 @@ base_giniD_gc <-
   lmer(egal~homclass_gc+know_total_gc+class3+female_gc+agenum_gc+age2_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
-         gini_disp +logrgdpna + gv_spen+
+         gini_disp +logrgdpna + 
          (1|country2),data=dfreg,weights = WEIGHT)
+
+base_giniD_gc_gv <- 
+  lmer(egal~homclass_gc+know_total_gc+class3+female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +logrgdpna + gv_spen +
+         (1|country2),data=dfreg,weights = WEIGHT)
+
+base_giniD_gc_rel <- 
+  lmer(egal~homclass_gc+know_total_gc+class3+female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +logrgdpna + rel_red +
+         (1|country2),data=dfreg,weights = WEIGHT)
+
+
+
 int_homo_giniD_gc <- 
   update(base_giniD_gc, . ~ . 
          +homclass_gc*class3*gini_disp -(1|country2) +
            (homclass_gc+class3|country2))
 
+int_homo_giniD_gc_gv <- 
+  update(base_giniD_gc_gv, . ~ . 
+         +homclass_gc*class3*gini_disp -(1|country2) +
+           (homclass_gc+class3|country2))
+
+int_homo_giniD_gc_rel <- 
+  update(base_giniD_gc_rel, . ~ . 
+         +homclass_gc*class3*gini_disp -(1|country2) +
+           (homclass_gc+class3|country2))
+
+
+anova(base_giniD_gc,base_giniD_gc_gv)
+anova(base_giniD_gc,base_giniD_gc_rel)
 
 knitreg(list(base_giniM_gc,int_homo_giniM_gc,base_giniD_gc,int_homo_giniD_gc))
+
+knitreg(list(base_giniD_gc,base_giniD_gc_gv,base_giniD_gc_rel))
+
+anova(int_homo_giniD_gc,int_homo_giniD_gc_gv)
+anova(int_homo_giniD_gc,int_homo_giniD_gc_rel)
+
+knitreg(list(int_homo_giniD_gc,int_homo_giniD_gc_gv,int_homo_giniD_gc_rel))
+
+
 
 # CROSS-LEVEL INTERACTION WITH CENTERED VARIABLES -------------------------------------------------------
 ############################################################################-
