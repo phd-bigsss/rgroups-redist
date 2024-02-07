@@ -214,7 +214,6 @@ int_homo_relR_gc <-
 
 knitreg(list(base_relR_gc,int_homo_relR_gc))
 
-
 # CROSS-LEVEL INTERACTION WITH CENTERED VARIABLES -------------------------------------------------------
 ############################################################################-
 
