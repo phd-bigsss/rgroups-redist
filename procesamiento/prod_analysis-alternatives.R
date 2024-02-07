@@ -51,18 +51,13 @@ dfreg$know_total<- log(dfreg$know_total)
 # sjPlot::plot_grpfrq(df1$homclass,var.grp = df1$class11d,type = "boxplot",ylim = c(0,0.8))
 # sjPlot::plot_model(model = lmer(homclass~factor(class11d)+edyears+Q03pcm+female+(1|country2),data = dfreg),type = "pred",terms = "class11d")
 # sjPlot::plot_model(model = lmer(homclass_wght~factor(class11d)+edyears+Q03pcm+female+(1|country2),data = dfreg),type = "pred",terms = "class11d")
-sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="SWE")),type = "pred",terms = "class6",title = "Sweden")
-sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="DEU")),type = "pred",terms = "class6",title = "Germany")
-sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="GBR")),type = "pred",terms = "class6",title = "Great Britain")
-sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="USA")),type = "pred",terms = "class6",title = "United States")
 
-
-cowplot::plot_grid(
-  sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="SWE")),type = "pred",terms = "class6",title = "Sweden"),
-  sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="DEU")),type = "pred",terms = "class6",title = "Germany"),
-  sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="GBR")),type = "pred",terms = "class6",title = "Great Britain"),
-  sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="USA")),type = "pred",terms = "class6",title = "United States")
-)
+# cowplot::plot_grid(
+#   sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="SWE")),type = "pred",terms = "class6",title = "Sweden"),
+#   sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="DEU")),type = "pred",terms = "class6",title = "Germany"),
+#   sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="GBR")),type = "pred",terms = "class6",title = "Great Britain"),
+#   sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="USA")),type = "pred",terms = "class6",title = "United States")
+# )
 
 dfreg <- 
   dfreg %>% 
@@ -201,6 +196,23 @@ anova(int_homo_giniD_gc,int_homo_giniD_gc_rel)
 
 knitreg(list(int_homo_giniD_gc,int_homo_giniD_gc_gv,int_homo_giniD_gc_rel))
 
+
+# Relative Redistribution -------------------------------------------------
+
+base_relR_gc <- 
+  lmer(egal~homclass_gc+know_total_gc+class3+female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         rel_red +logrgdpna + 
+         (1|country2),data=dfreg,weights = WEIGHT)
+
+int_homo_relR_gc <- 
+  update(base_relR_gc, . ~ . 
+         +homclass_gc*class3*rel_red -(1|country2) +
+           (homclass_gc+class3|country2))
+
+
+knitreg(list(base_relR_gc,int_homo_relR_gc))
 
 
 # CROSS-LEVEL INTERACTION WITH CENTERED VARIABLES -------------------------------------------------------
