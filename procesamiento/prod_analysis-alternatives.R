@@ -30,22 +30,44 @@ dfreg <- df1 %>% dplyr::select(
   region,
   "gini_disp",
   "gini_mkt",
+  gini,
   gv_spen,
+  rel_red,
   d10d1,
+  s80s20,
+  top10,
+  palmaratio,
   rgdpna,
+  gdppercapita,
   oecd,
   country2, country
 ) %>%
   mutate(logrgdpna = log(rgdpna),
+         loggdppercapita=log(gdppercapita),
          edyears2 = edyears ^ 2,
          age2 = agenum ^ 2) %>%
   filter(country2 != "SVN") %>% 
+  # filter(country2 != "ZAF") %>%
+  # filter(country2 != "HUN") %>% 
+  filter(oecd == "OECD") %>%
   na.omit()
-dfreg$abs_red <- dfreg$gini_mkt - dfreg$gini_disp 
-dfreg$rel_red <- dfreg$abs_red/dfreg$gini_mkt
+
 summary(dfreg$rel_red)
 # dfreg$know_total<- as.factor(dfreg$know_total)
 dfreg$know_total<- log(dfreg$know_total)
+
+dfreg <- as.data.frame(dfreg)
+
+dfreg_country <- 
+dfreg %>% 
+  group_by(country2) %>% 
+  summarise_at(.vars = c("homclass","egal","gini_disp","gini_mkt",
+                         "rel_red","loggdppercapita"),
+               .funs = mean) %>% 
+  dplyr::select(-country2) 
+  
+sjPlot::tab_corr(dfreg_country,triangle = "lower")
+ggpairs(dfreg_country, lower=list(continuous="smooth"), diag = list(continuous = NULL))
 
 # sjPlot::plot_grpfrq(df1$homclass_wght,var.grp = df1$class11d,type = "boxplot",ylim = c(0,0.8))
 # sjPlot::plot_grpfrq(df1$homclass,var.grp = df1$class11d,type = "boxplot",ylim = c(0,0.8))
@@ -109,10 +131,9 @@ dfreg <-
             Q03pcm_1,Q03pcm_2,Q03pcm_2,Q03pcm_4))
 names(dfreg)
 
-
 # dfreg$homclass<- dfreg$homclass2
 
-# Models 
+# Micro level models -----------------------------------------------------------
 base <- lmer(egal~1 + (1|country2),data=dfreg,weights = WEIGHT); icc1<- performance::icc(base)
 homclass<- update(base, . ~ . +homclass)
 homclass_know_total<- update(homclass, . ~ . +know_total)
@@ -128,102 +149,138 @@ knitreg(models)
 
 # Interacciones cross-level -----------------------------------------------
 ## Gini Market--------------------------------------------------------------
-# int_homo_giniM <- update(rob1, . ~ . +class3*homclass*gini_mkt +logrgdpna -(1|country2) + (class3+homclass|country2))
-
 base_giniM_gc <- 
   lmer(egal~homclass_gc+know_total_gc+class3+female_gc+agenum_gc+age2_gc+
          edyears_gc +Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
-         gini_mkt +logrgdpna + gv_spen +
+         gini_mkt +loggdppercapita + 
          (1|country2),data=dfreg,weights = WEIGHT)
 int_homo_giniM_gc <- 
   update(base_giniM_gc, . ~ . 
          +homclass_gc*class3*gini_mkt -(1|country2) +
            (homclass_gc+class3|country2))
 
+knitreg(list(base_giniM_gc,int_homo_giniM_gc))
 
 ## Gini Disposable---------------------------------------------------------
-# int_homo_giniD <- update(rob1, . ~ . +class3*homclass*gini_disp + logrgdpna-(1|country2) + (class3+homclass|country2))
-
 base_giniD_gc <- 
   lmer(egal~homclass_gc+know_total_gc+class3+female_gc+agenum_gc+age2_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
-         gini_disp +logrgdpna + 
+         gini_disp +loggdppercapita + rel_red +
          (1|country2),data=dfreg,weights = WEIGHT)
-
-base_giniD_gc_gv <- 
-  lmer(egal~homclass_gc+know_total_gc+class3+female_gc+agenum_gc+age2_gc+
-         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
-         union_gc+workst_gc+
-         gini_disp +logrgdpna + gv_spen +
-         (1|country2),data=dfreg,weights = WEIGHT)
-
-base_giniD_gc_rel <- 
-  lmer(egal~homclass_gc+know_total_gc+class3+female_gc+agenum_gc+age2_gc+
-         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
-         union_gc+workst_gc+
-         gini_disp +logrgdpna + rel_red +
-         (1|country2),data=dfreg,weights = WEIGHT)
-
-
 
 int_homo_giniD_gc <- 
   update(base_giniD_gc, . ~ . 
          +homclass_gc*class3*gini_disp -(1|country2) +
            (homclass_gc+class3|country2))
 
-int_homo_giniD_gc_gv <- 
-  update(base_giniD_gc_gv, . ~ . 
-         +homclass_gc*class3*gini_disp -(1|country2) +
-           (homclass_gc+class3|country2))
+knitreg(list(base_giniD_gc,int_homo_giniD_gc))
 
-int_homo_giniD_gc_rel <- 
-  update(base_giniD_gc_rel, . ~ . 
-         +homclass_gc*class3*gini_disp -(1|country2) +
-           (homclass_gc+class3|country2))
-
-
-anova(base_giniD_gc,base_giniD_gc_gv)
-anova(base_giniD_gc,base_giniD_gc_rel)
-
-knitreg(list(base_giniM_gc,int_homo_giniM_gc,base_giniD_gc,int_homo_giniD_gc))
-
-knitreg(list(base_giniD_gc,base_giniD_gc_gv,base_giniD_gc_rel))
-
-anova(int_homo_giniD_gc,int_homo_giniD_gc_gv)
-anova(int_homo_giniD_gc,int_homo_giniD_gc_rel)
-
-knitreg(list(int_homo_giniD_gc,int_homo_giniD_gc_gv,int_homo_giniD_gc_rel))
-
-
-# Relative Redistribution -------------------------------------------------
-
-base_relR_gc <- 
+# Ratio d10d1 -------------------------------------------------------------
+base_d01d10_gc <- 
   lmer(egal~homclass_gc+know_total_gc+class3+female_gc+agenum_gc+age2_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
-         rel_red +logrgdpna + 
+         d10d1 +loggdppercapita + rel_red +
          (1|country2),data=dfreg,weights = WEIGHT)
 
-int_homo_relR_gc <- 
-  update(base_relR_gc, . ~ . 
+int_homo_d10d1_gc <- 
+  update(base_d01d10_gc, . ~ . 
+         +homclass_gc*class3*d10d1 -(1|country2) +
+           (homclass_gc+class3|country2))
+
+knitreg(list(base_d01d10_gc,int_homo_d10d1_gc))
+
+
+# Ratio Palma Ratio -------------------------------------------------------------
+base_palma_gc <- 
+  lmer(egal~homclass_gc+know_total_gc+class3+female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         palmaratio +loggdppercapita + rel_red +
+         (1|country2),data=dfreg,weights = WEIGHT)
+
+int_homo_palma_gc <- 
+  update(base_palma_gc, . ~ . 
+         +homclass_gc*class3*palmaratio -(1|country2) +
+           (homclass_gc+class3|country2))
+
+knitreg(list(base_palma_gc,int_homo_palma_gc))
+
+
+# Share s80s20 Ratio------------------------------------------------------------
+base_s80s20_gc <- 
+  lmer(egal~homclass_gc+know_total_gc+class3+female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         s80s20 +loggdppercapita + rel_red +
+         (1|country2),data=dfreg,weights = WEIGHT)
+
+int_homo_s80s20_gc <- 
+  update(base_s80s20_gc, . ~ . 
+         +homclass_gc*class3*s80s20 -(1|country2) +
+           (homclass_gc+class3|country2))
+
+knitreg(list(base_s80s20_gc,int_homo_s80s20_gc))
+
+# Share top10 -------------------------------------------------------------
+base_top10_gc <- 
+  lmer(egal~homclass_gc+know_total_gc+class3+female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         top10 +loggdppercapita + rel_red +
+         (1|country2),data=dfreg,weights = WEIGHT)
+
+int_homo_top10_gc <- 
+  update(base_top10_gc, . ~ . 
+         +homclass_gc*class3*top10 -(1|country2) +
+           (homclass_gc+class3|country2))
+
+knitreg(list(base_top10_gc,int_homo_top10_gc))
+
+
+# Relative redistribution-------------------------------------------------------
+base_relred_gc <- 
+  lmer(egal~homclass_gc+know_total_gc+class3+female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         rel_red +loggdppercapita + 
+         (1|country2),data=dfreg,weights = WEIGHT)
+
+int_homo_relred_gc <- 
+  update(base_relred_gc, . ~ . 
          +homclass_gc*class3*rel_red -(1|country2) +
            (homclass_gc+class3|country2))
 
+knitreg(list(base_relred_gc,int_homo_relred_gc))
 
-knitreg(list(base_relR_gc,int_homo_relR_gc))
 
-# CROSS-LEVEL INTERACTION WITH CENTERED VARIABLES -------------------------------------------------------
+
+# texreg::wordreg(list(base_giniD_gc,int_homo_giniD_gc,
+#                      base_d01d10_gc,int_homo_d10d1_gc,
+#                      base_palma_gc,int_homo_palma_gc,
+#                      base_s80s20_gc,int_homo_s80s20_gc,
+#                      base_top10_gc,int_homo_top10_gc,
+#                      base_relred_gc,int_homo_relred_gc
+#                      ),file = "output/tables/int_homo_ineq_full-sample.xls")
+
+
+texreg::wordreg(list(base_giniD_gc,int_homo_giniD_gc,
+                     base_d01d10_gc,int_homo_d10d1_gc,
+                     base_palma_gc,int_homo_palma_gc,
+                     base_s80s20_gc,int_homo_s80s20_gc,
+                     base_top10_gc,int_homo_top10_gc,
+                     base_relred_gc,int_homo_relred_gc
+                     ),file = "output/tables/int_homo_ineq_oecd.xls")
+
+# CROSS-LEVEL INTERACTION WITH CENTERED VARIABLES ------------------------------
 ############################################################################-
 
 
 ### Predicted values homo*class*GiniM ---------------------------------------
-# ginim_max<- round(max(dfreg$gini_mkt) ,2)
-# ginim_min<- round(min(dfreg$gini_mkt),2)
-
 ginim_max<- round(mean(dfreg$gini_mkt) + sd(dfreg$gini_mkt)  ,2)
-ginim_min<- round(min(dfreg$gini_mkt) -sd(dfreg$gini_mkt) ,2)
+ginim_min<- round(mean(dfreg$gini_mkt) -sd(dfreg$gini_mkt) ,2)
 ginim_mea<- round(mean(dfreg$gini_mkt),2)
 
 df_pred_giniM_gc <-
@@ -266,7 +323,7 @@ ggsave(plot = last_plot(),filename = "predict-egal-hom_class_giniM_fullsample_CW
 # ginim_min<- round(min(dfreg$gini_mkt),2)
 
 ginid_max<- round(mean(dfreg$gini_disp) + sd(dfreg$gini_disp)  ,2)
-ginid_min<- round(min(dfreg$gini_disp) -sd(dfreg$gini_disp) ,2)
+ginid_min<- round(mean(dfreg$gini_disp) -sd(dfreg$gini_disp) ,2)
 ginid_mea<- round(mean(dfreg$gini_disp),2)
 
 df_pred_giniD_gc <-
@@ -307,7 +364,6 @@ ggsave(plot = last_plot(),filename = "predict-egal-hom_class_giniD_fullsample_CW
 
 
 df_pred_giniD_gc_1 <- df_pred_giniD_gc %>% filter(class3!="Intermediate class (III+IV+V)")
-
 df_pred_giniD_gc_1 %>% 
   ggplot(aes(y=estimate,x=homclass_gc, fill=class3,color=class3,ymin=conf.low, ymax=conf.high)) +
   geom_line(size=0.75) +
@@ -333,114 +389,86 @@ ggsave(plot = last_plot(),filename = "predict-egal-hom_class_giniD_fullsample_CW
 
 
 
+### Predicted values homo*class*top10 ---------------------------------------
+top10_max<- round(mean(dfreg$top10) + sd(dfreg$top10)  ,2)
+top10_min<- round(mean(dfreg$top10) -sd(dfreg$top10) ,2)
+top10_mea<- round(mean(dfreg$top10),2)
+
+df_pred_top10_gc <-
+  predictions(
+    int_homo_top10_gc,newdata = datagrid(
+      top10 = c(top10_min, top10_mea, top10_max),
+      homclass_gc = seq(min(dfreg$homclass_gc), max(dfreg$homclass_gc), by= 0.1),
+      class3=levels(dfreg$class3)
+    )
+  )
+
+df_pred_top10_gc <- as.data.frame(df_pred_top10_gc)
+df_pred_top10_gc$top10 <- factor(df_pred_top10_gc$top10,labels = c("Top 10% (-1SD)","Top 10% (Mean)", "Top 10% (+1SD)"))
+
+df_pred_top10_gc %>% 
+  ggplot(aes(y=estimate,x=homclass_gc, fill=class3,color=class3,ymin=conf.low, ymax=conf.high)) +
+  geom_line(size=0.75) +
+  geom_point(size=2) +
+  geom_ribbon(alpha=0.1,size=1,width=.1,linetype=1) +
+  facet_wrap(~top10) +
+  labs(y = "Preferences for Redistribution",
+       x="Class-based network homogeneity (CWC)",
+       title = "Three-way interaccion effects for Preferences for Redistribution, Network segregation, Social class and Top 10% income Share") +
+  # scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
+  scale_x_continuous(sec.axis = sec_axis(~ . , name = "Top 10%", breaks = NULL, labels = NULL)) +
+  scale_fill_manual(values=c("#377EB8","#4DAF4A","#E41A1C"))+
+  scale_color_manual(values=c("#377EB8","#4DAF4A","#E41A1C"))+  
+  theme(legend.position="bottom",
+        legend.direction = "horizontal",
+        axis.text=element_text(size=15),
+        legend.title = element_blank(),
+        legend.background = element_blank(),
+        legend.box.background = element_rect(colour = "black"))
 
 
+ggsave(plot = last_plot(),filename = "predict-egal-hom_class_top10_fullsample_CWC.png",device = "png",
+       path = here::here("output/images"),width = 2,height = 1,units = "cm",scale = 18)
 
 
-# ### Predicted values homo*class*GiniM ---------------------------------------
-# # ginim_max<- round(max(dfreg$gini_mkt) ,2)
-# # ginim_min<- round(min(dfreg$gini_mkt),2)
-# 
-# ginim_max<- round(mean(dfreg$gini_mkt) + sd(dfreg$gini_mkt)  ,2)
-# ginim_min<- round(min(dfreg$gini_mkt) -sd(dfreg$gini_mkt) ,2)
-# ginim_mea<- round(mean(dfreg$gini_mkt),2)
-# 
-# df_pred_giniM <-
-#   predictions(
-#     int_homo_giniM,newdata = datagrid(
-#       gini_mkt = c(ginim_min, ginim_mea, ginim_max),
-#       Q03pcm = "T02",
-#       homclass = seq(0, 1, by= 0.1),
-#       class3 = levels(dfreg$class3),
-#       edyears = mean(dfreg$edyears),
-#       agenum = mean(dfreg$agenum),
-#       age2 = mean(dfreg$age2)
-#     )
-#   )
-# 
-# df_pred_giniM <- as.data.frame(df_pred_giniM)
-# # df_pred_giniM$gini_mkt <- factor(df_pred_giniM$gini_mkt,labels = c("Gini (-1SD)","Gini (Mean)", "Gini (+1SD)"))
-# 
-# # df_pred_giniM <- df_pred_giniM %>% filter(class3 != "Intermediate class (III+IV+V)")
-# 
-# df_pred_giniM %>% 
-#   ggplot(aes(y=estimate,x=homclass, fill=class3,color=class3,ymin=conf.low, ymax=conf.high)) +
-#   geom_line(size=0.75) +
-#   geom_point(size=2) +
-#   geom_ribbon(alpha=0.1,size=1,width=.1,linetype=1) +
-#   facet_wrap(~gini_mkt) +
-#   labs(y = "Preferences for Redistribution",
-#        x="Class-based network homogeneity",
-#        title = "Three-way interaccion effects for Preferences for Redistribution, Network segregation, Social class and Income Inequality") +
-#   # scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
-#   scale_x_continuous(sec.axis = sec_axis(~ . , name = "Income inequality (Market)", breaks = NULL, labels = NULL)) +
-#   scale_fill_manual(values=c("#377EB8","#4DAF4A","#E41A1C"))+
-#   scale_color_manual(values=c("#377EB8","#4DAF4A","#E41A1C"))+  
-#   theme(legend.position="bottom",
-#         legend.direction = "horizontal",
-#         axis.text=element_text(size=15),
-#         legend.title = element_blank(),
-#         legend.background = element_blank(),
-#         legend.box.background = element_rect(colour = "black"))
-# 
-# ggsave(plot = last_plot(),filename = "predict-egal-hom_class_giniM_fullsample.png",device = "png",
-#        path = here::here("output/images"),width = 2,height = 1,units = "cm",scale = 18)
-# 
-# ### Predicted values homo*class*GiniD ---------------------------------------
-# 
-# # ginid_max<- round(max(dfreg$gini_disp) ,2)
-# # ginid_min<- round(min(dfreg$gini_disp),2)
-# # ginid_mea<- round(mean(dfreg$gini_disp),2)
-# 
-# ginid_max<- round(mean(dfreg$gini_disp) + sd(dfreg$gini_disp)  ,2)
-# ginid_min<- round(min(dfreg$gini_disp) -sd(dfreg$gini_disp) ,2)
-# ginid_mea<- round(mean(dfreg$gini_disp),2)
-# 
-# 
-# df_pred_giniD <-
-#   predictions(
-#     int_homo_giniD,newdata = datagrid(
-#       gini_disp = c(ginid_min, ginid_mea, ginid_max),
-#       Q03pcm = "T02",
-#       homclass = seq(0, 1, by= 0.1),
-#       class3 = levels(dfreg$class3),
-#       edyears = mean(dfreg$edyears),
-#       agenum = mean(dfreg$agenum),
-#       age2 = mean(dfreg$age2)
-#     )
-#   )
-# 
-# df_pred_giniD <- as.data.frame(df_pred_giniD)
-# df_pred_giniD$gini_disp <- as.factor(df_pred_giniD$gini_disp)
-# 
-# df_pred_giniD %>% 
-#   ggplot(aes(y=estimate,x=homclass, fill=class3,color=class3,ymin=conf.low, ymax=conf.high)) +
-#   geom_line(size=0.75) +
-#   geom_point(size=2) +
-#   geom_ribbon(alpha=0.1,size=1,width=.1,linetype=1) +
-#   facet_wrap(~gini_disp) +
-#   labs(y = "Preferences for Redistribution",
-#        x="Class-based network homogeneity",
-#        title = "Three-way interaccion effects for Preferences for Redistribution, Network segregation, Social class and Income Inequality") +
-#   # scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
-#   scale_x_continuous(sec.axis = sec_axis(~ . , name = "Income inequality (Disposable)", breaks = NULL, labels = NULL)) +
-#   scale_fill_manual(values=c("#377EB8","#4DAF4A","#E41A1C"))+
-#   scale_color_manual(values=c("#377EB8","#4DAF4A","#E41A1C"))+  
-#   theme(legend.position="bottom",
-#         legend.direction = "horizontal",
-#         axis.text=element_text(size=15),
-#         legend.title = element_blank(),
-#         legend.background = element_blank(),
-#         legend.box.background = element_rect(colour = "black"))
-# 
-# ggsave(plot = last_plot(),filename = "predict-egal-hom_class_giniD_fullsample.png",device = "png",
-#        path = here::here("output/images"),width = 2,height = 1,units = "cm",scale = 18)
-# 
+### Predicted values homo*class*rel_red ---------------------------------------
+relred_max<- round(mean(dfreg$rel_red) + sd(dfreg$rel_red)  ,2)
+relred_min<- round(mean(dfreg$rel_red) -sd(dfreg$rel_red) ,2)
+relred_mea<- round(mean(dfreg$rel_red),2)
+
+df_pred_relred_gc <-
+  predictions(
+    int_homo_relred_gc,newdata = datagrid(
+      rel_red = c(relred_min, relred_mea, relred_max),
+      homclass_gc = seq(min(dfreg$homclass_gc), max(dfreg$homclass_gc), by= 0.1),
+      class3=levels(dfreg$class3)
+    )
+  )
+
+df_pred_relred_gc <- as.data.frame(df_pred_relred_gc)
+df_pred_relred_gc$rel_red <- factor(df_pred_relred_gc$rel_red,labels = c("Rel. Redis. (-1SD)","Rel. Redis. (Mean)", "Rel. Redis.(+1SD)"))
+
+df_pred_relred_gc %>% 
+  ggplot(aes(y=estimate,x=homclass_gc, fill=class3,color=class3,ymin=conf.low, ymax=conf.high)) +
+  geom_line(size=0.75) +
+  geom_point(size=2) +
+  geom_ribbon(alpha=0.1,size=1,width=.1,linetype=1) +
+  facet_wrap(~rel_red) +
+  labs(y = "Preferences for Redistribution",
+       x="Class-based network homogeneity (CWC)",
+       title = "Three-way interaccion effects for Preferences for Redistribution, Network segregation, Social class and Relative Redistribution") +
+  # scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
+  scale_x_continuous(sec.axis = sec_axis(~ . , name = "Relative Redistribution", breaks = NULL, labels = NULL)) +
+  scale_fill_manual(values=c("#377EB8","#4DAF4A","#E41A1C"))+
+  scale_color_manual(values=c("#377EB8","#4DAF4A","#E41A1C"))+  
+  theme(legend.position="bottom",
+        legend.direction = "horizontal",
+        axis.text=element_text(size=15),
+        legend.title = element_blank(),
+        legend.background = element_blank(),
+        legend.box.background = element_rect(colour = "black"))
 
 
-
-
-
-
-
+ggsave(plot = last_plot(),filename = "predict-egal-hom_class_relRed_fullsample_CWC.png",device = "png",
+       path = here::here("output/images"),width = 2,height = 1,units = "cm",scale = 18)
 

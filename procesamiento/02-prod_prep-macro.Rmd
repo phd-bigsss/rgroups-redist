@@ -72,12 +72,25 @@ wiid_d10d01 <-
   filter(year==2017) %>% 
   select(ccode,everything(),-iso,-country,-year,-giniindex) 
 
+wiid_s80s10 <- 
+  read.csv(file = here::here("input/data/original/wid-percentiles/wiid-data-P80P20.csv"),sep = ";")
+names(wiid_s80s10) <- tolower(names(wiid_s80s10))
+names(wiid_s80s10) <- gsub('\\.', '', names(wiid_s80s10))
+wiid_s80s10$ccode <- countrycode::countrycode(sourcevar = wiid_s80s10$iso,origin = "iso3c",destination = "iso3n")
+
+wiid_s80s10 <- 
+  wiid_s80s10 %>%  
+  filter(ccode %in% countries$ccode) %>% 
+  filter(year==2017) %>% 
+  select(ccode,everything(),-iso,-country,-year,-giniindex) 
+
 wiid_2017 <- 
 wiid %>% 
   filter(ccode %in% countries$ccode) %>% 
   filter(year==2017) %>% 
   select(ccode,everything(),-iso,-country,-year) %>% 
-  left_join(wiid_d10d01,by="ccode")
+  left_join(wiid_d10d01,by="ccode") %>% 
+  left_join(wiid_s80s10,by="ccode")
 ```
 
 
@@ -87,12 +100,16 @@ wiid %>%
 load(file = here::here("input/data/original/swiid9_5/swiid9_5.rda"))
 solt <- 
 swiid_summary %>% dplyr::select(country,year,gini_disp,gini_mkt,abs_red,rel_red) %>% dplyr::filter(year %in% c(2016))
+summary(solt)
 solt$ccode <- countrycode::countrycode(sourcevar = solt$country,origin = "country.name",destination = "iso3n")
 solt$country <- NULL
 solt_2017 <-  solt %>% filter(ccode %in% countries$ccode) %>% 
-  dplyr::select(ccode,gini_disp,gini_mkt,abs_red,rel_red)
-```
+  dplyr::select(ccode,gini_disp,gini_mkt)
 
+solt_2017$abs_red <- solt_2017$gini_mkt - solt_2017$gini_disp 
+solt_2017$rel_red <- solt_2017$abs_red/solt_2017$gini_mkt
+summary(solt_2017)
+```
 
 **Otero et.al (2023)**
 
