@@ -234,7 +234,6 @@ df1$pi_nteg<- rowMeans(df1[,c("pi_compa","pi_isola","pi_left")],na.rm = T)
 resits_count <- df1 %>%
   group_by(country,country2) %>%
   summarise(redist = mean(redist,na.rm = T),
-            egal
             homclass = mean(homclass,na.rm = T),
             pi_nteg = mean(pi_nteg,na.rm = T),
             pi_ntegm = median(pi_nteg,na.rm = T)
@@ -403,15 +402,40 @@ dfreg <- df1 %>% dplyr::select(
   filter(country2 != "SVN") %>%
   na.omit()
 
-df2$country2 <- countrycode::countrycode(sourcevar = df2$country,origin = "iso3n",destination = "country.name")
-df2$country3 <- countrycode::countrycode(sourcevar = df2$country,origin = "iso3n",destination = "iso3c")
-df2 <- bind_cols(df2,sjmisc::to_dummy(x = df2$class3,suffix = "numeric"))
+dfreg$country2 <- countrycode::countrycode(sourcevar = dfreg$country,origin = "iso3n",destination = "country.name")
+dfreg$country3 <- countrycode::countrycode(sourcevar = dfreg$country,origin = "iso3n",destination = "iso3c")
+dfreg <- bind_cols(dfreg,sjmisc::to_dummy(x = dfreg$class3,suffix = "numeric")) 
 
-macro_data <- df2 %>%
+macro_data <- dfreg %>%
   group_by(country2,country3) %>%
-  summarise_at(c("egal2","homclass","pi_isola","tr_courts","tr_inte","gini_disp","gini_mkt",
-                 "class3_1","class3_2","class3_3","gv_spen"), mean, na.rm = TRUE) %>% 
+  summarise_at(c("egal2","homclass","gini_disp","gini_mkt",
+                 "class3_1","class3_2","class3_3"), mean, na.rm = TRUE) %>% 
   as.data.frame()
+
+homclass_work <- dfreg %>%
+  filter(class3=="Working Class (VI+VII)") %>% 
+  group_by(country3) %>%
+  summarize(homclass_work= mean(homclass, na.rm = TRUE))
+
+homclass_inte <- dfreg %>%
+  filter(class3=="Intermediate class (III+IV+V)") %>% 
+  group_by(country3) %>%
+  summarize(homclass_inte= mean(homclass, na.rm = TRUE))
+
+homclass_serv <- dfreg %>%
+  filter(class3=="Service Class (I+II)") %>% 
+  group_by(country3) %>%
+  summarize(homclass_serv= mean(homclass, na.rm = TRUE))
+macro_data <- 
+macro_data %>% 
+  full_join(homclass_work) %>% 
+  full_join(homclass_inte) %>% 
+  full_join(homclass_serv)
+
+macro_data %>% 
+  dplyr::select(egal2,gini_disp,starts_with("homclass"),"class3_1","class3_2","class3_3") %>% 
+  correlation::correlation() %>% 
+  summary()
 
 macro_data %>%  
 ggplot(aes(y=egal2, x=homclass)) +
@@ -478,38 +502,43 @@ ggsave(plot = last_plot(),filename = "macro_service_homo.png",device = "png",
        path = here::here("output/images"),width = 1,height = 1,units = "cm",scale = 20)
 
 
-macro_data %>%  
-ggplot(aes(y=homclass, x=gini_disp)) +
-  # geom_point() +
-  geom_text(label=as.character(macro_data$country3)) +
-  # scale_x_continuous(limits = c(0,1))+
-  # scale_y_continuous(limits = c(1,5))+
-  geom_smooth(method = "lm",fullrange=TRUE) +
+
+homo_ineq <- dfreg %>%
+  # filter(country3 != "ZAF") %>%
+  group_by(country2,country3,class3) %>%
+  summarise_at(c("homclass","egal2","gini_disp","gini_mkt"), mean, na.rm = TRUE) %>% 
+  as.data.frame()
+
+homo_ineq %>%
+ggplot(aes(y=homclass, x=gini_disp, group=class3,fill=class3)) +
+  geom_text(label=as.character(homo_ineq$country3)) +
+  geom_smooth(method = "lm",fullrange=TRUE, color="black") +
+  facet_wrap(~class3) +
   xlab("Gini (Disposable)")+
   ylab("Class homogeneity") +
-  labs(title = "Class homogeneity and Gini (Disposable)",
-       caption =paste("r=",round(cor(macro_data$homclass,
-                                     macro_data$gini_disp),digits = 2)))
+  labs(title = "Class homogeneity and Gini (Disposable)") +
+  scale_fill_manual(values=c("#377EB8","#4DAF4A","#E41A1C")) +
+  theme(legend.position = "bottom",legend.title = element_blank())
+
+
+
+homo_ineq %>%
+ggplot(aes(y=egal2, x=homclass, group=class3,fill=class3)) +
+  geom_text(label=as.character(homo_ineq$country3)) +
+  geom_smooth(method = "lm",fullrange=TRUE, color="black") +
+  facet_wrap(~class3) +
+  xlab("Class homogeneity")+
+  ylab("Redistributive preferences") +
+  labs(title = "Class homogeneity and Redistributive preferences") +
+  scale_fill_manual(values=c("#377EB8","#4DAF4A","#E41A1C")) +
+  theme(legend.position = "bottom",legend.title = element_blank())
+
+
+
 
 ggsave(plot = last_plot(),filename = "macro_giniD_homo.png",device = "png",
-       path = here::here("output/images"),width = 1,height = 1,units = "cm",scale = 20)
+       path = here::here("output/images"),width = 1.5,height = 1,units = "cm",scale = 20)
 
-
-macro_data %>%  
-ggplot(aes(y=homclass, x=gini_mkt)) +
-  # geom_point() +
-  geom_text(label=as.character(macro_data$country3)) +
-  # scale_x_continuous(limits = c(0,1))+
-  # scale_y_continuous(limits = c(1,5))+
-  geom_smooth(method = "lm",fullrange=TRUE) +
-  xlab("Gini (Market)")+
-  ylab("Class homogeneity") +
-  labs(title = "Class homogeneity and Gini (Market)",
-       caption =paste("r=",round(cor(macro_data$homclass,
-                                     macro_data$gini_mkt),digits = 2)))
-
-ggsave(plot = last_plot(),filename = "macro_giniM_homo.png",device = "png",
-       path = here::here("output/images"),width = 1,height = 1,units = "cm",scale = 20)
 
 ```
 

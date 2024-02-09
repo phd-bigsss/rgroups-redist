@@ -1,0 +1,60 @@
+
+======================================================================================================================================================================================================
+                                                                                Model 1                 Model 2                 Model 3                 Model 4                 Model 5               
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+homclass_gc                                                                         -22.56  (5.99) ***       -6.94  (1.51) ***       -7.61  (1.96) ***       -7.45  (1.87) ***      -19.73  (6.07) ** 
+class3Intermediate class (III+IV+V)                                                   6.63  (2.31) **         2.22  (0.60) ***        2.63  (0.75) ***        2.36  (0.69) ***        6.77  (2.14) ** 
+class3Working Class (VI+VII)                                                         11.19  (2.95) ***        4.07  (0.82) ***        4.61  (1.01) ***        4.37  (0.94) ***       10.31  (2.77) ***
+loggdppercapita                                                                      -4.08  (3.89)           -3.41  (3.80)           -3.72  (3.87)           -3.30  (3.80)           -4.39  (3.89)    
+rel_red                                                                              -6.46 (18.39)            3.83 (16.33)           -0.21 (16.03)            3.05 (16.40)           -6.62 (17.81)    
+homclass_gc:class3Intermediate class (III+IV+V)                                      23.27  (7.56) **         8.37  (1.94) ***        8.73  (2.43) ***        8.82  (2.33) ***       19.75  (7.38) ** 
+homclass_gc:class3Working Class (VI+VII)                                             26.81  (6.71) ***       10.32  (1.80) ***       10.65  (2.21) ***       10.69  (2.15) ***       23.04  (6.60) ***
+gini_disp                                                                            -0.09  (0.32)                                                                                                    
+homclass_gc:gini_disp                                                                 0.48  (0.18) **                                                                                                 
+class3Intermediate class (III+IV+V):gini_disp                                        -0.14  (0.07) *                                                                                                  
+class3Working Class (VI+VII):gini_disp                                               -0.23  (0.09) **                                                                                                 
+homclass_gc:class3Intermediate class (III+IV+V):gini_disp                            -0.46  (0.22) *                                                                                                  
+homclass_gc:class3Working Class (VI+VII):gini_disp                                   -0.49  (0.19) *                                                                                                  
+d10d1                                                                                                         0.02  (0.05)                                                                            
+homclass_gc:d10d1                                                                                             0.02  (0.05)                                                                            
+class3Intermediate class (III+IV+V):d10d1                                                                    -0.00  (0.02)                                                                            
+class3Working Class (VI+VII):d10d1                                                                           -0.02  (0.02)                                                                            
+homclass_gc:class3Intermediate class (III+IV+V):d10d1                                                        -0.03  (0.06)                                                                            
+homclass_gc:class3Working Class (VI+VII):d10d1                                                                0.00  (0.06)                                                                            
+palmaratio                                                                                                                           -0.17  (1.12)                                                    
+homclass_gc:palmaratio                                                                                                                0.72  (0.84)                                                    
+class3Intermediate class (III+IV+V):palmaratio                                                                                       -0.30  (0.31)                                                    
+class3Working Class (VI+VII):palmaratio                                                                                              -0.54  (0.40)                                                    
+homclass_gc:class3Intermediate class (III+IV+V):palmaratio                                                                           -0.54  (1.00)                                                    
+homclass_gc:class3Working Class (VI+VII):palmaratio                                                                                  -0.32  (0.89)                                                    
+s80s20                                                                                                                                                        0.08  (0.23)                            
+homclass_gc:s80s20                                                                                                                                            0.16  (0.20)                            
+class3Intermediate class (III+IV+V):s80s20                                                                                                                   -0.04  (0.07)                            
+class3Working Class (VI+VII):s80s20                                                                                                                          -0.10  (0.09)                            
+homclass_gc:class3Intermediate class (III+IV+V):s80s20                                                                                                       -0.15  (0.24)                            
+homclass_gc:class3Working Class (VI+VII):s80s20                                                                                                              -0.07  (0.22)                            
+top10                                                                                                                                                                                -0.14  (0.34)    
+homclass_gc:top10                                                                                                                                                                     0.49  (0.22) *  
+class3Intermediate class (III+IV+V):top10                                                                                                                                            -0.17  (0.08) *  
+class3Working Class (VI+VII):top10                                                                                                                                                   -0.24  (0.10) *  
+homclass_gc:class3Intermediate class (III+IV+V):top10                                                                                                                                -0.44  (0.26)    
+homclass_gc:class3Working Class (VI+VII):top10                                                                                                                                       -0.47  (0.23) *  
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+AIC                                                                              325350.99               325377.33               325339.43               325358.08               325348.85            
+BIC                                                                              325647.80               325674.14               325636.24               325654.89               325645.67            
+Log Likelihood                                                                  -162640.50              -162653.66              -162634.71              -162644.04              -162639.43            
+Num. obs.                                                                         35610                   35610                   35610                   35610                   35610               
+Num. groups: country2                                                                31                      31                      31                      31                      31               
+Var: country2 (Intercept)                                                            75.88                   78.62                   77.50                   78.33                   75.31            
+Var: country2 homclass_gc                                                             0.05                    0.02                    1.88                    1.89                    2.23            
+Var: country2 class3Intermediate class (III+IV+V)                                     3.88                    3.95                    3.44                    3.47                    3.17            
+Var: country2 class3Working Class (VI+VII)                                            9.76                   10.97                   10.37                   10.43                    9.37            
+Cov: country2 (Intercept) homclass_gc                                                 1.88                    1.17                    2.72                    1.92                    2.84            
+Cov: country2 (Intercept) class3Intermediate class (III+IV+V)                        -0.62                   -1.44                   -0.80                   -0.94                   -0.66            
+Cov: country2 (Intercept) class3Working Class (VI+VII)                               -4.71                   -6.03                   -5.37                   -5.76                   -4.48            
+Cov: country2 homclass_gc class3Intermediate class (III+IV+V)                        -0.02                   -0.02                    2.09                    2.02                    2.06            
+Cov: country2 homclass_gc class3Working Class (VI+VII)                               -0.12                   -0.09                    1.38                    1.31                    1.42            
+Cov: country2 class3Intermediate class (III+IV+V) class3Working Class (VI+VII)        4.92                    5.41                    4.73                    4.84                    4.19            
+Var: Residual                                                                       484.54                  484.64                  484.56                  484.58                  484.49            
+======================================================================================================================================================================================================
+*** p < 0.001; ** p < 0.01; * p < 0.05
