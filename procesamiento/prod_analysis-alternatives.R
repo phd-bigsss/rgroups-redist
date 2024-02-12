@@ -11,14 +11,14 @@ rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 dfreg <- df1 %>% dplyr::select(
   egal = egal2,
-  class3,
+  class3=class6,
   # class3=digclass3,
   # class3=dclass3,
   homclass,
   # homclass=homclass2,
   # homclass=homclass3,
   # know_total=week_cont,
-  class6,
+  # class6,
   know_total,
   Q03pcm,
   edyears,
@@ -356,12 +356,11 @@ interaction_list <- as.list(setNames(interaction_terms, interaction_terms))
 #                   file = "output/tables/int_homo_ineq_full-sample.txt")
 
 
-texreg::plotreg(list(int_homo_giniD_gc,
+texreg::screenreg(list(int_homo_giniD_gc,
                       int_homo_d10d1_gc,
                       int_homo_palma_gc,
                       int_homo_s80s20_gc,
-                      int_homo_top10_gc),single.row = T,
-                  custom.coef.map = interaction_list) +
+                      int_homo_top10_gc),single.row = T,"output/tables/int_homo_ineq_full-sample_class6.txt") 
 
 # texreg::screenreg(list(int_homo_giniD_gc,
 #                      int_homo_d10d1_gc,

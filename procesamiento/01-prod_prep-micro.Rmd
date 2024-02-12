@@ -599,6 +599,19 @@ df1$class3 <- car::recode(df1$class11d,as.factor = T,
 sjlabelled::set_label(df1$class3) <- "Social Class"
 frq(df1$class3)
 
+
+df1$class3_V <- car::recode(df1$class11d,as.factor = T,
+                            levels =c('Service Class (I+II)',
+                                      'Intermediate class (III+IV)',
+                                      'Working Class (V+VI+VII)'), 
+                            "1:2='Service Class (I+II)';
+                             3:6='Intermediate class (III+IV)';
+                             7:11='Working Class (V+VI+VII)'")
+
+sjlabelled::set_label(df1$class3_V) <- "Social Class (V to Working Class)"
+frq(df1$class3_V)
+
+
 # Class Scheme 5 classes
 df1$class5 <- car::recode(
   df1$class11d,
@@ -814,7 +827,7 @@ df1$digclass11d <-
                          levels = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
                          labels =  c("I", "II", "IIIab", "IVa", "IVb", 
                                      "IVc", "V", "VI", "VIIa", "VIIb")) 
-sjlabelled::set_label(df1$digclass11d) <- "Social Class"
+sjlabelled::set_label(df1$digclass11d) <- "Social Class (isko - v2)"
 frq(df1$digclass11d)
 
 # Class Scheme 3 classes
@@ -826,8 +839,22 @@ df1$digclass3 <- car::recode(df1$digclass11d,as.factor = T,
                              3:7='Intermediate class (III+IV+V)';
                              8:11='Working Class (VI+VII)'")
 
-sjlabelled::set_label(df1$digclass3) <- "Social Class"
+sjlabelled::set_label(df1$digclass3) <- "Social Class (isko - v2) "
 frq(df1$digclass3)
+
+
+df1$digclass3_V <- car::recode(df1$digclass11d,as.factor = T,
+                            levels =c('Service Class (I+II)',
+                                      'Intermediate class (III+IV)',
+                                      'Working Class (V+VI+VII)'), 
+                            "1:2='Service Class (I+II)';
+                             3:6='Intermediate class (III+IV)';
+                             7:11='Working Class (V+VI+VII)'")
+
+sjlabelled::set_label(df1$digclass3_V) <- "Social Class (V to Working Class - isko - v2)"
+frq(df1$digclass3_V)
+
+
 
 # Class Scheme 5 classes
 df1$digclass5 <- car::recode(
@@ -1028,7 +1055,7 @@ df1$dclass11d <-
                          labels =  c("I", "II", "IIIa","IIIb", "IVa", "IVb", 
                                      "IVc", "V", "VI", "VIIa", "VIIb")) 
 frq(df1$dclass11d)
-sjlabelled::set_label(df1$dclass11d) <- "Social Class"
+sjlabelled::set_label(df1$dclass11d) <- "Social Class (EGP11 -  DIGICLASS)"
 
 
 # Class Scheme 3 classes
@@ -1037,13 +1064,67 @@ df1$dclass3 <- car::recode(df1$dclass11d,as.factor = T,
                                       'Intermediate class (III+IV+V)',
                                       'Working Class (VI+VII)'), 
                             "1:2='Service Class (I+II)';
-                             3:7='Intermediate class (III+IV+V)';
-                             8:11='Working Class (VI+VII)'")
+                             3:8='Intermediate class (III+IV+V)';
+                             9:11='Working Class (VI+VII)'")
 
-sjlabelled::set_label(df1$dclass3) <- "Social Class"
-frq(df1$dclass3)
-frq(df1$class3)
-frq(df1$digclass3)
+sjlabelled::set_label(df1$dclass3) <- "Social Class (EGP3 -  DIGICLASS)"
+
+
+# Class Scheme 3 classes -  V to working class
+df1$dclass3_V <- car::recode(df1$dclass11d,as.factor = T,
+                            levels =c('Service Class (I+II)',
+                                      'Intermediate class (III+IV)',
+                                      'Working Class (V+VI+VII)'), 
+                            "1:2='Service Class (I+II)';
+                             3:7='Intermediate class (III+IV)';
+                             8:11='Working Class (V+VI+VII)'")
+
+sjlabelled::set_label(df1$dclass3_V) <- "Social Class (V to Working Class - DIGCLASS)"
+frq(df1$dclass3_V)
+
+
+# Class Scheme 3 classes -  IIIb to working class
+
+df1$dclass3_III <- car::recode(df1$dclass11d,as.factor = T,
+                            levels =c('Service Class',
+                                      'Intermediate class',
+                                      'Working Class'), 
+                            "c(1,2)='Service Class';c(3,5,6,7,8)='Intermediate class';c(4,9,10,11)='Working Class'")
+
+sjlabelled::set_label(df1$dclass3_III) <- "Social Class (IIIb to Working Class - DIGCLASS)"
+frq(df1$dclass3_III)
+
+# Class Scheme 3 classes -  IIIb and V to working class
+df1$dclass3_III_V <- car::recode(df1$dclass11d,as.factor = T,
+                            levels =c('Service Class',
+                                      'Intermediate class',
+                                      'Working Class'), 
+                            "c(1,2)='Service Class';c(3,5,6,7)='Intermediate class';c(4,8,9,10,11)='Working Class'")
+
+sjlabelled::set_label(df1$dclass3_III_V) <- "Social Class (IIIb+V to Working Class - DIGCLASS)"
+frq(df1$dclass3_III)
+
+# Class Scheme 6 classes
+df1$dclass6 <- car::recode(
+  df1$dclass11d,
+  as.factor = T,
+  levels = c(
+    'Service class (I - higher grade)',
+    'Service class (II - lower grade)',
+    'Routine non-manual (IIIa+b)',
+    'Petty-bourgeoise (IVa+b+c)',
+    'Skilled manual workers and supv. (V+VI)',
+    'Non-skilled manual workers (VIIa+b)'
+  ),
+  "1='Service class (I - higher grade)';
+   2='Service class (II - lower grade)';
+   3:4='Routine non-manual (IIIa+b)';
+   5:7='Petty-bourgeoise (IVa+b+c)';
+   8:9='Skilled manual workers and supv. (V+VI)';
+   10:11='Non-skilled manual workers (VIIa+b)'"
+)
+
+sjlabelled::set_label(df1$dclass6) <- "Social Class (DIGCLASS)"
 ```
 
 
@@ -1511,7 +1592,7 @@ sjlabelled::set_label(df1$hindex_10) <- "D-index: 10 ocupations"
 ```
 
 - using my original coding
-```{r homogeneity-v01}
+```{r homogeneity-v01-V-to-intermediate}
 # EI homophily index
 df1$ingroup <- NA 
 df1 %>% select(class3,n_high,n_middle,n_low,ingroup)
@@ -1529,7 +1610,7 @@ df1$outgroup <- ifelse(df1$class3=="Working Class (VI+VII)",rowSums(df1[,c("n_mi
 
 # df1$eindex<- (df1$outgroup-df1$ingroup)/(df1$outgroup+df1$ingroup)
 df1$eindex<- (df1$ingroup-df1$outgroup)/(df1$outgroup+df1$ingroup)
-sjlabelled::set_label(df1$eindex) <- "EI homophily index"
+sjlabelled::set_label(df1$eindex) <- "EI homophily index (isko v1 - V to Intermediate)"
 #frq(df1$eindex)
 #hist.default(df1$eindex)
 df1$eindex_gc <- group_center(x = df1$eindex,grp = df1$country)
@@ -1537,7 +1618,7 @@ df1$eindex_gc <- group_center(x = df1$eindex,grp = df1$country)
 
 df1 %>% select(class3,n_high,n_middle,n_low,outgroup,ingroup,eindex)
 df1$homclass <- as.numeric(df1$ingroup/df1$know_total)
-sjlabelled::set_label(df1$homclass) <- "Class homogeneity"
+sjlabelled::set_label(df1$homclass) <- "Class homogeneity (V to Intermediate)"
 df1$homclass_gc <- group_center(x = df1$homclass,grp = df1$country)
 # View(df1[,c("homclass","homclass_gc")])
 # Weighted EI index
@@ -1560,6 +1641,42 @@ hist.default(df1$homclass_wght)
 # Group means
 df1 <- df1 %>% group_by(country) %>% mutate(eindex_gm=mean(eindex,na.rm=T),
                                             homclass_gm=mean(homclass,na.rm=T))  
+```
+
+
+```{r homogeneity-v01-V-to-working}
+# EI homophily index
+df1$ingroup <- NA 
+df1 %>% select(class3_V,n_high,n_middle,n_low,ingroup)
+df1$ingroup <- ifelse(df1$class3_V=="Service Class (I+II)",df1$n_high,df1$ingroup)
+df1$ingroup <- ifelse(df1$class3_V=="Intermediate class (III+IV)",df1$n_middle,df1$ingroup)
+df1$ingroup <- ifelse(df1$class3_V=="Working Class (V+VI+VII)",df1$n_low,df1$ingroup)
+#frq(df1$ingroup)
+
+df1$outgroup <- NA 
+df1 %>% select(class3_V,n_high,n_middle,n_low,outgroup)
+df1$outgroup <- ifelse(df1$class3_V=="Service Class (I+II)",rowSums(df1[,c("n_low","n_middle")],na.rm = T),df1$outgroup)
+df1$outgroup <- ifelse(df1$class3_V=="Intermediate class (III+IV)",rowSums(df1[,c("n_low","n_high")],na.rm = T),df1$outgroup)
+df1$outgroup <- ifelse(df1$class3_V=="Working Class (V+VI+VII)",rowSums(df1[,c("n_middle","n_high")],na.rm=T),df1$outgroup)
+#frq(df1$outgroup)
+
+# df1$eindex<- (df1$outgroup-df1$ingroup)/(df1$outgroup+df1$ingroup)
+df1$eindex_V<- (df1$ingroup-df1$outgroup)/(df1$outgroup+df1$ingroup)
+sjlabelled::set_label(df1$eindex_V) <- "EI homophily index (isko v1 - V to Working)"
+#frq(df1$eindex)
+#hist.default(df1$eindex)
+df1$eindex_gc <- group_center(x = df1$eindex,grp = df1$country)
+#hist.default(df1$eindex_gc)
+
+df1 %>% select(class3_V,n_high,n_middle,n_low,outgroup,ingroup,eindex_V)
+df1$homclass_V <- as.numeric(df1$ingroup/df1$know_total)
+sjlabelled::set_label(df1$homclass_V) <- "Class homogeneity (isko v1 - V to Working)"
+df1$homclass_V_gc <- group_center(x = df1$homclass_V,grp = df1$country)
+# View(df1[,c("homclass","homclass_gc")])
+# Weighted EI index
+# https://arxiv.org/pdf/2109.00348.pdf
+
+# Thus, an EI score of -1 means complete homophily- the individual only has relationships with actors of the same “type” as they themselves are. An EI score of 1 means complete heterophily- all the alters are of a different “type” than they themselves are. Finally, an EI score of 0 means that an equal number of alters are of both the same “type” as the ego, and different types
 ```
 
 ```{r homogeneity-strong-v01}
@@ -1650,7 +1767,7 @@ sjlabelled::set_label(df1$homclass_res) <- "Class homogeneity (R's)"
 
 - Using my edited original coding. I recoded the variables from n_employees y self_employed. The class scheme changed a bit, where the Service class was overestimated. This should be better:
 
-```{r homogeneity-v02}
+```{r homogeneity-v02-V-intermediate}
 # EI homophily index
 df1$ingroup <- NA 
 df1 %>% select(digclass3,n_high,n_middle,n_low,ingroup)
@@ -1678,6 +1795,43 @@ df1 %>% select(dclass3,n_high,n_middle,n_low,outgroup,ingroup,eindex)
 df1$homclass2 <- as.numeric(df1$ingroup/df1$know_total)
 sjlabelled::set_label(df1$homclass3) <- "Class homogeneity (isko - v2)"
 df1$homclass2_gc <- group_center(x = df1$homclass2,grp = df1$country)
+# View(df1[,c("homclass","homclass_gc")])
+# Weighted EI index
+# https://arxiv.org/pdf/2109.00348.pdf
+
+# Group means
+df1 <- df1 %>% group_by(country) %>% mutate(eindex2_gm=mean(eindex2,na.rm=T),
+                                            homclass2_gm=mean(homclass2,na.rm=T))
+```
+
+```{r homogeneity-v02-V-working}
+# EI homophily index
+df1$ingroup <- NA 
+df1 %>% select(digclass3_V,n_high,n_middle,n_low,ingroup)
+df1$ingroup <- ifelse(df1$digclass3_V=="Service Class (I+II)",df1$n_high,df1$ingroup)
+df1$ingroup <- ifelse(df1$digclass3_V=="Intermediate class (III+IV)",df1$n_middle,df1$ingroup)
+df1$ingroup <- ifelse(df1$digclass3_V=="Working Class (V+VI+VII)",df1$n_low,df1$ingroup)
+#frq(df1$ingroup)
+
+df1$outgroup <- NA 
+df1 %>% select(digclass3,n_high,n_middle,n_low,outgroup)
+df1$outgroup <- ifelse(df1$digclass3_V=="Service Class (I+II)",rowSums(df1[,c("n_low","n_middle")],na.rm = T),df1$outgroup)
+df1$outgroup <- ifelse(df1$digclass3_V=="Intermediate class (III+IV)",rowSums(df1[,c("n_low","n_high")],na.rm = T),df1$outgroup)
+df1$outgroup <- ifelse(df1$digclass3_V=="Working Class (V+VI+VII)",rowSums(df1[,c("n_middle","n_high")],na.rm=T),df1$outgroup)
+#frq(df1$outgroup)
+
+# df1$eindex<- (df1$outgroup-df1$ingroup)/(df1$outgroup+df1$ingroup)
+df1$eindex2_V<- (df1$ingroup-df1$outgroup)/(df1$outgroup+df1$ingroup)
+sjlabelled::set_label(df1$eindex2_V) <- "EI homophily index (isko - v2- V to Working)"
+#frq(df1$eindex)
+#hist.default(df1$eindex2)
+df1$eindex2_V_gc <- group_center(x = df1$eindex2_V,grp = df1$country)
+#hist.default(df1$eindex2_gc)
+
+df1 %>% select(dclass3_V,n_high,n_middle,n_low,outgroup,ingroup,eindex)
+df1$homclass2_V <- as.numeric(df1$ingroup/df1$know_total)
+sjlabelled::set_label(df1$homclass2_V) <- "Class homogeneity (isko - v2- V to Working)"
+df1$homclass2_V_gc <- group_center(x = df1$homclass2_V,grp = df1$country)
 # View(df1[,c("homclass","homclass_gc")])
 # Weighted EI index
 # https://arxiv.org/pdf/2109.00348.pdf
@@ -1715,7 +1869,7 @@ sjlabelled::set_label(df1$homclass2_res) <- "Class homogeneity (R's)"
 # https://arxiv.org/pdf/2109.00348.pdf
 ```
 
-```{r homogeneity-R-digclass}
+```{r homogeneity-R-digclass-V-intermediate}
 # EI homophily index
 df1$ingroup <- NA 
 df1 %>% select(class3,n_high,n_middle,n_low,ingroup)
@@ -1744,6 +1898,96 @@ df1$homclass3 <- as.numeric(df1$ingroup/df1$know_total)
 sjlabelled::set_label(df1$homclass3) <- "Class homogeneity (DIGCLASS version)"
 df1$homclass3_gc <- group_center(x = df1$homclass3,grp = df1$country)
 # View(df1[,c("homclass","homclass_gc")])
+# Weighted EI index
+# https://arxiv.org/pdf/2109.00348.pdf
+
+
+# Thus, an EI score of -1 means complete homophily- the individual only has relationships with actors of the same “type” as they themselves are. An EI score of 1 means complete heterophily- all the alters are of a different “type” than they themselves are. Finally, an EI score of 0 means that an equal number of alters are of both the same “type” as the ego, and different types
+```
+
+```{r homogeneity-R-digclass-V-working}
+# EI homophily index
+df1$ingroup <- NA 
+df1 %>% select(dclass3_V,n_high,n_middle,n_low,ingroup)
+df1$ingroup <- ifelse(df1$dclass3_V=="Service Class (I+II)",df1$n_high,df1$ingroup)
+df1$ingroup <- ifelse(df1$dclass3_V=="Intermediate class (III+IV)",df1$n_middle,df1$ingroup)
+df1$ingroup <- ifelse(df1$dclass3_V=="Working Class (V+VI+VII)",df1$n_low,df1$ingroup)
+#frq(df1$ingroup)
+
+df1$outgroup <- NA 
+df1 %>% select(dclass3_V,n_high,n_middle,n_low,outgroup)
+df1$outgroup <- ifelse(df1$dclass3_V=="Service Class (I+II)",rowSums(df1[,c("n_low","n_middle")],na.rm = T),df1$outgroup)
+df1$outgroup <- ifelse(df1$dclass3_V=="Intermediate class (III+IV)",rowSums(df1[,c("n_low","n_high")],na.rm = T),df1$outgroup)
+df1$outgroup <- ifelse(df1$dclass3_V=="Working Class (V+VI+VII)",rowSums(df1[,c("n_middle","n_high")],na.rm=T),df1$outgroup)
+#frq(df1$outgroup)
+
+# df1$eindex<- (df1$outgroup-df1$ingroup)/(df1$outgroup+df1$ingroup)
+df1$eindex3_V<- (df1$ingroup-df1$outgroup)/(df1$outgroup+df1$ingroup)
+sjlabelled::set_label(df1$eindex3_V) <- "EI homophily index"
+#frq(df1$eindex)
+#hist.default(df1$eindex)
+df1$eindex3_V_gc <- group_center(x = df1$eindex3_V,grp = df1$country)
+#hist.default(df1$eindex_gc)
+
+df1 %>% select(dclass3,n_high,n_middle,n_low,outgroup,ingroup,eindex)
+df1$homclass3_V <- as.numeric(df1$ingroup/df1$know_total)
+sjlabelled::set_label(df1$homclass3_V) <- "Class homogeneity (DIGCLASS version - V to Working)"
+df1$homclass3_V_gc <- group_center(x = df1$homclass3_V,grp = df1$country)
+# View(df1[,c("homclass","homclass_gc")])
+# Weighted EI index
+# https://arxiv.org/pdf/2109.00348.pdf
+
+
+# Thus, an EI score of -1 means complete homophily- the individual only has relationships with actors of the same “type” as they themselves are. An EI score of 1 means complete heterophily- all the alters are of a different “type” than they themselves are. Finally, an EI score of 0 means that an equal number of alters are of both the same “type” as the ego, and different types
+```
+
+```{r homogeneity-R-digclass-IIIb-working}
+# EI homophily index
+df1$ingroup <- NA 
+df1 %>% select(dclass3_III,n_high,n_middle,n_low,ingroup)
+df1$ingroup <- ifelse(df1$dclass3_III=="Service Class",df1$n_high,df1$ingroup)
+df1$ingroup <- ifelse(df1$dclass3_III=="Intermediate class",df1$n_middle,df1$ingroup)
+df1$ingroup <- ifelse(df1$dclass3_III=="Working Class",df1$n_low,df1$ingroup)
+#frq(df1$ingroup)
+
+df1$outgroup <- NA 
+df1 %>% select(dclass3_III,n_high,n_middle,n_low,outgroup)
+df1$outgroup <- ifelse(df1$dclass3_III=="Service Class",rowSums(df1[,c("n_low","n_middle")],na.rm = T),df1$outgroup)
+df1$outgroup <- ifelse(df1$dclass3_III=="Intermediate class",rowSums(df1[,c("n_low","n_high")],na.rm = T),df1$outgroup)
+df1$outgroup <- ifelse(df1$dclass3_III=="Working Class",rowSums(df1[,c("n_middle","n_high")],na.rm=T),df1$outgroup)
+#frq(df1$outgroup)
+
+
+df1 %>% select(dclass3_III,n_high,n_middle,n_low,outgroup,ingroup,eindex)
+df1$homclass3_III <- as.numeric(df1$ingroup/df1$know_total)
+sjlabelled::set_label(df1$homclass3_III) <- "Class homogeneity (DIGCLASS version - IIIb to Working)"
+# Weighted EI index
+# https://arxiv.org/pdf/2109.00348.pdf
+
+
+# Thus, an EI score of -1 means complete homophily- the individual only has relationships with actors of the same “type” as they themselves are. An EI score of 1 means complete heterophily- all the alters are of a different “type” than they themselves are. Finally, an EI score of 0 means that an equal number of alters are of both the same “type” as the ego, and different types
+```
+
+```{r homogeneity-R-digclass-IIIb-V-working}
+# EI homophily index
+df1$ingroup <- NA 
+df1 %>% select(dclass3_III_V,n_high,n_middle,n_low,ingroup)
+df1$ingroup <- ifelse(df1$dclass3_III_V=="Service Class",df1$n_high,df1$ingroup)
+df1$ingroup <- ifelse(df1$dclass3_III_V=="Intermediate class",df1$n_middle,df1$ingroup)
+df1$ingroup <- ifelse(df1$dclass3_III_V=="Working Class",df1$n_low,df1$ingroup)
+#frq(df1$ingroup)
+
+df1$outgroup <- NA 
+df1 %>% select(dclass3_III_V,n_high,n_middle,n_low,outgroup)
+df1$outgroup <- ifelse(df1$dclass3_III_V=="Service Class",rowSums(df1[,c("n_low","n_middle")],na.rm = T),df1$outgroup)
+df1$outgroup <- ifelse(df1$dclass3_III_V=="Intermediate class",rowSums(df1[,c("n_low","n_high")],na.rm = T),df1$outgroup)
+df1$outgroup <- ifelse(df1$dclass3_III_V=="Working Class",rowSums(df1[,c("n_middle","n_high")],na.rm=T),df1$outgroup)
+#frq(df1$outgroup)
+
+
+df1 %>% select(dclass3_III_V,n_high,n_middle,n_low,outgroup,ingroup,eindex)
+df1$homclass3_III_V <- as.numeric(df1$ingroup/df1$know_total)
+sjlabelled::set_label(df1$homclass3_III_V) <- "Class homogeneity (DIGCLASS version - IIIb+V to Working)"
 # Weighted EI index
 # https://arxiv.org/pdf/2109.00348.pdf
 
@@ -1845,8 +2089,9 @@ table(df1$country,df1$v46)
 df1$week_cont <- as.numeric(car::recode(df1$v46,"c(8,9)=NA;1=2.5;2=7;3=14.5;4=34.5;5=74.5;6=100"))
 
 sjmisc::frq(df1$week_cont)
-sjPlot::tab_corr(df1[,c("know_total","week_cont","homclass")])
+sjPlot::tab_corr(df1[,c("know_total","week_cont","homclass","homclass_V","homclass2","homclass2_V")])
 
+df1$homclass
 
 a <- df1 %>% dplyr::select("know_total","week_cont","homclass") 
 a$country <- NULL
