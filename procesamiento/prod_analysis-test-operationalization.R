@@ -281,15 +281,15 @@ homo3_V_giniD <-
   lmer(egal~ 
          homclass3_V_gc+
          know_total_gc+
-         dclass3+
+         dclass3_V+
          female_gc+agenum_gc+age2_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
          gini_disp +loggdppercapita + rel_red + 
          homclass3_V_gc*
-         dclass3*
+         dclass3_V*
          gini_disp +
-         (homclass3_V_gc+dclass3|country2),data=dfreg,weights = WEIGHT)
+         (homclass3_V_gc+dclass3_V|country2),data=dfreg,weights = WEIGHT)
 
 homo3_III_giniD <- 
   lmer(egal~ 
