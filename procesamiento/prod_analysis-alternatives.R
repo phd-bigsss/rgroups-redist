@@ -11,7 +11,8 @@ rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 dfreg <- df1 %>% dplyr::select(
   egal = egal2,
-  class3=class6,
+  class3,
+  # class3=class6,
   # class3=digclass3,
   # class3=dclass3,
   homclass,
@@ -28,9 +29,8 @@ dfreg <- df1 %>% dplyr::select(
   workst,
   WEIGHT,
   region,
-  "gini_disp",
+  "gini_disp"=gini,
   "gini_mkt",
-  gini,
   gv_spen,
   rel_red,
   d10d1,
@@ -150,13 +150,13 @@ rob4 <- update(rob3, . ~ . -(1|country2) + prop_work + prop_serv + (homclass|cou
 # anova(rob1,rob2)
 # Interactions segregation x class
 int_homo <- update(rob4, . ~ . +class3*homclass)
-
 models <- list(homclass,homclass_know_total,full1,rob1,rob3,rob4,int_homo)
 knitreg(models)
 
+# Models for homogeneity by socoial class and inequality 
 fit_homclass <-
-  lmer(homclass~1 +class3+female+agenum+age2 +
-         edyears+ Q03pcm+union+workst +
+  lmer(homclass~1 +class3+female_gc+agenum_gc+age2_gc +
+         edyears_gc + Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+union+workst_gc +
          prop_work + prop_inte + 
          (class3|country2),data=dfreg,weights = WEIGHT)
 fit_homclass_giniM <- update(fit_homclass, . ~ . +class3*gini_mkt+loggdppercapita+rel_red)
@@ -167,8 +167,46 @@ fit_homclass_s80s20<- update(fit_homclass, . ~ .+class3*s80s20+loggdppercapita+r
 fit_homclass_top10 <- update(fit_homclass, . ~ . +class3*top10+loggdppercapita+rel_red)
 
 knitreg(list(fit_homclass,fit_homclass_giniM,
-             fit_homclass_giniD,fit_homclass_d10d1,fit_homclass_palma,
+                ,fit_homclass_d10d1,fit_homclass_palma,
              fit_homclass_s80s20,fit_homclass_top10))
+
+
+plot_predictions(fit_homclass, condition = "class3")
+
+slopes_giniD <- plot_slopes(fit_homclass_giniD, variables = "class3", condition = list("gini_disp" = "threenum"),draw = F)
+slopes_giniD$contrast <- factor(x = as.factor(slopes_giniD$contrast),levels = c("Non-skilled manual workers (VIIa+b) - Service class (I - higher grade)",
+                                                                     "Skilled manual workers and supv. (V+VI) - Service class (I - higher grade)",
+                                                                     "Petty-bourgeoise (IVa+b+c) - Service class (I - higher grade)",             
+                                                                     "Routine non-manual (IIIa+b) - Service class (I - higher grade)",           
+                                                                     "Service class (II - lower grade) - Service class (I - higher grade)") )
+
+plot_predictions(fit_homclass_giniD, condition = list("class3",gini_disp = "threenum"))
+plot_predictions(fit_homclass_giniD, condition = list("class3",gini_disp = range))
+
+slopes_giniD %>% 
+  ggplot(aes(y=estimate,x=contrast, fill=gini_disp,color=gini_disp, group=gini_disp,ymin=conf.low, ymax=conf.high)) +
+  geom_point(position=position_dodge(width=0.9),size=2) +
+  geom_errorbar(position=position_dodge(width=0.9),width=0.1) + 
+  geom_hline(yintercept = 0) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 20))
+
+slopes_giniM <- plot_slopes(fit_homclass_giniM, variables = "class3", condition = list("class3","gini_mkt" = "threenum"),draw = F)
+slopes_giniM$contrast <- factor(x = as.factor(slopes_giniM$contrast),levels = c("Non-skilled manual workers (VIIa+b) - Service class (I - higher grade)",
+                                                                                "Skilled manual workers and supv. (V+VI) - Service class (I - higher grade)",
+                                                                                "Petty-bourgeoise (IVa+b+c) - Service class (I - higher grade)",             
+                                                                                "Routine non-manual (IIIa+b) - Service class (I - higher grade)",           
+                                                                                "Service class (II - lower grade) - Service class (I - higher grade)") )
+
+plot_predictions(fit_homclass_giniM, condition = list("class3",gini_mkt = "threenum"))
+plot_predictions(fit_homclass_giniM, condition = list("class3",gini_mkt = range))
+
+slopes_giniM %>% 
+  ggplot(aes(y=estimate,x=contrast, fill=gini_mkt,color=gini_mkt, group=gini_mkt,ymin=conf.low, ymax=conf.high)) +
+  geom_point(position=position_dodge(width=0.9),size=2) +
+  geom_errorbar(position=position_dodge(width=0.9),width=0.1) + 
+  geom_hline(yintercept = 0) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 20))
+
 
 # knitreg(list(fit_homclass,fit_homclass_giniM,
 #              fit_homclass_giniD,fit_homclass_d10d1,fit_homclass_palma,
@@ -305,6 +343,89 @@ int_homo_relred_gc <-
 
 knitreg(list(base_relred_gc,int_homo_relred_gc))
 
+
+
+# LABELS PARA TABLAS ------------------------------------------------------
+{            
+interaction_terms6 <- c(
+  "(Intercept)",
+  "homclass_gc",
+  "know_total_gc",
+  "class3Service class (II - lower grade)",
+  "class3Routine non-manual (IIIa+b)",
+  "class3Petty-bourgeoise (IVa+b+c)",
+  "class3Skilled manual workers and supv. (V+VI)",
+  "class3Non-skilled manual workers (VIIa+b)",
+  "loggdppercapita",
+  "rel_red",
+  "homclass_gc:class3Service class (II - lower grade)",
+  "homclass_gc:class3Routine non-manual (IIIa+b)",
+  "homclass_gc:class3Petty-bourgeoise (IVa+b+c)",
+  "homclass_gc:class3Skilled manual workers and supv. (V+VI)",
+  "homclass_gc:class3Non-skilled manual workers (VIIa+b)",
+  "gini_disp",
+  "homclass_gc:gini_disp",
+  "class3Service class (II - lower grade):gini_disp",
+  "class3Routine non-manual (IIIa+b):gini_disp",
+  "class3Petty-bourgeoise (IVa+b+c):gini_disp",
+  "class3Skilled manual workers and supv. (V+VI):gini_disp",
+  "class3Non-skilled manual workers (VIIa+b):gini_disp",
+  "homclass_gc:class3Service class (II - lower grade):gini_disp",
+  "homclass_gc:class3Routine non-manual (IIIa+b):gini_disp",
+  "homclass_gc:class3Petty-bourgeoise (IVa+b+c):gini_disp",
+  "homclass_gc:class3Skilled manual workers and supv. (V+VI):gini_disp",
+  "homclass_gc:class3Non-skilled manual workers (VIIa+b):gini_disp",
+  "d10d1",
+  "homclass_gc:d10d1",
+  "class3Service class (II - lower grade):d10d1",
+  "class3Routine non-manual (IIIa+b):d10d1",
+  "class3Petty-bourgeoise (IVa+b+c):d10d1",
+  "class3Skilled manual workers and supv. (V+VI):d10d1",
+  "class3Non-skilled manual workers (VIIa+b):d10d1",
+  "homclass_gc:class3Service class (II - lower grade):d10d1",
+  "homclass_gc:class3Routine non-manual (IIIa+b):d10d1",
+  "homclass_gc:class3Petty-bourgeoise (IVa+b+c):d10d1",
+  "homclass_gc:class3Skilled manual workers and supv. (V+VI):d10d1",
+  "homclass_gc:class3Non-skilled manual workers (VIIa+b):d10d1",
+  "palmaratio",
+  "homclass_gc:palmaratio",
+  "class3Service class (II - lower grade):palmaratio",
+  "class3Routine non-manual (IIIa+b):palmaratio",
+  "class3Petty-bourgeoise (IVa+b+c):palmaratio",
+  "class3Skilled manual workers and supv. (V+VI):palmaratio",
+  "class3Non-skilled manual workers (VIIa+b):palmaratio",
+  "homclass_gc:class3Service class (II - lower grade):palmaratio",
+  "homclass_gc:class3Routine non-manual (IIIa+b):palmaratio",
+  "homclass_gc:class3Petty-bourgeoise (IVa+b+c):palmaratio",
+  "homclass_gc:class3Skilled manual workers and supv. (V+VI):palmaratio",
+  "homclass_gc:class3Non-skilled manual workers (VIIa+b):palmaratio",
+  "s80s20",
+  "homclass_gc:s80s20",
+  "class3Service class (II - lower grade):s80s20",
+  "class3Routine non-manual (IIIa+b):s80s20",
+  "class3Petty-bourgeoise (IVa+b+c):s80s20",
+  "class3Skilled manual workers and supv. (V+VI):s80s20",
+  "class3Non-skilled manual workers (VIIa+b):s80s20",
+  "homclass_gc:class3Service class (II - lower grade):s80s20",
+  "homclass_gc:class3Routine non-manual (IIIa+b):s80s20",
+  "homclass_gc:class3Petty-bourgeoise (IVa+b+c):s80s20",
+  "homclass_gc:class3Skilled manual workers and supv. (V+VI):s80s20",
+  "homclass_gc:class3Non-skilled manual workers (VIIa+b):s80s20",
+  "top10",
+  "homclass_gc:top10",
+  "class3Service class (II - lower grade):top10",
+  "class3Routine non-manual (IIIa+b):top10",
+  "class3Petty-bourgeoise (IVa+b+c):top10",
+  "class3Skilled manual workers and supv. (V+VI):top10",
+  "class3Non-skilled manual workers (VIIa+b):top10",
+  "homclass_gc:class3Service class (II - lower grade):top10",
+  "homclass_gc:class3Routine non-manual (IIIa+b):top10",
+  "homclass_gc:class3Petty-bourgeoise (IVa+b+c):top10",
+  "homclass_gc:class3Skilled manual workers and supv. (V+VI):top10",
+  "homclass_gc:class3Non-skilled manual workers (VIIa+b):top10")
+
+
+
 interaction_terms <- c(
   "homclass_gc",
   "class3Intermediate class (III+IV+V)",
@@ -344,32 +465,21 @@ interaction_terms <- c(
   "homclass_gc:class3Intermediate class (III+IV+V):top10",
   "homclass_gc:class3Working Class (VI+VII):top10"
 )
+
 # Convert the character vector to a named list
 interaction_list <- as.list(setNames(interaction_terms, interaction_terms))
-
-# texreg::screenreg(list(int_homo_giniD_gc,
-#                       int_homo_d10d1_gc,
-#                       int_homo_palma_gc,
-#                       int_homo_s80s20_gc,
-#                       int_homo_top10_gc),single.row = T,
-#                   custom.coef.map = interaction_list,
-#                   file = "output/tables/int_homo_ineq_full-sample.txt")
-
+interaction_list6 <- as.list(setNames(interaction_terms6, interaction_terms6))
+}
 
 texreg::screenreg(list(int_homo_giniD_gc,
                       int_homo_d10d1_gc,
                       int_homo_palma_gc,
                       int_homo_s80s20_gc,
-                      int_homo_top10_gc),single.row = T,"output/tables/int_homo_ineq_full-sample_class6.txt") 
+                      int_homo_top10_gc),
+                  # custom.coef.map = interaction_list6,
+                  # "output/tables/int_homo_ineq_full-sample_class6.txt",
+                  single.row = T) 
 
-# texreg::screenreg(list(int_homo_giniD_gc,
-#                      int_homo_d10d1_gc,
-#                      int_homo_palma_gc,
-#                      int_homo_s80s20_gc,
-#                      int_homo_top10_gc
-#                      ),single.row = T,
-#                   custom.coef.map = interaction_list,
-#                   file = "output/tables/int_homo_ineq_oecd.txt")
 
 # CROSS-LEVEL INTERACTION WITH CENTERED VARIABLES ------------------------------
 ############################################################################-

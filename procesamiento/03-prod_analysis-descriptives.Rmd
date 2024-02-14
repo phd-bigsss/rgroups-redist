@@ -432,8 +432,10 @@ macro_data %>%
   full_join(homclass_inte) %>% 
   full_join(homclass_serv)
 
+
 macro_data %>% 
-  dplyr::select(egal2,gini_disp,starts_with("homclass"),"class3_1","class3_2","class3_3") %>% 
+  dplyr::filter(country3!="ZAF") %>% 
+  dplyr::select(egal2,gini_disp,starts_with("homclass")) %>% 
   correlation::correlation() %>% 
   summary()
 
@@ -520,6 +522,8 @@ ggplot(aes(y=homclass, x=gini_disp, group=class3,fill=class3)) +
   scale_fill_manual(values=c("#377EB8","#4DAF4A","#E41A1C")) +
   theme(legend.position = "bottom",legend.title = element_blank())
 
+ggsave(plot = last_plot(),filename = "macro_giniD_homo.png",device = "png",
+       path = here::here("output/images"),width = 1.5,height = 1,units = "cm",scale = 20)
 
 
 homo_ineq %>%
@@ -534,10 +538,6 @@ ggplot(aes(y=egal2, x=homclass, group=class3,fill=class3)) +
   theme(legend.position = "bottom",legend.title = element_blank())
 
 
-
-
-ggsave(plot = last_plot(),filename = "macro_giniD_homo.png",device = "png",
-       path = here::here("output/images"),width = 1.5,height = 1,units = "cm",scale = 20)
 
 
 ```
