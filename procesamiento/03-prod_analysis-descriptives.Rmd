@@ -434,7 +434,7 @@ macro_data %>%
 
 
 macro_data %>% 
-  dplyr::filter(country3!="ZAF") %>% 
+  # dplyr::filter(country3!="ZAF") %>% 
   dplyr::select(egal2,gini_disp,starts_with("homclass")) %>% 
   correlation::correlation() %>% 
   summary()
@@ -539,7 +539,7 @@ ggplot(aes(y=egal2, x=homclass, group=class3,fill=class3)) +
 
 
 
-
+31*31*3
 ```
 
 # Check on homogeneity

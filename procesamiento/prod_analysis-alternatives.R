@@ -11,6 +11,9 @@ rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 dfreg <- df1 %>% dplyr::select(
   egal = egal2,
+  # egal = perineq,
+  # egal = redist,
+  # egal = prefineq,
   class3,
   # class3=class6,
   # class3=digclass3,
@@ -171,7 +174,36 @@ knitreg(list(fit_homclass,fit_homclass_giniM,
              fit_homclass_s80s20,fit_homclass_top10))
 
 
-plot_predictions(fit_homclass, condition = "class3")
+plot_predictions(model = fit_homclass_giniD,condition = "class")
+
+predict_gini_class<- predictions(fit_homclass_giniD, newdata = datagrid(gini_disp = dfreg$gini_disp,class3=levels(dfreg$class3)))
+predict_gini_class <- predict_gini_class %>% dplyr::select(gini_disp,class3,estimate, conf.low, conf.high) %>% as.data.frame()
+
+predict_gini_class$gini_id <- as.character(predict_gini_class$gini_disp) 
+temp1 <- 
+dfreg %>% 
+  group_by(country2,gini_disp) %>% 
+  summarise(gini_disp=mean(gini_disp)) %>% 
+  mutate(gini_id=as.character(gini_disp)) %>% 
+  dplyr::select(-gini_disp)
+
+fit1<- predict_gini_class %>% left_join(temp1,by = "gini_id")
+
+library(ggrepel)
+fit1 %>%
+  ggplot(aes(y=estimate,x=gini_disp, fill=class3,color=class3, group=class3,ymin=conf.low, ymax=conf.high)) +
+  geom_smooth(method = "lm",fullrange=TRUE) +
+  geom_text_repel(aes(x = gini_disp, y = estimate, label = country2),data = fit1,max.overlaps = 31,seed = 123) +
+  geom_ribbon(alpha=0.1) +
+  xlab("Gini (Disposable)")+
+  ylab("Class homogeneity") +
+  facet_grid(~class3) +
+  labs(title = "Class homogeneity and Gini (Disposable)") +
+  scale_fill_manual(values=c("#377EB8","#4DAF4A","#E41A1C")) +
+  scale_color_manual(values=c("#377EB8","#4DAF4A","#E41A1C")) +
+  theme(legend.position = "bottom") 
+
+
 
 slopes_giniD <- plot_slopes(fit_homclass_giniD, variables = "class3", condition = list("gini_disp" = "threenum"),draw = F)
 slopes_giniD$contrast <- factor(x = as.factor(slopes_giniD$contrast),levels = c("Non-skilled manual workers (VIIa+b) - Service class (I - higher grade)",
