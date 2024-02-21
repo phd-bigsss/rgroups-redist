@@ -38,6 +38,20 @@ countries$ccode <- as.numeric(countries$country)
 countries$countryname <- as_character(countries$country)
 ```
 
+
+Revisar:
+
+https://wid.world/codes-dictionary#post-tax-income
+
+```
+ssc install wid
+
+help wid
+
+wid, indicators(gcainc) areas(_all) perc(_all) ages(992) pop(j) clear
+```
+
+
 **World Income Inequality Database (WIID)** 
 
 > UNU-WIDER, World Income Inequality Database (WIID) Companion dataset (wiidcountry and/or wiidglobal). Version 30 June 2022. https://doi.org/10.35188/UNU-WIDER/WIIDcomp-300622
@@ -118,7 +132,7 @@ otero <-
   read.csv(file = here::here("input/data/original/otero23.csv"),sep = ";")
 otero$ccode <- countrycode::countrycode(sourcevar = otero$iso3n,origin = "iso2c",destination = "iso3n")
 otero$gdp <- gsub('\\,', '',otero$gdp) 
-otero<- otero %>% select(ccode,gv_spen,individualism,gini,gdp)
+otero<- otero %>% select(ccode,gv_spen,individualism)
 ```
 
 
@@ -228,6 +242,7 @@ df2$rgdpna_z <- center(log(df2$rgdpna))
 
 df2 %>% 
   select(country3,ends_with("_c")) %>% group_by(country3) %>% summarise_all(.funs = mean) %>% View()
+table(df2$country2)
 ```
 
 

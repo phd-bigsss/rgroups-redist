@@ -134,6 +134,17 @@ sjlabelled::set_label(df1$egal2) <- "Redistributive attitudes (2 items)"
 # #hist.default(df1$egal2)
 ```
 
+# Trust
+
+```{r}
+# sjmisc::frq(df1$v35)
+df1$socialtrust <- car::recode(df1$v35,recodes = "c(0,8,9)=NA")
+df1$socialtrust <- set_na(df1$socialtrust,na = c(0,8,9))
+df1$socialtrust <- sjmisc::rec(x = df1$socialtrust,rec = "rev")
+# sjmisc::frq(df1$socialtrust)
+# hist.default(df1$socialtrust)
+```
+
 # Social status
 
 ```{r income-hhold}
