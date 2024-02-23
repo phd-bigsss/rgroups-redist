@@ -43,12 +43,27 @@ Revisar:
 
 https://wid.world/codes-dictionary#post-tax-income
 
-```
-ssc install wid
+```{r}
+wid_gini <- haven::read_dta(here::here("input/data/original/wid_gini.dta"))
+wid_ratios <- haven::read_dta(here::here("input/data/original/wid_ratios.dta"))
+wid_shares <- haven::read_dta(here::here("input/data/original/wid_shares.dta"))
 
-help wid
+# wid_gini_2018 <- wid_gini %>% filter(year==2018)
+# wid_gini_2018$year[wid_gini_2018$year==2018] <- 2016
+# wid_gini_2018$country_yr <- stringi::stri_replace_all(str = wid_gini_2018$country_yr,replacement = "2016",regex = "2018")
 
-wid, indicators(gcainc) areas(_all) perc(_all) ages(992) pop(j) clear
+wid_df <-wid_ratios  %>% 
+  dplyr::left_join(wid_shares,by="country_yr") %>% 
+  dplyr::left_join(wid_gini,by="country_yr") 
+
+names(wid_df)
+# summary(wid_df)
+wid_df <- 
+wid_df %>% 
+  select(country=country.x,year=year.x,country_yr,starts_with("wid_"))
+
+wid_df$ccode <- countrycode::countrycode(sourcevar = wid_df$country,origin = "iso2c",destination = "iso3n")
+wid_df <- wid_df %>% filter(year==2018)%>% select(ccode,wid_sharetop10,wid_rp90p50,wid_rd10d01,wid_gini_disp) 
 ```
 
 
@@ -64,7 +79,6 @@ wiid_long1 <-
 wiid_long %>% 
   filter(ccode %in% countries$ccode) %>% 
   filter(year==2017)
-
 ```
 
 ```{r}
@@ -110,6 +124,7 @@ wiid %>%
 
 
 **Solt SWDIID**
+
 ```{r Solt}
 load(file = here::here("input/data/original/swiid9_5/swiid9_5.rda"))
 solt <- 
@@ -158,7 +173,9 @@ macro_data <-
   left_join(wiid_2017,solt_2017) %>%
   left_join(pen_2017) %>% 
   left_join(otero) %>%
-  left_join(ocde) 
+  left_join(ocde) %>% 
+  left_join(wid_df)
+
 df1$ccode <- as.numeric(df1$country)
 df2 <- left_join(df1,macro_data,by="ccode")
 df2 <- 
@@ -166,6 +183,14 @@ df2 %>% mutate(country2=countrycode::countrycode(sourcevar = ccode,origin = "iso
                country3=countrycode::countrycode(sourcevar = ccode,origin = "iso3n",destination = "country.name"),
                region=countrycode::countrycode(sourcevar = ccode,origin = "iso3n",destination = "region23")) %>% 
   select(ccode,country2,country3,everything())
+```
+
+
+```{r}
+df2 %>% 
+  select(country3,wid_rd10d01,d10d1) %>%
+  group_by(country3) %>% 
+  summarise(wid_rd10d01=mean(wid_rd10d01), d10d1=mean(d10d1)) %>% View
 ```
 
 # centering micro level

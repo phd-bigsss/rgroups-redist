@@ -22,7 +22,7 @@ dfreg <- df1 %>% dplyr::select(
   # homclass=homclass2,
   # homclass=homclass3,
   # know_total=week_cont,
-  # class6,
+  class6,
   know_total,
   Q03pcm,
   edyears,
@@ -32,13 +32,14 @@ dfreg <- df1 %>% dplyr::select(
   workst,
   WEIGHT,
   region,
-  "gini_disp"=gini,
+  "gini_disp"=wid_gini_disp,
   "gini_mkt",
   gv_spen,
   rel_red,
-  d10d1,
-  s80s20,
-  top10,
+  d10d1=wid_rd10d01,
+  wid_rp90p50,
+  # s80s20=wid_rp80p20,
+  top10=wid_sharetop10,
   palmaratio,
   rgdpna,
   gdppercapita,
@@ -156,7 +157,7 @@ int_homo <- update(rob4, . ~ . +class3*homclass)
 models <- list(homclass,homclass_know_total,full1,rob1,rob3,rob4,int_homo)
 knitreg(models)
 
-# Models for homogeneity by socoial class and inequality 
+# Models for homogeneity by social class and inequality 
 fit_homclass <-
   lmer(homclass~1 +class3+female_gc+agenum_gc+age2_gc +
          edyears_gc + Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+union+workst_gc +
@@ -169,12 +170,29 @@ fit_homclass_palma <- update(fit_homclass, . ~ . +class3*palmaratio+loggdppercap
 fit_homclass_s80s20<- update(fit_homclass, . ~ .+class3*s80s20+loggdppercapita+rel_red)
 fit_homclass_top10 <- update(fit_homclass, . ~ . +class3*top10+loggdppercapita+rel_red)
 
-knitreg(list(fit_homclass,fit_homclass_giniM,
-                ,fit_homclass_d10d1,fit_homclass_palma,
-             fit_homclass_s80s20,fit_homclass_top10))
+homclass3_ineq <- list(fit_homclass,fit_homclass_giniD,fit_homclass_d10d1,fit_homclass_palma,
+     fit_homclass_s80s20,fit_homclass_top10)
 
+knitreg(homclass3_ineq)
 
-plot_predictions(model = fit_homclass_giniD,condition = "class")
+fit_homclass <-
+  lmer(homclass~1 +class6+female_gc+agenum_gc+age2_gc +
+         edyears_gc + Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+union+workst_gc +
+         prop_work + prop_inte + 
+         (class6|country2),data=dfreg,weights = WEIGHT)
+
+fit_homclass_giniM <- update(fit_homclass, . ~ . +class6*gini_mkt+loggdppercapita+rel_red)
+fit_homclass_giniD <- update(fit_homclass, . ~ . +class6*gini_disp+loggdppercapita+rel_red)
+fit_homclass_d10d1 <- update(fit_homclass, . ~ . +class6*d10d1+loggdppercapita+rel_red)
+fit_homclass_palma <- update(fit_homclass, . ~ . +class6*palmaratio+loggdppercapita+rel_red)
+fit_homclass_s80s20<- update(fit_homclass, . ~ .+class6*s80s20+loggdppercapita+rel_red)
+fit_homclass_top10 <- update(fit_homclass, . ~ . +class6*top10+loggdppercapita+rel_red)
+
+homclass6_ineq <- list(fit_homclass,fit_homclass_giniD,fit_homclass_d10d1,fit_homclass_palma,
+                       fit_homclass_s80s20,fit_homclass_top10)
+
+knitreg(homclass6_ineq)
+
 
 predict_gini_class<- predictions(fit_homclass_giniD, newdata = datagrid(gini_disp = dfreg$gini_disp,class3=levels(dfreg$class3)))
 predict_gini_class <- predict_gini_class %>% dplyr::select(gini_disp,class3,estimate, conf.low, conf.high) %>% as.data.frame()
@@ -344,6 +362,23 @@ int_homo_s80s20_gc <-
 
 knitreg(list(base_s80s20_gc,int_homo_s80s20_gc))
 
+
+
+# Share P90 Bottom 50 Ratio------------------------------------------------------------
+base_wid_rp90p50_gc <- 
+  lmer(egal~homclass_gc+know_total_gc+class3+female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         wid_rp90p50 +loggdppercapita + rel_red +
+         (1|country2),data=dfreg,weights = WEIGHT)
+
+int_homo_wid_rp90p50_gc <- 
+  update(base_wid_rp90p50_gc, . ~ . 
+         +homclass_gc*class3*wid_rp90p50 -(1|country2) +
+           (homclass_gc+class3|country2))
+
+knitreg(list(base_wid_rp90p50_gc,int_homo_wid_rp90p50_gc))
+
 # Share top10 -------------------------------------------------------------
 base_top10_gc <- 
   lmer(egal~homclass_gc+know_total_gc+class3+female_gc+agenum_gc+age2_gc+
@@ -455,8 +490,6 @@ interaction_terms6 <- c(
   "homclass_gc:class3Petty-bourgeoise (IVa+b+c):top10",
   "homclass_gc:class3Skilled manual workers and supv. (V+VI):top10",
   "homclass_gc:class3Non-skilled manual workers (VIIa+b):top10")
-
-
 
 interaction_terms <- c(
   "homclass_gc",

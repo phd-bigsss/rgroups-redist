@@ -40,16 +40,14 @@ dfreg <- df1 %>% dplyr::select(
   workst,
   WEIGHT,
   region,
-  "gini_disp",
-  # "gini_disp"=giniindex,
+  "gini_disp"=wid_gini_disp,
   "gini_mkt",
-  giniindex,
   gv_spen,
   rel_red,
-  d10d1,
-  s80s20,
-  top10,
-  palmaratio,
+  d10d1=wid_rd10d01,
+  s80s20=wid_rp80p20,
+  top10=wid_sharetop10,
+  palmaratio=wid_rpalma,
   rgdpna,
   gdppercapita,
   oecd,
@@ -60,10 +58,10 @@ dfreg <- df1 %>% dplyr::select(
          # know_total=log(know_total),
          edyears2 = edyears ^ 2,
          age2 = agenum ^ 2) %>%
+  filter(oecd == "OECD") %>%
   filter(country2 != "SVN")  
   # filter(country2 != "ZAF") %>%
-  # filter(country2 != "HUN") %>% 
-  # filter(oecd == "OECD") 
+  # filter(country2 != "HUN") 
 
 dfreg <- 
   dfreg %>% 
@@ -331,110 +329,4 @@ screenreg(list(homo_giniD,homo2_giniD,homo2_V_giniD,homo3_giniD,homo3_V_giniD,ho
           single.row = T)
 
 
-## Gini Disposable - WIID---------------------------------------------------------
-homo_giniDW <- 
-  lmer(egal~ homclass_gc+know_total_gc+socialtrust_gc+class3+female_gc+agenum_gc+age2_gc+edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+union_gc+workst_gc+giniindex +loggdppercapita + rel_red + homclass_gc*class3*giniindex +(homclass_gc+class3|country2),data=dfreg,weights = WEIGHT)
-
-homo_V_giniDW <- 
-  lmer(egal~ 
-         homclass_V_gc+
-         know_total_gc+socialtrust_gc+
-         class3_V+
-         female_gc+agenum_gc+age2_gc+
-         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
-         union_gc+workst_gc+
-         giniindex +loggdppercapita + rel_red + 
-         homclass_V_gc*
-         class3_V*
-         giniindex +
-         (homclass_V_gc+class3_V|country2),data=dfreg,weights = WEIGHT)
-
-homo2_giniDW <- 
-  lmer(egal~ 
-         homclass2_gc+
-         know_total_gc+socialtrust_gc+
-         digclass3+
-         female_gc+agenum_gc+age2_gc+
-         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
-         union_gc+workst_gc+
-         giniindex +loggdppercapita + rel_red + 
-         homclass2_gc*
-         digclass3*
-         giniindex +
-         (homclass2_gc+digclass3|country2),data=dfreg,weights = WEIGHT)
-
-homo2_V_giniDW <- 
-  lmer(egal~ 
-         homclass2_V_gc+
-         know_total_gc+socialtrust_gc+
-         digclass3_V+
-         female_gc+agenum_gc+age2_gc+
-         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
-         union_gc+workst_gc+
-         giniindex +loggdppercapita + rel_red + 
-         homclass2_V_gc*
-         digclass3_V*
-         giniindex +
-         (homclass2_V_gc+digclass3_V|country2),data=dfreg,weights = WEIGHT)
-
-homo3_giniDW <- 
-  lmer(egal~ 
-         homclass3_gc+
-         know_total_gc+socialtrust_gc+
-         dclass3+
-         female_gc+agenum_gc+age2_gc+
-         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
-         union_gc+workst_gc+
-         giniindex +loggdppercapita + rel_red + 
-         homclass3_gc*
-         dclass3*
-         giniindex +
-         (homclass3_gc+dclass3|country2),data=dfreg,weights = WEIGHT)
-
-homo3_V_giniDW <- 
-  lmer(egal~ 
-         homclass3_V_gc+
-         know_total_gc+socialtrust_gc+
-         dclass3_V+
-         female_gc+agenum_gc+age2_gc+
-         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
-         union_gc+workst_gc+
-         giniindex +loggdppercapita + rel_red + 
-         homclass3_V_gc*
-         dclass3_V*
-         giniindex +
-         (homclass3_V_gc+dclass3_V|country2),data=dfreg,weights = WEIGHT)
-
-homo3_III_giniDW <- 
-  lmer(egal~ 
-         homclass3_III_gc+
-         know_total_gc+socialtrust_gc+
-         dclass3_III+
-         female_gc+agenum_gc+age2_gc+
-         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
-         union_gc+workst_gc+
-         giniindex +loggdppercapita + rel_red + 
-         homclass3_III_gc*
-         dclass3_III*
-         giniindex +
-         (homclass3_III_gc+dclass3_III|country2),data=dfreg,weights = WEIGHT)
-
-homo3_III_V_giniDW <- 
-  lmer(egal~ 
-         homclass3_III_V_gc+
-         know_total_gc+socialtrust_gc+
-         dclass3_III_V+
-         female_gc+agenum_gc+age2_gc+
-         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
-         union_gc+workst_gc+
-         giniindex +loggdppercapita + rel_red + 
-         homclass3_III_V_gc*
-         dclass3_III_V*
-         giniindex +
-         (homclass3_III_V_gc+dclass3_III_V|country2),data=dfreg,weights = WEIGHT)
-
-
-screenreg(list(homo_giniDW,homo2_giniDW,homo2_V_giniDW,homo3_giniDW,homo3_V_giniDW,homo3_III_giniDW,homo3_III_V_giniDW),
-          # "output/tables/int_homo-giniDW_diff-operat-full.txt",
-          single.row = T)
 
