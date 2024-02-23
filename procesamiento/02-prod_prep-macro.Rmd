@@ -60,10 +60,12 @@ names(wid_df)
 # summary(wid_df)
 wid_df <- 
 wid_df %>% 
-  select(country=country.x,year=year.x,country_yr,starts_with("wid_"))
+  dplyr::select(country=country.x,year=year.x,country_yr,starts_with("wid_"))
 
 wid_df$ccode <- countrycode::countrycode(sourcevar = wid_df$country,origin = "iso2c",destination = "iso3n")
-wid_df <- wid_df %>% filter(year==2018)%>% select(ccode,wid_sharetop10,wid_rp90p50,wid_rd10d01,wid_gini_disp) 
+wid_df <- wid_df %>% filter(year==2018)%>% dplyr::select(ccode,wid_sharetop10,wid_rp90p50,wid_rd10d01,wid_sd10d01,wid_gini_disp) 
+
+cor(wid_df)
 ```
 
 
