@@ -36,6 +36,8 @@ drop variable age pop
 egen country_yr = concat(country year), punct(_)  // I separated them by a "-", you can change to whatever you want
 rename valuep90p100 wid_sharetop10
 label variable wid_sharetop10  "Top 10% share (WID)"
+
+gen wid_sd10d01 = wid_sharetop10/valuep10p100
 bro
 
 save "C:\Users\jiturra\Documents\documentos-pcloud\rgroups-redist\input\data\original\wid_shares.dta", replace
