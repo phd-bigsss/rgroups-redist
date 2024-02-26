@@ -19,6 +19,7 @@ dfreg <- df1 %>% dplyr::select(
   # class3=digclass3,
   # class3=dclass3,
   homclass,
+  homclass_V,
   # homclass=homclass2,
   # homclass=homclass3,
   # know_total=week_cont,
@@ -54,7 +55,7 @@ dfreg <- df1 %>% dplyr::select(
   filter(country2 != "SVN") %>% 
   # filter(country2 != "ZAF") %>%
   # filter(country2 != "HUN") %>% 
-  filter(oecd == "OECD") %>%
+  # filter(oecd == "OECD") %>%
   na.omit()
 
 dfreg <- bind_cols(dfreg,sjmisc::to_dummy(x = dfreg$class3,suffix = "numeric")) %>% 
@@ -160,7 +161,7 @@ screenreg(homclass3_ineq,
           single.row = T)
 
 fit_homclass <-
-  lmer(homclass~1 +class6+female_gc+agenum_gc+age2_gc +
+  lmer(homclass_V~1 +class6+female_gc+agenum_gc+age2_gc +
          edyears_gc + Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+union+workst_gc +
          prop_work + prop_inte + 
          (class6|country2),data=dfreg,weights = WEIGHT)
