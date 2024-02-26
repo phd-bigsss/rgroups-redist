@@ -36,15 +36,15 @@ dfreg <- df1 %>% dplyr::select(
   "gini_mkt",
   gv_spen,
   rel_red,
-  d10d1=wid_rd10d01,
-  wid_rp90p50,
-  # s80s20=wid_rp80p20,
+  d10d1=wid_p90p10,
+  wid_p90p50,
+  s80s20,
   top10=wid_sharetop10,
   palmaratio,
   rgdpna,
   gdppercapita,
   oecd,
-  country2, country
+  country2
 ) %>%
   mutate(logrgdpna = log(rgdpna),
          loggdppercapita=log(gdppercapita),
@@ -54,7 +54,7 @@ dfreg <- df1 %>% dplyr::select(
   filter(country2 != "SVN") %>% 
   # filter(country2 != "ZAF") %>%
   # filter(country2 != "HUN") %>% 
-  # filter(oecd == "OECD") %>%
+  filter(oecd == "OECD") %>%
   na.omit()
 
 dfreg <- bind_cols(dfreg,sjmisc::to_dummy(x = dfreg$class3,suffix = "numeric")) %>% 
@@ -73,31 +73,13 @@ dfreg %>%
                          "rel_red","loggdppercapita"),
                .funs = mean) %>% 
   dplyr::select(-country2) 
-  
-# sjPlot::tab_corr(dfreg_country,triangle = "lower")
-# GGally::ggpairs(dfreg_country, lower=list(continuous="smooth"), diag = list(continuous = NULL))
-
-# sjPlot::plot_grpfrq(df1$homclass_wght,var.grp = df1$class11d,type = "boxplot",ylim = c(0,0.8))
-# sjPlot::plot_grpfrq(df1$homclass,var.grp = df1$class11d,type = "boxplot",ylim = c(0,0.8))
-# sjPlot::plot_model(model = lmer(homclass~factor(class11d)+edyears+Q03pcm+female+(1|country2),data = dfreg),type = "pred",terms = "class11d")
-# sjPlot::plot_model(model = lmer(homclass_wght~factor(class11d)+edyears+Q03pcm+female+(1|country2),data = dfreg),type = "pred",terms = "class11d")
-
-# cowplot::plot_grid(
-#   sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="SWE")),type = "pred",terms = "class6",title = "Sweden"),
-#   sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="DEU")),type = "pred",terms = "class6",title = "Germany"),
-#   sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="GBR")),type = "pred",terms = "class6",title = "Great Britain"),
-#   sjPlot::plot_model(model = lm(homclass~class6+edyears+Q03pcm+female+know_total,data = subset(x = dfreg,dfreg$country2=="USA")),type = "pred",terms = "class6",title = "United States")
-# )
-
-dfreg <- 
+  dfreg <- 
   dfreg %>% 
   mutate(to_dummy(female),
          to_dummy(union),
          to_dummy(workst),
          # dummy for categorical variables-------------------------------------
          to_dummy(class3),
-         # to_dummy(class3spo),
-         # to_dummy(class3res),
          to_dummy(Q03pcm)
          )
 dfreg$female_gc = group_center(dfreg$female_2, grp = dfreg$country2)
@@ -157,23 +139,25 @@ int_homo <- update(rob4, . ~ . +class3*homclass)
 models <- list(homclass,homclass_know_total,full1,rob1,rob3,rob4,int_homo)
 knitreg(models)
 
-# Models for homogeneity by social class and inequality 
+## Models for homogeneity by social class and inequality -----------------------
 fit_homclass <-
   lmer(homclass~1 +class3+female_gc+agenum_gc+age2_gc +
          edyears_gc + Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+union+workst_gc +
          prop_work + prop_inte + 
          (class3|country2),data=dfreg,weights = WEIGHT)
-fit_homclass_giniM <- update(fit_homclass, . ~ . +class3*gini_mkt+loggdppercapita+rel_red)
+# fit_homclass_giniM <- update(fit_homclass, . ~ . +class3*gini_mkt+loggdppercapita+rel_red)
 fit_homclass_giniD <- update(fit_homclass, . ~ . +class3*gini_disp+loggdppercapita+rel_red)
 fit_homclass_d10d1 <- update(fit_homclass, . ~ . +class3*d10d1+loggdppercapita+rel_red)
-fit_homclass_palma <- update(fit_homclass, . ~ . +class3*palmaratio+loggdppercapita+rel_red)
-fit_homclass_s80s20<- update(fit_homclass, . ~ .+class3*s80s20+loggdppercapita+rel_red)
+# fit_homclass_palma <- update(fit_homclass, . ~ . +class3*palmaratio+loggdppercapita+rel_red)
+# fit_homclass_s80s20<- update(fit_homclass, . ~ .+class3*s80s20+loggdppercapita+rel_red)
+fit_homclass_p90p50 <- update(fit_homclass, . ~ . +class3*wid_p90p50+loggdppercapita+rel_red)
 fit_homclass_top10 <- update(fit_homclass, . ~ . +class3*top10+loggdppercapita+rel_red)
 
-homclass3_ineq <- list(fit_homclass,fit_homclass_giniD,fit_homclass_d10d1,fit_homclass_palma,
-     fit_homclass_s80s20,fit_homclass_top10)
-
-knitreg(homclass3_ineq)
+homclass3_ineq <- list(fit_homclass,fit_homclass_giniD,fit_homclass_d10d1,fit_homclass_p90p50,fit_homclass_top10)
+screenreg(homclass3_ineq,
+          # file = "output/tables/macro_class_ineq_full-samp_class3.txt",
+          # file = "output/tables/macro_class_ineq_oecd_class3.txt",
+          single.row = T)
 
 fit_homclass <-
   lmer(homclass~1 +class6+female_gc+agenum_gc+age2_gc +
@@ -181,17 +165,19 @@ fit_homclass <-
          prop_work + prop_inte + 
          (class6|country2),data=dfreg,weights = WEIGHT)
 
-fit_homclass_giniM <- update(fit_homclass, . ~ . +class6*gini_mkt+loggdppercapita+rel_red)
+# fit_homclass_giniM <- update(fit_homclass, . ~ . +class6*gini_mkt+loggdppercapita+rel_red)
 fit_homclass_giniD <- update(fit_homclass, . ~ . +class6*gini_disp+loggdppercapita+rel_red)
 fit_homclass_d10d1 <- update(fit_homclass, . ~ . +class6*d10d1+loggdppercapita+rel_red)
-fit_homclass_palma <- update(fit_homclass, . ~ . +class6*palmaratio+loggdppercapita+rel_red)
-fit_homclass_s80s20<- update(fit_homclass, . ~ .+class6*s80s20+loggdppercapita+rel_red)
+# fit_homclass_palma <- update(fit_homclass, . ~ . +class6*palmaratio+loggdppercapita+rel_red)
+# fit_homclass_s80s20<- update(fit_homclass, . ~ .+class6*s80s20+loggdppercapita+rel_red)
+fit_homclass_p90p50 <- update(fit_homclass, . ~ . +class6*wid_p90p50+loggdppercapita+rel_red)
 fit_homclass_top10 <- update(fit_homclass, . ~ . +class6*top10+loggdppercapita+rel_red)
 
-homclass6_ineq <- list(fit_homclass,fit_homclass_giniD,fit_homclass_d10d1,fit_homclass_palma,
-                       fit_homclass_s80s20,fit_homclass_top10)
-
-knitreg(homclass6_ineq)
+homclass6_ineq <-list(fit_homclass,fit_homclass_giniD,fit_homclass_d10d1,fit_homclass_p90p50,fit_homclass_top10)
+screenreg(homclass6_ineq,
+          # file = "output/tables/macro_class_ineq_full-samp_class6.txt",
+          # file = "output/tables/macro_class_ineq_oecd_class6.txt",
+          single.row = T)
 
 
 predict_gini_class<- predictions(fit_homclass_giniD, newdata = datagrid(gini_disp = dfreg$gini_disp,class3=levels(dfreg$class3)))
@@ -221,91 +207,14 @@ fit1 %>%
   scale_color_manual(values=c("#377EB8","#4DAF4A","#E41A1C")) +
   theme(legend.position = "bottom") 
 
+# Macro level models: Interacciones cross-level --------------------------------
 
-
-slopes_giniD <- plot_slopes(fit_homclass_giniD, variables = "class3", condition = list("gini_disp" = "threenum"),draw = F)
-slopes_giniD$contrast <- factor(x = as.factor(slopes_giniD$contrast),levels = c("Non-skilled manual workers (VIIa+b) - Service class (I - higher grade)",
-                                                                     "Skilled manual workers and supv. (V+VI) - Service class (I - higher grade)",
-                                                                     "Petty-bourgeoise (IVa+b+c) - Service class (I - higher grade)",             
-                                                                     "Routine non-manual (IIIa+b) - Service class (I - higher grade)",           
-                                                                     "Service class (II - lower grade) - Service class (I - higher grade)") )
-
-plot_predictions(fit_homclass_giniD, condition = list("class3",gini_disp = "threenum"))
-plot_predictions(fit_homclass_giniD, condition = list("class3",gini_disp = range))
-
-slopes_giniD %>% 
-  ggplot(aes(y=estimate,x=contrast, fill=gini_disp,color=gini_disp, group=gini_disp,ymin=conf.low, ymax=conf.high)) +
-  geom_point(position=position_dodge(width=0.9),size=2) +
-  geom_errorbar(position=position_dodge(width=0.9),width=0.1) + 
-  geom_hline(yintercept = 0) +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 20))
-
-slopes_giniM <- plot_slopes(fit_homclass_giniM, variables = "class3", condition = list("class3","gini_mkt" = "threenum"),draw = F)
-slopes_giniM$contrast <- factor(x = as.factor(slopes_giniM$contrast),levels = c("Non-skilled manual workers (VIIa+b) - Service class (I - higher grade)",
-                                                                                "Skilled manual workers and supv. (V+VI) - Service class (I - higher grade)",
-                                                                                "Petty-bourgeoise (IVa+b+c) - Service class (I - higher grade)",             
-                                                                                "Routine non-manual (IIIa+b) - Service class (I - higher grade)",           
-                                                                                "Service class (II - lower grade) - Service class (I - higher grade)") )
-
-plot_predictions(fit_homclass_giniM, condition = list("class3",gini_mkt = "threenum"))
-plot_predictions(fit_homclass_giniM, condition = list("class3",gini_mkt = range))
-
-slopes_giniM %>% 
-  ggplot(aes(y=estimate,x=contrast, fill=gini_mkt,color=gini_mkt, group=gini_mkt,ymin=conf.low, ymax=conf.high)) +
-  geom_point(position=position_dodge(width=0.9),size=2) +
-  geom_errorbar(position=position_dodge(width=0.9),width=0.1) + 
-  geom_hline(yintercept = 0) +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 20))
-
-
-# knitreg(list(fit_homclass,fit_homclass_giniM,
-#              fit_homclass_giniD,fit_homclass_d10d1,fit_homclass_palma,
-#              fit_homclass_s80s20,fit_homclass_top10),file = "output/tables/int_class3_ineq_full.txt")
-
-# sjPlot::plot_model(fit_homclass_giniM,type = "pred",terms = c("gini_mkt", "class3")) +
-#   labs(x="Gini (Market)")+
-#   scale_fill_manual(values=c("#377EB8","#4DAF4A","#E41A1C")) +
-#   scale_color_manual(values=c("#377EB8","#4DAF4A","#E41A1C")) + theme(legend.position = "bottom")
-# sjPlot::plot_model(fit_homclass_giniD,type = "pred",terms = c("gini_disp", "class3"))+
-#   labs(x="Gini (Disposable)")+
-#   scale_fill_manual(values=c("#377EB8","#4DAF4A","#E41A1C")) +
-#   scale_color_manual(values=c("#377EB8","#4DAF4A","#E41A1C")) + theme(legend.position = "bottom")
-# sjPlot::plot_model(fit_homclass_d10d1,type = "pred",terms = c("d10d1", "class3"))+ 
-#   scale_fill_manual(values=c("#377EB8","#4DAF4A","#E41A1C")) + 
-#   scale_color_manual(values=c("#377EB8","#4DAF4A","#E41A1C")) + theme(legend.position = "bottom")
-# sjPlot::plot_model(fit_homclass_palma,type = "pred",terms = c("palmaratio", "class3"))+ 
-#   scale_fill_manual(values=c("#377EB8","#4DAF4A","#E41A1C")) + 
-#   scale_color_manual(values=c("#377EB8","#4DAF4A","#E41A1C")) + theme(legend.position = "bottom")
-# sjPlot::plot_model(fit_homclass_s80s20,type = "pred",terms = c("s80s20", "class3"))+ 
-#   scale_fill_manual(values=c("#377EB8","#4DAF4A","#E41A1C")) + 
-#   scale_color_manual(values=c("#377EB8","#4DAF4A","#E41A1C")) + theme(legend.position = "bottom")
-# sjPlot::plot_model(fit_homclass_top10,type = "pred",terms = c("top10", "class3"))+ 
-#   scale_fill_manual(values=c("#377EB8","#4DAF4A","#E41A1C")) + 
-#   scale_color_manual(values=c("#377EB8","#4DAF4A","#E41A1C")) + theme(legend.position = "bottom")
-
-
-
-# Interacciones cross-level -----------------------------------------------
-## Gini Market--------------------------------------------------------------
-base_giniM_gc <- 
-  lmer(egal~homclass_gc+know_total_gc+class3+female_gc+agenum_gc+age2_gc+
-         edyears_gc +Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
-         union_gc+workst_gc+
-         gini_mkt +loggdppercapita + 
-         (1|country2),data=dfreg,weights = WEIGHT)
-int_homo_giniM_gc <- 
-  update(base_giniM_gc, . ~ . 
-         +homclass_gc*class3*gini_mkt -(1|country2) +
-           (homclass_gc+class3|country2))
-
-knitreg(list(base_giniM_gc,int_homo_giniM_gc))
-
-## Gini Disposable---------------------------------------------------------
+## Gini Disposable- Class 3-----------------------------------------------------
 base_giniD_gc <- 
   lmer(egal~homclass_gc+know_total_gc+class3+female_gc+agenum_gc+age2_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
-         gini_disp +loggdppercapita + rel_red +
+         gini_disp +loggdppercapita + rel_red +gv_spen +
          (1|country2),data=dfreg,weights = WEIGHT)
 
 int_homo_giniD_gc <- 
@@ -315,12 +224,12 @@ int_homo_giniD_gc <-
 
 knitreg(list(base_giniD_gc,int_homo_giniD_gc))
 
-# Ratio d10d1 -------------------------------------------------------------
+## Ratio d10d1 - Class 3---------------------------------------------------------
 base_d01d10_gc <- 
   lmer(egal~homclass_gc+know_total_gc+class3+female_gc+agenum_gc+age2_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
-         d10d1 +loggdppercapita + rel_red +
+         d10d1 +loggdppercapita + rel_red +gv_spen +
          (1|country2),data=dfreg,weights = WEIGHT)
 
 int_homo_d10d1_gc <- 
@@ -331,60 +240,27 @@ int_homo_d10d1_gc <-
 knitreg(list(base_d01d10_gc,int_homo_d10d1_gc))
 
 
-# Ratio Palma Ratio -------------------------------------------------------------
-base_palma_gc <- 
+## Share P90 Bottom 50 Ratio -  Class 3------------------------------------------
+base_wid_p90p50_gc <- 
   lmer(egal~homclass_gc+know_total_gc+class3+female_gc+agenum_gc+age2_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
-         palmaratio +loggdppercapita + rel_red +
-         (1|country2),data=dfreg,weights = WEIGHT)
-
-int_homo_palma_gc <- 
-  update(base_palma_gc, . ~ . 
-         +homclass_gc*class3*palmaratio -(1|country2) +
-           (homclass_gc+class3|country2))
-
-knitreg(list(base_palma_gc,int_homo_palma_gc))
-
-
-# Share s80s20 Ratio------------------------------------------------------------
-base_s80s20_gc <- 
-  lmer(egal~homclass_gc+know_total_gc+class3+female_gc+agenum_gc+age2_gc+
-         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
-         union_gc+workst_gc+
-         s80s20 +loggdppercapita + rel_red +
-         (1|country2),data=dfreg,weights = WEIGHT)
-
-int_homo_s80s20_gc <- 
-  update(base_s80s20_gc, . ~ . 
-         +homclass_gc*class3*s80s20 -(1|country2) +
-           (homclass_gc+class3|country2))
-
-knitreg(list(base_s80s20_gc,int_homo_s80s20_gc))
-
-
-
-# Share P90 Bottom 50 Ratio------------------------------------------------------------
-base_wid_rp90p50_gc <- 
-  lmer(egal~homclass_gc+know_total_gc+class3+female_gc+agenum_gc+age2_gc+
-         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
-         union_gc+workst_gc+
-         wid_rp90p50 +loggdppercapita + rel_red +
+         wid_p90p50 +loggdppercapita + rel_red +gv_spen +
          (1|country2),data=dfreg,weights = WEIGHT)
 
 int_homo_wid_rp90p50_gc <- 
-  update(base_wid_rp90p50_gc, . ~ . 
-         +homclass_gc*class3*wid_rp90p50 -(1|country2) +
+  update(base_wid_p90p50_gc, . ~ . 
+         +homclass_gc*class3*wid_p90p50 -(1|country2) +
            (homclass_gc+class3|country2))
 
-knitreg(list(base_wid_rp90p50_gc,int_homo_wid_rp90p50_gc))
+knitreg(list(base_wid_p90p50_gc,int_homo_wid_rp90p50_gc))
 
-# Share top10 -------------------------------------------------------------
+## Share top10 - Class 3 -------------------------------------------------------------
 base_top10_gc <- 
   lmer(egal~homclass_gc+know_total_gc+class3+female_gc+agenum_gc+age2_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
-         top10 +loggdppercapita + rel_red +
+         top10 +loggdppercapita + rel_red +gv_spen +
          (1|country2),data=dfreg,weights = WEIGHT)
 
 int_homo_top10_gc <- 
@@ -395,156 +271,123 @@ int_homo_top10_gc <-
 knitreg(list(base_top10_gc,int_homo_top10_gc))
 
 
-# Relative redistribution-------------------------------------------------------
-base_relred_gc <- 
-  lmer(egal~homclass_gc+know_total_gc+class3+female_gc+agenum_gc+age2_gc+
-         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
-         union_gc+workst_gc+
-         rel_red +loggdppercapita + 
-         (1|country2),data=dfreg,weights = WEIGHT)
+int_homo_ineq_class3 <- list(int_homo_giniD_gc,int_homo_d10d1_gc,int_homo_wid_rp90p50_gc,int_homo_top10_gc)
 
-int_homo_relred_gc <- 
-  update(base_relred_gc, . ~ . 
-         +homclass_gc*class3*rel_red -(1|country2) +
-           (homclass_gc+class3|country2))
-
-knitreg(list(base_relred_gc,int_homo_relred_gc))
-
-
-
-# LABELS PARA TABLAS ------------------------------------------------------
+## LABELS PARA TABLAS ------------------------------------------------------
 {            
-interaction_terms6 <- c(
-  "(Intercept)",
-  "homclass_gc",
-  "know_total_gc",
-  "class3Service class (II - lower grade)",
-  "class3Routine non-manual (IIIa+b)",
-  "class3Petty-bourgeoise (IVa+b+c)",
-  "class3Skilled manual workers and supv. (V+VI)",
-  "class3Non-skilled manual workers (VIIa+b)",
-  "loggdppercapita",
-  "rel_red",
-  "homclass_gc:class3Service class (II - lower grade)",
-  "homclass_gc:class3Routine non-manual (IIIa+b)",
-  "homclass_gc:class3Petty-bourgeoise (IVa+b+c)",
-  "homclass_gc:class3Skilled manual workers and supv. (V+VI)",
-  "homclass_gc:class3Non-skilled manual workers (VIIa+b)",
-  "gini_disp",
-  "homclass_gc:gini_disp",
-  "class3Service class (II - lower grade):gini_disp",
-  "class3Routine non-manual (IIIa+b):gini_disp",
-  "class3Petty-bourgeoise (IVa+b+c):gini_disp",
-  "class3Skilled manual workers and supv. (V+VI):gini_disp",
-  "class3Non-skilled manual workers (VIIa+b):gini_disp",
-  "homclass_gc:class3Service class (II - lower grade):gini_disp",
-  "homclass_gc:class3Routine non-manual (IIIa+b):gini_disp",
-  "homclass_gc:class3Petty-bourgeoise (IVa+b+c):gini_disp",
-  "homclass_gc:class3Skilled manual workers and supv. (V+VI):gini_disp",
-  "homclass_gc:class3Non-skilled manual workers (VIIa+b):gini_disp",
-  "d10d1",
-  "homclass_gc:d10d1",
-  "class3Service class (II - lower grade):d10d1",
-  "class3Routine non-manual (IIIa+b):d10d1",
-  "class3Petty-bourgeoise (IVa+b+c):d10d1",
-  "class3Skilled manual workers and supv. (V+VI):d10d1",
-  "class3Non-skilled manual workers (VIIa+b):d10d1",
-  "homclass_gc:class3Service class (II - lower grade):d10d1",
-  "homclass_gc:class3Routine non-manual (IIIa+b):d10d1",
-  "homclass_gc:class3Petty-bourgeoise (IVa+b+c):d10d1",
-  "homclass_gc:class3Skilled manual workers and supv. (V+VI):d10d1",
-  "homclass_gc:class3Non-skilled manual workers (VIIa+b):d10d1",
-  "palmaratio",
-  "homclass_gc:palmaratio",
-  "class3Service class (II - lower grade):palmaratio",
-  "class3Routine non-manual (IIIa+b):palmaratio",
-  "class3Petty-bourgeoise (IVa+b+c):palmaratio",
-  "class3Skilled manual workers and supv. (V+VI):palmaratio",
-  "class3Non-skilled manual workers (VIIa+b):palmaratio",
-  "homclass_gc:class3Service class (II - lower grade):palmaratio",
-  "homclass_gc:class3Routine non-manual (IIIa+b):palmaratio",
-  "homclass_gc:class3Petty-bourgeoise (IVa+b+c):palmaratio",
-  "homclass_gc:class3Skilled manual workers and supv. (V+VI):palmaratio",
-  "homclass_gc:class3Non-skilled manual workers (VIIa+b):palmaratio",
-  "s80s20",
-  "homclass_gc:s80s20",
-  "class3Service class (II - lower grade):s80s20",
-  "class3Routine non-manual (IIIa+b):s80s20",
-  "class3Petty-bourgeoise (IVa+b+c):s80s20",
-  "class3Skilled manual workers and supv. (V+VI):s80s20",
-  "class3Non-skilled manual workers (VIIa+b):s80s20",
-  "homclass_gc:class3Service class (II - lower grade):s80s20",
-  "homclass_gc:class3Routine non-manual (IIIa+b):s80s20",
-  "homclass_gc:class3Petty-bourgeoise (IVa+b+c):s80s20",
-  "homclass_gc:class3Skilled manual workers and supv. (V+VI):s80s20",
-  "homclass_gc:class3Non-skilled manual workers (VIIa+b):s80s20",
-  "top10",
-  "homclass_gc:top10",
-  "class3Service class (II - lower grade):top10",
-  "class3Routine non-manual (IIIa+b):top10",
-  "class3Petty-bourgeoise (IVa+b+c):top10",
-  "class3Skilled manual workers and supv. (V+VI):top10",
-  "class3Non-skilled manual workers (VIIa+b):top10",
-  "homclass_gc:class3Service class (II - lower grade):top10",
-  "homclass_gc:class3Routine non-manual (IIIa+b):top10",
-  "homclass_gc:class3Petty-bourgeoise (IVa+b+c):top10",
-  "homclass_gc:class3Skilled manual workers and supv. (V+VI):top10",
-  "homclass_gc:class3Non-skilled manual workers (VIIa+b):top10")
-
-interaction_terms <- c(
-  "homclass_gc",
-  "class3Intermediate class (III+IV+V)",
-  "class3Working Class (VI+VII)",
-  "loggdppercapita",
-  "rel_red",
-  "homclass_gc:class3Intermediate class (III+IV+V)",
-  "homclass_gc:class3Working Class (VI+VII)",
-  "gini_disp",
-  "homclass_gc:gini_disp",
-  "class3Intermediate class (III+IV+V):gini_disp",
-  "class3Working Class (VI+VII):gini_disp",
-  "homclass_gc:class3Intermediate class (III+IV+V):gini_disp",
-  "homclass_gc:class3Working Class (VI+VII):gini_disp",
-  "d10d1",
-  "homclass_gc:d10d1",
-  "class3Intermediate class (III+IV+V):d10d1",
-  "class3Working Class (VI+VII):d10d1",
-  "homclass_gc:class3Intermediate class (III+IV+V):d10d1",
-  "homclass_gc:class3Working Class (VI+VII):d10d1",
-  "palmaratio",
-  "homclass_gc:palmaratio",
-  "class3Intermediate class (III+IV+V):palmaratio",
-  "class3Working Class (VI+VII):palmaratio",
-  "homclass_gc:class3Intermediate class (III+IV+V):palmaratio",
-  "homclass_gc:class3Working Class (VI+VII):palmaratio",
-  "s80s20",
-  "homclass_gc:s80s20",
-  "class3Intermediate class (III+IV+V):s80s20",
-  "class3Working Class (VI+VII):s80s20",
-  "homclass_gc:class3Intermediate class (III+IV+V):s80s20",
-  "homclass_gc:class3Working Class (VI+VII):s80s20",
-  "top10",
-  "homclass_gc:top10",
-  "class3Intermediate class (III+IV+V):top10",
-  "class3Working Class (VI+VII):top10",
-  "homclass_gc:class3Intermediate class (III+IV+V):top10",
-  "homclass_gc:class3Working Class (VI+VII):top10"
-)
-
-# Convert the character vector to a named list
-interaction_list <- as.list(setNames(interaction_terms, interaction_terms))
-interaction_list6 <- as.list(setNames(interaction_terms6, interaction_terms6))
+  
+  interaction_terms <- c(
+    "homclass_gc",
+    "class3Intermediate class (III+IV+V)",
+    "class3Working Class (VI+VII)",
+    "loggdppercapita",
+    "rel_red",
+    "gv_spen",
+    "homclass_gc:class3Intermediate class (III+IV+V)",
+    "homclass_gc:class3Working Class (VI+VII)",
+    "gini_disp",
+    "homclass_gc:gini_disp",
+    "class3Intermediate class (III+IV+V):gini_disp",
+    "class3Working Class (VI+VII):gini_disp",
+    "homclass_gc:class3Intermediate class (III+IV+V):gini_disp",
+    "homclass_gc:class3Working Class (VI+VII):gini_disp",
+    "d10d1",
+    "homclass_gc:d10d1",
+    "class3Intermediate class (III+IV+V):d10d1",
+    "class3Working Class (VI+VII):d10d1",
+    "homclass_gc:class3Intermediate class (III+IV+V):d10d1",
+    "homclass_gc:class3Working Class (VI+VII):d10d1",
+    "wid_p90p50",
+    "homclass_gc:wid_p90p50",
+    "class3Intermediate class (III+IV+V):wid_p90p50",
+    "class3Working Class (VI+VII):wid_p90p50",
+    "homclass_gc:class3Intermediate class (III+IV+V):wid_p90p50",
+    "homclass_gc:class3Working Class (VI+VII):wid_p90p50",
+    "top10",
+    "homclass_gc:top10",
+    "class3Intermediate class (III+IV+V):top10",
+    "class3Working Class (VI+VII):top10",
+    "homclass_gc:class3Intermediate class (III+IV+V):top10",
+    "homclass_gc:class3Working Class (VI+VII):top10"
+  )
+  
+  # Convert the character vector to a named list
+  interaction_list <- as.list(setNames(interaction_terms, interaction_terms))
 }
-
-texreg::screenreg(list(int_homo_giniD_gc,
-                      int_homo_d10d1_gc,
-                      int_homo_palma_gc,
-                      int_homo_s80s20_gc,
-                      int_homo_top10_gc),
-                  # custom.coef.map = interaction_list6,
-                  # "output/tables/int_homo_ineq_full-sample_class6.txt",
+texreg::screenreg(int_homo_ineq_class3,
+                  custom.coef.map = interaction_list,
+                  # "output/tables/macro_homo_ineq_full-samp_class3.txt",
+                  # "output/tables/macro_homo_ineq_oecd_class3.txt",
                   single.row = T) 
 
+
+## Gini Disposable- Class 6-----------------------------------------------------
+base_giniD_gc <- 
+  lmer(egal~homclass_gc+know_total_gc+class6+female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +loggdppercapita + rel_red +gv_spen +
+         (1|country2),data=dfreg,weights = WEIGHT)
+
+int_homo_giniD_gc <- 
+  update(base_giniD_gc, . ~ . 
+         +homclass_gc*class6*gini_disp -(1|country2) +
+           (homclass_gc+class3|country2))
+
+knitreg(list(base_giniD_gc,int_homo_giniD_gc))
+
+## Ratio d10d1 - Class 6---------------------------------------------------------
+base_d01d10_gc <- 
+  lmer(egal~homclass_gc+know_total_gc+class6+female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         d10d1 +loggdppercapita + rel_red +gv_spen +
+         (1|country2),data=dfreg,weights = WEIGHT)
+
+int_homo_d10d1_gc <- 
+  update(base_d01d10_gc, . ~ . 
+         +homclass_gc*class6*d10d1 -(1|country2) +
+           (homclass_gc+class3|country2))
+
+knitreg(list(base_d01d10_gc,int_homo_d10d1_gc))
+
+## Share P90 Bottom 50 Ratio -  Class 6------------------------------------------
+base_wid_p90p50_gc <- 
+  lmer(egal~homclass_gc+know_total_gc+class6+female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         wid_p90p50 +loggdppercapita + rel_red +gv_spen +
+         (1|country2),data=dfreg,weights = WEIGHT)
+
+int_homo_wid_rp90p50_gc <- 
+  update(base_wid_p90p50_gc, . ~ . 
+         +homclass_gc*class6*wid_p90p50 -(1|country2) +
+           (homclass_gc+class6|country2))
+
+knitreg(list(base_wid_p90p50_gc,int_homo_wid_rp90p50_gc))
+
+## Share top10 - Class 6 -------------------------------------------------------------
+base_top10_gc <- 
+  lmer(egal~homclass_gc+know_total_gc+class6+female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         top10 +loggdppercapita + rel_red +gv_spen +
+         (1|country2),data=dfreg,weights = WEIGHT)
+
+int_homo_top10_gc <- 
+  update(base_top10_gc, . ~ . 
+         +homclass_gc*class6*top10 -(1|country2) +
+           (homclass_gc+class6|country2))
+
+knitreg(list(base_top10_gc,int_homo_top10_gc))
+
+int_homo_ineq_class6 <- list(int_homo_giniD_gc,int_homo_d10d1_gc,int_homo_wid_rp90p50_gc,int_homo_top10_gc)
+
+texreg::screenreg(int_homo_ineq_class6,
+                  # custom.coef.map = interaction_list,
+                  # "output/tables/macro_homo_ineq_full-samp_class6.txt",
+                  "output/tables/macro_homo_ineq_oecd_class6.txt",
+                  single.row = T) 
 
 # CROSS-LEVEL INTERACTION WITH CENTERED VARIABLES ------------------------------
 ############################################################################-

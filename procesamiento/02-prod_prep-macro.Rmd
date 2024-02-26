@@ -63,9 +63,19 @@ wid_df %>%
   dplyr::select(country=country.x,year=year.x,country_yr,starts_with("wid_"))
 
 wid_df$ccode <- countrycode::countrycode(sourcevar = wid_df$country,origin = "iso2c",destination = "iso3n")
-wid_df <- wid_df %>% filter(year==2018)%>% dplyr::select(ccode,wid_sharetop10,wid_rp90p50,wid_rd10d01,wid_sd10d01,wid_gini_disp) 
 
-cor(wid_df)
+summary(wid_df)
+wid_df_fill<- 
+wid_df %>%
+  group_by(country) %>% 
+  fill(wid_p90p10, .direction = "up") %>%
+  fill(wid_sp90p10, .direction = "up") %>%
+  fill(wid_gini_disp, .direction = "up")
+summary(wid_df_fill)
+  
+wid_df1 <- wid_df_fill %>% filter(year==2017) %>% select(ccode,starts_with("wid_"))
+wid_df1$country <- NULL
+sjPlot::tab_corr(wid_df1)
 ```
 
 
@@ -176,7 +186,7 @@ macro_data <-
   left_join(pen_2017) %>% 
   left_join(otero) %>%
   left_join(ocde) %>% 
-  left_join(wid_df)
+  left_join(wid_df1)
 
 df1$ccode <- as.numeric(df1$country)
 df2 <- left_join(df1,macro_data,by="ccode")
@@ -187,16 +197,7 @@ df2 %>% mutate(country2=countrycode::countrycode(sourcevar = ccode,origin = "iso
   select(ccode,country2,country3,everything())
 ```
 
-
-```{r}
-df2 %>% 
-  select(country3,wid_rd10d01,d10d1) %>%
-  group_by(country3) %>% 
-  summarise(wid_rd10d01=mean(wid_rd10d01), d10d1=mean(d10d1)) %>% View
-```
-
 # centering micro level
-
 
 ```{r eval=FALSE, include=FALSE}
 df2 <- 

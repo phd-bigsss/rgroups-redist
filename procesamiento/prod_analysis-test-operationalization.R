@@ -44,10 +44,9 @@ dfreg <- df1 %>% dplyr::select(
   "gini_mkt",
   gv_spen,
   rel_red,
-  d10d1=wid_rd10d01,
-  s80s20=wid_rp80p20,
+  d10d1=wid_p90p10,
+  wid_p90p50,
   top10=wid_sharetop10,
-  palmaratio=wid_rpalma,
   rgdpna,
   gdppercapita,
   oecd,
@@ -58,7 +57,7 @@ dfreg <- df1 %>% dplyr::select(
          # know_total=log(know_total),
          edyears2 = edyears ^ 2,
          age2 = agenum ^ 2) %>%
-  filter(oecd == "OECD") %>%
+  # filter(oecd == "OECD") %>%
   filter(country2 != "SVN")  
   # filter(country2 != "ZAF") %>%
   # filter(country2 != "HUN") 
@@ -100,9 +99,7 @@ dfreg$homclass3_III_gc <-
 dfreg$homclass3_III_V_gc <-
   group_center(dfreg$homclass3_III_V, grp = dfreg$country2)
 
-
 dfreg$know_total_gc = group_center(dfreg$know_total, grp = dfreg$country2)
-
 
 # EGP: dominance
 dfreg$class3_ser_gc = group_center(dfreg$class3_1, grp = dfreg$country2)
@@ -216,14 +213,16 @@ screenreg(digclas1_III_V_W,stars = c(0.001, 0.01, 0.05, 0.1),symbol = "+")
 # Contrast between operationalizations ------------------------------------
 screenreg(list(isko1_VI_5,isko1_VW_5,isko2_VI_5,isko2_VW_5,digclas1_VI_5,digclas1_VW_5,digclas1_IIIW_5,digclas1_III_V_W_5),
           stars = c(0.001, 0.01, 0.05, 0.1),
-          # "output/tables/int_homo-class3_diff-operat-full.txt", 
+          # "output/tables/micro_homo-class3_diff-operat-full.txt",
+          "output/tables/micro_homo-class3_diff-operat-oecd.txt",
           single.row = T)
 
 
+# Macro level models ------------------------------------------------------
 dfreg <- dfreg %>% mutate_all(~ifelse(is.nan(.), NA, .))
 ## Gini Disposable---------------------------------------------------------
 homo_giniD <- 
-  lmer(egal~ homclass_gc+know_total_gc+socialtrust_gc+class3+female_gc+agenum_gc+age2_gc+edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+union_gc+workst_gc+gini_disp +loggdppercapita + rel_red + homclass_gc*class3*gini_disp +(homclass_gc+class3|country2),data=dfreg,weights = WEIGHT)
+  lmer(egal~ homclass_gc+know_total_gc+socialtrust_gc+class3+female_gc+agenum_gc+age2_gc+edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+union_gc+workst_gc+gini_disp +loggdppercapita + rel_red + gv_spen + homclass_gc*class3*gini_disp +(homclass_gc+class3|country2),data=dfreg,weights = WEIGHT)
 
 homo_V_giniD <- 
   lmer(egal~ 
@@ -233,7 +232,7 @@ homo_V_giniD <-
          female_gc+agenum_gc+age2_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
-         gini_disp +loggdppercapita + rel_red + 
+         gini_disp +loggdppercapita + rel_red + gv_spen +
          homclass_V_gc*
          class3_V*
          gini_disp +
@@ -247,7 +246,7 @@ homo2_giniD <-
          female_gc+agenum_gc+age2_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
-         gini_disp +loggdppercapita + rel_red + 
+         gini_disp +loggdppercapita + rel_red + gv_spen +
          homclass2_gc*
          digclass3*
          gini_disp +
@@ -261,7 +260,7 @@ homo2_V_giniD <-
          female_gc+agenum_gc+age2_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
-         gini_disp +loggdppercapita + rel_red + 
+         gini_disp +loggdppercapita + rel_red + gv_spen +
          homclass2_V_gc*
          digclass3_V*
          gini_disp +
@@ -275,7 +274,7 @@ homo3_giniD <-
          female_gc+agenum_gc+age2_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
-         gini_disp +loggdppercapita + rel_red + 
+         gini_disp +loggdppercapita + rel_red + gv_spen +
          homclass3_gc*
          dclass3*
          gini_disp +
@@ -289,7 +288,7 @@ homo3_V_giniD <-
          female_gc+agenum_gc+age2_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
-         gini_disp +loggdppercapita + rel_red + 
+         gini_disp +loggdppercapita + rel_red + gv_spen +
          homclass3_V_gc*
          dclass3_V*
          gini_disp +
@@ -303,7 +302,7 @@ homo3_III_giniD <-
          female_gc+agenum_gc+age2_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
-         gini_disp +loggdppercapita + rel_red + 
+         gini_disp +loggdppercapita + rel_red + gv_spen +
          homclass3_III_gc*
          dclass3_III*
          gini_disp +
@@ -317,16 +316,347 @@ homo3_III_V_giniD <-
          female_gc+agenum_gc+age2_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
-         gini_disp +loggdppercapita + rel_red + 
+         gini_disp +loggdppercapita + rel_red + gv_spen +
          homclass3_III_V_gc*
          dclass3_III_V*
          gini_disp +
          (homclass3_III_V_gc+dclass3_III_V|country2),data=dfreg,weights = WEIGHT)
 
 
-screenreg(list(homo_giniD,homo2_giniD,homo2_V_giniD,homo3_giniD,homo3_V_giniD,homo3_III_giniD,homo3_III_V_giniD),
-          # "output/tables/int_homo-giniD_diff-operat-full.txt",
+inte_giniD <-list(homo_giniD,homo2_giniD,homo2_V_giniD,homo3_giniD,homo3_V_giniD,homo3_III_giniD,homo3_III_V_giniD)
+
+screenreg(inte_giniD,
+          # "output/tables/macro_homo-giniD_diff-operat-full.txt",
+          # "output/tables/macro_homo-giniD_diff-operat-oecd.txt",
+          single.row = T)
+
+## Ratio P90P10---------------------------------------------------------
+homo_p90p10 <- 
+  lmer(egal~ homclass_gc+know_total_gc+socialtrust_gc+class3+female_gc+agenum_gc+age2_gc+edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+union_gc+workst_gc+d10d1 +loggdppercapita + rel_red + gv_spen + homclass_gc*class3*d10d1 +(homclass_gc+class3|country2),data=dfreg,weights = WEIGHT)
+
+homo_V_p90p10 <- 
+  lmer(egal~ 
+         homclass_V_gc+
+         know_total_gc+socialtrust_gc+
+         class3_V+
+         female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         d10d1 +loggdppercapita + rel_red + gv_spen +
+         homclass_V_gc*
+         class3_V*
+         d10d1 +
+         (homclass_V_gc+class3_V|country2),data=dfreg,weights = WEIGHT)
+
+homo2_p90p10 <- 
+  lmer(egal~ 
+         homclass2_gc+
+         know_total_gc+socialtrust_gc+
+         digclass3+
+         female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         d10d1 +loggdppercapita + rel_red + gv_spen +
+         homclass2_gc*
+         digclass3*
+         d10d1 +
+         (homclass2_gc+digclass3|country2),data=dfreg,weights = WEIGHT)
+
+homo2_V_p90p10 <- 
+  lmer(egal~ 
+         homclass2_V_gc+
+         know_total_gc+socialtrust_gc+
+         digclass3_V+
+         female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         d10d1 +loggdppercapita + rel_red + gv_spen +
+         homclass2_V_gc*
+         digclass3_V*
+         d10d1 +
+         (homclass2_V_gc+digclass3_V|country2),data=dfreg,weights = WEIGHT)
+
+homo3_p90p10 <- 
+  lmer(egal~ 
+         homclass3_gc+
+         know_total_gc+socialtrust_gc+
+         dclass3+
+         female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         d10d1 +loggdppercapita + rel_red + gv_spen +
+         homclass3_gc*
+         dclass3*
+         d10d1 +
+         (homclass3_gc+dclass3|country2),data=dfreg,weights = WEIGHT)
+
+homo3_V_p90p10 <- 
+  lmer(egal~ 
+         homclass3_V_gc+
+         know_total_gc+socialtrust_gc+
+         dclass3_V+
+         female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         d10d1 +loggdppercapita + rel_red + gv_spen +
+         homclass3_V_gc*
+         dclass3_V*
+         d10d1 +
+         (homclass3_V_gc+dclass3_V|country2),data=dfreg,weights = WEIGHT)
+
+homo3_III_p90p10 <- 
+  lmer(egal~ 
+         homclass3_III_gc+
+         know_total_gc+socialtrust_gc+
+         dclass3_III+
+         female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         d10d1 +loggdppercapita + rel_red + gv_spen +
+         homclass3_III_gc*
+         dclass3_III*
+         d10d1 +
+         (homclass3_III_gc+dclass3_III|country2),data=dfreg,weights = WEIGHT)
+
+homo3_III_V_p90p10 <- 
+  lmer(egal~ 
+         homclass3_III_V_gc+
+         know_total_gc+socialtrust_gc+
+         dclass3_III_V+
+         female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         d10d1 +loggdppercapita + rel_red + gv_spen +
+         homclass3_III_V_gc*
+         dclass3_III_V*
+         d10d1 +
+         (homclass3_III_V_gc+dclass3_III_V|country2),data=dfreg,weights = WEIGHT)
+
+
+inte_p90p10 <-list(homo_p90p10,homo2_p90p10,homo2_V_p90p10,homo3_p90p10,homo3_V_p90p10,homo3_III_p90p10,homo3_III_V_p90p10)
+
+screenreg(inte_p90p10,
+          # "output/tables/macro_homo-p90p10_diff-operat-full.txt",
+          "output/tables/macro_homo-p90p10_diff-operat-oecd.txt",
+          single.row = T)
+
+## Ratio P90/BOT50---------------------------------------------------------
+homo_wid_p90p50 <- 
+  lmer(egal~ homclass_gc+know_total_gc+socialtrust_gc+class3+female_gc+agenum_gc+age2_gc+edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+union_gc+workst_gc+wid_p90p50 +loggdppercapita + rel_red + gv_spen + homclass_gc*class3*d10d1 +(homclass_gc+class3|country2),data=dfreg,weights = WEIGHT)
+
+homo_V_wid_p90p50 <- 
+  lmer(egal~ 
+         homclass_V_gc+
+         know_total_gc+socialtrust_gc+
+         class3_V+
+         female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         wid_p90p50 +loggdppercapita + rel_red + gv_spen +
+         homclass_V_gc*
+         class3_V*
+         wid_p90p50 +
+         (homclass_V_gc+class3_V|country2),data=dfreg,weights = WEIGHT)
+
+homo2_wid_p90p50 <- 
+  lmer(egal~ 
+         homclass2_gc+
+         know_total_gc+socialtrust_gc+
+         digclass3+
+         female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         wid_p90p50 +loggdppercapita + rel_red + gv_spen +
+         homclass2_gc*
+         digclass3*
+         wid_p90p50 +
+         (homclass2_gc+digclass3|country2),data=dfreg,weights = WEIGHT)
+
+homo2_V_wid_p90p50 <- 
+  lmer(egal~ 
+         homclass2_V_gc+
+         know_total_gc+socialtrust_gc+
+         digclass3_V+
+         female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         wid_p90p50 +loggdppercapita + rel_red + gv_spen +
+         homclass2_V_gc*
+         digclass3_V*
+         wid_p90p50 +
+         (homclass2_V_gc+digclass3_V|country2),data=dfreg,weights = WEIGHT)
+
+homo3_wid_p90p50 <- 
+  lmer(egal~ 
+         homclass3_gc+
+         know_total_gc+socialtrust_gc+
+         dclass3+
+         female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         wid_p90p50 +loggdppercapita + rel_red + gv_spen +
+         homclass3_gc*
+         dclass3*
+         wid_p90p50 +
+         (homclass3_gc+dclass3|country2),data=dfreg,weights = WEIGHT)
+
+homo3_V_wid_p90p50 <- 
+  lmer(egal~ 
+         homclass3_V_gc+
+         know_total_gc+socialtrust_gc+
+         dclass3_V+
+         female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         wid_p90p50 +loggdppercapita + rel_red + gv_spen +
+         homclass3_V_gc*
+         dclass3_V*
+         wid_p90p50 +
+         (homclass3_V_gc+dclass3_V|country2),data=dfreg,weights = WEIGHT)
+
+homo3_III_wid_p90p50 <- 
+  lmer(egal~ 
+         homclass3_III_gc+
+         know_total_gc+socialtrust_gc+
+         dclass3_III+
+         female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         wid_p90p50 +loggdppercapita + rel_red + gv_spen +
+         homclass3_III_gc*
+         dclass3_III*
+         wid_p90p50 +
+         (homclass3_III_gc+dclass3_III|country2),data=dfreg,weights = WEIGHT)
+
+homo3_III_V_wid_p90p50 <- 
+  lmer(egal~ 
+         homclass3_III_V_gc+
+         know_total_gc+socialtrust_gc+
+         dclass3_III_V+
+         female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         wid_p90p50 +loggdppercapita + rel_red + gv_spen +
+         homclass3_III_V_gc*
+         dclass3_III_V*
+         wid_p90p50 +
+         (homclass3_III_V_gc+dclass3_III_V|country2),data=dfreg,weights = WEIGHT)
+
+
+inte_wid_p90p50 <-list(homo_wid_p90p50,homo2_wid_p90p50,homo2_V_wid_p90p50,homo3_wid_p90p50,homo3_V_wid_p90p50,homo3_III_wid_p90p50,homo3_III_V_wid_p90p50)
+
+screenreg(inte_wid_p90p50,
+          "output/tables/macro_homo-p90b50_diff-operat-full.txt",
+          # "output/tables/macro_homo-p90b50_diff-operat-oecd.txt",
           single.row = T)
 
 
+## Ratio Share GDP top 10%---------------------------------------------------------
+homo_top10 <- 
+  lmer(egal~ homclass_gc+know_total_gc+socialtrust_gc+class3+female_gc+agenum_gc+age2_gc+edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+union_gc+workst_gc+top10 +loggdppercapita + rel_red + gv_spen + homclass_gc*class3*d10d1 +(homclass_gc+class3|country2),data=dfreg,weights = WEIGHT)
 
+homo_V_top10 <- 
+  lmer(egal~ 
+         homclass_V_gc+
+         know_total_gc+socialtrust_gc+
+         class3_V+
+         female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         top10 +loggdppercapita + rel_red + gv_spen +
+         homclass_V_gc*
+         class3_V*
+         top10 +
+         (homclass_V_gc+class3_V|country2),data=dfreg,weights = WEIGHT)
+
+homo2_top10 <- 
+  lmer(egal~ 
+         homclass2_gc+
+         know_total_gc+socialtrust_gc+
+         digclass3+
+         female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         top10 +loggdppercapita + rel_red + gv_spen +
+         homclass2_gc*
+         digclass3*
+         top10 +
+         (homclass2_gc+digclass3|country2),data=dfreg,weights = WEIGHT)
+
+homo2_V_top10 <- 
+  lmer(egal~ 
+         homclass2_V_gc+
+         know_total_gc+socialtrust_gc+
+         digclass3_V+
+         female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         top10 +loggdppercapita + rel_red + gv_spen +
+         homclass2_V_gc*
+         digclass3_V*
+         top10 +
+         (homclass2_V_gc+digclass3_V|country2),data=dfreg,weights = WEIGHT)
+
+homo3_top10 <- 
+  lmer(egal~ 
+         homclass3_gc+
+         know_total_gc+socialtrust_gc+
+         dclass3+
+         female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         top10 +loggdppercapita + rel_red + gv_spen +
+         homclass3_gc*
+         dclass3*
+         top10 +
+         (homclass3_gc+dclass3|country2),data=dfreg,weights = WEIGHT)
+
+homo3_V_top10 <- 
+  lmer(egal~ 
+         homclass3_V_gc+
+         know_total_gc+socialtrust_gc+
+         dclass3_V+
+         female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         top10 +loggdppercapita + rel_red + gv_spen +
+         homclass3_V_gc*
+         dclass3_V*
+         top10 +
+         (homclass3_V_gc+dclass3_V|country2),data=dfreg,weights = WEIGHT)
+
+homo3_III_top10 <- 
+  lmer(egal~ 
+         homclass3_III_gc+
+         know_total_gc+socialtrust_gc+
+         dclass3_III+
+         female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         top10 +loggdppercapita + rel_red + gv_spen +
+         homclass3_III_gc*
+         dclass3_III*
+         top10 +
+         (homclass3_III_gc+dclass3_III|country2),data=dfreg,weights = WEIGHT)
+
+homo3_III_V_top10 <- 
+  lmer(egal~ 
+         homclass3_III_V_gc+
+         know_total_gc+socialtrust_gc+
+         dclass3_III_V+
+         female_gc+agenum_gc+age2_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         top10 +loggdppercapita + rel_red + gv_spen +
+         homclass3_III_V_gc*
+         dclass3_III_V*
+         top10 +
+         (homclass3_III_V_gc+dclass3_III_V|country2),data=dfreg,weights = WEIGHT)
+
+
+inte_top10 <-list(homo_top10,homo2_top10,homo2_V_top10,homo3_top10,homo3_V_top10,homo3_III_top10,homo3_III_V_top10)
+
+screenreg(inte_top10,
+          "output/tables/macro_homo-top10_diff-operat-full.txt",
+          # "output/tables/macro_homo-top10_diff-operat-oecd.txt",
+          single.row = T)
