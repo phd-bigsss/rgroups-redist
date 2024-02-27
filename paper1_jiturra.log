@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.11)  20 FEB 2024 15:47
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.11)  27 FEB 2024 15:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -473,38 +473,14 @@ Package: fancyhdr 2022/11/09 v4.1 Extensive control of page headers and footers
 \f@nch@O@erf=\skip73
 \f@nch@O@olf=\skip74
 \f@nch@O@orf=\skip75
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/threeparttablex/threeparttablex.sty
-Package: threeparttablex 2013/07/23 v0.3 by daleif
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/environ/environ.sty
-Package: environ 2014/05/04 v0.3 A new way to define environments
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/trimspaces/trimspaces.sty
-Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
-))
-\TPTL@width=\skip76
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/ulem/ulem.sty
-\UL@box=\box70
-\UL@hyphenbox=\box71
-\UL@skip=\skip77
-\UL@hook=\toks34
-\UL@height=\dimen261
-\UL@pe=\count311
-\UL@pixel=\dimen262
-\ULC@box=\box72
-Package: ulem 2019/11/18
-\ULdepth=\dimen263
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/makecell/makecell.sty
-Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
-\rotheadsize=\dimen264
-\c@nlinenum=\count312
-\TeXr@lab=\toks35
 ) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel/babel.sty
 Package: babel 2024/01/07 v24.1 The Babel package
-\babel@savecnt=\count313
-\U@D=\dimen265
+\babel@savecnt=\count311
+\U@D=\dimen261
 \l@unhyphenated=\language4
 (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel/txtbabel.def)
 \bbl@readstream=\read2
-\bbl@dirlevel=\count314
+\bbl@dirlevel=\count312
 Package babel Info: Main language set with 'main='. Except if you have
 (babel)             problems, prefer the default mechanism for setting
 (babel)             the main language, ie, as the last declared.
@@ -527,51 +503,51 @@ Package babel Info: Hyphen rules for 'newzealand' set to \l@english
 Package babel Info: Importing font and identification data for american
 (babel)             from babel-en-US.ini. Reported on input line 11.
 )
-\cslhangindent=\skip78
-\csllabelwidth=\skip79
+\cslhangindent=\skip76
+\csllabelwidth=\skip77
 (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/preprint/authblk.sty
 Package: authblk 2001/02/27 1.3 (PWD)
-\affilsep=\skip80
-\@affilsep=\skip81
-\c@Maxaffil=\count315
-\c@authors=\count316
-\c@affil=\count317
+\affilsep=\skip78
+\@affilsep=\skip79
+\c@Maxaffil=\count313
+\c@authors=\count314
+\c@affil=\count315
 )
-LaTeX Font Info:    Trying to load font information for T1+ptm on input line 144.
+LaTeX Font Info:    Trying to load font information for T1+ptm on input line 130.
 (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/psnfss/t1ptm.fd
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 ) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2023-10-10 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count318
-\l__pdf_internal_box=\box73
+\l__color_backend_stack_int=\count316
+\l__pdf_internal_box=\box70
 ) (./paper1_jiturra.aux)
 \openout1 = `paper1_jiturra.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 144.
-LaTeX Font Info:    ... okay on input line 144.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 144.
-LaTeX Font Info:    ... okay on input line 144.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 144.
-LaTeX Font Info:    ... okay on input line 144.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 144.
-LaTeX Font Info:    ... okay on input line 144.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 144.
-LaTeX Font Info:    ... okay on input line 144.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 144.
-LaTeX Font Info:    ... okay on input line 144.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 144.
-LaTeX Font Info:    ... okay on input line 144.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 144.
-LaTeX Font Info:    ... okay on input line 144.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 144.
-LaTeX Font Info:    ... okay on input line 144.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 130.
+LaTeX Font Info:    ... okay on input line 130.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 130.
+LaTeX Font Info:    ... okay on input line 130.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 130.
+LaTeX Font Info:    ... okay on input line 130.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 130.
+LaTeX Font Info:    ... okay on input line 130.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 130.
+LaTeX Font Info:    ... okay on input line 130.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 130.
+LaTeX Font Info:    ... okay on input line 130.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 130.
+LaTeX Font Info:    ... okay on input line 130.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 130.
+LaTeX Font Info:    ... okay on input line 130.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 130.
+LaTeX Font Info:    ... okay on input line 130.
 (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
 (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-Package hyperref Info: Link coloring ON on input line 144.
+Package hyperref Info: Link coloring ON on input line 130.
 (./paper1_jiturra.out) (./paper1_jiturra.out)
 \@outlinefile=\write3
 \openout3 = `paper1_jiturra.out'.
@@ -618,6 +594,10 @@ Package caption Info: End \AtBeginDocument code.
 [1
 
 {c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}]
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 154.
+(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/psnfss/ts1ptm.fd
+File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
+)
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -626,10 +606,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [2]
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 172.
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/psnfss/ts1ptm.fd
-File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
-)
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -670,33 +646,33 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [7]
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 282.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 261.
 (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 282.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 261.
 (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 282.
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 261.
 (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 282.
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 261.
 (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 282.
+(Font)              <8> on input line 261.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 282.
+(Font)              <6> on input line 261.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 282.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 282.
+(Font)              <5> on input line 261.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 261.
 (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 282.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 261.
 (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
@@ -716,7 +692,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [9]
-Underfull \hbox (badness 1314) in paragraph at lines 443--445
+Underfull \hbox (badness 1314) in paragraph at lines 407--409
 []\T1/ptm/m/n/8 Otero, G., & Men-doza, M. (2023). The Power of Di-ver-sity: Class, Net-works and At-ti-tudes To-wards In-equal-ity. \T1/ptm/m/it/8 So-ci-ol-ogy\T1/ptm/m/n/8 ,
  []
 
@@ -749,21 +725,21 @@ LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-10-10>
  ***********
 Package rerunfilecheck Info: File `paper1_jiturra.out' has not changed.
-(rerunfilecheck)             Checksum: F04C1F3CACFAA740DCB6DF42FF4AAE67;2706.
+(rerunfilecheck)             Checksum: 3BF4AC9E762AD703B7B145CD7C7D8AAC;3473.
  ) 
 Here is how much of TeX's memory you used:
- 15463 strings out of 476451
- 251058 string characters out of 5799564
+ 15109 strings out of 476451
+ 245387 string characters out of 5799564
  1944043 words of memory out of 5000000
- 36784 multiletter control sequences out of 15000+600000
- 600665 words of font info for 75 fonts, out of 8000000 for 9000
+ 36454 multiletter control sequences out of 15000+600000
+ 600559 words of font info for 74 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 69i,12n,79p,2374b,488s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 69i,12n,79p,2459b,532s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper1_jiturra.pdf (11 pages, 102623 bytes).
+Output written on paper1_jiturra.pdf (11 pages, 98273 bytes).
 PDF statistics:
- 403 PDF objects out of 1000 (max. 8388607)
- 380 compressed objects within 4 object streams
- 114 named destinations out of 1000 (max. 500000)
- 105 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 385 PDF objects out of 1000 (max. 8388607)
+ 362 compressed objects within 4 object streams
+ 111 named destinations out of 1000 (max. 500000)
+ 121 words of extra memory for PDF output out of 10000 (max. 10000000)
 
