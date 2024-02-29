@@ -431,7 +431,7 @@ df1$isei08sp <- occupar::isco08toISEI08(isco08 = df1$SPISCO08,display.nas = T)
 sjlabelled::set_label(df1$isei08sp) <- "ISEI spouse"
 ```
 
-```{r class}
+```{r class-variables}
 ## Ocupación
 # Ocupación u oficio actual ISCO 08
 #frq(df1$SPISCO08) # isco08 
@@ -921,6 +921,7 @@ frq(df1$egp11spo)
 #if NA in class of respondent, replace with spouse
 df1$dclass11 <- ifelse(is.na(df1$egp11),df1$egp11spo,df1$egp11)
 
+frq(df1$dclass11)
 #0.1 label respondent egp11 classes
 df1$egp11 <- 
   sjlabelled::set_labels(df1$egp11,
