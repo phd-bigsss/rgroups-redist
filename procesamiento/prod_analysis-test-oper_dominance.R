@@ -62,8 +62,6 @@ dfreg <- df1 %>% dplyr::select(
          age2 = agenum ^ 2) %>%
   # filter(oecd == "OECD") %>%
   filter(country2 != "SVN")  
-  # filter(country2 != "ZAF") %>%
-  # filter(country2 != "HUN") 
 
 dfreg <- 
   dfreg %>% 
@@ -71,9 +69,6 @@ dfreg <-
          to_dummy(union),
          to_dummy(workst),
          # dummy for categorical variables-------------------------------------
-         to_dummy(class3),
-         # to_dummy(class3spo),
-         # to_dummy(class3res),
          to_dummy(Q03pcm)
   )
 dfreg$female_gc = group_center(dfreg$female_2, grp = dfreg$country2)
@@ -84,56 +79,31 @@ dfreg$agenum_gc = group_center(dfreg$agenum, grp = dfreg$country2)
 dfreg$age2_gc = group_center(dfreg$age2, grp = dfreg$country2)
 dfreg$socialtrust_gc = group_center(dfreg$socialtrust, grp = dfreg$country2)
 
-
-dfreg$homclass_gc  <-
-  group_center(dfreg$homclass, grp = dfreg$country2)
-dfreg$homclass_V_gc <-
-  group_center(dfreg$homclass_V, grp = dfreg$country2)
-dfreg$homclass2_gc <-
-  group_center(dfreg$homclass2, grp = dfreg$country2)
-dfreg$homclass2_V_gc <-
-  group_center(dfreg$homclass2_V, grp = dfreg$country2)
-dfreg$homclass3_gc <-
-  group_center(dfreg$homclass3, grp = dfreg$country2)
-dfreg$homclass3_V_gc <-
-  group_center(dfreg$homclass3_V, grp = dfreg$country2)
-dfreg$homclass3_III_gc <-
-  group_center(dfreg$homclass3_III, grp = dfreg$country2)
-dfreg$homclass3_III_V_gc <-
-  group_center(dfreg$homclass3_III_V, grp = dfreg$country2)
-
-dfreg$homclass_res_gc <-
-  group_center(dfreg$homclass_res, grp = dfreg$country2)
-
+dfreg$homclass_gc  <- group_center(dfreg$homclass, grp = dfreg$country2)
+dfreg$homclass_V_gc <-group_center(dfreg$homclass_V, grp = dfreg$country2)
+dfreg$homclass2_gc <-group_center(dfreg$homclass2, grp = dfreg$country2)
+dfreg$homclass2_V_gc <-group_center(dfreg$homclass2_V, grp = dfreg$country2)
+dfreg$homclass3_gc <-group_center(dfreg$homclass3, grp = dfreg$country2)
+dfreg$homclass3_V_gc <-group_center(dfreg$homclass3_V, grp = dfreg$country2)
+dfreg$homclass3_III_gc <-group_center(dfreg$homclass3_III, grp = dfreg$country2)
+dfreg$homclass3_III_V_gc <-group_center(dfreg$homclass3_III_V, grp = dfreg$country2)
+dfreg$homclass_res_gc <-group_center(dfreg$homclass_res, grp = dfreg$country2)
 dfreg$know_total_gc = group_center(dfreg$know_total, grp = dfreg$country2)
 
 # EGP: dominance
 dfreg$class3_ser_gc = group_center(dfreg$class3_1, grp = dfreg$country2)
 dfreg$class3_mid_gc = group_center(dfreg$class3_2, grp = dfreg$country2)
 dfreg$class3_wor_gc = group_center(dfreg$class3_3, grp = dfreg$country2)
-# EGP: Respondent
-# dfreg$class3res_ser_gc = group_center(dfreg$class3res_1, grp = dfreg$country2)
-# dfreg$class3res_mid_gc = group_center(dfreg$class3res_2, grp = dfreg$country2)
-# dfreg$class3res_wor_gc = group_center(dfreg$class3res_3, grp = dfreg$country2)
-# EGP: Respondent
-# dfreg$class3spo_ser_gc = group_center(dfreg$class3spo_1, grp = dfreg$country2)
-# dfreg$class3spo_mid_gc = group_center(dfreg$class3spo_2, grp = dfreg$country2)
-# dfreg$class3spo_wor_gc = group_center(dfreg$class3spo_3, grp = dfreg$country2)
 # Household Income Tercile
 dfreg$Q03pcm_1_gc = group_center(dfreg$Q03pcm_1, grp = dfreg$country2)
 dfreg$Q03pcm_2_gc = group_center(dfreg$Q03pcm_2, grp = dfreg$country2)
 dfreg$Q03pcm_3_gc = group_center(dfreg$Q03pcm_3, grp = dfreg$country2)
 dfreg$Q03pcm_NA_gc = group_center(dfreg$Q03pcm_4, grp = dfreg$country2)
-
 names(dfreg)
+
 # drop dummies
-dfreg <- 
-  dfreg %>% 
-  dplyr::select(-c(female_1,female_2,union_1,union_2,workst_1,workst_2,
-                   class3_1,class3_2,class3_3,
-                   # class3res_1,class3res_2,class3res_3,
-                   # class3spo_1,class3spo_2,class3spo_3,
-                   Q03pcm_1,Q03pcm_2,Q03pcm_2,Q03pcm_4))
+dfreg <- dplyr::select(dfreg,-c(female_1,female_2,union_1,union_2,workst_1,
+                                workst_2,Q03pcm_1,Q03pcm_2,Q03pcm_2,Q03pcm_4))
 names(dfreg)
 
 # Model -  EGP3 - isko v1 - V to Intermediate -----------------------------
@@ -462,9 +432,9 @@ screenreg(inte_p90p10,
           "output/tables/macro_homo-p90p10_diff-operat-oecd.txt",
           single.row = T)
 
-## Ratio P90/BOT50---------------------------------------------------------
+## Ratio wid_p90p50---------------------------------------------------------
 homo_wid_p90p50 <- 
-  lmer(egal~ homclass_gc+know_total_gc+socialtrust_gc+class3+female_gc+agenum_gc+age2_gc+edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+union_gc+workst_gc+wid_p90p50 +loggdppercapita + rel_red + gv_spen + homclass_gc*class3*d10d1 +(homclass_gc+class3|country2),data=dfreg,weights = WEIGHT)
+  lmer(egal~ homclass_gc+know_total_gc+socialtrust_gc+class3+female_gc+agenum_gc+age2_gc+edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+union_gc+workst_gc+wid_p90p50 +loggdppercapita + rel_red + gv_spen + homclass_gc*class3*wid_p90p50 +(homclass_gc+class3|country2),data=dfreg,weights = WEIGHT)
 
 homo_V_wid_p90p50 <- 
   lmer(egal~ 
@@ -568,14 +538,14 @@ homo3_III_V_wid_p90p50 <-
 inte_wid_p90p50 <-list(homo_wid_p90p50,homo2_wid_p90p50,homo2_V_wid_p90p50,homo3_wid_p90p50,homo3_V_wid_p90p50,homo3_III_wid_p90p50,homo3_III_V_wid_p90p50)
 
 screenreg(inte_wid_p90p50,
-          "output/tables/macro_homo-p90b50_diff-operat-full.txt",
+          "output/tables/macro_homo-p90b50_diff-operat-full-resp_spouse.txt",
           # "output/tables/macro_homo-p90b50_diff-operat-oecd.txt",
           single.row = T)
 
 
-## Ratio Share GDP top 10%---------------------------------------------------------
+## Ratio top10---------------------------------------------------------
 homo_top10 <- 
-  lmer(egal~ homclass_gc+know_total_gc+socialtrust_gc+class3+female_gc+agenum_gc+age2_gc+edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+union_gc+workst_gc+top10 +loggdppercapita + rel_red + gv_spen + homclass_gc*class3*d10d1 +(homclass_gc+class3|country2),data=dfreg,weights = WEIGHT)
+  lmer(egal~ homclass_gc+know_total_gc+socialtrust_gc+class3+female_gc+agenum_gc+age2_gc+edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+union_gc+workst_gc+top10 +loggdppercapita + rel_red + gv_spen + homclass_gc*class3*top10 +(homclass_gc+class3|country2),data=dfreg,weights = WEIGHT)
 
 homo_V_top10 <- 
   lmer(egal~ 
