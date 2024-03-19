@@ -165,12 +165,57 @@ otero<- otero %>% select(ccode,gv_spen,individualism)
 **ILO Data**
 
 ```{r}
-
 ilo_data <- read.csv(file = here::here("input/data/original/ILO-data/WEOApr2022all.csv"))
 frq(ilo_data$Subject.Descriptor)
 
-ilo_data_1 <- ilo_data %>% filter(Subject.Descriptor %in% c("General government total expenditure","General government revenue"))
-ilo_data_1$ccode <- countrycode::countrycode(sourcevar = ilo_data_1$ISO,origin = "iso3c",destination = "iso3n")
+ilo_data_1 <- ilo_data %>% filter(Subject.Descriptor %in% c("General government total expenditure","General government revenue"), Units == "Percent of GDP")
+ilo_data_1$ccode <- countrycode::countrycode(sourcevar = ilo_data_1$ISO,origin = "iso3c",destination = "iso3n") 
+ilo_data_1<- ilo_data_1 %>% filter(ccode %in% countries$ccode)
+ilo_data_1 <- ilo_data_1 %>% select(ccode,WEO.Country.Code:Country.Series.specific.Notes,X2010:X2020)
+names(ilo_data_1) <- tolower(names(ilo_data_1))
+names(ilo_data_1) <- str_replace_all(string = names(ilo_data_1),pattern = "x",replacement = "Y_")
+
+ilo_tax <- ilo_data_1 %>% filter(weo.subject.code=="GGR_NGDP") 
+ilo_spe <- ilo_data_1 %>% filter(weo.subject.code=="GGX_NGDP") 
+# Example wide format data
+
+# Convert from wide to long format
+long_ilo_tax <- ilo_tax %>%
+  select(ccode,Y_2010:Y_2016) %>% 
+  pivot_longer(cols = starts_with("Y_"),
+               names_to = "year",
+               names_prefix = "Y_",
+               values_to = "ilo_taxrev")
+# long_ilo_tax$country <- countrycode::countrycode(sourcevar = long_ilo_tax$ccode,origin = "iso3n",destination = "iso3c") 
+
+
+long_ilo_spe <- ilo_spe %>%
+  select(ccode,Y_2010:Y_2016) %>% 
+  pivot_longer(cols = starts_with("Y_"),
+               names_to = "year",
+               names_prefix = "Y_",
+               values_to = "ilo_govspe")
+
+ilo_df <- left_join(long_ilo_tax,long_ilo_spe) %>% filter(year==2016)
+
+# long_ilo_spe$country <- countrycode::countrycode(sourcevar = long_ilo_spe$ccode,origin = "iso3n",destination = "iso3c") 
+
+# Plot points connected by a line representing time
+# ggplot(long_ilo_spe, aes(x = factor(year), y = govspe, group = factor(country), color = factor(country))) +
+#   geom_line() +
+#   geom_point(size = 3) +
+#   labs(title = "Points Connected by a Line Representing Time", x = "Year", y = "Value") +
+#   # scale_x_discrete(labels = c("2016", "2017", "2018")) +
+#   theme_minimal()
+# 
+# 
+# # Plot points connected by a line representing time
+# ggplot(long_ilo_tax, aes(x = factor(year), y = taxrev, group = factor(country), color = factor(country))) +
+#   geom_line() +
+#   geom_point(size = 3) +
+#   labs(title = "Points Connected by a Line Representing Time", x = "Year", y = "Value") +
+#   # scale_x_discrete(labels = c("2016", "2017", "2018")) +
+#   theme_minimal()
 
 ```
 
@@ -199,7 +244,8 @@ macro_data <-
   left_join(pen_2017) %>% 
   left_join(otero) %>%
   left_join(ocde) %>% 
-  left_join(wid_df1)
+  left_join(wid_df1) %>% 
+  left_join(ilo_df)
 
 df1$ccode <- as.numeric(df1$country)
 df2 <- left_join(df1,macro_data,by="ccode")
