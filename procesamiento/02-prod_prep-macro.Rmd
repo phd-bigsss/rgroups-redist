@@ -186,8 +186,7 @@ long_ilo_tax <- ilo_tax %>%
                names_to = "year",
                names_prefix = "Y_",
                values_to = "ilo_taxrev")
-# long_ilo_tax$country <- countrycode::countrycode(sourcevar = long_ilo_tax$ccode,origin = "iso3n",destination = "iso3c") 
-
+long_ilo_tax$ilo_taxrev <- as.numeric(long_ilo_tax$ilo_taxrev)
 
 long_ilo_spe <- ilo_spe %>%
   select(ccode,Y_2010:Y_2016) %>% 
@@ -195,6 +194,8 @@ long_ilo_spe <- ilo_spe %>%
                names_to = "year",
                names_prefix = "Y_",
                values_to = "ilo_govspe")
+
+long_ilo_spe$ilo_govspe <- as.numeric(long_ilo_spe$ilo_govspe)
 
 ilo_df <- left_join(long_ilo_tax,long_ilo_spe) %>% filter(year==2016)
 
