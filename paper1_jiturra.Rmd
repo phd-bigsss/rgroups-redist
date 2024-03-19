@@ -211,7 +211,7 @@ dfreg <- df1 %>% dplyr::select(
   dclass3spo_V,
   homclass3_V_res,
   know_total,
-  socialtrust,
+  # socialtrust,
   Q03pcm,
   edyears,
   female,
@@ -248,7 +248,7 @@ dfreg <- na.omit(dfreg)
 
 ## Model -  EGP3 - DIGCLASS - V to Working -----------------------------
 digclas1_VW_1<- lmer(egal~1 + homclass3_V_res + female+agenum+age2 + (1|country2),data=dfreg,weights = WEIGHT)
-digclas1_VW_2<- update(digclas1_VW_1, . ~ . +know_total+socialtrust)
+digclas1_VW_2<- update(digclas1_VW_1, . ~ . +know_total)
 digclas1_VW_3 <- update(digclas1_VW_2, . ~ . + dclass3res_V)
 
 digclas1_VW_4 <- update(digclas1_VW_3, . ~ . + dclass3res_V+female+agenum+age2)
@@ -262,7 +262,7 @@ digclas1_VW <- list(digclas1_VW_1,digclas1_VW_2,
 
 ccoef <- list(homclass3_V_res="Class-based network homogeneity",
               know_total="Network size",
-              socialtrust="Social Trust",
+              # socialtrust="Social Trust",
               "dclass3res_VIntermediate class (III+IV)"="Intermediate Class",
               "dclass3res_VWorking Class (V+VI+VII)"="Working Class",
               # "femaleFemale"="Female (Ref. = Male)",
@@ -284,7 +284,7 @@ texreg(digclas1_VW,stars = c(0.001, 0.01, 0.05, 0.1),
        caption.above = T,leading.zero = T,
        custom.coef.map = ccoef,
        symbol = "+",scalebox = 0.60,
-      groups = list("Social Class (Ref.= Service Class)" = 4:5, "Household Income (Ref.= Tertile I)"= 7:9,  "Partner's Social Class (Ref.= Service Class)" = 12:14, "Homogeneity x Social Class"=15:16),
+      # groups = list("Social Class (Ref.= Service Class)" = 4:5, "Household Income (Ref.= Tertile I)"= 7:9,  "Partner's Social Class (Ref.= Service Class)" = 12:14, "Homogeneity x Social Class"=15:16),
        float.pos = "h!",
        use.packages = F)
 ```
@@ -329,6 +329,9 @@ pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,s
 rm(list=ls())
 
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+
+df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
+
 dfreg <- df1 %>% dplyr::select(
   egal = egal2,
   # starts_with("class3"),
@@ -366,8 +369,11 @@ dfreg <- df1 %>% dplyr::select(
          age2 = agenum ^ 2, 
          gini_disp=gini_disp*100) %>%
   # filter(oecd == "OECD") %>%
-  filter(country2 != "SVN") 
+  filter(country2 != "SVN") %>% 
+  na.omit()
 
+# dfreg$wstate <- scale(scale(dfreg$rel_red) + scale(dfreg$gv_spen))
+dfreg$wstate <- scale(dfreg$gv_spen)
 
 # Variable Group-Centering ------------------------------------------------
 dfreg <- 
@@ -398,15 +404,14 @@ dfreg$Q03pcm_NA_gc = group_center(dfreg$Q03pcm_4, grp = dfreg$country2)
 dfreg <- dplyr::select(dfreg,-c(female_1,female_2,union_1,union_2,workst_1,
                                 workst_2,Q03pcm_1,Q03pcm_2,Q03pcm_2,Q03pcm_4))
 
-dfreg$dclass3spo_V <- car::recode(dfreg$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
-
-dfreg <- na.omit(dfreg)
+dfreg$gini_disp <- scale(dfreg$gini_disp)
 
 ## Model -  EGP3 - DIGCLASS - V to Working -----------------------------
 homo_V_gini <- 
   lmer(egal~ 
          homclass3_V_gc+
-         know_total_gc+socialtrust_gc+
+         know_total_gc+
+         socialtrust_gc+
          dclass3res_V+dclass3spo_V+
          female_gc+agenum_gc+age2_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
@@ -418,23 +423,25 @@ homo_V_gini <-
 homo_V_gini_controls <- 
   lmer(egal~ 
          homclass3_V_gc+
-         know_total_gc+socialtrust_gc+
+         know_total_gc+
+         socialtrust_gc+
          dclass3res_V+dclass3spo_V+
          female_gc+agenum_gc+age2_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
-         gini_disp +loggdppercapita + rel_red + gv_spen +
+         gini_disp +loggdppercapita + wstate +
          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
 
 homo_V_gini_full <- 
   lmer(egal~ 
          homclass3_V_gc+
-         know_total_gc+socialtrust_gc+
+         know_total_gc+
+         socialtrust_gc+
          dclass3res_V+dclass3spo_V+
          female_gc+agenum_gc+age2_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
-         gini_disp +loggdppercapita + rel_red + gv_spen +
+         gini_disp +loggdppercapita + wstate +
          homclass3_V_gc*
          dclass3res_V*
          gini_disp +
@@ -448,26 +455,67 @@ ccoef <- list(homclass3_V_gc="Class-based network homogeneity (CWC)",
               "dclass3res_VWorking Class (V+VI+VII)"="Working Class",
               "gini_disp" = "Income inequality (Gini index)",
               loggdppercapita = "GDP (per capita)",
-              rel_red = "Relative Redistribution",
-              gv_spen = "Government spending (percentage of GDP)",
+              # rel_red = "Relative Redistribution",
+              # gv_spen = "Government spending (percentage of GDP)",
+               wstate="Size of Welfare State",
               "homclass3_V_gc:dclass3res_VIntermediate class (III+IV)" = "Homogeneity x Intermediate Class",
               "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII)" = "Homogeneity x Working Class",
               "homclass3_V_gc:gini_disp"= "Homogeneity x Income Inequality",
               "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):gini_disp" = "Homogeneity x Intermediate Class x Income Inequality",
               "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):gini_disp" = "Homogeneity x Working Class x Income Inequality")
 
-texreg(digclas1_macro,stars = c(0.001, 0.01, 0.05, 0.1),symbol = "+",scalebox = 0.60,
+knitreg(digclas1_macro,stars = c(0.001, 0.01, 0.05, 0.1),symbol = "+",scalebox = 0.60,
        caption = "Multilevel models for Income Inequality, Network segregation and Redistributive preferences",
        custom.note = "%stars. Models include sampling weights and individual level controls centered within cluster (group mean)",
        caption.above = T,leading.zero = T,single.row = T,
        custom.coef.map = ccoef,
-      groups = list("Social Class (Ref.= Service Class)" = 2:3, "Homogeneity x Social Class"=8:9, "Homogeneity x Social Class x Income Inequality"=11:12),
+      # groups = list("Social Class (Ref.= Service Class)" = 2:3, "Homogeneity x Social Class"=8:9, "Homogeneity x Social Class x Income Inequality"=11:12),
        float.pos = "h!",
        use.packages = F)
 ```
 
 ```{r}
+### Predicted values homo*class*GiniD ---------------------------------------
+# ginid_max<- round(max(dfreg$gini_disp) ,2)
+# ginid_min<- round(min(dfreg$gini_disp),2)
 
+ginid_max<- round(mean(dfreg$gini_disp) + sd(dfreg$gini_disp)  ,2)
+ginid_min<- round(mean(dfreg$gini_disp) -sd(dfreg$gini_disp) ,2)
+ginid_mea<- round(mean(dfreg$gini_disp),2)
+
+df_pred_giniD_gc <-
+  predictions(
+    homo_V_gini_full,newdata = datagrid(
+      gini_disp = c(ginid_min, ginid_mea, ginid_max),
+      wstate=mean(dfreg$wstate),
+      homclass3_V_gc = seq(min(dfreg$homclass3_V_gc), max(dfreg$homclass3_V_gc), by= 0.1),
+      dclass3res_V=levels(dfreg$dclass3res_V)
+    )
+  )
+
+df_pred_giniD_gc <- as.data.frame(df_pred_giniD_gc)
+df_pred_giniD_gc$gini_disp <- factor(df_pred_giniD_gc$gini_disp,labels = c("Gini (-1SD)","Gini (Mean)", "Gini (+1SD)"))
+
+
+df_pred_giniD_gc %>% 
+  ggplot(aes(y=estimate,x=homclass3_V_gc, fill=dclass3res_V,color=dclass3res_V,ymin=conf.low, ymax=conf.high)) +
+  geom_line(size=0.75) +
+  geom_point(size=2) +
+  geom_ribbon(alpha=0.1,size=1,linetype=1) +
+  facet_wrap(~gini_disp) +
+  labs(y = "Preferences for Redistribution",
+       x="Class-based network homogeneity (CWC)",
+       title = "Three-way interaccion effects for Preferences for Redistribution, Network segregation, Social class and Income Inequality") +
+  # scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
+  scale_x_continuous(sec.axis = sec_axis(~ . , name = "Income inequality (post-tax)", breaks = NULL, labels = NULL)) +
+  scale_fill_manual(values=c("#377EB8","#4DAF4A","#E41A1C"))+
+  scale_color_manual(values=c("#377EB8","#4DAF4A","#E41A1C"))+
+  theme(legend.position="bottom",
+        legend.direction = "horizontal",
+        axis.text=element_text(size=15),
+        legend.title = element_blank(),
+        legend.background = element_blank(),
+        legend.box.background = element_rect(colour = "black"))
 ```
 
 

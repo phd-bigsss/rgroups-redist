@@ -162,6 +162,19 @@ otero$gdp <- gsub('\\,', '',otero$gdp)
 otero<- otero %>% select(ccode,gv_spen,individualism)
 ```
 
+**ILO Data**
+
+```{r}
+
+ilo_data <- read.csv(file = here::here("input/data/original/ILO-data/WEOApr2022all.csv"))
+frq(ilo_data$Subject.Descriptor)
+
+ilo_data_1 <- ilo_data %>% filter(Subject.Descriptor %in% c("General government total expenditure","General government revenue"))
+ilo_data_1$ccode <- countrycode::countrycode(sourcevar = ilo_data_1$ISO,origin = "iso3c",destination = "iso3n")
+
+```
+
+
 
 **GDP: PEN data**
 ```{r pen-data}
