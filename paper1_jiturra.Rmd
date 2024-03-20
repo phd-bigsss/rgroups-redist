@@ -72,8 +72,11 @@ header-includes:
  rmarkdown::render("paper1_jiturra.Rmd", output_format = "bookdown::pdf_document2")
  rmarkdown::render("paper1_jiturra.Rmd", output_format = "bookdown::html_document2")
  rmarkdown::render("paper1_jiturra.Rmd", output_format = "bookdown::word_document2")
+ 
+ # install.packages("trackdown")
+ trackdown::upload_file(file = "paper1_jiturra.Rmd", hide_code = TRUE,gpath = '001_PhD/002dissertation/paper1')
+                        
 ```
-
 
 <!-- - considerar ISEI08 como alternativa de social class por la correlacion con homogeneidad -->
 <!-- - darle una oportunidad al h-index -->
@@ -168,24 +171,19 @@ To summarize, the current state of research has led us to establish two competin
 
 ## Data {-}
 
-
-
-
 ## Variables {-}
-
 
 ### _Individual level_ {-}
 
+**Redistributive preferences**: Two indicators available in the questionnaire were used to measure redistributive preferences.  First, support for government redistribution (1) is measured by the item 'It is the responsibility of the government to reduce the differences in income between people with high incomes and those with low incomes.' and the egalitarian preferences represented by the item (2) 'For a society to be fair, differences in people's standard of living should be small.' indicators are five-point Likert scales with the categories 'Strongly agree' (1), 'Agree' (2), 'Neither agree nor disagree' (3), 'Disagree' (4) and 'Strongly disagree' (5). Thus, based on previous research and the high degree of correlation between the indicators (_r_ = 0.7), we proceed to reverse-code and create a standardized average index ranging from 1 to 100, where higher values represent greater redistributive preferences [@svallfors_government_2013].
 
-* **Social class** (Erikson & Goldthorpe, 1992): EGP Class Scheme, based on ISCO-08 codes for (i) occupations and using the algorithm that considers (ii) self-employment status and (iii) number of workers (Ganzeboom & Treiman, 2003). As a result, three big classes are created: Service Class (I+II),  Intermediate Class (III+IV), and Working Class (VI+VII).
+[likertplot] 
 
+**Social class**: A collapsed version of the Erikson-Goldthorpe-Portocarrero (EGP) Class Scheme was used [@Erikson1992;@Erikson1979], one of the most the most consistent and validated measure for social class positions in comparative research [@evans_political_2013] and has demonstrated its validity in regions of the industrialized world, as well as in countries of late industrialization [@solis_class_2019;@torche_unequal_2005;@ishida_trends_2005;@barozet_measurement_2021]. Thus, based on the recently developed DIGCLASS algorithm, we draw on the available information regarding (i) occupations, (ii) self-employment status and (iii) the number of workers [@cimentada_digclass_2023]. As a result, following previous research, a version of three big classes is employed, including the Service Class (I+II),  Intermediate Class (III+IV), and Working Class(V+VI+VII) [@sosnaud_class_2013;@edlund_influence_2003]. 
 
-* **Class-based network segregation** [@otero_open_2021]: Based on the ten occupations of the position generator, three status groups are created to mirror the three social classes described above:
-  - High: Lawyer, Executive of a large firm, and Human resource manager
-  - Middle: School teacher, Police officer and Nurse
-  - Low: Car mechanic, Bus driver, Hairdresser, and Home or office cleaner
+**Class-based network segregation**: To create our measure of network homogeneity based on social class, we employed the position generator available in the questionnaire. This instrument has been widely employed in social capital studies, based on the assumption that access to social resources is based on ties to different positions in the social structure following an ego-centered network approach [@lin_access_1986;@vandergaag_position_2008]. In this case, the position generator shows a list of ten occupations where the respondent declares four possible options through which this tie is classified: "Family or relative", "Close friend", "Someone else I know", and "No one". In the case of the indicator used here, the first three categories are classified as "Knows" = 1 and "Does not know" = 0. On the basis of this, it is possible to obtain the total number of a person's social ties. Subsequently, the occupations were classified into three groups resembling social class positions [@otero_open_2021]. First, the Lawyer, Executive of a large firm, and Human resource manager are classified as high status. Then, a School teacher, Police officer, and Nurse are considered as Intermediate status. Finally, a car mechanic, bus driver, hairdresser, and home or office cleaner are considered as low-status occupations.
 
-After this, we calculated the number of social ties for each status group. Consequently, the group closer to their class position obtains a proxy of the number of ingroup social ties. Finally, the number of ingroup ties is divided by the total number of contacts to provide a measure of network homogeneity that seeks to represent the share of similar social ties within the personal network. Here, zero represents that all social ties are *different* (heterogeneity), while one means that all social contacts are similar (homogeneity). In substantial terms, higher values represent greater social distance from other social classes in society.
+After this, we calculated the number of social ties for each status group. Consequently, the group closer to their class position obtains a proxy of the number of ingroup social ties. Finally, the number of ingroup ties is divided by the total number of contacts to provide a measure of network homogeneity that seeks to represent the share of similar social ties within the personal network [@otero_lives_2022; @volker_birds_2022]. Here, zero represents that all social ties are *different* (heterogeneity), while one means that all social contacts are similar (homogeneity). In substantial terms, higher values represent greater social distance from other social classes in society.
 
 ### _Macro level_ {-}
 
@@ -196,11 +194,11 @@ After this, we calculated the number of social ties for each status group. Conse
 * Size of the welfare state [see @edlund_democratic_2015]
   - Current Redistribution (Solt, 2020)
   - Tax revenue, as percentage of GDP (ILO)
-  - Welfare expenditure, as Percentage of GDP (ILO)
+  - Welfare expenditure, as percentage of GDP (ILO)
   
 ## Method {-}
 
-Multilevel regression models with random and fixed effects. For the cross-level interactions we include random slopes and all variables are group-mean centered (CWC)
+Multilevel regression models with random and fixed effects. For the cross-level interactions, we include random slopes, and all variables are group-mean centered (CWC)
 
 # Results
 
@@ -210,14 +208,11 @@ Multilevel regression models with random and fixed effects. For the cross-level 
 
 ```
 
-
 ```{r}
 
 ```
 
-
 ## Multivariate results
-
 
 ```{r, results='asis'}
 set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
@@ -455,7 +450,6 @@ homo_V_gini <-
          gini_disp +
          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
 
-
 homo_V_gini_gdp <- 
   lmer(egal~ 
          homclass3_V_gc+
@@ -467,7 +461,6 @@ homo_V_gini_gdp <-
          union_gc+workst_gc+
          gini_disp +loggdppercapita +
          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
-
 
 homo_V_gini_gdp_wstate2 <- 
   lmer(egal~ 
@@ -493,7 +486,6 @@ homo_V_gini_gdp_controls <-
          gini_disp +loggdppercapita + wstate2 +
          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
 
-
 homo_V_gini_full2 <- 
   lmer(egal~ 
          homclass3_V_gc+
@@ -508,7 +500,6 @@ homo_V_gini_full2 <-
          dclass3res_V*
          gini_disp + 
          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
-
 
 digclas1_macro <- list(homo_V_gini,
                        homo_V_gini_gdp,
@@ -563,7 +554,6 @@ df_pred_giniD_gc <-
 df_pred_giniD_gc <- as.data.frame(df_pred_giniD_gc)
 df_pred_giniD_gc$gini_disp <- factor(df_pred_giniD_gc$gini_disp,labels = c("Gini (-1SD)","Gini (Mean)", "Gini (+1SD)"))
 
-
 df_pred_giniD_gc <- df_pred_giniD_gc %>% filter(dclass3res_V!="Intermediate class (III+IV)")
 
 df_pred_giniD_gc %>% 
@@ -596,7 +586,6 @@ df_pred_giniD_gc %>%
 
 # Discussion and conclusion
 
-
 `r if (is_latex_output()) '
 # References {-}
 '`
@@ -604,7 +593,6 @@ df_pred_giniD_gc %>%
 \scriptsize
 \singlespacing
 ```
-
 
 ```{r oldcode, eval=FALSE, include=FALSE}
 
@@ -701,4 +689,3 @@ df_pred_giniD_gc %>%
 #          gini_disp + 
 #          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
 ```
-
