@@ -241,6 +241,8 @@ dfreg <- df1 %>% dplyr::select(
   edyears,
   female,
   agenum,
+  partner,
+  religion,
   union,
   workst,
   WEIGHT,
@@ -272,7 +274,7 @@ df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, N
 dfreg <- na.omit(dfreg)
 
 ## Model -  EGP3 - DIGCLASS - V to Working -----------------------------
-digclas1_VW_1<- lmer(egal~1 + homclass3_V_res + female+agenum+age2 + (1|country2),data=dfreg,weights = WEIGHT)
+digclas1_VW_1<- lmer(egal~1 + homclass3_V_res + female+agenum+age2 + partner + religion + (1|country2),data=dfreg,weights = WEIGHT)
 digclas1_VW_2<- update(digclas1_VW_1, . ~ . +know_total+socialtrust)
 digclas1_VW_3 <- update(digclas1_VW_2, . ~ . + dclass3res_V)
 
@@ -304,12 +306,14 @@ ccoef <- list(homclass3_V_res="Class-based network homogeneity",
               "homclass3_V_res:dclass3res_VWorking Class (V+VI+VII)" = "Homogeneity x Working Class")
 
 texreg(digclas1_VW,stars = c(0.001, 0.01, 0.05, 0.1),
-       caption = "Multilevel models for class-based network segregation and redistributive preferences",
-       custom.note = "%stars. Models include sampling weights. Gender and Age included as controls",
+       caption = "Multilevel models for Class-based network segregation and Redistributive Preferences",
+       custom.note = "%stars. Models include sampling weights. Gender, age, marital status and religion are included as controls",
        caption.above = T,leading.zero = T,
        custom.coef.map = ccoef,
        symbol = "+",scalebox = 0.60,
       groups = list("Social Class (Ref.= Service Class)" = 4:5, "Household Income (Ref.= Tertile I)"= 7:9,  "Partner's Social Class (Ref.= Service Class)" = 12:14, "Homogeneity x Social Class"=15:16),
+      custom.gof.rows = list("Controls"=rep("Yes",6)),include.loglik = FALSE,include.aic = FALSE,
+      custom.gof.names = c(NA,NA,"Num. groups","Var: Country (Intercept)","Var: Residual"),
        float.pos = "h!",
        use.packages = F)
 ```
@@ -372,6 +376,8 @@ dfreg <- df1 %>% dplyr::select(
   edyears,
   female,
   agenum,
+  religion,
+  partner,
   union,
   workst,
   WEIGHT,
@@ -424,6 +430,10 @@ dfreg$age2_gc = group_center(dfreg$age2, grp = dfreg$country2)
 dfreg$socialtrust_gc = group_center(dfreg$socialtrust, grp = dfreg$country2)
 dfreg$homclass3_V_gc <-group_center(dfreg$homclass3_V_res, grp = dfreg$country2)
 dfreg$know_total_gc = group_center(dfreg$know_total, grp = dfreg$country2)
+dfreg$religion_gc = group_center(as.numeric(dfreg$religion), grp = dfreg$country2)
+dfreg$partner_gc = group_center(as.numeric(dfreg$partner), grp = dfreg$country2)
+
+
 
 # Household Income Tercile
 dfreg$Q03pcm_1_gc = group_center(dfreg$Q03pcm_1, grp = dfreg$country2)
@@ -444,7 +454,7 @@ homo_V_gini <-
          know_total_gc+
          socialtrust_gc+
          dclass3res_V+dclass3spo_V+
-         female_gc+agenum_gc+age2_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
          gini_disp +
@@ -456,7 +466,7 @@ homo_V_gini_gdp <-
          know_total_gc+
          socialtrust_gc+
          dclass3res_V+dclass3spo_V+
-         female_gc+agenum_gc+age2_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
          gini_disp +loggdppercapita +
@@ -468,7 +478,7 @@ homo_V_gini_gdp_wstate2 <-
          know_total_gc+
          socialtrust_gc+
          dclass3res_V+dclass3spo_V+
-         female_gc+agenum_gc+age2_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
          gini_disp +loggdppercapita + wstate2+
@@ -480,7 +490,7 @@ homo_V_gini_gdp_controls <-
          know_total_gc+
          socialtrust_gc+
          dclass3res_V+dclass3spo_V+
-         female_gc+agenum_gc+age2_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
          gini_disp +loggdppercapita + wstate2 +
@@ -492,7 +502,7 @@ homo_V_gini_full2 <-
          know_total_gc+
          socialtrust_gc+
          dclass3res_V+dclass3spo_V+
-         female_gc+agenum_gc+age2_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
          gini_disp +loggdppercapita + wstate2+
@@ -523,16 +533,18 @@ ccoef <- list(homclass3_V_gc="Class-based network homogeneity (CWC)",
               "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):gini_disp" = "Homogeneity x Working Class x Income Inequality")
 
 texreg(digclas1_macro,stars = c(0.001, 0.01, 0.05, 0.1),symbol = "+",scalebox = 0.60,
-       caption = "Multilevel models for Income Inequality, Network segregation and Redistributive preferences",
+       caption = "Multilevel models for Income Inequality, Network segregation and RedistributivePpreferences",
        custom.note = "%stars. Models include sampling weights and individual level controls centered within cluster (group mean)",
        caption.above = T,leading.zero = T,single.row = T,
        custom.coef.map = ccoef,
       groups = list("Social Class (Ref.= Service Class)" = 2:3,"Macro-level factors"=4:6, "Homogeneity x Social Class"=7:8, "Homogeneity x Social Class x Income Inequality"=10:11),
        float.pos = "h!",
+      # custom.gof.rows = list("Controls"=rep("Yes",6)),include.loglik = FALSE,include.aic = FALSE,
+      # custom.gof.names = c(NA,NA,"Num. groups","Var: Country (Intercept)","Var: Residual"),      
        use.packages = F)
 ```
 
-```{r, fig.dim=c(12,6),fig.cap='Three-way interaccion effects for Preferences for Redistribution, Network segregation, Social class and Income Inequality'}
+```{r, fig.dim=c(12,6),fig.cap='Three-way interaccion effects for Redistributive Preferences, Network segregation, Social class and Income Inequality'}
 ### Predicted values homo*class*GiniD ---------------------------------------
 # ginid_max<- round(max(dfreg$gini_disp) ,2)
 # ginid_min<- round(min(dfreg$gini_disp),2)

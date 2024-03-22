@@ -54,7 +54,10 @@ dfTR <- dfTR %>% rename(SEX=sex,
                         NSUP=nsup,
                         WRKSUP=wrksup,
                         SPEMPREL=spemprel,
-                        SPWRKSUP=spwrksup)
+                        SPWRKSUP=spwrksup,
+                        ATTEND=attend, 
+                        RELIGGRP=religgrp,
+                        MARITAL=marital)
 
 dfES$c_alphan <- NULL
 dfTR$c_alphan <- NULL
@@ -1813,6 +1816,34 @@ df1$female <- car::recode(as.numeric(df1$SEX),"2='Female';1='Male';9=NA",
                           levels = c('Male','Female'),as.factor = T)
 #frq(df1$female)
 
+
+frq(df1$ATTEND)
+df1$relig <- car::recode(df1$ATTEND,recodes = "c(97,98,99)=NA",as.numeric = T)
+df1$relig <- set_na(df1$relig,na = c(97,98,99))
+df1$relig <- sjmisc::rec(x = df1$relig,rec = "rev")
+frq(df1$relig)
+
+df1$religcat <- car::recode(df1$ATTEND,recodes = "0=0;1:7=1;c(97,98,99)=NA",as.factor = T)
+df1$religcat <- set_na(df1$religcat,na = c(97,98,99))
+sjlabelled::set_label(df1$religcat) <- "Attendance of religious services"
+frq(df1$religcat)
+
+frq(df1$RELIGGRP)
+df1$religion <- car::recode(df1$RELIGGRP,recodes = "0=0;1:10=1;c(97,98,99)=NA",as.factor = T)
+df1$religion <- set_na(df1$religion,na = c(97,98,99))
+sjlabelled::set_label(df1$religion) <- "Religion"
+df1$religion <- factor(df1$religion,labels = c("No Religion","Has Religion"))
+frq(df1$religion)
+
+
+frq(df1$MARITAL)
+df1$partner <- df1$MARITAL
+frq(df1$partner)
+df1$partner <- ifelse(df1$partner==9& df1$c_alphan =="CN",yes = 2,no = df1$partner)
+frq(df1$partner)
+df1$partner <- car::recode(df1$partner,recodes = "1:2=1;3:6=0;c(7,9)=NA",as.factor = T)
+df1$partner <- factor(df1$partner,labels = c("No partner","Has a partner"))
+frq(df1$partner)
 ```
 
 # Save
