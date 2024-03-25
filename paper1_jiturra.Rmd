@@ -179,11 +179,15 @@ To summarize, the current state of research has led us to establish two competin
 
 [likertplot] 
 
-**Social class**: A collapsed version of the Erikson-Goldthorpe-Portocarrero (EGP) Class Scheme was used [@Erikson1992;@Erikson1979], one of the most the most consistent and validated measure for social class positions in comparative research [@evans_political_2013] and has demonstrated its validity in regions of the industrialized world, as well as in countries of late industrialization [@solis_class_2019;@torche_unequal_2005;@ishida_trends_2005;@barozet_measurement_2021]. Thus, based on the recently developed DIGCLASS algorithm, we draw on the available information regarding (i) occupations, (ii) self-employment status and (iii) the number of workers [@cimentada_digclass_2023]. As a result, following previous research, a version of three big classes is employed, including the Service Class (I+II),  Intermediate Class (III+IV), and Working Class(V+VI+VII) [@sosnaud_class_2013;@edlund_influence_2003]. 
+**Social class**:  The Erikson-Goldthorpe-Portocarrero (EGP) Class Scheme is employed [@Erikson1992;@Erikson1979], one of the most consistent and validated measure for social class positions in comparative research [@evans_political_2013] and has demonstrated its validity in regions of the industrialized world, as well as in countries of late industrialization [@solis_class_2019;@torche_unequal_2005;@ishida_trends_2005;@barozet_measurement_2021; @wang_where_2024]. Thus, based on the recently developed DIGCLASS algorithm, we draw on the available information regarding (i) occupations, (ii) self-employment status and (iii) the number of workers [@cimentada_digclass_2023]. As a result, following previous research on political attitudes, a collapsed version of three big classes is employed, including the Service Class (I+II),  Intermediate Class (III+IV), and Working Class (V+VI+VII) [@sosnaud_class_2013;@edlund_influence_2003]. 
 
-**Class-based network segregation**: To create our measure of network homogeneity based on social class, we employed the position generator available in the questionnaire. This instrument has been widely employed in social capital studies, based on the assumption that access to social resources is based on ties to different positions in the social structure following an ego-centered network approach [@lin_access_1986;@vandergaag_position_2008]. In this case, the position generator shows a list of ten occupations where the respondent declares four possible options through which this tie is classified: "Family or relative", "Close friend", "Someone else I know", and "No one". In the case of the indicator used here, the first three categories are classified as "Knows" = 1 and "Does not know" = 0. On the basis of this, it is possible to obtain the total number of a person's social ties. Subsequently, the occupations were classified into three groups resembling social class positions [@otero_open_2021]. First, the Lawyer, Executive of a large firm, and Human resource manager are classified as high status. Then, a School teacher, Police officer, and Nurse are considered as Intermediate status. Finally, a car mechanic, bus driver, hairdresser, and home or office cleaner are considered as low-status occupations.
+**Class-based network segregation**: To create our measure of network homogeneity based on social class, we employed the position generator available in the questionnaire. This instrument has been widely employed in social capital studies, relying on the assumption that access to social resources is based on ties to different positions in the social structure following an ego-centered network approach [@lin_access_1986;@vandergaag_position_2008]. In this case, the position generator shows a list of ten occupations where the respondent declares four possible options through which this tie is classified: "Family or relative", "Close friend", "Someone else I know", and "No one". In the case of the indicator used here, the first three categories are classified as "Knows" = 1 and "Does not know" = 0. On the basis of this, it is possible to obtain the total number of a person's social ties. Subsequently, the occupations were classified into three groups resembling social class positions [@otero_open_2021]. First, the Lawyer, Executive of a large firm, and Human resource manager are classified as high status. Then, a School teacher, Police officer, and Nurse are considered as Intermediate status. Finally, a car mechanic, bus driver, hairdresser, and home or office cleaner are considered as low-status occupations.
 
 After this, we calculated the number of social ties for each status group. Consequently, the group closer to their class position obtains a proxy of the number of ingroup social ties. Finally, the number of ingroup ties is divided by the total number of contacts to provide a measure of network homogeneity that seeks to represent the share of similar social ties within the personal network [@otero_lives_2022; @volker_birds_2022]. Here, zero represents that all social ties are *different* (heterogeneity), while one means that all social contacts are similar (homogeneity). In substantial terms, higher values represent greater social distance from other social classes in society.
+
+As recently suggested, we have selected a set of control variables following substantive reasoning based on the current state of social network and redistributive preferences research [@kohler_control_2024]. Studies on social capital, network size, and social trust have been included in the estimations. The number of social ties or volume in a network can also have implications for instrumental and expressive outcomes such as job prospects or evaluations of self-worth [@contreras_inequality_2019;@kim_social_2021]. Likewise, social trust has been pointed out as a condition in forming social ties beyond the ingroup, as it means that people can rely on others and engage in supportive networks that may even play a substitute role in welfare provision [@jaime-castillo_social_2016]. In addition, redistributive preferences can be explained through economic self-interest, with higher-income individuals typically opposing redistribution while recognizing that the reduction of inequality would be at their expense by increasing the tax burden [@meltzer_rational_1981]. In addition, it has been argued that education provides greater security to cope with the dynamics of the labor market, which results in higher skills being linked to less support for redistribution [@kitschelt_occupations_2014]. Likewise, job status represents labor market integration, where outsiders are more supportive of redistributive policies due to their willingness to cope with labor market vulnerability [@hausermann_highskilled_2015]. Finally, it has been argued that besides the self-interest of the unionized working class members, unions also play a role as political socialization agents that seek to nurture egalitarian values and altruistic motives rooted in class solidarity [@han_labor_2022].
+
+Regarding sociodemographic characteristics, prosocial attitudes can be attributed to socialization and cultural norms, with women generally exhibiting a greater capacity for empathy that motivates them to engage in more communal and relational behavior than men [@eagly_his_2009]. In addition, women tend to be placed in interpersonal service occupations with lower wages and higher market risk than their male counterparts [@waitkus_investigating_2021]. Substantial differences have also been demonstrated according to the age of individuals, as life cycle stages constitute different degrees of dependence and exposure to risk, and different age cohorts encapsulate different experiences of economic and political shocks. [@vanheuvelen_intercohort_2018]. Concerning religion, evidence has shown that religious individuals support redistribution to a greater extent, as religious communities incentivize uninterested altruistic behavior and prosocial values. However, it has also been suggested that religious behavior can decrease support for redistribution as it contributes to individual well-being [@arikan_was_2019]. Thus, it has been shown that people who do not have a partner tend to be more supportive of redistribution, suggesting that marital ties constitute a support network through which it is possible to mobilize resources and social support [@alesina_preferences_2005].
 
 ### _Macro level_ {-}
 
@@ -214,7 +218,7 @@ Multilevel regression models with random and fixed effects. For the cross-level 
 
 ## Multivariate results
 
-```{r, results='asis'}
+```{r table1, results='asis'}
 set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
 options(ggplot2.discrete.fill = set1)
 options(ggplot2.discrete.colour = set1)
@@ -302,8 +306,8 @@ ccoef <- list(homclass3_V_res="Class-based network homogeneity",
               "dclass3spo_VIntermediate class (III+IV)" = "Intermediate Class (Partner)",
               "dclass3spo_VWorking Class (V+VI+VII)" = "Working Class (Partner)",              
               "dclass3spo_VNo information (Missing, No partner)" = "No information (Not available, No partner)",
-              "homclass3_V_res:dclass3res_VIntermediate class (III+IV)" = "Homogeneity x Intermediate Class",
-              "homclass3_V_res:dclass3res_VWorking Class (V+VI+VII)" = "Homogeneity x Working Class")
+              "homclass3_V_res:dclass3res_VIntermediate class (III+IV)" = "Homogeneity*Intermediate Class",
+              "homclass3_V_res:dclass3res_VWorking Class (V+VI+VII)" = "Homogeneity*Working Class")
 
 texreg(digclas1_VW,stars = c(0.001, 0.01, 0.05, 0.1),
        caption = "Multilevel models for Class-based network segregation and Redistributive Preferences",
@@ -320,7 +324,7 @@ texreg(digclas1_VW,stars = c(0.001, 0.01, 0.05, 0.1),
 
 \newpage 
 
-```{r, fig.dim=c(10,5),fig.cap='Linear Predictions for Network Homogeneity on Redistributive Preferences by Social Class'}
+```{r fig1, fig.dim=c(10,5),fig.cap='Linear Predictions for Network Homogeneity on Redistributive Preferences by Social Class',warning=FALSE}
 int_homo <- digclas1_VW_7
 df_pred1 <- 
   predictions(int_homo, condition = c("homclass3_V_res","dclass3res_V"),
@@ -339,20 +343,19 @@ ggplot(aes(y =estimate,x=homclass3_V_res, fill=dclass3res_V, color=dclass3res_V,
   scale_color_manual(values=c("#323232","#989898","#CCCCCC"))+
   scale_y_continuous(limits = c(50,80))+
   labs(caption = paste0("N=",nobs(int_homo),", Countries=",lme4::ngrps(int_homo)),
-       x="Class-based network homogeneity",y="Redistributive preferences") +
+       x="Network homogeneity",y="Redistributive preferences") +
   theme(legend.position = "none", legend.title = element_blank())
-
 ```
 
 \newpage
 
-```{r, results='asis'}
+```{r tab2, results='asis', cache=TRUE}
 set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
 options(ggplot2.discrete.fill = set1)
 options(ggplot2.discrete.colour = set1)
 ggplot2::theme_set(ggplot2::theme_bw())
 ggplot2::theme_update(text=ggplot2::element_text(size=15,  family="serif"))
-
+options(scipen=999)
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal,texreg,MLMusingR,lme4)  
 rm(list=ls())
@@ -397,20 +400,15 @@ dfreg <- df1 %>% dplyr::select(
   oecd,
   country2, country, country3,
 ) %>%
-  mutate(logrgdpna = log(rgdpna),
-         loggdppercapita=log(gdppercapita),
-         edyears2 = edyears ^ 2,
-         age2 = agenum ^ 2, 
-         gini_disp=gini_disp*100) %>%
   # filter(oecd == "OECD") %>%
   filter(country2 != "SVN") %>% 
-  na.omit()
+  na.omit() %>% 
+    mutate(loggdppercapita=scale(gdppercapita/1000),
+         edyears2 = edyears ^ 2,
+         age2 = agenum ^ 2, 
+         gini_disp=scale(gini_disp))
 
-# dfreg %>% dplyr::select(gini_disp,rel_red,abs_red,ilo_taxrev,ilo_govspe) %>% tab_corr()
-
-dfreg$wstate1 <- scale(scale(dfreg$ilo_taxrev) + scale(dfreg$ilo_govspe))
-dfreg$wstate2 <- scale(scale(dfreg$abs_red) + scale(dfreg$ilo_taxrev) + scale(dfreg$ilo_govspe))
-# dfreg$wstate <- scale(dfreg$gv_spen)
+dfreg$wstate2 <- scale(scale(dfreg$abs_red*100) + scale(dfreg$ilo_taxrev) + scale(dfreg$ilo_govspe))
 
 # Variable Group-Centering ------------------------------------------------
 dfreg <- 
@@ -419,7 +417,8 @@ dfreg <-
          to_dummy(union),
          to_dummy(workst),
          # dummy for categorical variables-------------------------------------
-         to_dummy(Q03pcm)
+         to_dummy(Q03pcm),
+         to_dummy(dclass3spo_V)
   )
 dfreg$female_gc = group_center(dfreg$female_2, grp = dfreg$country2)
 dfreg$union_gc = group_center(dfreg$union_2, grp = dfreg$country2)
@@ -434,16 +433,22 @@ dfreg$religion_gc = group_center(as.numeric(dfreg$religion), grp = dfreg$country
 dfreg$partner_gc = group_center(as.numeric(dfreg$partner), grp = dfreg$country2)
 
 
-
 # Household Income Tercile
 dfreg$Q03pcm_1_gc = group_center(dfreg$Q03pcm_1, grp = dfreg$country2)
 dfreg$Q03pcm_2_gc = group_center(dfreg$Q03pcm_2, grp = dfreg$country2)
 dfreg$Q03pcm_3_gc = group_center(dfreg$Q03pcm_3, grp = dfreg$country2)
 dfreg$Q03pcm_NA_gc = group_center(dfreg$Q03pcm_4, grp = dfreg$country2)
 
+# Partner Social Class
+dfreg$dclass3spo_V_1_gc = group_center(dfreg$dclass3spo_V_1, grp = dfreg$country2)
+dfreg$dclass3spo_V_2_gc = group_center(dfreg$dclass3spo_V_2, grp = dfreg$country2)
+dfreg$dclass3spo_V_3_gc = group_center(dfreg$dclass3spo_V_3, grp = dfreg$country2)
+dfreg$dclass3spo_V_NA_gc = group_center(dfreg$dclass3spo_V_4, grp = dfreg$country2)
+
 # drop dummies
 dfreg <- dplyr::select(dfreg,-c(female_1,female_2,union_1,union_2,workst_1,
-                                workst_2,Q03pcm_1,Q03pcm_2,Q03pcm_2,Q03pcm_4))
+                                workst_2,Q03pcm_1,Q03pcm_2,Q03pcm_2,Q03pcm_4,
+                                dclass3spo_V_1,dclass3spo_V_2,dclass3spo_V_3,dclass3spo_V_4))
 
 # dfreg$gini_disp <- scale(dfreg$gini_disp)
 
@@ -453,7 +458,7 @@ homo_V_gini <-
          homclass3_V_gc+
          know_total_gc+
          socialtrust_gc+
-         dclass3res_V+dclass3spo_V+
+         dclass3res_V+dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
          female_gc+agenum_gc+age2_gc+partner_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
@@ -465,7 +470,7 @@ homo_V_gini_gdp <-
          homclass3_V_gc+
          know_total_gc+
          socialtrust_gc+
-         dclass3res_V+dclass3spo_V+
+         dclass3res_V+dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
          female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
@@ -477,7 +482,7 @@ homo_V_gini_gdp_wstate2 <-
          homclass3_V_gc+
          know_total_gc+
          socialtrust_gc+
-         dclass3res_V+dclass3spo_V+
+         dclass3res_V+dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
          female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
@@ -489,7 +494,7 @@ homo_V_gini_gdp_controls <-
          homclass3_V_gc+
          know_total_gc+
          socialtrust_gc+
-         dclass3res_V+dclass3spo_V+
+         dclass3res_V+dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
          female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
@@ -501,7 +506,7 @@ homo_V_gini_full2 <-
          homclass3_V_gc+
          know_total_gc+
          socialtrust_gc+
-         dclass3res_V+dclass3spo_V+
+         dclass3res_V+dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
          female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          union_gc+workst_gc+
@@ -520,31 +525,38 @@ ccoef <- list(homclass3_V_gc="Class-based network homogeneity (CWC)",
               "dclass3res_VIntermediate class (III+IV)"="Intermediate Class",
               "dclass3res_VWorking Class (V+VI+VII)"="Working Class",
               "gini_disp" = "Income inequality (Gini index)",
-              loggdppercapita = "GDP (per capita)",
-              # ilo_taxrev = "Tax revenue (percentage of GDP)",
-              # ilo_govspe = "Government spending (percentage of GDP)",
-              # abs_red = "Redistribution",
-              # wstate1="Size of Welfare State (tax+spend)",
+              loggdppercapita = "GDP/capita",
               wstate2="Size of the welfare state",
-              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV)" = "Homogeneity x Intermediate Class",
-              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII)" = "Homogeneity x Working Class",
-              "homclass3_V_gc:gini_disp"= "Homogeneity x Income Inequality",
-              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):gini_disp" = "Homogeneity x Intermediate Class x Income Inequality",
-              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):gini_disp" = "Homogeneity x Working Class x Income Inequality")
+              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV)" = "Homogeneity*Intermediate Class",
+              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII)" = "Homogeneity*Working Class",
+              "homclass3_V_gc:gini_disp"= "Homogeneity*Income Inequality",
+              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):gini_disp" = "Homogeneity*Intermediate Class*Income Inequality",
+              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):gini_disp" = "Homogeneity*Working Class *Income Inequality")
 
 texreg(digclas1_macro,stars = c(0.001, 0.01, 0.05, 0.1),symbol = "+",scalebox = 0.60,
-       caption = "Multilevel models for Income Inequality, Network segregation and RedistributivePpreferences",
+       caption = "Multilevel models for Income Inequality, Network segregation and Redistributive Preferences",
        custom.note = "%stars. Models include sampling weights and individual level controls centered within cluster (group mean)",
        caption.above = T,leading.zero = T,single.row = T,
        custom.coef.map = ccoef,
-      groups = list("Social Class (Ref.= Service Class)" = 2:3,"Macro-level factors"=4:6, "Homogeneity x Social Class"=7:8, "Homogeneity x Social Class x Income Inequality"=10:11),
+      groups = list("Social Class (Ref.= Service Class)" = 2:3,"Macro-level factors"=4:6, "Homogeneity*Social Class"=7:8, "Homogeneity * Social Class * Income Inequality"=10:11),
        float.pos = "h!",
-      # custom.gof.rows = list("Controls"=rep("Yes",6)),include.loglik = FALSE,include.aic = FALSE,
-      # custom.gof.names = c(NA,NA,"Num. groups","Var: Country (Intercept)","Var: Residual"),      
+      custom.gof.rows = list("Controls"=rep("Yes",4)),include.loglik = FALSE,include.aic = FALSE,
+      custom.gof.names = c(NA,NA,"Num. groups",
+                           "Var: Group (Intercept)",
+                           "Var: Group Homogeneity",
+                           "Var: Group Intermediate Class ",
+                           "Var: Group Working Class",
+                           "Cov: Group (Intercept), Homogeneity",
+                           "Cov: Group (Intercept), Intermediate Class ",
+                           "Cov: Group (Intercept), Working Class",
+                           "Cov: Group Homogeneity, Intermediate Class",
+                           "Cov: Group Homogeneity, Working Class",
+                           "Cov: Group Intermediate Class, Working Class",
+                           "Var: Residual"),
        use.packages = F)
 ```
 
-```{r, fig.dim=c(12,6),fig.cap='Three-way interaccion effects for Redistributive Preferences, Network segregation, Social class and Income Inequality'}
+```{r fig2, fig.dim=c(12,7),fig.cap='Three-way interaccion effects for Redistributive Preferences, Network segregation, Social class and Income Inequality'}
 ### Predicted values homo*class*GiniD ---------------------------------------
 # ginid_max<- round(max(dfreg$gini_disp) ,2)
 # ginid_min<- round(min(dfreg$gini_disp),2)
@@ -558,14 +570,14 @@ df_pred_giniD_gc <-
     homo_V_gini_full2,newdata = datagrid(
       gini_disp = c(ginid_min, ginid_mea, ginid_max),
       wstate2=mean(dfreg$wstate2),
-      homclass3_V_gc = seq(min(dfreg$homclass3_V_gc), max(dfreg$homclass3_V_gc), by= 0.1),
+      loggdppercapita=mean(dfreg$loggdppercapita),
+      homclass3_V_gc = seq(min(dfreg$homclass3_V_gc)+0.01, max(dfreg$homclass3_V_gc)+0.01, by=0.1),
       dclass3res_V=levels(dfreg$dclass3res_V)
     )
   )
 
 df_pred_giniD_gc <- as.data.frame(df_pred_giniD_gc)
 df_pred_giniD_gc$gini_disp <- factor(df_pred_giniD_gc$gini_disp,labels = c("Gini (-1SD)","Gini (Mean)", "Gini (+1SD)"))
-
 df_pred_giniD_gc <- df_pred_giniD_gc %>% filter(dclass3res_V!="Intermediate class (III+IV)")
 
 df_pred_giniD_gc %>% 
@@ -575,24 +587,21 @@ df_pred_giniD_gc %>%
   geom_point(size=3, shape = 21,color="black") +
   facet_wrap(~gini_disp) +
   labs(y = "Preferences for Redistribution",
-       x="Class-based network homogeneity (CWC)",
-       # title = "Three-way interaccion effects for Preferences for Redistribution, Network segregation, Social class and Income Inequality"
+       x="Network homogeneity (CWC)",
+       caption = paste0("N=",nobs(homo_V_gini_full2),", Countries=",lme4::ngrps(homo_V_gini_full2))
        ) +
-  # scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
-  scale_x_continuous(sec.axis = sec_axis(~ . , name = "Income inequality (post-tax)", breaks = NULL, labels = NULL)) +
- # scale_fill_manual(values=c("#323232","#989898","#CCCCCC"))+
-  # scale_color_manual(values=c("#323232","#989898","#CCCCCC"))+
+  scale_x_continuous(sec.axis = sec_axis(~ . , name = "Income inequality (post-tax) \n ", breaks = NULL, labels = NULL),
+                     ) +
+ 
    scale_fill_manual(values=c("#323232","#CCCCCC"))+
   scale_color_manual(values=c("#323232","#CCCCCC"))+
-  theme(legend.position="bottom",
+  theme(legend.position = "bottom",
         legend.direction = "horizontal",
         axis.text=element_text(size=15),
         legend.title = element_blank(),
         legend.background = element_blank(),
         legend.box.background = element_rect(colour = "black"))
 ```
-
-
 
 \newpage
 
