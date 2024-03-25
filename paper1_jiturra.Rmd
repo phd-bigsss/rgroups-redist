@@ -74,7 +74,7 @@ header-includes:
  rmarkdown::render("paper1_jiturra.Rmd", output_format = "bookdown::word_document2")
  
  # install.packages("trackdown")
- trackdown::upload_file(file = "paper1_jiturra.Rmd", hide_code = TRUE,gpath = '001_PhD/002dissertation/paper1')
+ trackdown::update_file(file = "paper1_jiturra.Rmd", hide_code = TRUE,gpath = '001_PhD/002dissertation/paper1')
                         
 ```
 
@@ -208,11 +208,86 @@ Multilevel regression models with random and fixed effects. For the cross-level 
 
 ## Descriptive
 
-```{r}
+```{r fig1, fig.dim=c(12,5),fig.cap='Bivariate relationships between Income Inequality, Social Class and Network homogeneity',warning=FALSE}
+set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
+options(ggplot2.discrete.fill = set1)
+options(ggplot2.discrete.colour = set1)
+ggplot2::theme_set(ggplot2::theme_bw())
+ggplot2::theme_update(text=ggplot2::element_text(size=15,  family="serif"))
+options(scipen=999)
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal,texreg,MLMusingR,lme4)  
+rm(list=ls())
 
-```
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 
-```{r}
+df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
+
+dfreg <- df1 %>% dplyr::select(
+  egal = egal2,
+  # starts_with("class3"),
+  # starts_with("digclass3"),
+  # starts_with("dclass3"),
+  # starts_with("homclass"),
+  dclass3res_V,
+  dclass3spo_V,
+  homclass3_V_res,
+  know_total,
+  socialtrust,
+  Q03pcm,
+  edyears,
+  female,
+  agenum,
+  religion,
+  partner,
+  union,
+  workst,
+  WEIGHT,
+  region,
+  "gini_disp"=wid_gini_disp,
+  "gini_mkt",
+  gv_spen,
+  rel_red,
+  abs_red,
+  ilo_taxrev,
+  ilo_govspe,
+  d10d1=wid_p90p10,
+  wid_p90p50,
+  top10=wid_sharetop10,
+  rgdpna,
+  gdppercapita,
+  oecd,
+  country2, country, country3,
+) %>%
+  # filter(oecd == "OECD") %>%
+  filter(country2 != "SVN") %>% 
+  na.omit() %>% 
+    mutate(loggdppercapita=scale(gdppercapita/1000),
+         edyears2 = edyears ^ 2,
+         age2 = agenum ^ 2, 
+         # gini_disp=scale(gini_disp),
+         )
+
+homo_ineq <- dfreg %>%
+  # filter(country3 != "ZAF") %>%
+  group_by(country2,country3,dclass3res_V) %>%
+  summarise_at(c("homclass3_V_res","egal","gini_disp"), mean, na.rm = TRUE) %>% 
+  as.data.frame()
+
+homo_ineq$country <- countrycode::countrycode(sourcevar = homo_ineq$country2,origin = "iso3c",destination = "iso2c")
+
+homo_ineq$dclass3res_V <- forcats::fct_rev(homo_ineq$dclass3res_V)
+homo_ineq %>%
+ggplot(aes(y=homclass3_V_res, x=gini_disp, group=dclass3res_V,fill=dclass3res_V)) +
+  geom_text(label=as.character(homo_ineq$country),size=3) +
+  geom_smooth(method = "lm",fullrange=TRUE, color="black",linetype = 2,size=1,se = FALSE) +
+  facet_wrap(~dclass3res_V) +
+  xlab("Income Inequality")+
+  ylab("Network homogeneity") +
+  # labs(title = "Class homogeneity and Gini (post-taxes)") +
+  scale_fill_manual(values=c("#CCCCCC","#989898","#323232"))+
+  scale_color_manual(values=c("#CCCCCC","#989898","#323232")) +
+  theme(legend.position = "none",legend.title = element_blank())
 
 ```
 
@@ -232,10 +307,6 @@ rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 dfreg <- df1 %>% dplyr::select(
   egal = egal2,
-  # starts_with("class3"),
-  # starts_with("digclass3"),
-  # starts_with("dclass3"),
-  # starts_with("homclass"),
   dclass3res_V,
   dclass3spo_V,
   homclass3_V_res,
@@ -324,7 +395,7 @@ texreg(digclas1_VW,stars = c(0.001, 0.01, 0.05, 0.1),
 
 \newpage 
 
-```{r fig1, fig.dim=c(10,5),fig.cap='Linear Predictions for Network Homogeneity on Redistributive Preferences by Social Class',warning=FALSE}
+```{r fig3, fig.dim=c(10,5),fig.cap='Linear Predictions for Network Homogeneity on Redistributive Preferences by Social Class',warning=FALSE}
 int_homo <- digclas1_VW_7
 df_pred1 <- 
   predictions(int_homo, condition = c("homclass3_V_res","dclass3res_V"),
@@ -556,7 +627,7 @@ texreg(digclas1_macro,stars = c(0.001, 0.01, 0.05, 0.1),symbol = "+",scalebox = 
        use.packages = F)
 ```
 
-```{r fig2, fig.dim=c(12,7),fig.cap='Three-way interaccion effects for Redistributive Preferences, Network segregation, Social class and Income Inequality'}
+```{r fig4, fig.dim=c(12,7),fig.cap='Three-way interaccion effects for Redistributive Preferences, Network segregation, Social class and Income Inequality'}
 ### Predicted values homo*class*GiniD ---------------------------------------
 # ginid_max<- round(max(dfreg$gini_disp) ,2)
 # ginid_min<- round(min(dfreg$gini_disp),2)
