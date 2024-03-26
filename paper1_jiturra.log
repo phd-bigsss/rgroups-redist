@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.11)  25 MAR 2024 17:39
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.11)  26 MAR 2024 18:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -735,11 +735,11 @@ LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 25
 (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
-<paper1_jiturra_files/figure-latex/scat1-1.pdf, id=414, 867.24pt x 361.35pt>
-File: paper1_jiturra_files/figure-latex/scat1-1.pdf Graphic file (type pdf)
-<use paper1_jiturra_files/figure-latex/scat1-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/scat1-1.pdf  used on input line 288.
-(pdftex.def)             Requested size: 452.96826pt x 188.73566pt.
+<paper1_jiturra_files/figure-latex/fig1-1.pdf, id=414, 722.7pt x 361.35pt>
+File: paper1_jiturra_files/figure-latex/fig1-1.pdf Graphic file (type pdf)
+<use paper1_jiturra_files/figure-latex/fig1-1.pdf>
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig1-1.pdf  used on input line 288.
+(pdftex.def)             Requested size: 452.96826pt x 226.48279pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -748,8 +748,13 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [12]
+<paper1_jiturra_files/figure-latex/fig2-1.pdf, id=430, 722.7pt x 361.35pt>
+File: paper1_jiturra_files/figure-latex/fig2-1.pdf Graphic file (type pdf)
+<use paper1_jiturra_files/figure-latex/fig2-1.pdf>
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig2-1.pdf  used on input line 297.
+(pdftex.def)             Requested size: 452.96826pt x 226.48279pt.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 356.
+(Font)              <5> on input line 365.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
@@ -760,11 +765,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[13 <./paper1_jiturra_files/figure-latex/scat1-1.pdf>]
-<paper1_jiturra_files/figure-latex/fig1-1.pdf, id=444, 722.7pt x 361.35pt>
-File: paper1_jiturra_files/figure-latex/fig1-1.pdf Graphic file (type pdf)
-<use paper1_jiturra_files/figure-latex/fig1-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig1-1.pdf  used on input line 365.
+[13 <./paper1_jiturra_files/figure-latex/fig1-1.pdf> <./paper1_jiturra_files/figure-latex/fig2-1.pdf>]
+<paper1_jiturra_files/figure-latex/fig3-1.pdf, id=454, 722.7pt x 361.35pt>
+File: paper1_jiturra_files/figure-latex/fig3-1.pdf Graphic file (type pdf)
+<use paper1_jiturra_files/figure-latex/fig3-1.pdf>
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig3-1.pdf  used on input line 374.
 (pdftex.def)             Requested size: 452.96826pt x 226.48279pt.
 
 Overfull \vbox (24.0393pt too high) has occurred while \output is active []
@@ -776,11 +781,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[14{c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc} <./paper1_jiturra_files/figure-latex/fig1-1.pdf>]
-<paper1_jiturra_files/figure-latex/fig2-1.pdf, id=467, 867.24pt x 505.89pt>
-File: paper1_jiturra_files/figure-latex/fig2-1.pdf Graphic file (type pdf)
-<use paper1_jiturra_files/figure-latex/fig2-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig2-1.pdf  used on input line 423.
+[14{c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc} <./paper1_jiturra_files/figure-latex/fig3-1.pdf>]
+<paper1_jiturra_files/figure-latex/fig4-1.pdf, id=478, 867.24pt x 505.89pt>
+File: paper1_jiturra_files/figure-latex/fig4-1.pdf Graphic file (type pdf)
+<use paper1_jiturra_files/figure-latex/fig4-1.pdf>
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig4-1.pdf  used on input line 432.
 (pdftex.def)             Requested size: 452.96826pt x 264.2299pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -789,7 +794,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[15 <./paper1_jiturra_files/figure-latex/fig2-1.pdf>]
+[15 <./paper1_jiturra_files/figure-latex/fig4-1.pdf>]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -814,7 +819,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [18]
-Underfull \hbox (badness 1314) in paragraph at lines 678--680
+Underfull \hbox (badness 1314) in paragraph at lines 687--689
 []\T1/ptm/m/n/8 Otero, G., & Men-doza, M. (2023). The Power of Di-ver-sity: Class, Net-works and At-ti-tudes To-wards In-equal-ity. \T1/ptm/m/it/8 So-ci-ol-ogy\T1/ptm/m/n/8 ,
  []
 
@@ -850,21 +855,21 @@ L3 programming layer <2023-10-10>
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `paper1_jiturra.out' has not changed.
-(rerunfilecheck)             Checksum: 7A447092C8F83898D9270E3159B4EC52;3723.
+(rerunfilecheck)             Checksum: 0B5D6AFEFDF76CE276437E011B737B06;3723.
  ) 
 Here is how much of TeX's memory you used:
- 15599 strings out of 476451
- 254574 string characters out of 5799564
+ 15610 strings out of 476451
+ 255063 string characters out of 5799564
  1964043 words of memory out of 5000000
- 36845 multiletter control sequences out of 15000+600000
+ 36855 multiletter control sequences out of 15000+600000
  612894 words of font info for 86 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  69i,13n,79p,2409b,489s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi12.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy8.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper1_jiturra.pdf (20 pages, 238952 bytes).
+Output written on paper1_jiturra.pdf (20 pages, 249021 bytes).
 PDF statistics:
- 714 PDF objects out of 1000 (max. 8388607)
- 655 compressed objects within 7 object streams
- 179 named destinations out of 1000 (max. 500000)
- 160 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 724 PDF objects out of 1000 (max. 8388607)
+ 663 compressed objects within 7 object streams
+ 180 named destinations out of 1000 (max. 500000)
+ 165 words of extra memory for PDF output out of 10000 (max. 10000000)
 

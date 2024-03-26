@@ -208,7 +208,8 @@ Multilevel regression models with random and fixed effects. For the cross-level 
 
 ## Descriptive
 
-```{r fig1, fig.dim=c(12,5),fig.cap='Bivariate relationships between Income Inequality, Social Class and Network homogeneity',warning=FALSE}
+
+```{r fig1, fig.dim=c(10,5),fig.cap='Cross-country comparison of Redistributive preferences and Social Class ',warning=FALSE}
 set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
 options(ggplot2.discrete.fill = set1)
 options(ggplot2.discrete.colour = set1)
@@ -216,7 +217,7 @@ ggplot2::theme_set(ggplot2::theme_bw())
 ggplot2::theme_update(text=ggplot2::element_text(size=15,  family="serif"))
 options(scipen=999)
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal,texreg,MLMusingR,lme4)  
+pacman::p_load(dplyr,ggplot2,haven,ggrepel,gridExtra)  
 rm(list=ls())
 
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
@@ -225,10 +226,6 @@ df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, N
 
 dfreg <- df1 %>% dplyr::select(
   egal = egal2,
-  # starts_with("class3"),
-  # starts_with("digclass3"),
-  # starts_with("dclass3"),
-  # starts_with("homclass"),
   dclass3res_V,
   dclass3spo_V,
   homclass3_V_res,
@@ -245,18 +242,10 @@ dfreg <- df1 %>% dplyr::select(
   WEIGHT,
   region,
   "gini_disp"=wid_gini_disp,
-  "gini_mkt",
-  gv_spen,
-  rel_red,
-  abs_red,
-  ilo_taxrev,
-  ilo_govspe,
   d10d1=wid_p90p10,
   wid_p90p50,
   top10=wid_sharetop10,
-  rgdpna,
   gdppercapita,
-  oecd,
   country2, country, country3,
 ) %>%
   # filter(oecd == "OECD") %>%
@@ -268,28 +257,139 @@ dfreg <- df1 %>% dplyr::select(
          # gini_disp=scale(gini_disp),
          )
 
+df_mean <- 
+dfreg %>% 
+  group_by(country3) %>% 
+  summarise(egal2_c=mean(egal),homclass_c=mean(homclass3_V_res),gini_disp=mean(gini_disp))
+
+df_region <- 
+dfreg %>% 
+  group_by(region,country3) %>% 
+  summarise(n())
+
+df_full <- 
+dfreg %>% 
+  group_by(dclass3res_V) %>% 
+  summarise(egal2=mean(egal),homclass=mean(homclass3_V_res),homclass_c=mean(dfreg$homclass3_V_res),egal2_c=mean(dfreg$egal), country3="Sample")
+
+df_plot <- 
+dfreg %>% 
+  group_by(country3,dclass3res_V) %>% 
+  summarise(egal2=mean(egal),homclass=mean(homclass3_V_res)) %>% 
+  left_join(df_mean) %>%
+  left_join(df_region) 
+# df_plot <- 
+# df_plot %>% 
+#   bind_rows(df_full)
+
+df_plot$dclass3res_V <- factor(df_plot$dclass3res_V,levels = levels(df_plot$dclass3res_V),labels = c("Service Class","Intermediate Class","Working Class"))
+
+df_plot %>% 
+ggplot()+
+  geom_hline(yintercept = mean(dfreg$egal),linetype=2)+
+  geom_point(aes(x = reorder(country3, egal2_c),y = egal2,shape=dclass3res_V,color=dclass3res_V),size=3, alpha=2) +
+  geom_point(aes(x = reorder(country3, egal2_c),y = egal2_c),alpha=1,shape=4,size=2) +
+  scale_shape_manual(values = c(17, 15, 16)) +
+  scale_color_manual(values = c("#000000","#666666","#999999")) +
+  labs(x=NULL,y="Redistributive Preferences") +
+  theme(legend.position = c(0.90, 0.15),
+        axis.text.x=element_text(angle=45,hjust = 1,size=8),
+        legend.title = element_blank()) 
+
+# df_plot %>%
+# ggplot()+
+#   geom_point(aes(x = reorder(country3, homclass_c),y = homclass,shape=dclass3res_V,color=dclass3res_V),size=3, alpha=2) +
+#   geom_hline(yintercept = mean(dfreg$homclass3_V_res),linetype=2)+
+#   geom_point(aes(x = reorder(country3, homclass_c),y = homclass_c),alpha=1,shape=4,size=2) +
+#   scale_shape_manual(values = c(17, 15, 16)) +
+#   scale_color_manual(values = c("#000000","#666666","#999999")) +
+#   labs(x=NULL,y="Network homogeneity") +
+#   theme(legend.position = c(0.90, 0.1),
+#         axis.text.x=element_text(angle=45,hjust = 1,size=10),
+#         legend.title = element_blank())
+```
+
+
+
+
+```{r fig2, fig.dim=c(10,5),fig.cap='Bivariate relationships between Income Inequality, Network homogeneity and Redistributive preferences',warning=FALSE}
+set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
+options(ggplot2.discrete.fill = set1)
+options(ggplot2.discrete.colour = set1)
+ggplot2::theme_set(ggplot2::theme_bw())
+ggplot2::theme_update(text=ggplot2::element_text(size=15,  family="serif"))
+options(scipen=999)
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,ggplot2,haven,ggrepel,gridExtra)  
+rm(list=ls())
+
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+
+df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
+
+dfreg <- df1 %>% dplyr::select(
+  egal = egal2,
+  dclass3res_V,
+  dclass3spo_V,
+  homclass3_V_res,
+  know_total,
+  socialtrust,
+  Q03pcm,
+  edyears,
+  female,
+  agenum,
+  religion,
+  partner,
+  union,
+  workst,
+  WEIGHT,
+  region,
+  "gini_disp"=wid_gini_disp,
+  d10d1=wid_p90p10,
+  wid_p90p50,
+  top10=wid_sharetop10,
+  gdppercapita,
+  country2, country, country3,
+) %>%
+  # filter(oecd == "OECD") %>%
+  filter(country2 != "SVN") %>% 
+  na.omit() %>% 
+    mutate(loggdppercapita=scale(gdppercapita/1000),
+         edyears2 = edyears ^ 2,
+         age2 = agenum ^ 2, 
+         # gini_disp=scale(gini_disp),
+         )
 homo_ineq <- dfreg %>%
-  # filter(country3 != "ZAF") %>%
-  group_by(country2,country3,dclass3res_V) %>%
-  summarise_at(c("homclass3_V_res","egal","gini_disp"), mean, na.rm = TRUE) %>% 
+  # filter(country3 != "HUN") %>%
+  group_by(country2,country3) %>%
+  summarise_at(c("homclass3_V_res","egal","gini_disp","d10d1"), mean, na.rm = TRUE) %>% 
   as.data.frame()
 
+# Plot Homogeneity and redistributive preferences
 homo_ineq$country <- countrycode::countrycode(sourcevar = homo_ineq$country2,origin = "iso3c",destination = "iso2c")
 
-homo_ineq$dclass3res_V <- forcats::fct_rev(homo_ineq$dclass3res_V)
-homo_ineq %>%
-ggplot(aes(y=homclass3_V_res, x=gini_disp, group=dclass3res_V,fill=dclass3res_V)) +
-  geom_text(label=as.character(homo_ineq$country),size=3) +
-  geom_smooth(method = "lm",fullrange=TRUE, color="black",linetype = 2,size=1,se = FALSE) +
-  facet_wrap(~dclass3res_V) +
-  xlab("Income Inequality")+
+fig_egal_homo <- 
+homo_ineq %>%  
+ggplot(aes(y=egal, x=homclass3_V_res)) +
+  geom_smooth(method = "lm",fullrange=TRUE, color="black",linetype = 2,size=1,se = T) +
+  geom_text_repel(label=as.character(homo_ineq$country)) +
+  xlab("Network homogeneity")+
+  ylab("Redistributive preferences") +
+  labs(caption =paste("r = ",round(cor(homo_ineq$homclass3_V_res,
+                                     homo_ineq$egal, use='complete.obs'),digits = 2)),tag = "A")
+fig_homo_gini<- 
+homo_ineq %>%  
+ggplot(aes(y=homclass3_V_res, x=gini_disp)) +
+  geom_smooth(method = "lm",fullrange=TRUE, color="black",linetype = 2,size=1,se = T) +
+  # geom_text() +
+  geom_text_repel(label=as.character(homo_ineq$country)) +
+  xlab("Income Inequality") +
   ylab("Network homogeneity") +
-  # labs(title = "Class homogeneity and Gini (post-taxes)") +
-  scale_fill_manual(values=c("#CCCCCC","#989898","#323232"))+
-  scale_color_manual(values=c("#CCCCCC","#989898","#323232")) +
-  theme(legend.position = "none",legend.title = element_blank())
-
+  labs(caption =paste("r = ",round(cor(homo_ineq$homclass3_V_res,
+                                     homo_ineq$gini_disp, use='complete.obs'),digits = 2)),tag = "B")
+grid.arrange(fig_egal_homo,fig_homo_gini, nrow = 1)
 ```
+
 
 ## Multivariate results
 
@@ -781,3 +881,28 @@ df_pred_giniD_gc %>%
 #          gini_disp + 
 #          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
 ```
+
+```{r oldcode2, eval=FALSE, fig.cap='Bivariate relationships between Income Inequality, fig.dim=c(12,5), include=FALSE, Social Class and Network homogeneity',warning=FALSE}
+homo_ineq <- dfreg %>%
+  # filter(country3 != "ZAF") %>%
+  group_by(country2,country3,dclass3res_V) %>%
+  summarise_at(c("homclass3_V_res","egal","gini_disp"), mean, na.rm = TRUE) %>% 
+  as.data.frame()
+
+homo_ineq$country <- countrycode::countrycode(sourcevar = homo_ineq$country2,origin = "iso3c",destination = "iso2c")
+homo_ineq$dclass3res_V <- forcats::fct_rev(homo_ineq$dclass3res_V)
+homo_ineq %>%
+ggplot(aes(y=homclass3_V_res, x=gini_disp, group=dclass3res_V,fill=dclass3res_V)) +
+  geom_text_repel(label=as.character(homo_ineq$country)) +
+  geom_smooth(method = "lm",fullrange=TRUE, color="black",linetype = 2,size=1,se = FALSE) +
+  facet_wrap(~dclass3res_V) +
+  xlab("Income Inequality")+
+  ylab("Network homogeneity") +
+  # labs(title = "Class homogeneity and Gini (post-taxes)") +
+  scale_fill_manual(values=c("#CCCCCC","#989898","#323232"))+
+  scale_color_manual(values=c("#CCCCCC","#989898","#323232")) +
+  theme(legend.position = "none",legend.title = element_blank())
+
+```
+
+
