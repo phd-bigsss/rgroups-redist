@@ -169,45 +169,37 @@ To summarize, the current state of research has led us to establish two competin
 
 # Data, variables and method
 
-## Data {-}
+## Data 
 
-## Variables {-}
+Individual data from the International Social Survey Programme (ISSP) 2017, titled "Social Networks and Social Resources," is utilized [@issp_research_group_international_2019]. Established in 1984, the ISSP is a collaborative research project that conducts cross-national surveys on various topics related to social issues, attitudes, and values. Specifically, the ISSP 2017 survey includes questions on social ties and activities, evaluated through a position generator, as well as inquiries on social resources derived from network members. Additionally, respondents express their views on topics such as social trust and attitudes toward economic inequality. Initially, the dataset comprised 47,027 individual observations across 32 countries. However, Slovenia (SVN) was excluded from the analysis because the key dependent variable was not present in the questionnaire. Consequently, the present study comprises complete information on 31,191 individuals from 31 countries, representing a diverse range of economic, cultural, and institutional characteristics.
+
+## Variables 
 
 ### _Individual level_ {-}
 
 **Redistributive preferences**: Two indicators available in the questionnaire were used to measure redistributive preferences.  First, support for government redistribution (1) is measured by the item 'It is the responsibility of the government to reduce the differences in income between people with high incomes and those with low incomes.' and the egalitarian preferences represented by the item (2) 'For a society to be fair, differences in people's standard of living should be small.' indicators are five-point Likert scales with the categories 'Strongly agree' (1), 'Agree' (2), 'Neither agree nor disagree' (3), 'Disagree' (4) and 'Strongly disagree' (5). Thus, based on previous research and the high degree of correlation between the indicators (_r_ = 0.7), we proceed to reverse-code and create a standardized average index ranging from 1 to 100, where higher values represent greater redistributive preferences [@svallfors_government_2013].
 
-[likertplot] 
-
 **Social class**:  The Erikson-Goldthorpe-Portocarrero (EGP) Class Scheme is employed [@Erikson1992;@Erikson1979], one of the most consistent and validated measure for social class positions in comparative research [@evans_political_2013] and has demonstrated its validity in regions of the industrialized world, as well as in countries of late industrialization [@solis_class_2019;@torche_unequal_2005;@ishida_trends_2005;@barozet_measurement_2021; @wang_where_2024]. Thus, based on the recently developed DIGCLASS algorithm, we draw on the available information regarding (i) occupations, (ii) self-employment status and (iii) the number of workers [@cimentada_digclass_2023]. As a result, following previous research on political attitudes, a collapsed version of three big classes is employed, including the Service Class (I+II),  Intermediate Class (III+IV), and Working Class (V+VI+VII) [@sosnaud_class_2013;@edlund_influence_2003]. 
 
-**Class-based network segregation**: To create our measure of network homogeneity based on social class, we employed the position generator available in the questionnaire. This instrument has been widely employed in social capital studies, relying on the assumption that access to social resources is based on ties to different positions in the social structure following an ego-centered network approach [@lin_access_1986;@vandergaag_position_2008]. In this case, the position generator shows a list of ten occupations where the respondent declares four possible options through which this tie is classified: "Family or relative", "Close friend", "Someone else I know", and "No one". In the case of the indicator used here, the first three categories are classified as "Knows" = 1 and "Does not know" = 0. On the basis of this, it is possible to obtain the total number of a person's social ties. Subsequently, the occupations were classified into three groups resembling social class positions [@otero_open_2021]. First, the Lawyer, Executive of a large firm, and Human resource manager are classified as high status. Then, a School teacher, Police officer, and Nurse are considered as Intermediate status. Finally, a car mechanic, bus driver, hairdresser, and home or office cleaner are considered as low-status occupations.
+**Class-based network segregation**: To create our measure of network homogeneity based on social class, we employed the position generator available in the questionnaire. This instrument has been widely employed in social capital studies, relying on the assumption that access to social resources is based on ties to different positions in the social structure following an ego-centered network approach [@lin_access_1986;@vandergaag_position_2008]. In this case, the position generator shows a list of ten occupations where the respondent declares four possible options through which this tie is classified: "Family or relative", "Close friend", "Someone else I know", and "No one". In the case of the indicator used here, the first three categories are classified as "Knows" = 1 and "Does not know" = 0. On the basis of this, it is possible to obtain the total number of a person's social ties. Subsequently, the occupations were classified into three groups resembling social class positions [@otero_open_2021]. First, the Lawyer, Executive of a large firm, and Human resource manager are classified as high-status. Then, a School teacher, Police officer, and Nurse are considered as intermediate-status. Finally, a car mechanic, bus driver, hairdresser, and home or office cleaner are considered as low-status occupations.
 
 After this, we calculated the number of social ties for each status group. Consequently, the group closer to their class position obtains a proxy of the number of ingroup social ties. Finally, the number of ingroup ties is divided by the total number of contacts to provide a measure of network homogeneity that seeks to represent the share of similar social ties within the personal network [@otero_lives_2022; @volker_birds_2022]. Here, zero represents that all social ties are *different* (heterogeneity), while one means that all social contacts are similar (homogeneity). In substantial terms, higher values represent greater social distance from other social classes in society.
 
-As recently suggested, we have selected a set of control variables following substantive reasoning based on the current state of social network and redistributive preferences research [@kohler_control_2024]. Studies on social capital, network size, and social trust have been included in the estimations. The number of social ties or volume in a network can also have implications for instrumental and expressive outcomes such as job prospects or evaluations of self-worth [@contreras_inequality_2019;@kim_social_2021]. Likewise, social trust has been pointed out as a condition in forming social ties beyond the ingroup, as it means that people can rely on others and engage in supportive networks that may even play a substitute role in welfare provision [@jaime-castillo_social_2016]. In addition, redistributive preferences can be explained through economic self-interest, with higher-income individuals typically opposing redistribution while recognizing that the reduction of inequality would be at their expense by increasing the tax burden [@meltzer_rational_1981]. In addition, it has been argued that education provides greater security to cope with the dynamics of the labor market, which results in higher skills being linked to less support for redistribution [@kitschelt_occupations_2014]. Likewise, job status represents labor market integration, where outsiders are more supportive of redistributive policies due to their willingness to cope with labor market vulnerability [@hausermann_highskilled_2015]. Finally, it has been argued that besides the self-interest of the unionized working class members, unions also play a role as political socialization agents that seek to nurture egalitarian values and altruistic motives rooted in class solidarity [@han_labor_2022].
+As suggested recently, we have selected a set of control variables based on substantive reasoning informed by the current state of research on social networks and redistributive preferences [@kohler_control_2024]. Our estimations incorporate studies on social capital, network size, and social trust. The volume of social ties within a network can have implications for both instrumental and expressive outcomes, such as job prospects or self-worth evaluations [@contreras_inequality_2019; @kim_social_2021]. Moreover, social trust facilitates the formation of social ties beyond the ingroup, enabling individuals to rely on others and participate in supportive networks that may even serve as substitutes for welfare provision [@jaime-castillo_social_2016]. Furthermore, redistributive preferences can be elucidated through economic self-interest. Typically, individuals with higher incomes oppose redistribution while acknowledging that reducing inequality would entail an increased tax burden [@meltzer_rational_1981]. Education also plays a crucial role, providing individuals with greater security to navigate the dynamics of the labor market. Higher skills are associated with less support for redistribution, as individuals with higher levels of education are better equipped to handle market uncertainties [@kitschelt_occupations_2014]. Similarly, job status reflects integration into the labor market. Outsiders, who are more vulnerable to labor market fluctuations, tend to be more supportive of redistributive policies [@hausermann_highskilled_2015]. Finally, besides serving the self-interest of unionized working-class members, unions also function as political socialization agents, nurturing egalitarian values and altruistic motives rooted in class solidarity [@han_labor_2022].
 
-Regarding sociodemographic characteristics, prosocial attitudes can be attributed to socialization and cultural norms, with women generally exhibiting a greater capacity for empathy that motivates them to engage in more communal and relational behavior than men [@eagly_his_2009]. In addition, women tend to be placed in interpersonal service occupations with lower wages and higher market risk than their male counterparts [@waitkus_investigating_2021]. Substantial differences have also been demonstrated according to the age of individuals, as life cycle stages constitute different degrees of dependence and exposure to risk, and different age cohorts encapsulate different experiences of economic and political shocks. [@vanheuvelen_intercohort_2018]. Concerning religion, evidence has shown that religious individuals support redistribution to a greater extent, as religious communities incentivize uninterested altruistic behavior and prosocial values. However, it has also been suggested that religious behavior can decrease support for redistribution as it contributes to individual well-being [@arikan_was_2019]. Thus, it has been shown that people who do not have a partner tend to be more supportive of redistribution, suggesting that marital ties constitute a support network through which it is possible to mobilize resources and social support [@alesina_preferences_2005].
+Sociodemographic characteristics play a significant role in shaping prosocial attitudes. Women, for instance, often demonstrate a greater capacity for empathy, motivating them to engage in more communal and relational behavior compared to men [@eagly_his_2009]. Moreover, women are frequently employed in interpersonal service occupations characterized by lower wages and higher market risk compared to their male counterparts [@waitkus_investigating_2021]. Age also emerges as a critical factor, with individuals at different life cycle stages exhibiting varying degrees of dependence and exposure to risk. Additionally, different age cohorts encompass distinct experiences of economic and political shocks [@vanheuvelen_intercohort_2018]. Religion further influences attitudes towards redistribution. Religious individuals are generally more supportive of redistribution due to the encouragement of altruistic behavior and prosocial values within religious communities. However, there is also evidence suggesting that religious behavior may decrease support for redistribution by contributing to individual well-being [@arikan_was_2019]. Furthermore, individuals without partners tend to exhibit greater support for redistribution. This suggests that marital ties serve as a support network through which individuals can mobilize resources and social support [@alesina_preferences_2005].
 
 ### _Macro level_ {-}
 
-* Income Inequality (post-taxes): Gini Index from the World Income Inequality Dataset (https://wid.world/)
+The primary societal characteristic under examination is the current levels of economic inequality, for which we have utilized the Gini Index (post-taxes and transfers) sourced from the World Income Inequality Dataset (WID) [@alvaredo_world_2022]. Additionally, two contextual variables have been incorporated as controls in the multilevel models. Firstly, economic prosperity has been considered to ensure consistency in the estimates for economic inequality, drawing from the World Income Inequality Dataset (WID) [@Schmidt-Catran2016; @finseraas_income_2009]. Secondly, to account for heterogeneity in institutional arrangements stemming from welfare schemes, a measure of the size of the welfare state has been included [see @edlund_democratic_2015]. This measure, as an index, considers three dimensions: (i) tax revenue as a percentage of gross domestic product (GDP) [@ilo_world_2022]; (ii) social spending as a share of GDP [@ilo_world_2022]; and (iii) the current level of redistribution [@solt_measuring_2020].
 
-* Gross Domestic Product per capita (WID, 2022)
+## Method
 
-* Size of the welfare state [see @edlund_democratic_2015]
-  - Current Redistribution (Solt, 2020)
-  - Tax revenue, as percentage of GDP (ILO)
-  - Welfare expenditure, as percentage of GDP (ILO)
-  
-## Method {-}
-
-Multilevel regression models with random and fixed effects. For the cross-level interactions, we include random slopes, and all variables are group-mean centered (CWC)
+Multilevel linear models account for the hierarchical structure of the data, where individuals are nested within countries. Therefore, our first analysis begins with estimating the null model by declaring the nested structure using random intercept. This initial model allows us to assess the intraclass correlation, revealing that 13.7% of the variance in redistributive preferences can be attributed to belonging to higher-level units (countries). Subsequently, the micro-level models are estimated to determine the association between network homogeneity as well as the interaction with social class for testing our _segregation_ hypothesis ($H_1$). Following this, macro-level models are estimated by incorporating random intercepts alongside random slopes for network homogeneity and social class to determine whether economic inequality moderates the effect of the micro-level interaction ($H_2$). Therefore, we estimate a three-way cross-level interaction to determine if the current levels of income inequality affects the interactions between network homogeneity and social class.  In the macro-level models, all the individual level factors are group-mean centered (CWC) to mitigate possible problems of collinearity [@hox_multilevel_2010]. Additionally, all the country-level factors have been standardized (z-scores) to ease comparability in the estimations  [@hox_multilevel_2010].
 
 # Results
 
 ## Descriptive
-
 
 ```{r fig1, fig.dim=c(10,5),fig.cap='Cross-country comparison of Redistributive preferences and Social Class ',warning=FALSE}
 set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
@@ -219,11 +211,8 @@ options(scipen=999)
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,ggplot2,haven,ggrepel,gridExtra)  
 rm(list=ls())
-
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
-
 df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
-
 dfreg <- df1 %>% dplyr::select(
   egal = egal2,
   dclass3res_V,
@@ -254,65 +243,80 @@ dfreg <- df1 %>% dplyr::select(
     mutate(loggdppercapita=scale(gdppercapita/1000),
          edyears2 = edyears ^ 2,
          age2 = agenum ^ 2, 
-         # gini_disp=scale(gini_disp),
          )
 
 df_mean <- 
 dfreg %>% 
   group_by(country3) %>% 
   summarise(egal2_c=mean(egal),homclass_c=mean(homclass3_V_res),gini_disp=mean(gini_disp))
+df_region <- dfreg %>% group_by(region,country3) %>% summarise(n())
+df_full <- dfreg %>% group_by(dclass3res_V) %>% summarise(egal2=mean(egal),homclass=mean(homclass3_V_res),homclass_c=mean(dfreg$homclass3_V_res),egal2_c=mean(dfreg$egal), country3="Sample")
+df_plot <- dfreg %>% group_by(country3,dclass3res_V) %>% summarise(egal2=mean(egal),homclass=mean(homclass3_V_res)) %>%left_join(df_mean) %>% left_join(df_region) 
+df_plot$dclass3res_V <- factor(df_plot$dclass3res_V,levels = levels(df_plot$dclass3res_V),labels = c("Service Class","Intermediate Class","Working Class"))
 
-df_region <- 
-dfreg %>% 
-  group_by(region,country3) %>% 
-  summarise(n())
-
-df_full <- 
-dfreg %>% 
-  group_by(dclass3res_V) %>% 
-  summarise(egal2=mean(egal),homclass=mean(homclass3_V_res),homclass_c=mean(dfreg$homclass3_V_res),egal2_c=mean(dfreg$egal), country3="Sample")
+# Calculate the difference between the mean value of working class and upper class within each country
+homo_class_diff <- df_plot %>%
+  dplyr::select(country3,homclass,dclass3res_V) %>% 
+  tidyr::pivot_wider(names_from = "dclass3res_V", values_from = "homclass") %>% 
+  mutate(diff_working_upper = `Working Class` - `Service Class`) %>% 
+  dplyr::select(-`Working Class`, -`Service Class`,-`Intermediate Class`) %>% 
+  as.data.frame()
 
 df_plot <- 
 dfreg %>% 
   group_by(country3,dclass3res_V) %>% 
   summarise(egal2=mean(egal),homclass=mean(homclass3_V_res)) %>% 
   left_join(df_mean) %>%
-  left_join(df_region) 
-# df_plot <- 
-# df_plot %>% 
-#   bind_rows(df_full)
+  left_join(df_region) %>% as.data.frame() %>% 
+  left_join(homo_class_diff)
 
-df_plot$dclass3res_V <- factor(df_plot$dclass3res_V,levels = levels(df_plot$dclass3res_V),labels = c("Service Class","Intermediate Class","Working Class"))
+df_plot2 <- df_plot
+df_plot2$dclass3res_V <- "Country"
+df_plot2$homclass <- df_plot2$homclass_c
+df_plot2$egal2 <- df_plot2$egal2_c 
 
-df_plot %>% 
+df_plot3 <- bind_rows(df_plot,df_plot2)
+# table(df_plot3$dclass3res_V)
+df_plot3$dclass3res_V <- factor(df_plot3$dclass3res_V,
+                                levels = c("Country","Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)"),labels = c("Country","Service Class","Intermediate Class","Working Class"))
+
+df_plot3 %>% 
 ggplot()+
   geom_hline(yintercept = mean(dfreg$egal),linetype=2)+
-  geom_point(aes(x = reorder(country3, egal2_c),y = egal2,shape=dclass3res_V,color=dclass3res_V),size=3, alpha=2) +
-  geom_point(aes(x = reorder(country3, egal2_c),y = egal2_c),alpha=1,shape=4,size=2) +
-  scale_shape_manual(values = c(17, 15, 16)) +
-  scale_color_manual(values = c("#000000","#666666","#999999")) +
+  geom_point(aes(x = reorder(country3, egal2_c),y = egal2,
+                 shape=dclass3res_V,
+                 color=dclass3res_V
+                 ),size=3, alpha=2) +
+  scale_shape_manual(values = c(4,17, 15, 16)) +
+  scale_color_manual(values = c("black","#000000","#666666","#999999")) +
   labs(x=NULL,y="Redistributive Preferences") +
-  theme(legend.position = c(0.90, 0.15),
+  theme(legend.position = "bottom",
+        legend.direction = "horizontal",
         axis.text.x=element_text(angle=45,hjust = 1,size=8),
-        legend.title = element_blank()) 
-
-# df_plot %>%
-# ggplot()+
-#   geom_point(aes(x = reorder(country3, homclass_c),y = homclass,shape=dclass3res_V,color=dclass3res_V),size=3, alpha=2) +
-#   geom_hline(yintercept = mean(dfreg$homclass3_V_res),linetype=2)+
-#   geom_point(aes(x = reorder(country3, homclass_c),y = homclass_c),alpha=1,shape=4,size=2) +
-#   scale_shape_manual(values = c(17, 15, 16)) +
-#   scale_color_manual(values = c("#000000","#666666","#999999")) +
-#   labs(x=NULL,y="Network homogeneity") +
-#   theme(legend.position = c(0.90, 0.1),
-#         axis.text.x=element_text(angle=45,hjust = 1,size=10),
-#         legend.title = element_blank())
+        legend.title = element_blank())
 ```
 
 
+```{r fig2, fig.dim=c(10,5),fig.cap='Cross-country comparison of Network homogeneity and Social Class ',warning=FALSE}
+df_plot3 %>%
+ggplot()+
+  geom_point(aes(x = reorder(country3, diff_working_upper),
+                 y = homclass,
+                 shape=dclass3res_V,
+                 color=dclass3res_V),
+             size=3, alpha=2) +
+  geom_hline(yintercept = mean(dfreg$homclass3_V_res),linetype=2)+
+  scale_shape_manual(values = c(4,17, 15, 16)) +
+  scale_color_manual(values = c("black","#000000","#666666","#999999")) +
+  labs(x=NULL,y="Network homogeneity") +
+  theme(legend.position = "bottom",
+        legend.direction = "horizontal",
+        axis.text.x=element_text(angle=45,hjust = 1,size=8),
+        legend.title = element_blank()) 
+```
 
 
-```{r fig2, fig.dim=c(10,5),fig.cap='Bivariate relationships between Income Inequality, Network homogeneity and Redistributive preferences',warning=FALSE}
+```{r fig3, fig.dim=c(10,5),fig.cap='Bivariate relationships between Income Inequality, Network homogeneity and Redistributive preferences',warning=FALSE}
 set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
 options(ggplot2.discrete.fill = set1)
 options(ggplot2.discrete.colour = set1)
@@ -389,6 +393,8 @@ ggplot(aes(y=homclass3_V_res, x=gini_disp)) +
                                      homo_ineq$gini_disp, use='complete.obs'),digits = 2)),tag = "B")
 grid.arrange(fig_egal_homo,fig_homo_gini, nrow = 1)
 ```
+
+
 
 
 ## Multivariate results
@@ -495,7 +501,7 @@ texreg(digclas1_VW,stars = c(0.001, 0.01, 0.05, 0.1),
 
 \newpage 
 
-```{r fig3, fig.dim=c(10,5),fig.cap='Linear Predictions for Network Homogeneity on Redistributive Preferences by Social Class',warning=FALSE}
+```{r fig4, fig.dim=c(10,5),fig.cap='Linear Predictions for Network Homogeneity on Redistributive Preferences by Social Class',warning=FALSE}
 int_homo <- digclas1_VW_7
 df_pred1 <- 
   predictions(int_homo, condition = c("homclass3_V_res","dclass3res_V"),
@@ -602,7 +608,6 @@ dfreg$homclass3_V_gc <-group_center(dfreg$homclass3_V_res, grp = dfreg$country2)
 dfreg$know_total_gc = group_center(dfreg$know_total, grp = dfreg$country2)
 dfreg$religion_gc = group_center(as.numeric(dfreg$religion), grp = dfreg$country2)
 dfreg$partner_gc = group_center(as.numeric(dfreg$partner), grp = dfreg$country2)
-
 
 # Household Income Tercile
 dfreg$Q03pcm_1_gc = group_center(dfreg$Q03pcm_1, grp = dfreg$country2)
@@ -727,7 +732,7 @@ texreg(digclas1_macro,stars = c(0.001, 0.01, 0.05, 0.1),symbol = "+",scalebox = 
        use.packages = F)
 ```
 
-```{r fig4, fig.dim=c(12,7),fig.cap='Three-way interaccion effects for Redistributive Preferences, Network segregation, Social class and Income Inequality'}
+```{r fig5, fig.dim=c(12,7),fig.cap='Three-way interaccion effects for Redistributive Preferences, Network segregation, Social class and Income Inequality'}
 ### Predicted values homo*class*GiniD ---------------------------------------
 # ginid_max<- round(max(dfreg$gini_disp) ,2)
 # ginid_min<- round(min(dfreg$gini_disp),2)
@@ -785,6 +790,10 @@ df_pred_giniD_gc %>%
 \scriptsize
 \singlespacing
 ```
+
+# (APPENDIX) Appendix {-} 
+
+[Here Descriptive table]
 
 ```{r oldcode, eval=FALSE, include=FALSE}
 
@@ -904,5 +913,3 @@ ggplot(aes(y=homclass3_V_res, x=gini_disp, group=dclass3res_V,fill=dclass3res_V)
   theme(legend.position = "none",legend.title = element_blank())
 
 ```
-
-
