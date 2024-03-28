@@ -248,6 +248,8 @@ macro_data <-
   left_join(wid_df1) %>% 
   left_join(ilo_df)
 
+save(macro_data,file = here::here("input/data/proc/study1_macro_data.RData"))
+
 df1$ccode <- as.numeric(df1$country)
 df2 <- left_join(df1,macro_data,by="ccode")
 df2 <- 
