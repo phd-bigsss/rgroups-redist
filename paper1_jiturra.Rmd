@@ -296,6 +296,7 @@ ggplot()+
         legend.title = element_blank())
 ```
 
+Figure \@ref(fig:fig1) depicts the distribution of redistributive preferences across countries and social classes. First, it is possible to notice that the United States has lower redistributive preferences, whereas Russia is a society where redistributive preferences are stronger among all social classes. As was expected, in most societies, the working class holds stronger redistributive preferences in contrast to the intermediate and services classes, with four exceptions where the differences are close to zero between both classes. However, it is also notable that there are some differences between the two extreme cases. For example, in the U.S., the working class held lower redistributive preferences (49.1) than the intermediate class (50.6), but still above the service class (46.8). In contrast, in Russia, the general pattern of higher preferences among the working class is maintained, with an escalated increase in the working (85.5), intermediate (83.5), and service class (83.0). Another interesting fact is related to class differences in redistributive preferences. For example, the differences between the service and the working class are close to 2.3 points in the United States. At the same time, Finland represents the average case in the distribution but is also one of the most polarized societies in terms of class-based differences in redistributive preferences, showing a gap of 14.1 points between the upper and the lower classes. Interestingly, Russian society depicts class differences similar to the U.S., with an average difference of 2.4 points. 
 
 ```{r fig2, fig.dim=c(10,5),fig.cap='Cross-country comparison of Network homogeneity and Social Class ',warning=FALSE}
 df_plot3 %>%
@@ -315,6 +316,7 @@ ggplot()+
         legend.title = element_blank()) 
 ```
 
+Regarding network segregation, Figure \@ref(fig:fig2) depicts the distribution of network homogeneity and social class across countries. In contrast to redistributive preferences, the distribution of network homogeneity is more scattered between countries and social classes. However, it is possible to identify at least two compelling findings. First, looking at the sample average (M = 0.36), we can notice that the variation between countries is low (SD = 0.03), Thailand being the society with higher levels of network segregation (M = 0.42), and Iceland the one of the lowest (M = 0.31). Second, it is depicted that the working class network homogeneity drives the pattern of homogeneity. As noticed, in most cases observed, the general pattern is that the working class is highly homogeneous in their networks, except in the Philipines, where the intermediate class shows a slightly higher average homogeneity. In addition, the general pattern is that the service class is less segregated than the intermediate and working class. Besides, an interesting fact is that in some cases (e.g., Mexico), although the working class remains highly segregated (above 0.5), the middle and service classes are similar in their network homogeneity. Overall, one of the most substantial findings is that, with any exception, the working class is more segregated than the services class.
 
 ```{r fig3, fig.dim=c(10,5),fig.cap='Bivariate relationships between Income Inequality, Network homogeneity and Redistributive preferences',warning=FALSE}
 set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
@@ -394,8 +396,7 @@ ggplot(aes(y=homclass3_V_res, x=gini_disp)) +
 grid.arrange(fig_egal_homo,fig_homo_gini, nrow = 1)
 ```
 
-
-
+Moving to the bivariate macro relationships, Figure \@ref(fig:fig3) depicts the correlation between network homogeneity, redistributive preferences, and income inequality, our main societal characteristic of interest. First, according to @cohen_statistical_1988, for effect size criteria, we observe a medium positive and significant association between network homogeneity and redistributive preferences in Panel A (_r_ = 0.45, _p_ <.001). In concordance with the previously depicted distribution, we know that higher levels of network homogeneity are driven by the highly segregated networks of the working classes; what makes it logical that in countries where network homogeneity is high, this might also reflect greater social isolation among the working classes and consequently drive higher redistributive preferences. Second, Panel B depicts a positive but relatively weak and nonsignificant association between income inequality and network homogeneity (_r_ = 0.28, _p_<.01). In other words, average homogeneity also tends to increase in societies with greater income gaps. However, the macro association only shows the general pattern between countries but does not allow us to look deeper into class differences according to the levels of inequality. Interestingly, certain countries with higher levels of inequality and network homogeneity are societies that present class differences between the working class and the services class (e.g., Thailand or Mexico). By contrast, more egalitarian countries tend to be less homogeneous and have smaller class differences (e.g., Denmark or Sweden). As an additional exploratory analysis, we have found that the association between income inequality and the gap in network homogeneity between the upper and lower classes tends to be moderately low and statistically significant (_r_ = 0.29, _p_<.01). In other words, income inequality not only increase homogeneity overall but higher social distance between social classes as well.
 
 ## Multivariate results
 
@@ -783,17 +784,106 @@ df_pred_giniD_gc %>%
 
 # Discussion and conclusion
 
-`r if (is_latex_output()) '
-# References {-}
-'`
+
+# References
+
 ```{=tex}
 \scriptsize
 \singlespacing
 ```
 
-# (APPENDIX) Appendix {-} 
+<div id="refs"> </div>  <!-- Although <div> is an HTML tag, this method also works for other output formats such as PDF. -->
+
+
+
+\newpage
+
+`r if (knitr::is_latex_output()){ '\\appendix'}`
+
+`r if (knitr::is_latex_output()){ '\\section{Appendix}'}`
 
 [Here Descriptive table]
+
+```{r figapp1, fig.dim=c(5,5),out.width='50%',fig.cap='Bivariate relationships between Income Inequality and Class differences in network homogeneity',warning=FALSE}
+set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
+options(ggplot2.discrete.fill = set1)
+options(ggplot2.discrete.colour = set1)
+ggplot2::theme_set(ggplot2::theme_bw())
+ggplot2::theme_update(text=ggplot2::element_text(size=15,  family="serif"))
+options(scipen=999)
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,ggplot2,haven,ggrepel,gridExtra)  
+rm(list=ls())
+
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
+
+dfreg <- df1 %>% dplyr::select(
+  egal = egal2,
+  dclass3res_V,
+  dclass3spo_V,
+  homclass3_V_res,
+  know_total,
+  socialtrust,
+  Q03pcm,
+  edyears,
+  female,
+  agenum,
+  religion,
+  partner,
+  union,
+  workst,
+  WEIGHT,
+  region,
+  "gini_disp"=wid_gini_disp,
+  d10d1=wid_p90p10,
+  wid_p90p50,
+  top10=wid_sharetop10,
+  gdppercapita,
+  country2, country, country3,
+) %>%
+  # filter(oecd == "OECD") %>%
+  filter(country2 != "SVN") %>% 
+  na.omit() %>% 
+    mutate(loggdppercapita=scale(gdppercapita/1000),
+         edyears2 = edyears ^ 2,
+         age2 = agenum ^ 2, 
+         # gini_disp=scale(gini_disp),
+         )
+
+homo_ineq <- dfreg %>%
+  group_by(country2,country3) %>%
+  summarise_at(c("homclass3_V_res","egal","gini_disp"), mean, na.rm = TRUE) %>% 
+  as.data.frame()
+
+homo_class_diff <- dfreg %>%   
+  group_by(country2,country3,dclass3res_V) %>%
+  summarise_at(c("egal","homclass3_V_res"), mean, na.rm = TRUE) %>% 
+  as.data.frame() %>%
+  dplyr::select(country3,homclass3_V_res,dclass3res_V) %>% 
+  tidyr::pivot_wider(names_from = "dclass3res_V", values_from = "homclass3_V_res") %>% 
+  mutate(diff_working_upper_homo = `Working Class (V+VI+VII)` - `Service Class (I+II)`) %>% 
+  as.data.frame()
+
+# Dataset with class differences in network homogeneity
+homo_ineq <- homo_ineq %>% left_join(homo_class_diff)
+
+# Plot Homogeneity and redistributive preferences
+homo_ineq$country <- countrycode::countrycode(sourcevar = homo_ineq$country2,origin = "iso3c",destination = "iso2c")
+
+fig_homodiff_gini<- 
+homo_ineq %>%  
+ggplot(aes(y=diff_working_upper_homo, x=gini_disp)) +
+  geom_smooth(method = "lm",fullrange=TRUE, color="black",linetype = 2,size=1,se = T) +
+  # geom_text() +
+  geom_text_repel(label=as.character(homo_ineq$country)) +
+  xlab("Income Inequality") +
+  ylab("Class Differences in Network homogeneity \n (Working Class - Service Class)") +
+  labs(caption =paste("r = ",round(cor(homo_ineq$diff_working_upper_homo,
+                                     homo_ineq$gini_disp, use='complete.obs'),digits = 2)),tag = NULL)
+
+grid.arrange(fig_homodiff_gini, nrow = 1)
+```
 
 ```{r oldcode, eval=FALSE, include=FALSE}
 
@@ -913,3 +1003,5 @@ ggplot(aes(y=homclass3_V_res, x=gini_disp, group=dclass3res_V,fill=dclass3res_V)
   theme(legend.position = "none",legend.title = element_blank())
 
 ```
+
+
