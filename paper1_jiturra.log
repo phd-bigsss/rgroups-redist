@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.3.27)  29 MAR 2024 21:03
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.3.27)  29 MAR 2024 21:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -555,10 +555,10 @@ LaTeX Warning: Label `table:coefficients' multiply defined.
 LaTeX Warning: Label `table:coefficients' multiply defined.
 
 
-LaTeX Warning: Label `tab:table2' multiply defined.
-
-
 LaTeX Warning: Label `table:coefficients' multiply defined.
+
+
+LaTeX Warning: Label `tab:table2' multiply defined.
 
 
 LaTeX Warning: Label `table:coefficients' multiply defined.
@@ -773,7 +773,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 <paper1_jiturra_files/figure-latex/fig2-1.pdf, id=476, 722.7pt x 361.35pt>
 File: paper1_jiturra_files/figure-latex/fig2-1.pdf Graphic file (type pdf)
 <use paper1_jiturra_files/figure-latex/fig2-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig2-1.pdf  used on input line 279.
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig2-1.pdf  used on input line 281.
 (pdftex.def)             Requested size: 452.96826pt x 226.48279pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -786,10 +786,8 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 <paper1_jiturra_files/figure-latex/fig3-1.pdf, id=489, 722.7pt x 361.35pt>
 File: paper1_jiturra_files/figure-latex/fig3-1.pdf Graphic file (type pdf)
 <use paper1_jiturra_files/figure-latex/fig3-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig3-1.pdf  used on input line 290.
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig3-1.pdf  used on input line 292.
 (pdftex.def)             Requested size: 452.96826pt x 226.48279pt.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 360.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -798,6 +796,8 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [15 <./paper1_jiturra_files/figure-latex/fig3-1.pdf>]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 364.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -806,10 +806,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [16{c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
-<paper1_jiturra_files/figure-latex/fig4-1.pdf, id=521, 722.7pt x 361.35pt>
+<paper1_jiturra_files/figure-latex/fig4-1.pdf, id=523, 722.7pt x 361.35pt>
 File: paper1_jiturra_files/figure-latex/fig4-1.pdf Graphic file (type pdf)
 <use paper1_jiturra_files/figure-latex/fig4-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig4-1.pdf  used on input line 375.
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig4-1.pdf  used on input line 379.
 (pdftex.def)             Requested size: 452.96826pt x 226.48279pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -827,10 +827,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [18]
-<paper1_jiturra_files/figure-latex/fig5-1.pdf, id=544, 867.24pt x 505.89pt>
+<paper1_jiturra_files/figure-latex/fig5-1.pdf, id=546, 867.24pt x 505.89pt>
 File: paper1_jiturra_files/figure-latex/fig5-1.pdf Graphic file (type pdf)
 <use paper1_jiturra_files/figure-latex/fig5-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig5-1.pdf  used on input line 439.
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig5-1.pdf  used on input line 443.
 (pdftex.def)             Requested size: 452.96826pt x 264.2299pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -864,7 +864,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [22]
-Underfull \hbox (badness 1314) in paragraph at lines 708--710
+Underfull \hbox (badness 1314) in paragraph at lines 712--714
 []\T1/ptm/m/n/8 Otero, G., & Men-doza, M. (2023). The Power of Di-ver-sity: Class, Net-works and At-ti-tudes To-wards In-equal-ity. \T1/ptm/m/it/8 So-ci-ol-ogy\T1/ptm/m/n/8 ,
  []
 
@@ -884,10 +884,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [24]
-<paper1_jiturra_files/figure-latex/figapp1-1.pdf, id=696, 361.35pt x 361.35pt>
+<paper1_jiturra_files/figure-latex/figapp1-1.pdf, id=698, 361.35pt x 361.35pt>
 File: paper1_jiturra_files/figure-latex/figapp1-1.pdf Graphic file (type pdf)
 <use paper1_jiturra_files/figure-latex/figapp1-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/figapp1-1.pdf  used on input line 884.
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/figapp1-1.pdf  used on input line 888.
 (pdftex.def)             Requested size: 226.48413pt x 226.48279pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -913,31 +913,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [27]
-<paper1_jiturra_files/figure-latex/fig4-socdist-1.pdf, id=724, 722.7pt x 361.35pt>
-File: paper1_jiturra_files/figure-latex/fig4-socdist-1.pdf Graphic file (type pdf)
-<use paper1_jiturra_files/figure-latex/fig4-socdist-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig4-socdist-1.pdf  used on input line 1060.
-(pdftex.def)             Requested size: 452.96826pt x 226.48279pt.
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[28]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[29 <./paper1_jiturra_files/figure-latex/fig4-socdist-1.pdf>]
-<paper1_jiturra_files/figure-latex/fig5-socdist-1.pdf, id=743, 867.24pt x 505.89pt>
-File: paper1_jiturra_files/figure-latex/fig5-socdist-1.pdf Graphic file (type pdf)
-<use paper1_jiturra_files/figure-latex/fig5-socdist-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig5-socdist-1.pdf  used on input line 1118.
+<paper1_jiturra_files/figure-latex/fig5-ocde-1.pdf, id=725, 867.24pt x 505.89pt>
+File: paper1_jiturra_files/figure-latex/fig5-ocde-1.pdf Graphic file (type pdf)
+<use paper1_jiturra_files/figure-latex/fig5-ocde-1.pdf>
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig5-ocde-1.pdf  used on input line 1048.
 (pdftex.def)             Requested size: 452.96826pt x 264.2299pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -946,11 +925,32 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[30 <./paper1_jiturra_files/figure-latex/fig5-socdist-1.pdf>]
-<paper1_jiturra_files/figure-latex/fig5-ocde-1.pdf, id=758, 867.24pt x 505.89pt>
-File: paper1_jiturra_files/figure-latex/fig5-ocde-1.pdf Graphic file (type pdf)
-<use paper1_jiturra_files/figure-latex/fig5-ocde-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig5-ocde-1.pdf  used on input line 1179.
+[28 <./paper1_jiturra_files/figure-latex/fig5-ocde-1.pdf>]
+<paper1_jiturra_files/figure-latex/fig4-socdist-1.pdf, id=741, 722.7pt x 361.35pt>
+File: paper1_jiturra_files/figure-latex/fig4-socdist-1.pdf Graphic file (type pdf)
+<use paper1_jiturra_files/figure-latex/fig4-socdist-1.pdf>
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig4-socdist-1.pdf  used on input line 1125.
+(pdftex.def)             Requested size: 452.96826pt x 226.48279pt.
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[29]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[30 <./paper1_jiturra_files/figure-latex/fig4-socdist-1.pdf>]
+<paper1_jiturra_files/figure-latex/fig5-socdist-1.pdf, id=760, 867.24pt x 505.89pt>
+File: paper1_jiturra_files/figure-latex/fig5-socdist-1.pdf Graphic file (type pdf)
+<use paper1_jiturra_files/figure-latex/fig5-socdist-1.pdf>
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig5-socdist-1.pdf  used on input line 1183.
 (pdftex.def)             Requested size: 452.96826pt x 264.2299pt.
 
 Package caption Warning: Unused \captionsetup[figure] on input line \caption@opt@figure@lineno .
@@ -967,7 +967,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[31 <./paper1_jiturra_files/figure-latex/fig5-ocde-1.pdf>] (./paper1_jiturra.aux)
+[31 <./paper1_jiturra_files/figure-latex/fig5-socdist-1.pdf>] (./paper1_jiturra.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
@@ -976,21 +976,21 @@ L3 programming layer <2024-01-22>
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `paper1_jiturra.out' has not changed.
-(rerunfilecheck)             Checksum: 67AC9DEB2BA2CA90254566BB55813C09;4310.
+(rerunfilecheck)             Checksum: 6E6079A86C4B1E4DAAADAC90698F2B8E;4262.
  ) 
 Here is how much of TeX's memory you used:
  15711 strings out of 476163
- 259109 string characters out of 5792886
- 1971978 words of memory out of 5000000
+ 259093 string characters out of 5792886
+ 1970978 words of memory out of 5000000
  37208 multiletter control sequences out of 15000+600000
  612580 words of font info for 85 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  69i,13n,79p,2409b,493s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi12.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy8.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper1_jiturra.pdf (31 pages, 324704 bytes).
+Output written on paper1_jiturra.pdf (31 pages, 324728 bytes).
 PDF statistics:
- 876 PDF objects out of 1000 (max. 8388607)
- 793 compressed objects within 8 object streams
+ 877 PDF objects out of 1000 (max. 8388607)
+ 794 compressed objects within 8 object streams
  215 named destinations out of 1000 (max. 500000)
  222 words of extra memory for PDF output out of 10000 (max. 10000000)
 
