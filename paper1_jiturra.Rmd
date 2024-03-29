@@ -909,7 +909,7 @@ sjlabelled::set_label(dfreg) <- varlab
 st(dfreg,labels=T,
    title="Descriptive Statistics for Study Variables",
    out = "latex",
-   digits = 1, 
+   digits = 2, 
    factor.counts = F,
    factor.numeric = F,
    summ = list(
