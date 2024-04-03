@@ -1,0 +1,1715 @@
+---
+title: "Class-based network segregation, Economic Inequality and Redistributive Preferences across societies"
+subtitle: "Supplementary material"
+css: "input/css/custom.css" # custom CSS para html
+fontsize: 12pt
+linestretch: '1.15'          # interlineado 
+papersize: a4
+link-citations: yes         # citas linkeadas
+lang: en-US
+# date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+author:
+- name: Julio Iturra-Sanhueza
+  affiliation: Bremen International Graduate School of Social Sciences
+  email: jiturra@uni-bremen.de
+#   number: 1
+# - name: Justin d'Ottawa
+#   affiliation: University of Ottawa
+#   number: 2
+# - name: Pedro Torres
+#   number: 1,2 
+# Nota: Autores que comparten filiacion, poner el mismo number y declarar filiación una sola vez.  
+# abstract: | 
+#   # | The escalating economic inequality and the current sanitary crisis have threatened social solidarity among citizens. However, these consequences have been unevenly experienced across the social structure where the upper and intermediate classes, benefiting from privileged access to social resources, have shown resilience. Conversely, working-class families have faced deteriorating material conditions, leading to a heightened sense of marginalization and increasing the demand for welfare support. Particularly, social resources through network ties have been suggested to have a direct link with an individual's welfare through instrumental and expressive outcomes, such as providing information or help in moments of need. Consequently, it has been argued that social isolation not only plays a role in terms of social resources, but higher levels of segregation can bolster opinions, suggesting that being isolated from other social classes can polarise attitudes mainly in the working and upper-middle classes. In this regard, based on the ISSP 2017 -  Social Networks (N=31,191),  multilevel estimations suggest that the influence of network homogeneity is conditional to social class, where the working and intermediate classes with high homogeneous networks hold higher redistributive preferences than the upper classes. Additionally, income inequality has been shown to decrease the polarizing effect of network segregation, mainly among the upper classes, when overall inequality is high. In sum, this study highlights the role of both social class and network segregation together to understand redistributive preferences, as well as their implications for policies and cohesion.
+#   # | 
+#   # | **Keywords**: network segregation, redistributive preferences, economic inequality
+output:
+  bookdown::pdf_document2:
+    template: null
+    toc: false
+    keep_tex: false
+    number_sections: true
+    pandoc_args:
+      - --template=input/mytemplate.tex #custom template para usar autores con afiliacion  
+  bookdown::html_document2:
+    toc: yes
+    code_folding: hide
+    number_sections: false
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+         
+always_allow_html: true      
+linkcolor: gray                         # enlaces y citas en color azul
+bibliography: input/bib/rgroup-redist.bib     # bibliografia en bibtex
+csl: input/bib/apa6.csl
+editor_options:
+  chunk_output_type: console            # en RStudio, mostrar output en consola
+geometry: "left=2.54cm,right=2.54cm,top=2.54cm,bottom=2.54cm" # márgenes de página
+header-includes:
+  - \usepackage{times}           # Times New Roman
+  - \usepackage{caption}
+  - \captionsetup[figure, table]{labelfont={bf},labelformat={default},labelsep=period}
+  - \usepackage{graphicx}
+  - \usepackage{float}
+  - \usepackage{booktabs}
+  - \usepackage{longtable}
+  - \usepackage{array}
+  - \usepackage{multirow}
+  - \usepackage{wrapfig}
+  - \usepackage{float}
+  - \usepackage{colortbl}
+  - \usepackage{pdflscape}
+  - \usepackage{tabu}
+  - \usepackage{threeparttable}
+  - \setlength\parindent{24pt} 
+  - \usepackage{fancyhdr}
+  - \fancyhead{} 
+---
+
+```{r eval=FALSE, include=FALSE}
+ # for render in pdf run rmarkdown::render_site("docs/paper.Rmd", output_format = "all")
+ # clean #in the yml
+ rmarkdown::render("paper1_jiturra_supp-material.Rmd", output_format = "bookdown::pdf_document2")
+ rmarkdown::render("paper1_jiturra_supp-material.Rmd", output_format = "bookdown::html_document2")
+ rmarkdown::render("paper1_jiturra_supp-material.Rmd", output_format = "bookdown::word_document2")
+ 
+ # install.packages("trackdown")
+ trackdown::update_file(file = "paper1_jiturra.Rmd", hide_code = TRUE,gpath = '001_PhD/002dissertation/paper1')
+                        
+```
+
+<!-- - considerar ISEI08 como alternativa de social class por la correlacion con homogeneidad -->
+<!-- - darle una oportunidad al h-index -->
+<!--     - en general es prácticamente lo mismo que el indicador de homogeneidad -->
+<!-- - controlaria por social activities index () -->
+<!-- - social resources  -->
+    
+```{r setup, include=FALSE}
+if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
+if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
+pacman::p_load(knitr, kableExtra, dplyr, ggplot2,sjmisc,texreg) # librerias
+knitr::opts_chunk$set(warning = FALSE,  # mensaje de warning
+                      message = FALSE,  # mensajes/avisos de librerias  
+                      cache = F,    # cache de los chunks,usar analisis pesados
+                      out.width = '100%',
+                      fig.pos= "H",     # posicion figuras H = HERE
+                      fig.align = "center",
+                      echo = FALSE      # incluir chunk en output
+                      )
+options(scipen=999) # notacion cientifica
+rm(list=ls())       # limpiar workspace
+options(knitr.kable.NA = '') # NA en kable = ''
+```
+\pagestyle{fancy}
+\fancyhead[R]{\thepage}
+\fancyhead[L]{Research Article Draft}
+
+\newpage
+
+`r if (knitr::is_latex_output()){ '\\appendix'}`
+
+`r if (knitr::is_latex_output()){ '\\section{Appendix}'}`
+
+\pagebreak 
+# Additional analysis
+
+## OECD Countries
+
+```{r tab2-ocde, results='asis', cache=TRUE}
+set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
+options(ggplot2.discrete.fill = set1)
+options(ggplot2.discrete.colour = set1)
+ggplot2::theme_set(ggplot2::theme_bw())
+ggplot2::theme_update(text=ggplot2::element_text(size=15,  family="serif"))
+options(scipen=999)
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal,texreg,MLMusingR,lme4)
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+
+df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
+
+dfreg <- df1 %>% dplyr::select(
+  egal = egal2,
+  # starts_with("class3"),
+  # starts_with("digclass3"),
+  # starts_with("dclass3"),
+  # starts_with("homclass"),
+  dclass3res_V,
+  dclass3spo_V,
+  homclass3_V_res,
+  know_total,
+  socialtrust,
+  Q03pcm,
+  edyears,
+  female,
+  agenum,
+  religion,
+  partner,
+  union,
+  workst,
+  WEIGHT,
+  region,
+  "gini_disp"=wid_gini_disp,
+  "gini_mkt",
+  gv_spen,
+  rel_red,
+  abs_red,
+  ilo_taxrev,
+  ilo_govspe,
+  d10d1=wid_p90p10,
+  wid_p90p50,
+  top10=wid_sharetop10,
+  rgdpna,
+  gdppercapita,
+  oecd,
+  country2, country, country3,
+) %>%
+  filter(oecd == "OECD") %>%
+  filter(country2 != "SVN") %>% 
+  na.omit() %>% 
+    mutate(loggdppercapita=scale(gdppercapita/1000),
+         edyears2 = edyears ^ 2,
+         age2 = agenum ^ 2, 
+         gini_disp=scale(gini_disp))
+
+dfreg$wstate2 <- scale(scale(dfreg$abs_red*100) + scale(dfreg$ilo_taxrev) + scale(dfreg$ilo_govspe))
+
+# Variable Group-Centering ------------------------------------------------
+dfreg <- 
+  dfreg %>% 
+  mutate(to_dummy(female),
+         to_dummy(union),
+         to_dummy(workst),
+         # dummy for categorical variables-------------------------------------
+         to_dummy(Q03pcm),
+         to_dummy(dclass3spo_V)
+  )
+dfreg$female_gc = group_center(dfreg$female_2, grp = dfreg$country2)
+dfreg$union_gc = group_center(dfreg$union_2, grp = dfreg$country2)
+dfreg$workst_gc = group_center(dfreg$workst_2, grp = dfreg$country2)
+dfreg$edyears_gc = group_center(dfreg$edyears, grp = dfreg$country2)
+dfreg$agenum_gc = group_center(dfreg$agenum, grp = dfreg$country2)
+dfreg$age2_gc = group_center(dfreg$age2, grp = dfreg$country2)
+dfreg$socialtrust_gc = group_center(dfreg$socialtrust, grp = dfreg$country2)
+dfreg$homclass3_V_gc <-group_center(dfreg$homclass3_V_res, grp = dfreg$country2)
+dfreg$know_total_gc = group_center(dfreg$know_total, grp = dfreg$country2)
+dfreg$religion_gc = group_center(as.numeric(dfreg$religion), grp = dfreg$country2)
+dfreg$partner_gc = group_center(as.numeric(dfreg$partner), grp = dfreg$country2)
+
+# Household Income Tercile
+dfreg$Q03pcm_1_gc = group_center(dfreg$Q03pcm_1, grp = dfreg$country2)
+dfreg$Q03pcm_2_gc = group_center(dfreg$Q03pcm_2, grp = dfreg$country2)
+dfreg$Q03pcm_3_gc = group_center(dfreg$Q03pcm_3, grp = dfreg$country2)
+dfreg$Q03pcm_NA_gc = group_center(dfreg$Q03pcm_4, grp = dfreg$country2)
+
+# Partner Social Class
+dfreg$dclass3spo_V_1_gc = group_center(dfreg$dclass3spo_V_1, grp = dfreg$country2)
+dfreg$dclass3spo_V_2_gc = group_center(dfreg$dclass3spo_V_2, grp = dfreg$country2)
+dfreg$dclass3spo_V_3_gc = group_center(dfreg$dclass3spo_V_3, grp = dfreg$country2)
+dfreg$dclass3spo_V_NA_gc = group_center(dfreg$dclass3spo_V_4, grp = dfreg$country2)
+
+# drop dummies
+dfreg <- dplyr::select(dfreg,-c(female_1,female_2,union_1,union_2,workst_1,
+                                workst_2,Q03pcm_1,Q03pcm_2,Q03pcm_2,Q03pcm_4,
+                                dclass3spo_V_1,dclass3spo_V_2,dclass3spo_V_3,dclass3spo_V_4))
+
+# dfreg$gini_disp <- scale(dfreg$gini_disp)
+
+## Model -  EGP3 - DIGCLASS - V to Working -----------------------------
+homo_V_gini <- 
+  lmer(egal~ 
+         homclass3_V_gc+
+         know_total_gc+
+         socialtrust_gc+
+         dclass3res_V+dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+homo_V_gini_gdp <- 
+  lmer(egal~ 
+         homclass3_V_gc+
+         know_total_gc+
+         socialtrust_gc+
+         dclass3res_V+dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +loggdppercapita +
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+homo_V_gini_gdp_wstate2 <- 
+  lmer(egal~ 
+         homclass3_V_gc+
+         know_total_gc+
+         socialtrust_gc+
+         dclass3res_V+dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +loggdppercapita + wstate2+
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+homo_V_gini_gdp_controls <-
+  lmer(egal~
+         homclass3_V_gc+
+         know_total_gc+
+         socialtrust_gc+
+         dclass3res_V+dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +loggdppercapita + wstate2 +
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+homo_V_gini_full2 <- 
+  lmer(egal~ 
+         homclass3_V_gc+
+         know_total_gc+
+         socialtrust_gc+
+         dclass3res_V+dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +loggdppercapita + wstate2+
+         homclass3_V_gc*
+         dclass3res_V*
+         gini_disp + 
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+digclas1_macro <- list(homo_V_gini,
+                       homo_V_gini_gdp,
+                       homo_V_gini_gdp_wstate2,
+                       homo_V_gini_full2)
+
+ccoef <- list(homclass3_V_gc="Class-based network homogeneity (CWC)",
+              "dclass3res_VIntermediate class (III+IV)"="Intermediate Class",
+              "dclass3res_VWorking Class (V+VI+VII)"="Working Class",
+              "gini_disp" = "Income inequality (Gini index)",
+              loggdppercapita = "GDP/capita",
+              wstate2="Size of the welfare state",
+              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV)" = "Homogeneity*Intermediate Class",
+              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII)" = "Homogeneity*Working Class",
+              "homclass3_V_gc:gini_disp"= "Homogeneity*Income Inequality",
+              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):gini_disp" = "Homogeneity*Intermediate Class*Income Inequality",
+              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):gini_disp" = "Homogeneity*Working Class *Income Inequality")
+
+texreg(digclas1_macro,stars = c(0.001, 0.01, 0.05, 0.1),symbol = "+",scalebox = 0.60,
+       caption = "Multilevel models for Income Inequality, Network segregation and Redistributive Preferences",
+       custom.note = "Note: Models include sampling weights and individual level controls centered within cluster (group mean). Standard errors in parentheses. %stars",
+       caption.above = T,leading.zero = T,single.row = T,
+       custom.coef.map = ccoef,
+      groups = list("Social Class (Ref.= Service Class)" = 2:3,"Macro-level factors"=4:6, "Homogeneity*Social Class"=7:8, "Homogeneity * Social Class * Income Inequality"=10:11),
+       float.pos = "h!",
+      custom.gof.rows = list("Controls"=rep("Yes",4)),include.loglik = FALSE,include.aic = FALSE,
+      custom.gof.names = c(NA,NA,"Num. groups",
+                           "Var: Group (Intercept)",
+                           "Var: Group Homogeneity",
+                           "Var: Group Intermediate Class ",
+                           "Var: Group Working Class",
+                           "Cov: Group (Intercept), Homogeneity",
+                           "Cov: Group (Intercept), Intermediate Class ",
+                           "Cov: Group (Intercept), Working Class",
+                           "Cov: Group Homogeneity, Intermediate Class",
+                           "Cov: Group Homogeneity, Working Class",
+                           "Cov: Group Intermediate Class, Working Class",
+                           "Var: Residual"),
+       use.packages = F)
+```
+
+```{r fig5-ocde, fig.dim=c(12,7),fig.cap='Three-way interaccion effects for Redistributive Preferences, Network segregation, Social class and Income Inequality'}
+### Predicted values homo*class*GiniD ---------------------------------------
+# ginid_max<- round(max(dfreg$gini_disp) ,2)
+# ginid_min<- round(min(dfreg$gini_disp),2)
+
+ginid_max<- round(mean(dfreg$gini_disp) + sd(dfreg$gini_disp)  ,2)
+ginid_min<- round(mean(dfreg$gini_disp) -sd(dfreg$gini_disp) ,2)
+ginid_mea<- round(mean(dfreg$gini_disp),2)
+
+df_pred_giniD_gc <-
+  predictions(
+    homo_V_gini_full2,newdata = datagrid(
+      gini_disp = c(ginid_min, ginid_mea, ginid_max),
+      wstate2=mean(dfreg$wstate2),
+      loggdppercapita=mean(dfreg$loggdppercapita),
+      homclass3_V_gc = seq(min(dfreg$homclass3_V_gc)+0.01, max(dfreg$homclass3_V_gc)+0.01, by=0.1),
+      dclass3res_V=levels(dfreg$dclass3res_V)
+    )
+  )
+
+df_pred_giniD_gc <- as.data.frame(df_pred_giniD_gc)
+df_pred_giniD_gc$gini_disp <- factor(df_pred_giniD_gc$gini_disp,labels = c("Gini (-1SD)","Gini (Mean)", "Gini (+1SD)"))
+df_pred_giniD_gc <- df_pred_giniD_gc %>% filter(dclass3res_V!="Intermediate class (III+IV)")
+
+df_pred_giniD_gc %>% 
+  ggplot(aes(y=estimate,x=homclass3_V_gc, fill=dclass3res_V,color=dclass3res_V,ymin=conf.low, ymax=conf.high)) +
+  geom_ribbon(alpha=0.8,size=0.7,linetype="solid",color="black") +
+  geom_line(size=1,color="black") +
+  geom_point(size=3, shape = 21,color="black") +
+  facet_wrap(~gini_disp) +
+  labs(y = "Preferences for Redistribution",
+       x="Network homogeneity (CWC)",
+       caption = paste0("N=",nobs(homo_V_gini_full2),", Countries=",lme4::ngrps(homo_V_gini_full2))
+       ) +
+  scale_x_continuous(sec.axis = sec_axis(~ . , name = "Income inequality (post-tax) \n ", breaks = NULL, labels = NULL),
+                     ) +
+ 
+   scale_fill_manual(values=c("#323232","#CCCCCC"))+
+  scale_color_manual(values=c("#323232","#CCCCCC"))+
+  theme(legend.position = "bottom",
+        legend.direction = "horizontal",
+        axis.text=element_text(size=15),
+        legend.title = element_blank(),
+        legend.background = element_blank(),
+        legend.box.background = element_rect(colour = "black"))
+```
+
+## Income Inequality Ratios (OECD)
+
+```{r tab2-ratio9010, results='asis', cache=TRUE}
+set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
+options(ggplot2.discrete.fill = set1)
+options(ggplot2.discrete.colour = set1)
+ggplot2::theme_set(ggplot2::theme_bw())
+ggplot2::theme_update(text=ggplot2::element_text(size=15,  family="serif"))
+options(scipen=999)
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal,texreg,MLMusingR,lme4)  
+rm(list=ls())
+
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+
+df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
+
+dfreg <- df1 %>% dplyr::select(
+  egal = egal2,
+  # starts_with("class3"),
+  # starts_with("digclass3"),
+  # starts_with("dclass3"),
+  # starts_with("homclass"),
+  dclass3res_V,
+  dclass3spo_V,
+  homclass3_V_res,
+  know_total,
+  socialtrust,
+  Q03pcm,
+  edyears,
+  female,
+  agenum,
+  religion,
+  partner,
+  union,
+  workst,
+  WEIGHT,
+  region,
+  "gini_disp"=wid_gini_disp,
+  "gini_mkt",
+  gv_spen,
+  rel_red,
+  abs_red,
+  ilo_taxrev,
+  ilo_govspe,
+  d10d1=wid_p90p10,
+  wid_p90p50,
+  top10=wid_sharetop10,
+  rgdpna,
+  gdppercapita,
+  oecd,
+  country2, country, country3,
+) %>%
+  filter(oecd == "OECD") %>%
+  filter(country2 != "SVN") %>% 
+  na.omit() %>% 
+    mutate(loggdppercapita=scale(gdppercapita/1000),
+         edyears2 = edyears ^ 2,
+         age2 = agenum ^ 2, 
+         gini_disp=scale(d10d1))
+
+dfreg$wstate2 <- scale(scale(dfreg$abs_red*100) + scale(dfreg$ilo_taxrev) + scale(dfreg$ilo_govspe))
+
+
+# Variable Group-Centering ------------------------------------------------
+dfreg <- 
+  dfreg %>% 
+  mutate(to_dummy(female),
+         to_dummy(union),
+         to_dummy(workst),
+         # dummy for categorical variables-------------------------------------
+         to_dummy(Q03pcm),
+         to_dummy(dclass3spo_V)
+  )
+dfreg$female_gc = group_center(dfreg$female_2, grp = dfreg$country2)
+dfreg$union_gc = group_center(dfreg$union_2, grp = dfreg$country2)
+dfreg$workst_gc = group_center(dfreg$workst_2, grp = dfreg$country2)
+dfreg$edyears_gc = group_center(dfreg$edyears, grp = dfreg$country2)
+dfreg$agenum_gc = group_center(dfreg$agenum, grp = dfreg$country2)
+dfreg$age2_gc = group_center(dfreg$age2, grp = dfreg$country2)
+dfreg$socialtrust_gc = group_center(dfreg$socialtrust, grp = dfreg$country2)
+dfreg$homclass3_V_gc <-group_center(dfreg$homclass3_V_res, grp = dfreg$country2)
+dfreg$know_total_gc = group_center(dfreg$know_total, grp = dfreg$country2)
+dfreg$religion_gc = group_center(as.numeric(dfreg$religion), grp = dfreg$country2)
+dfreg$partner_gc = group_center(as.numeric(dfreg$partner), grp = dfreg$country2)
+
+# Household Income Tercile
+dfreg$Q03pcm_1_gc = group_center(dfreg$Q03pcm_1, grp = dfreg$country2)
+dfreg$Q03pcm_2_gc = group_center(dfreg$Q03pcm_2, grp = dfreg$country2)
+dfreg$Q03pcm_3_gc = group_center(dfreg$Q03pcm_3, grp = dfreg$country2)
+dfreg$Q03pcm_NA_gc = group_center(dfreg$Q03pcm_4, grp = dfreg$country2)
+
+# Partner Social Class
+dfreg$dclass3spo_V_1_gc = group_center(dfreg$dclass3spo_V_1, grp = dfreg$country2)
+dfreg$dclass3spo_V_2_gc = group_center(dfreg$dclass3spo_V_2, grp = dfreg$country2)
+dfreg$dclass3spo_V_3_gc = group_center(dfreg$dclass3spo_V_3, grp = dfreg$country2)
+dfreg$dclass3spo_V_NA_gc = group_center(dfreg$dclass3spo_V_4, grp = dfreg$country2)
+
+# drop dummies
+dfreg <- dplyr::select(dfreg,-c(female_1,female_2,union_1,union_2,workst_1,
+                                workst_2,Q03pcm_1,Q03pcm_2,Q03pcm_2,Q03pcm_4,
+                                dclass3spo_V_1,dclass3spo_V_2,dclass3spo_V_3,dclass3spo_V_4))
+
+# dfreg$gini_disp <- scale(dfreg$gini_disp)
+
+## Model -  EGP3 - DIGCLASS - V to Working -----------------------------
+homo_V_gini <- 
+  lmer(egal~ 
+         homclass3_V_gc+
+         know_total_gc+
+         socialtrust_gc+
+         dclass3res_V+dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+homo_V_gini_gdp <- 
+  lmer(egal~ 
+         homclass3_V_gc+
+         know_total_gc+
+         socialtrust_gc+
+         dclass3res_V+dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +loggdppercapita +
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+homo_V_gini_gdp_wstate2 <- 
+  lmer(egal~ 
+         homclass3_V_gc+
+         know_total_gc+
+         socialtrust_gc+
+         dclass3res_V+dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +loggdppercapita + wstate2+
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+homo_V_gini_gdp_controls <-
+  lmer(egal~
+         homclass3_V_gc+
+         know_total_gc+
+         socialtrust_gc+
+         dclass3res_V+dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +loggdppercapita + wstate2 +
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+homo_V_gini_full2 <- 
+  lmer(egal~ 
+         homclass3_V_gc+
+         know_total_gc+
+         socialtrust_gc+
+         dclass3res_V+dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +loggdppercapita + wstate2+
+         homclass3_V_gc*
+         dclass3res_V*
+         gini_disp + 
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+digclas1_macro <- list(homo_V_gini,
+                       homo_V_gini_gdp,
+                       homo_V_gini_gdp_wstate2,
+                       homo_V_gini_full2)
+
+ccoef <- list(homclass3_V_gc="Class-based network homogeneity (CWC)",
+              "dclass3res_VIntermediate class (III+IV)"="Intermediate Class",
+              "dclass3res_VWorking Class (V+VI+VII)"="Working Class",
+              "gini_disp" = "Income inequality (Ratio 90/10)",
+              loggdppercapita = "GDP/capita",
+              wstate2="Size of the welfare state",
+              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV)" = "Homogeneity*Intermediate Class",
+              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII)" = "Homogeneity*Working Class",
+              "homclass3_V_gc:gini_disp"= "Homogeneity*Income Inequality",
+              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):gini_disp" = "Homogeneity*Intermediate Class*Income Inequality",
+              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):gini_disp" = "Homogeneity*Working Class *Income Inequality")
+
+texreg(digclas1_macro,stars = c(0.001, 0.01, 0.05, 0.1),symbol = "+",scalebox = 0.50,
+       caption = "Multilevel models for Income Inequality, Network segregation and Redistributive Preferences",
+       custom.note = "Note: Models include sampling weights and individual level controls centered within cluster (group mean). Standard errors in parentheses. %stars",
+       caption.above = T,leading.zero = T,single.row = T,
+       custom.coef.map = ccoef,
+      groups = list("Social Class (Ref.= Service Class)" = 2:3,"Macro-level factors"=4:6, "Homogeneity*Social Class"=7:8, "Homogeneity * Social Class * Income Inequality"=10:11),
+       float.pos = "h!",
+      custom.gof.rows = list("Controls"=rep("Yes",4)),include.loglik = FALSE,include.aic = FALSE,
+      custom.gof.names = c(NA,NA,"Num. groups",
+                           "Var: Group (Intercept)",
+                           "Var: Group Homogeneity",
+                           "Var: Group Intermediate Class ",
+                           "Var: Group Working Class",
+                           "Cov: Group (Intercept), Homogeneity",
+                           "Cov: Group (Intercept), Intermediate Class ",
+                           "Cov: Group (Intercept), Working Class",
+                           "Cov: Group Homogeneity, Intermediate Class",
+                           "Cov: Group Homogeneity, Working Class",
+                           "Cov: Group Intermediate Class, Working Class",
+                           "Var: Residual"),
+       use.packages = F)
+```
+
+```{r tab2-ratio9050, results='asis', cache=TRUE}
+set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
+options(ggplot2.discrete.fill = set1)
+options(ggplot2.discrete.colour = set1)
+ggplot2::theme_set(ggplot2::theme_bw())
+ggplot2::theme_update(text=ggplot2::element_text(size=15,  family="serif"))
+options(scipen=999)
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal,texreg,MLMusingR,lme4)  
+rm(list=ls())
+
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+
+df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
+
+dfreg <- df1 %>% dplyr::select(
+  egal = egal2,
+  # starts_with("class3"),
+  # starts_with("digclass3"),
+  # starts_with("dclass3"),
+  # starts_with("homclass"),
+  dclass3res_V,
+  dclass3spo_V,
+  homclass3_V_res,
+  know_total,
+  socialtrust,
+  Q03pcm,
+  edyears,
+  female,
+  agenum,
+  religion,
+  partner,
+  union,
+  workst,
+  WEIGHT,
+  region,
+  "gini_disp"=wid_gini_disp,
+  "gini_mkt",
+  gv_spen,
+  rel_red,
+  abs_red,
+  ilo_taxrev,
+  ilo_govspe,
+  d10d1=wid_p90p10,
+  wid_p90p50,
+  top10=wid_sharetop10,
+  rgdpna,
+  gdppercapita,
+  oecd,
+  country2, country, country3,
+) %>%
+  filter(oecd == "OECD") %>%
+  filter(country2 != "SVN") %>% 
+  na.omit() %>% 
+    mutate(loggdppercapita=scale(gdppercapita/1000),
+         edyears2 = edyears ^ 2,
+         age2 = agenum ^ 2, 
+         gini_disp=scale(wid_p90p50))
+
+dfreg$wstate2 <- scale(scale(dfreg$abs_red*100) + scale(dfreg$ilo_taxrev) + scale(dfreg$ilo_govspe))
+
+# Variable Group-Centering ------------------------------------------------
+dfreg <- 
+  dfreg %>% 
+  mutate(to_dummy(female),
+         to_dummy(union),
+         to_dummy(workst),
+         # dummy for categorical variables-------------------------------------
+         to_dummy(Q03pcm),
+         to_dummy(dclass3spo_V)
+  )
+dfreg$female_gc = group_center(dfreg$female_2, grp = dfreg$country2)
+dfreg$union_gc = group_center(dfreg$union_2, grp = dfreg$country2)
+dfreg$workst_gc = group_center(dfreg$workst_2, grp = dfreg$country2)
+dfreg$edyears_gc = group_center(dfreg$edyears, grp = dfreg$country2)
+dfreg$agenum_gc = group_center(dfreg$agenum, grp = dfreg$country2)
+dfreg$age2_gc = group_center(dfreg$age2, grp = dfreg$country2)
+dfreg$socialtrust_gc = group_center(dfreg$socialtrust, grp = dfreg$country2)
+dfreg$homclass3_V_gc <-group_center(dfreg$homclass3_V_res, grp = dfreg$country2)
+dfreg$know_total_gc = group_center(dfreg$know_total, grp = dfreg$country2)
+dfreg$religion_gc = group_center(as.numeric(dfreg$religion), grp = dfreg$country2)
+dfreg$partner_gc = group_center(as.numeric(dfreg$partner), grp = dfreg$country2)
+
+# Household Income Tercile
+dfreg$Q03pcm_1_gc = group_center(dfreg$Q03pcm_1, grp = dfreg$country2)
+dfreg$Q03pcm_2_gc = group_center(dfreg$Q03pcm_2, grp = dfreg$country2)
+dfreg$Q03pcm_3_gc = group_center(dfreg$Q03pcm_3, grp = dfreg$country2)
+dfreg$Q03pcm_NA_gc = group_center(dfreg$Q03pcm_4, grp = dfreg$country2)
+
+# Partner Social Class
+dfreg$dclass3spo_V_1_gc = group_center(dfreg$dclass3spo_V_1, grp = dfreg$country2)
+dfreg$dclass3spo_V_2_gc = group_center(dfreg$dclass3spo_V_2, grp = dfreg$country2)
+dfreg$dclass3spo_V_3_gc = group_center(dfreg$dclass3spo_V_3, grp = dfreg$country2)
+dfreg$dclass3spo_V_NA_gc = group_center(dfreg$dclass3spo_V_4, grp = dfreg$country2)
+
+# drop dummies
+dfreg <- dplyr::select(dfreg,-c(female_1,female_2,union_1,union_2,workst_1,
+                                workst_2,Q03pcm_1,Q03pcm_2,Q03pcm_2,Q03pcm_4,
+                                dclass3spo_V_1,dclass3spo_V_2,dclass3spo_V_3,dclass3spo_V_4))
+
+# dfreg$gini_disp <- scale(dfreg$gini_disp)
+
+## Model -  EGP3 - DIGCLASS - V to Working -----------------------------
+homo_V_gini <- 
+  lmer(egal~ 
+         homclass3_V_gc+
+         know_total_gc+
+         socialtrust_gc+
+         dclass3res_V+dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+homo_V_gini_gdp <- 
+  lmer(egal~ 
+         homclass3_V_gc+
+         know_total_gc+
+         socialtrust_gc+
+         dclass3res_V+dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +loggdppercapita +
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+homo_V_gini_gdp_wstate2 <- 
+  lmer(egal~ 
+         homclass3_V_gc+
+         know_total_gc+
+         socialtrust_gc+
+         dclass3res_V+dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +loggdppercapita + wstate2+
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+homo_V_gini_gdp_controls <-
+  lmer(egal~
+         homclass3_V_gc+
+         know_total_gc+
+         socialtrust_gc+
+         dclass3res_V+dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +loggdppercapita + wstate2 +
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+homo_V_gini_full2 <- 
+  lmer(egal~ 
+         homclass3_V_gc+
+         know_total_gc+
+         socialtrust_gc+
+         dclass3res_V+dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +loggdppercapita + wstate2+
+         homclass3_V_gc*
+         dclass3res_V*
+         gini_disp + 
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+digclas1_macro <- list(homo_V_gini,
+                       homo_V_gini_gdp,
+                       homo_V_gini_gdp_wstate2,
+                       homo_V_gini_full2)
+
+ccoef <- list(homclass3_V_gc="Class-based network homogeneity (CWC)",
+              "dclass3res_VIntermediate class (III+IV)"="Intermediate Class",
+              "dclass3res_VWorking Class (V+VI+VII)"="Working Class",
+              "gini_disp" = "Income inequality (Ratio 90/50)",
+              loggdppercapita = "GDP/capita",
+              wstate2="Size of the welfare state",
+              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV)" = "Homogeneity*Intermediate Class",
+              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII)" = "Homogeneity*Working Class",
+              "homclass3_V_gc:gini_disp"= "Homogeneity*Income Inequality",
+              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):gini_disp" = "Homogeneity*Intermediate Class*Income Inequality",
+              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):gini_disp" = "Homogeneity*Working Class *Income Inequality")
+
+texreg(digclas1_macro,stars = c(0.001, 0.01, 0.05, 0.1),symbol = "+",scalebox = 0.50,
+       caption = "Multilevel models for Income Inequality, Network segregation and Redistributive Preferences",
+       custom.note = "Note: Models include sampling weights and individual level controls centered within cluster (group mean). Standard errors in parentheses. %stars",
+       caption.above = T,leading.zero = T,single.row = T,
+       custom.coef.map = ccoef,
+      groups = list("Social Class (Ref.= Service Class)" = 2:3,"Macro-level factors"=4:6, "Homogeneity*Social Class"=7:8, "Homogeneity * Social Class * Income Inequality"=10:11),
+       float.pos = "h!",
+      custom.gof.rows = list("Controls"=rep("Yes",4)),include.loglik = FALSE,include.aic = FALSE,
+      custom.gof.names = c(NA,NA,"Num. groups",
+                           "Var: Group (Intercept)",
+                           "Var: Group Homogeneity",
+                           "Var: Group Intermediate Class ",
+                           "Var: Group Working Class",
+                           "Cov: Group (Intercept), Homogeneity",
+                           "Cov: Group (Intercept), Intermediate Class ",
+                           "Cov: Group (Intercept), Working Class",
+                           "Cov: Group Homogeneity, Intermediate Class",
+                           "Cov: Group Homogeneity, Working Class",
+                           "Cov: Group Intermediate Class, Working Class",
+                           "Var: Residual"),
+       use.packages = F)
+```
+
+
+\pagebreak
+
+## Social distance (OECD)
+
+**Social distance**: First, the average ISEI points for each occupation of the position generator are calculated. Second, the ISEI of the respondent (R's) is subtracted from the average ISEI points of the personal network. For example, if the R's has an ISEI of 80 and the network ISEI is 50, the social distance will be 30 (80 - 50), a "upward" social distance. Another case could be 50 (R's) minus 80 (network), and the average social distance will be - 30 or "downward" social distance. In addition, When the distance is 0, the network is entirely homogeneous.
+
+```{r eval=FALSE, include=FALSE}
+set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
+options(ggplot2.discrete.fill = set1)
+options(ggplot2.discrete.colour = set1)
+ggplot2::theme_set(ggplot2::theme_bw())
+ggplot2::theme_update(text=ggplot2::element_text(size=15,  family="serif"))
+
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal,texreg,MLMusingR,lme4,correlation)
+rm(list=ls())
+
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+dfreg <- df1 %>% dplyr::select(
+  egal = egal2,
+  dclass3res_V,
+  dclass3spo_V,
+  homclass3_V_res=socdist,
+  know_total,
+  socialtrust,
+  Q03pcm,
+  edyears,
+  female,
+  agenum,
+  partner,
+  religion,
+  union,
+  workst,
+  WEIGHT,
+  region,
+  "gini_disp"=wid_gini_disp,
+  "gini_mkt",
+  gv_spen,
+  rel_red,
+  d10d1=wid_p90p10,
+  wid_p90p50,
+  top10=wid_sharetop10,
+  rgdpna,
+  gdppercapita,
+  oecd,
+  country2, country, country3,
+) %>%
+  mutate(logrgdpna = log(rgdpna),
+         loggdppercapita=log(gdppercapita),
+         edyears2 = edyears ^ 2,
+         age2 = agenum ^ 2,
+         homclass3_V_res=homclass3_V_res/10) %>%
+  filter(oecd == "OECD") %>%
+  filter(country2 != "SVN")
+
+dfreg$dclass3spo_V <- car::recode(dfreg$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
+df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
+
+# sjPlot::tab_xtab(df1$dclass3spo_V,df1$PARTLIV)
+
+dfreg <- na.omit(dfreg)
+```
+
+
+### Social Distance by Social Class
+
+```{r table1-socdistclass, echo=FALSE, results='asis'}
+set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
+options(ggplot2.discrete.fill = set1)
+options(ggplot2.discrete.colour = set1)
+ggplot2::theme_set(ggplot2::theme_bw())
+ggplot2::theme_update(text=ggplot2::element_text(size=15,  family="serif"))
+
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal,texreg,MLMusingR,lme4)
+rm(list=ls())
+
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+dfreg <- df1 %>% dplyr::select(
+  egal = egal2,
+  dclass3res_V,
+  dclass3spo_V,
+  homclass3_V_res=socdist,
+  know_total,
+  socialtrust,
+  Q03pcm,
+  edyears,
+  female,
+  agenum,
+  partner,
+  religion,
+  union,
+  workst,
+  WEIGHT,
+  region,
+  "gini_disp"=wid_gini_disp,
+  "gini_mkt",
+  gv_spen,
+  rel_red,
+  d10d1=wid_p90p10,
+  wid_p90p50,
+  top10=wid_sharetop10,
+  rgdpna,
+  gdppercapita,
+  oecd,
+  country2, country, country3,
+) %>%
+  mutate(logrgdpna = log(rgdpna),
+         loggdppercapita=log(gdppercapita),
+         edyears2 = edyears ^ 2,
+         age2 = agenum ^ 2,
+         homclass3_V_res=homclass3_V_res/10) %>%
+  filter(oecd == "OECD") %>%
+  filter(country2 != "SVN")
+
+dfreg$dclass3spo_V <- car::recode(dfreg$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
+df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
+
+# sjPlot::tab_xtab(df1$dclass3spo_V,df1$PARTLIV)
+
+dfreg <- na.omit(dfreg)
+
+# Step 1: Calculate absolute values
+absolute_values <- abs(dfreg$homclass3_V_res)
+# hist(absolute_values);summary(absolute_values)
+
+# Step 2: Add 1 to all values to eliminate zeros
+modified_values <- absolute_values + 0.1
+# hist(modified_values);summary(modified_values)
+
+# Step 3: Reverse the order of the scale
+reversed_values <- max(modified_values) + 0.1 - modified_values
+
+
+## Model -  EGP3 - DIGCLASS - V to Working -----------------------------
+digclas1_VW_1<- lmer(egal~1 + homclass3_V_res + female+agenum+age2 + partner + religion + (1|country2),data=dfreg,weights = WEIGHT)
+digclas1_VW_2<- update(digclas1_VW_1, . ~ . +know_total+socialtrust)
+digclas1_VW_3 <- update(digclas1_VW_2, . ~ . + dclass3res_V)
+
+digclas1_VW_4 <- update(digclas1_VW_3, . ~ . + dclass3res_V+female+agenum+age2)
+digclas1_VW_5 <- update(digclas1_VW_3, . ~ . + dclass3res_V+female+agenum+age2+edyears+ Q03pcm+workst+union)
+digclas1_VW_6 <- update(digclas1_VW_3, . ~ . + dclass3res_V+female+agenum+age2+edyears+ Q03pcm+workst+union+dclass3spo_V)
+digclas1_VW_7 <- update(digclas1_VW_6, . ~ . +dclass3res_V*homclass3_V_res)
+digclas1_VW <- list(digclas1_VW_1,digclas1_VW_2,
+                    digclas1_VW_3,
+                    # digclas1_VW_4,
+                    digclas1_VW_5,digclas1_VW_6,digclas1_VW_7)
+
+ccoef <- list(homclass3_V_res="Social distance",
+              know_total="Network size",
+              socialtrust="Social Trust",
+              "dclass3res_VIntermediate class (III+IV)"="Intermediate Class",
+              "dclass3res_VWorking Class (V+VI+VII)"="Working Class",
+              # "femaleFemale"="Female (Ref. = Male)",
+              # "agenum"="Age",
+              # "age2"="Age2",
+              "edyears"="Year of Education",
+              "Q03pcmT02"="Income (T2)","Q03pcmT03"="Income (T3)","Q03pcmMissing"="Income (No information)",
+              "workstNot in paid work" = "Not in paid work (Ref. = In paid work)",
+              "unionYes" ="Union Membership (Ref. = Not Unionized)",
+              "dclass3spo_VIntermediate class (III+IV)" = "Intermediate Class (Partner)",
+              "dclass3spo_VWorking Class (V+VI+VII)" = "Working Class (Partner)",
+              "dclass3spo_VNo information (Missing, No partner)" = "No information (Not available, No partner)",
+              "homclass3_V_res:dclass3res_VIntermediate class (III+IV)" = "Distance*Intermediate Class",
+              "homclass3_V_res:dclass3res_VWorking Class (V+VI+VII)" = "Distance*Working Class")
+
+
+texreg(digclas1_VW,stars = c(0.001, 0.01, 0.05, 0.1),
+       caption = paste("(\\#tab:table2)","Multilevel models for Social distance and Redistributive Preferences"),
+       custom.note = "Note: Models include sampling weights. Gender, age, marital status and religion are included as controls. Standard errors in parentheses. %stars",
+       caption.above = T,leading.zero = T,
+       custom.coef.map = ccoef,
+       symbol = "+",scalebox = 0.60,
+      groups = list("Social Class (Ref.= Service Class)" = 4:5, "Household Income (Ref.= Tertile I)"= 7:9,  "Partner's Social Class (Ref.= Service Class)" = 12:14, "Social distance x Social Class"=15:16),
+      custom.gof.rows = list("Controls"=rep("Yes",6)),include.loglik = FALSE,include.aic = FALSE,
+      custom.gof.names = c(NA,NA,"Num. groups","Var: Country (Intercept)","Var: Residual"),
+       float.pos = "h!",
+       use.packages = F)
+```
+
+```{r fig1-marg-socdistclass, echo=FALSE, fig.cap='Average Marginal Effects of Social Distance conditionated by Social Class on Redistributive Preferences', fig.dim=c(10,5), warning=FALSE}
+int_homo <- digclas1_VW_7
+plot_slopes(digclas1_VW_7, variables = "homclass3_V_res", condition = list("dclass3res_V"))+
+labs(caption = paste0("N=",nobs(int_homo),", Countries=",lme4::ngrps(int_homo)),
+       x="Social Distance",y="Redistributive preferences")
+```
+
+```{r fig1-pred-socdistclass, echo=FALSE, fig.cap='Linear Predictions for Social distance on Redistributive Preferences by Social Class', fig.dim=c(10,5), warning=FALSE}
+int_homo <- digclas1_VW_7
+df_pred1 <-
+  predictions(int_homo, condition = c("homclass3_V_res","dclass3res_V"),
+              newdata = datagrid(homclass3_V_res = seq(min(dfreg$homclass3_V_res), max(dfreg$homclass3_V_res), by= 1),
+                                 dclass3res_V = levels(dfreg$dclass3res_V)))
+# names(df_pred1)
+df_pred1 %>%
+ggplot(aes(y =estimate,x=homclass3_V_res, fill=dclass3res_V, color=dclass3res_V,ymin=conf.low, ymax=conf.high)) +
+  geom_ribbon(alpha=0.8,size=1,linetype="solid",color="black") +
+  geom_line(size=1,color="black") +
+  geom_point(size=2,color="black") +
+  facet_grid(~factor(dclass3res_V, levels=
+                       c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)"),
+                     c("Working Class (V+VI+VII)","Intermediate class (III+IV)","Service Class (I+II)"))) +
+  scale_fill_manual(values=c("#323232","#989898","#CCCCCC"))+
+  scale_color_manual(values=c("#323232","#989898","#CCCCCC"))+
+  scale_y_continuous(limits = c(50,100))+
+  # scale_x_continuous(limits = c(-9,9))+
+  labs(caption = paste0("N=",nobs(int_homo),", Countries=",lme4::ngrps(int_homo)),
+       x="Social Distance",y="Redistributive preferences") +
+  theme(legend.position = "none", legend.title = element_blank())
+```
+
+
+\pagebreak
+
+```{r tab2-socdistclass, echo=FALSE, cache=TRUE, results='asis'}
+set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
+options(ggplot2.discrete.fill = set1)
+options(ggplot2.discrete.colour = set1)
+ggplot2::theme_set(ggplot2::theme_bw())
+ggplot2::theme_update(text=ggplot2::element_text(size=15,  family="serif"))
+options(scipen=999)
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal,texreg,MLMusingR,lme4)
+rm(list=ls())
+
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+
+df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
+
+dfreg <- df1 %>% dplyr::select(
+  egal = egal2,
+  # starts_with("class3"),
+  # starts_with("digclass3"),
+  # starts_with("dclass3"),
+  # starts_with("homclass"),
+  dclass3res_V,
+  dclass3spo_V,
+  homclass3_V_res=socdist,
+  know_total,
+  socialtrust,
+  Q03pcm,
+  edyears,
+  female,
+  agenum,
+  religion,
+  partner,
+  union,
+  workst,
+  WEIGHT,
+  region,
+  "gini_disp"=wid_gini_disp,
+  "gini_mkt",
+  gv_spen,
+  rel_red,
+  abs_red,
+  ilo_taxrev,
+  ilo_govspe,
+  d10d1=wid_p90p10,
+  wid_p90p50,
+  top10=wid_sharetop10,
+  rgdpna,
+  gdppercapita,
+  oecd,
+  country2, country, country3,
+) %>%
+  filter(oecd == "OECD") %>%
+  filter(country2 != "SVN") %>%
+  na.omit() %>%
+    mutate(loggdppercapita=scale(gdppercapita/1000),
+         edyears2 = edyears ^ 2,
+         age2 = agenum ^ 2,
+         gini_disp=scale(gini_disp),
+         homclass3_V_res=homclass3_V_res/10)
+
+dfreg$wstate2 <- scale(scale(dfreg$abs_red*100) + scale(dfreg$ilo_taxrev) + scale(dfreg$ilo_govspe))
+# Step 1: Calculate absolute values
+absolute_values <- abs(dfreg$homclass3_V_res)
+# hist(absolute_values);summary(absolute_values)
+
+# Step 2: Add 1 to all values to eliminate zeros
+modified_values <- absolute_values + 0.1
+# hist(modified_values);summary(modified_values)
+
+# Step 3: Reverse the order of the scale
+reversed_values <- max(modified_values) + 0.1 - modified_values
+
+# Variable Group-Centering ------------------------------------------------
+dfreg <-
+  dfreg %>%
+  mutate(to_dummy(female),
+         to_dummy(union),
+         to_dummy(workst),
+         # dummy for categorical variables-------------------------------------
+         to_dummy(Q03pcm),
+         to_dummy(dclass3spo_V)
+  )
+dfreg$female_gc = group_center(dfreg$female_2, grp = dfreg$country2)
+dfreg$union_gc = group_center(dfreg$union_2, grp = dfreg$country2)
+dfreg$workst_gc = group_center(dfreg$workst_2, grp = dfreg$country2)
+dfreg$edyears_gc = group_center(dfreg$edyears, grp = dfreg$country2)
+dfreg$agenum_gc = group_center(dfreg$agenum, grp = dfreg$country2)
+dfreg$age2_gc = group_center(dfreg$age2, grp = dfreg$country2)
+dfreg$socialtrust_gc = group_center(dfreg$socialtrust, grp = dfreg$country2)
+dfreg$homclass3_V_gc <-group_center(dfreg$homclass3_V_res, grp = dfreg$country2)
+dfreg$know_total_gc = group_center(dfreg$know_total, grp = dfreg$country2)
+dfreg$religion_gc = group_center(as.numeric(dfreg$religion), grp = dfreg$country2)
+dfreg$partner_gc = group_center(as.numeric(dfreg$partner), grp = dfreg$country2)
+
+# Household Income Tercile
+dfreg$Q03pcm_1_gc = group_center(dfreg$Q03pcm_1, grp = dfreg$country2)
+dfreg$Q03pcm_2_gc = group_center(dfreg$Q03pcm_2, grp = dfreg$country2)
+dfreg$Q03pcm_3_gc = group_center(dfreg$Q03pcm_3, grp = dfreg$country2)
+dfreg$Q03pcm_NA_gc = group_center(dfreg$Q03pcm_4, grp = dfreg$country2)
+
+# Partner Social Class
+dfreg$dclass3spo_V_1_gc = group_center(dfreg$dclass3spo_V_1, grp = dfreg$country2)
+dfreg$dclass3spo_V_2_gc = group_center(dfreg$dclass3spo_V_2, grp = dfreg$country2)
+dfreg$dclass3spo_V_3_gc = group_center(dfreg$dclass3spo_V_3, grp = dfreg$country2)
+dfreg$dclass3spo_V_NA_gc = group_center(dfreg$dclass3spo_V_4, grp = dfreg$country2)
+
+# drop dummies
+dfreg <- dplyr::select(dfreg,-c(female_1,female_2,union_1,union_2,workst_1,
+                                workst_2,Q03pcm_1,Q03pcm_2,Q03pcm_2,Q03pcm_4,
+                                dclass3spo_V_1,dclass3spo_V_2,dclass3spo_V_3,dclass3spo_V_4))
+
+# dfreg$gini_disp <- scale(dfreg$gini_disp)
+
+## Model -  EGP3 - DIGCLASS - V to Working -----------------------------
+homo_V_gini <-
+  lmer(egal~
+         homclass3_V_gc+
+         know_total_gc+
+         socialtrust_gc+
+         dclass3res_V+dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+homo_V_gini_gdp <-
+  lmer(egal~
+         homclass3_V_gc+
+         know_total_gc+
+         socialtrust_gc+
+         dclass3res_V+dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +loggdppercapita +
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+homo_V_gini_gdp_wstate2 <-
+  lmer(egal~
+         homclass3_V_gc+
+         know_total_gc+
+         socialtrust_gc+
+         dclass3res_V+dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +loggdppercapita + wstate2+
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+homo_V_gini_gdp_controls <-
+  lmer(egal~
+         homclass3_V_gc+
+         know_total_gc+
+         socialtrust_gc+
+         dclass3res_V+dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +loggdppercapita + wstate2 +
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+homo_V_gini_full2 <-
+  lmer(egal~
+         homclass3_V_gc+
+         know_total_gc+
+         socialtrust_gc+
+         dclass3res_V+dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +loggdppercapita + wstate2+
+         homclass3_V_gc*
+         dclass3res_V*
+         gini_disp +
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+digclas1_macro <- list(homo_V_gini,
+                       homo_V_gini_gdp,
+                       homo_V_gini_gdp_wstate2,
+                       homo_V_gini_full2)
+
+ccoef <- list(homclass3_V_gc="Social distance (CWC)",
+              "dclass3res_VIntermediate class (III+IV)"="Intermediate Class",
+              "dclass3res_VWorking Class (V+VI+VII)"="Working Class",
+              "gini_disp" = "Income inequality (Gini index)",
+              loggdppercapita = "GDP/capita",
+              wstate2="Size of the welfare state",
+              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV)" = "Distance*Intermediate Class",
+              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII)" = "Distance*Working Class",
+              "homclass3_V_gc:gini_disp"= "Distance*Income Inequality",
+              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):gini_disp" = "Distance*Intermediate Class*Income Inequality",
+              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):gini_disp" = "Distance*Working Class*Income Inequality")
+
+texreg(digclas1_macro,stars = c(0.001, 0.01, 0.05, 0.1),symbol = "+",scalebox = 0.60,
+       caption = "Multilevel models for Income Inequality, Network segregation and Redistributive Preferences",
+       custom.note = "Note: Models include sampling weights and individual level controls centered within cluster (group mean). Standard errors in parentheses. %stars",
+       caption.above = T,leading.zero = T,single.row = T,
+       custom.coef.map = ccoef,
+      groups = list("Social Class (Ref.= Service Class)" = 2:3,"Macro-level factors"=4:6, "Distance x Social Class"=7:8, "Distance * Social Class x Income Inequality"=10:11),
+       float.pos = "h!",
+      custom.gof.rows = list("Controls"=rep("Yes",4)),include.loglik = FALSE,include.aic = FALSE,
+      custom.gof.names = c(NA,NA,"Num. groups",
+                           "Var: Group (Intercept)",
+                           "Var: Group Homogeneity",
+                           "Var: Group Intermediate Class ",
+                           "Var: Group Working Class",
+                           "Cov: Group (Intercept), Homogeneity",
+                           "Cov: Group (Intercept), Intermediate Class ",
+                           "Cov: Group (Intercept), Working Class",
+                           "Cov: Group Homogeneity, Intermediate Class",
+                           "Cov: Group Homogeneity, Working Class",
+                           "Cov: Group Intermediate Class, Working Class",
+                           "Var: Residual"),
+       use.packages = F)
+```
+
+```{r fig5-socdistclass, echo=FALSE, fig.cap='hree-way interaccion effects for Redistributive Preferences, Social Distance, Social Class and Income Inequality', fig.dim=c(12,7)}
+### Predicted values homo*class*GiniD ---------------------------------------
+# ginid_max<- round(max(dfreg$gini_disp) ,2)
+# ginid_min<- round(min(dfreg$gini_disp),2)
+
+ginid_max<- round(mean(dfreg$gini_disp) + sd(dfreg$gini_disp)  ,2)
+ginid_min<- round(mean(dfreg$gini_disp) -sd(dfreg$gini_disp) ,2)
+ginid_mea<- round(mean(dfreg$gini_disp),2)
+
+df_pred_giniD_gc <-
+  predictions(
+    homo_V_gini_full2,newdata = datagrid(
+      gini_disp = c(ginid_min, ginid_mea, ginid_max),
+      wstate2=mean(dfreg$wstate2),
+      loggdppercapita=mean(dfreg$loggdppercapita),
+      homclass3_V_gc = seq(min(dfreg$homclass3_V_gc)+0.01, max(dfreg$homclass3_V_gc)+0.01, by=0.5),
+      dclass3res_V=levels(dfreg$dclass3res_V)
+    )
+  )
+
+df_pred_giniD_gc <- as.data.frame(df_pred_giniD_gc)
+df_pred_giniD_gc$gini_disp <- factor(df_pred_giniD_gc$gini_disp,labels = c("Gini (-1SD)","Gini (Mean)", "Gini (+1SD)"))
+df_pred_giniD_gc <- df_pred_giniD_gc %>% filter(dclass3res_V!="Intermediate class (III+IV)")
+
+df_pred_giniD_gc %>%
+  ggplot(aes(y=estimate,x=homclass3_V_gc, fill=dclass3res_V,color=dclass3res_V,ymin=conf.low, ymax=conf.high)) +
+  geom_ribbon(alpha=0.8,size=0.7,linetype="solid",color="black") +
+  geom_line(size=1,color="black") +
+  geom_point(size=3, shape = 21,color="black") +
+  facet_wrap(~gini_disp) +
+  labs(y = "Preferences for Redistribution",
+       x="Social Distance (CWC)",
+       caption = paste0("N=",nobs(homo_V_gini_full2),", Countries=",lme4::ngrps(homo_V_gini_full2))
+       ) +
+  scale_x_continuous(sec.axis = sec_axis(~ . , name = "Income inequality (post-tax) \n ", breaks = NULL, labels = NULL),
+                     ) +
+
+   scale_fill_manual(values=c("#323232","#CCCCCC"))+
+  scale_color_manual(values=c("#323232","#CCCCCC"))+
+  theme(legend.position = "bottom",
+        legend.direction = "horizontal",
+        axis.text=element_text(size=15),
+        legend.title = element_blank(),
+        legend.background = element_blank(),
+        legend.box.background = element_rect(colour = "black"))
+```
+
+\pagebreak
+
+### Social Distance by ISEI 
+
+```{r table1-socdist, results='asis'}
+set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
+options(ggplot2.discrete.fill = set1)
+options(ggplot2.discrete.colour = set1)
+ggplot2::theme_set(ggplot2::theme_bw())
+ggplot2::theme_update(text=ggplot2::element_text(size=15,  family="serif"))
+
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal,texreg,MLMusingR,lme4)  
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
+
+dummy_df <- df1 %>% dplyr::select(id,
+  egal = egal2,dclass3res_V,dclass3spo_V,homclass3_V_res,know_total,socialtrust,
+  Q03pcm,edyears,female,agenum,religion,partner,union,workst,WEIGHT,region,
+  "gini_disp"=wid_gini_disp,"gini_mkt",gv_spen,rel_red,abs_red,ilo_taxrev,
+  ilo_govspe,d10d1=wid_p90p10,wid_p90p50,top10=wid_sharetop10,rgdpna,gdppercapita,
+  oecd,country2, country, country3) %>%
+  filter(country2 != "SVN") %>% 
+  filter(oecd == "OECD") %>%
+  na.omit() %>% 
+  dplyr::select(id)
+
+df1$isei08sp <- car::recode(df1$isei08sp,"NA=0")
+df1$isei08 <- car::recode(df1$isei08,"NA=0")
+
+dfreg <- df1 %>% dplyr::select(id,
+  egal = egal2,
+  dclass3res_V=isei08,
+  dclass3spo_V=isei08sp,
+  homclass3_V_res=socdist,
+  know_total,
+  socialtrust,
+  Q03pcm,
+  edyears,
+  female,
+  agenum,
+  partner,
+  religion,
+  union,
+  workst,
+  WEIGHT,
+  region,
+  "gini_disp"=wid_gini_disp,
+  "gini_mkt",
+  gv_spen,
+  rel_red,
+  d10d1=wid_p90p10,
+  wid_p90p50,
+  top10=wid_sharetop10,
+  rgdpna,
+  gdppercapita,
+  oecd,
+  country2, country, country3,
+) %>%
+  mutate(logrgdpna = log(rgdpna),
+         loggdppercapita=log(gdppercapita),
+         edyears2 = edyears ^ 2,
+         age2 = agenum ^ 2,
+         dclass3res_V=dclass3res_V/10,
+         dclass3spo_V=dclass3spo_V/10,
+         homclass3_V_res=homclass3_V_res/10) %>%
+  filter(oecd == "OECD") %>%
+  filter(country2 != "SVN")  %>% 
+  filter(id %in% dummy_df$id)
+dfreg <- na.omit(dfreg)
+# Step 1: Calculate absolute values
+absolute_values <- abs(dfreg$homclass3_V_res)
+# hist(absolute_values);summary(absolute_values)
+
+# Step 2: Add 1 to all values to eliminate zeros
+modified_values <- absolute_values + 0.1
+# hist(modified_values);summary(modified_values)
+
+# Step 3: Reverse the order of the scale
+reversed_values <- max(modified_values) + 0.1 - modified_values
+
+
+## Model -  EGP3 - DIGCLASS - V to Working -----------------------------
+digclas1_VW_1<- lmer(egal~1 + homclass3_V_res + female+agenum+age2 + partner + religion + (1|country2),data=dfreg,weights = WEIGHT)
+digclas1_VW_2<- update(digclas1_VW_1, . ~ . +know_total+socialtrust)
+digclas1_VW_3 <- update(digclas1_VW_2, . ~ . + dclass3res_V)
+
+digclas1_VW_4 <- update(digclas1_VW_3, . ~ . + dclass3res_V+female+agenum+age2)
+digclas1_VW_5 <- update(digclas1_VW_3, . ~ . + dclass3res_V+female+agenum+age2+edyears+ Q03pcm+workst+union)
+digclas1_VW_6 <- update(digclas1_VW_3, . ~ . + dclass3res_V+female+agenum+age2+edyears+ Q03pcm+workst+union+dclass3spo_V)
+digclas1_VW_7 <- update(digclas1_VW_6, . ~ . +dclass3res_V*homclass3_V_res)
+digclas1_VW <- list(digclas1_VW_1,digclas1_VW_2,
+                    digclas1_VW_3,
+                    # digclas1_VW_4,
+                    digclas1_VW_5,digclas1_VW_6,digclas1_VW_7)
+
+ccoef <- list(homclass3_V_res="Social Distance /10",
+              know_total="Network size",
+              socialtrust="Social Trust",
+              # "dclass3res_VIntermediate class (III+IV)"="Intermediate Class",
+              # "dclass3res_VWorking Class (V+VI+VII)"="Working Class",
+              # "femaleFemale"="Female (Ref. = Male)",
+              # "agenum"="Age",
+              # "age2"="Age2",
+              "dclass3res_V"="ISEI/10",
+              "edyears"="Year of Education",
+              "Q03pcmT02"="Income (T2)","Q03pcmT03"="Income (T3)","Q03pcmMissing"="Income (No information)",
+              "workstNot in paid work" = "Not in paid work (Ref. = In paid work)",
+              "unionYes" ="Union Membership (Ref. = Not Unionized)",
+              "dclass3spo_V" = "ISEI/10 (Partner)",
+              "homclass3_V_res:dclass3res_V" = "Social Distance*ISEI")
+
+
+texreg(digclas1_VW,stars = c(0.001, 0.01, 0.05, 0.1),
+       caption = paste("(\\#tab:table2)","Multilevel models for Social Distance and Redistributive Preferences"),
+       custom.note = "Note: Models include sampling weights. Gender, age, marital status and religion are included as controls. Standard errors in parentheses. %stars",
+       caption.above = T,leading.zero = T,
+       custom.coef.map = ccoef,
+       symbol = "+",scalebox = 0.60,
+      custom.gof.rows = list("Controls"=rep("Yes",6)),include.loglik = FALSE,include.aic = FALSE,
+      custom.gof.names = c(NA,NA,"Num. groups","Var: Country (Intercept)","Var: Residual"),
+       float.pos = "h!",
+       use.packages = F)
+```
+
+```{r fig1-marg-socdist, fig.dim=c(10,5),fig.cap='Average Marginal Effects of Social Distance conditionated by ISEI on Redistributive Preferences',warning=FALSE}
+int_homo <- digclas1_VW_7
+plot_slopes(digclas1_VW_7, variables = "homclass3_V_res", condition = list("dclass3res_V" = "threenum"))+
+labs(caption = paste0("N=",nobs(int_homo),", Countries=",lme4::ngrps(int_homo)),
+       x="ISEI",y="Redistributive preferences")
+```
+
+```{r fig1-pred-socdist, fig.dim=c(10,5),fig.cap='Linear Predictions for Social Distance on Redistributive Preferences by ISEI',warning=FALSE}
+int_homo <- digclas1_VW_7
+df_pred1 <- 
+  predictions(int_homo, condition = c("homclass3_V_res","dclass3res_V"),
+              newdata = datagrid(homclass3_V_res = seq(min(dfreg$homclass3_V_res), max(dfreg$homclass3_V_res), by= 0.5),
+                                 dclass3res_V = c(min(dfreg$dclass3res_V),mean(dfreg$dclass3res_V),max(dfreg$dclass3res_V))))
+
+df_pred1$dclass3res_V <- factor(df_pred1$dclass3res_V,labels = c("ISEI (min)","ISEI (Mean)", "ISEI (max)"))
+
+# names(df_pred1)
+df_pred1 %>% 
+ggplot(aes(y =estimate,x=homclass3_V_res, fill=dclass3res_V, color=dclass3res_V,ymin=conf.low, ymax=conf.high)) +
+  geom_ribbon(alpha=0.8,size=1,linetype="solid",color="black") +
+  geom_line(size=1,color="black") +
+  geom_point(size=2,color="black") +
+  # facet_grid(~dclass3res_V) +
+  scale_fill_manual(values=c("#323232","#989898","#CCCCCC"))+
+  scale_color_manual(values=c("#323232","#989898","#CCCCCC"))+
+  scale_y_continuous(limits = c(40,100))+
+  labs(caption = paste0("N=",nobs(int_homo),", Countries=",lme4::ngrps(int_homo)),
+       x="Social distance",y="Redistributive preferences") +
+  theme(legend.position = "bottom", legend.title = element_blank())
+```
+
+\pagebreak
+
+```{r tab2-socdist, results='asis', cache=TRUE}
+set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
+options(ggplot2.discrete.fill = set1)
+options(ggplot2.discrete.colour = set1)
+ggplot2::theme_set(ggplot2::theme_bw())
+ggplot2::theme_update(text=ggplot2::element_text(size=15,  family="serif"))
+options(scipen=999)
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal,texreg,MLMusingR,lme4)  
+rm(list=ls())
+
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+
+df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
+dummy_df <- df1 %>% dplyr::select(id,
+  egal = egal2,dclass3res_V,dclass3spo_V,homclass3_V_res,know_total,socialtrust,
+  Q03pcm,edyears,female,agenum,religion,partner,union,workst,WEIGHT,region,
+  "gini_disp"=wid_gini_disp,"gini_mkt",gv_spen,rel_red,abs_red,ilo_taxrev,
+  ilo_govspe,d10d1=wid_p90p10,wid_p90p50,top10=wid_sharetop10,rgdpna,gdppercapita,
+  oecd,country2, country, country3) %>%
+  filter(country2 != "SVN") %>% 
+  filter(oecd == "OECD") %>%
+  na.omit() %>% 
+  dplyr::select(id)
+
+df1$isei08sp <- car::recode(df1$isei08sp,"NA=0")
+dfreg <- df1 %>% dplyr::select(id,
+  egal = egal2,
+  # starts_with("class3"),
+  # starts_with("digclass3"),
+  # starts_with("dclass3"),
+  # starts_with("homclass"),
+  dclass3res_V=isei08,
+  dclass3spo_V=isei08sp,
+  homclass3_V_res=socdist,
+  know_total,
+  socialtrust,
+  Q03pcm,
+  edyears,
+  female,
+  agenum,
+  religion,
+  partner,
+  union,
+  workst,
+  WEIGHT,
+  region,
+  "gini_disp"=wid_gini_disp,
+  "gini_mkt",
+  gv_spen,
+  rel_red,
+  abs_red,
+  ilo_taxrev,
+  ilo_govspe,
+  d10d1=wid_p90p10,
+  wid_p90p50,
+  top10=wid_sharetop10,
+  rgdpna,
+  gdppercapita,
+  oecd,
+  country2, country, country3,
+) %>%
+  filter(oecd == "OECD") %>%
+  filter(country2 != "SVN") %>% 
+  na.omit() %>% 
+    mutate(loggdppercapita=scale(gdppercapita/1000),
+         edyears2 = edyears ^ 2,
+         age2 = agenum ^ 2, 
+         gini_disp=scale(gini_disp),
+         dclass3res_V=dclass3res_V/10,
+         dclass3spo_V=dclass3spo_V/10,
+         homclass3_V_res=homclass3_V_res/10) %>% 
+  filter(id %in% dummy_df$id)
+
+dfreg$wstate2 <- scale(scale(dfreg$abs_red*100) + scale(dfreg$ilo_taxrev) + scale(dfreg$ilo_govspe))
+# Step 1: Calculate absolute values
+absolute_values <- abs(dfreg$homclass3_V_res)
+# hist(absolute_values);summary(absolute_values)
+
+# Step 2: Add 1 to all values to eliminate zeros
+modified_values <- absolute_values + 0.1
+# hist(modified_values);summary(modified_values)
+
+# Step 3: Reverse the order of the scale
+reversed_values <- max(modified_values) + 0.1 - modified_values
+
+# Variable Group-Centering ------------------------------------------------
+dfreg <- 
+  dfreg %>% 
+  mutate(to_dummy(female),
+         to_dummy(union),
+         to_dummy(workst),
+         # dummy for categorical variables-------------------------------------
+         to_dummy(Q03pcm),
+         # to_dummy(dclass3spo_V)
+  )
+dfreg$female_gc = group_center(dfreg$female_2, grp = dfreg$country2)
+dfreg$union_gc = group_center(dfreg$union_2, grp = dfreg$country2)
+dfreg$workst_gc = group_center(dfreg$workst_2, grp = dfreg$country2)
+dfreg$edyears_gc = group_center(dfreg$edyears, grp = dfreg$country2)
+dfreg$agenum_gc = group_center(dfreg$agenum, grp = dfreg$country2)
+dfreg$age2_gc = group_center(dfreg$age2, grp = dfreg$country2)
+dfreg$socialtrust_gc = group_center(dfreg$socialtrust, grp = dfreg$country2)
+dfreg$homclass3_V_gc <-group_center(dfreg$homclass3_V_res, grp = dfreg$country2)
+dfreg$know_total_gc = group_center(dfreg$know_total, grp = dfreg$country2)
+dfreg$religion_gc = group_center(as.numeric(dfreg$religion), grp = dfreg$country2)
+dfreg$partner_gc = group_center(as.numeric(dfreg$partner), grp = dfreg$country2)
+
+dfreg$dclass3res_V = group_center(as.numeric(dfreg$dclass3res_V), grp = dfreg$country2)
+
+
+
+# Household Income Tercile
+dfreg$Q03pcm_1_gc = group_center(dfreg$Q03pcm_1, grp = dfreg$country2)
+dfreg$Q03pcm_2_gc = group_center(dfreg$Q03pcm_2, grp = dfreg$country2)
+dfreg$Q03pcm_3_gc = group_center(dfreg$Q03pcm_3, grp = dfreg$country2)
+dfreg$Q03pcm_NA_gc = group_center(dfreg$Q03pcm_4, grp = dfreg$country2)
+
+# Partner Social Class
+# dfreg$dclass3spo_V_1_gc = group_center(dfreg$dclass3spo_V_1, grp = dfreg$country2)
+# dfreg$dclass3spo_V_2_gc = group_center(dfreg$dclass3spo_V_2, grp = dfreg$country2)
+# dfreg$dclass3spo_V_3_gc = group_center(dfreg$dclass3spo_V_3, grp = dfreg$country2)
+# dfreg$dclass3spo_V_NA_gc = group_center(dfreg$dclass3spo_V_4, grp = dfreg$country2)
+dfreg$dclass3spo_V_gc = group_center(dfreg$dclass3spo_V, grp = dfreg$country2)
+
+
+# drop dummies
+dfreg <- dplyr::select(dfreg,-c(female_1,female_2,union_1,union_2,workst_1,
+                                workst_2,Q03pcm_1,Q03pcm_2,Q03pcm_2,Q03pcm_4,
+                                # dclass3spo_V_1,dclass3spo_V_2,dclass3spo_V_3,dclass3spo_V_4
+                                ))
+
+# dfreg$gini_disp <- scale(dfreg$gini_disp)
+
+## Model -  EGP3 - DIGCLASS - V to Working -----------------------------
+homo_V_gini <- 
+  lmer(egal~ 
+         homclass3_V_gc+
+         know_total_gc+
+         socialtrust_gc+
+         dclass3res_V+
+         # dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
+         dclass3spo_V_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+homo_V_gini_gdp <- 
+  lmer(egal~ 
+         homclass3_V_gc+
+         know_total_gc+
+         socialtrust_gc+
+         dclass3res_V+
+         # dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
+         dclass3spo_V_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +loggdppercapita +
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+homo_V_gini_gdp_wstate2 <- 
+  lmer(egal~ 
+         homclass3_V_gc+
+         know_total_gc+
+         socialtrust_gc+
+         dclass3res_V+
+         # dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
+         dclass3spo_V_gc+         female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +loggdppercapita + wstate2+
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+homo_V_gini_gdp_controls <-
+  lmer(egal~
+         homclass3_V_gc+
+         know_total_gc+
+         socialtrust_gc+
+         dclass3res_V+
+         # dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
+         dclass3spo_V_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +loggdppercapita + wstate2 +
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+homo_V_gini_full2 <- 
+  lmer(egal~ 
+         homclass3_V_gc+
+         know_total_gc+
+         socialtrust_gc+
+         dclass3res_V+
+         # dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
+         dclass3spo_V_gc+
+         female_gc+agenum_gc+age2_gc+partner_gc+religion_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         union_gc+workst_gc+
+         gini_disp +loggdppercapita + wstate2+
+         homclass3_V_gc*
+         dclass3res_V*
+         gini_disp + 
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+digclas1_macro <- list(homo_V_gini,
+                       homo_V_gini_gdp,
+                       homo_V_gini_gdp_wstate2,
+                       homo_V_gini_full2)
+
+ccoef <- list(homclass3_V_gc="Social Distance (CWC)",
+              "dclass3res_V"="ISEI ",
+              "gini_disp" = "Income inequality (Gini index)",
+              loggdppercapita = "GDP/capita",
+              wstate2="Size of the welfare state",
+              "homclass3_V_gc:dclass3res_V" = "Distance*ISEI",
+              "homclass3_V_gc:gini_disp"= "Distance*Income Inequality",
+              "dclass3res_V:gini_disp" ="ISEI*Inequality",
+              "homclass3_V_gc:dclass3res_V:gini_disp" = "Distance*Working Class*Income Inequality")
+
+texreg(digclas1_macro,stars = c(0.001, 0.01, 0.05, 0.1),symbol = "+",scalebox = 0.60,
+       caption = "Multilevel models for Income Inequality, Network segregation and Redistributive Preferences",
+       custom.note = "Note: Models include sampling weights and individual level controls centered within cluster (group mean). Standard errors in parentheses. %stars",
+       caption.above = T,leading.zero = T,single.row = T,
+       custom.coef.map = ccoef,
+      # groups = list("Social Class (Ref.= Service Class)" = 2:3,"Macro-level factors"=4:6, "Distance*Social Class"=7:8, "Distance * Social Class * Income Inequality"=10:11),
+       float.pos = "h!",
+      custom.gof.rows = list("Controls"=rep("Yes",4)),include.loglik = FALSE,include.aic = FALSE,
+      custom.gof.names = c(NA,NA,"Num. groups",
+                           "Var: Group (Intercept)",
+                           "Var: Group Soc. Distance",
+                           "Var: Group ISEI",
+                           "Cov: Group (Intercept), Soc. Distance",
+                           "Cov: Group (Intercept), ISEI",                           
+                           "Cov: Group Soc. Distance, ISEI",
+                           "Var: Residual"),
+       use.packages = F)
+```
+
+```{r fig2-socdist, fig.dim=c(12,7),fig.cap='Three-way interaccion effects for Redistributive Preferences, Social Distance, ISEI and Income Inequality'}
+### Predicted values homo*class*GiniD ---------------------------------------
+# ginid_max<- round(max(dfreg$gini_disp) ,2)
+# ginid_min<- round(min(dfreg$gini_disp),2)
+
+ginid_max<- round(mean(dfreg$gini_disp) + sd(dfreg$gini_disp)  ,2)
+ginid_min<- round(mean(dfreg$gini_disp) -sd(dfreg$gini_disp) ,2)
+ginid_mea<- round(mean(dfreg$gini_disp),2)
+
+df_pred_giniD_gc <-
+  predictions(
+    homo_V_gini_full2,newdata = datagrid(
+      gini_disp = c(ginid_min, ginid_mea, ginid_max),
+      wstate2=mean(dfreg$wstate2),
+      loggdppercapita=mean(dfreg$loggdppercapita),
+      homclass3_V_gc = seq(min(dfreg$homclass3_V_gc)+0.01, max(dfreg$homclass3_V_gc)+0.01, by=0.5),
+      dclass3res_V=c(min(dfreg$dclass3res_V),max(dfreg$dclass3res_V))
+    )
+  )
+
+df_pred_giniD_gc <- as.data.frame(df_pred_giniD_gc)
+df_pred_giniD_gc$gini_disp <- factor(df_pred_giniD_gc$gini_disp,labels = c("Gini (-1SD)","Gini (Mean)", "Gini (+1SD)"))
+
+df_pred_giniD_gc$dclass3res_V <- factor(df_pred_giniD_gc$dclass3res_V,labels = c("ISEI (min)","ISEI (max)"))
+# df_pred_giniD_gc <- df_pred_giniD_gc %>% filter(dclass3res_V!="Intermediate class (III+IV)")
+
+df_pred_giniD_gc$dclass3res_V <- as.factor(df_pred_giniD_gc$dclass3res_V)
+
+df_pred_giniD_gc %>% 
+  ggplot(aes(y=estimate,x=homclass3_V_gc, fill=dclass3res_V,color=dclass3res_V,ymin=conf.low, ymax=conf.high)) +
+  geom_ribbon(alpha=0.8,size=0.7,linetype="solid",color="black") +
+  geom_line(size=1,color="black") +
+  geom_point(size=3, shape = 21,color="black") +
+  facet_wrap(~gini_disp) +
+  labs(y = "Preferences for Redistribution",
+       x="Social Distance (CWC)",
+       caption = paste0("N=",nobs(homo_V_gini_full2),", Countries=",lme4::ngrps(homo_V_gini_full2))
+       ) +
+  scale_x_continuous(sec.axis = sec_axis(~ . , name = "Income inequality (post-tax) \n ", breaks = NULL, labels = NULL),
+                     ) +
+ 
+   scale_fill_manual(values=c("#323232","#CCCCCC"))+
+  scale_color_manual(values=c("#323232","#CCCCCC"))+
+  theme(legend.position = "bottom",
+        legend.direction = "horizontal",
+        axis.text=element_text(size=15),
+        legend.title = element_blank(),
+        legend.background = element_blank(),
+        legend.box.background = element_rect(colour = "black"))
+```
+

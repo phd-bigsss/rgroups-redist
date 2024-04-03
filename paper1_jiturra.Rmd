@@ -6,8 +6,8 @@ linestretch: '1.15'          # interlineado
 papersize: a4
 link-citations: yes         # citas linkeadas
 lang: en-US
-date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
-# date: "April 2024"
+# date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
+date: "`r format(Sys.Date(), '%d %B %Y')`"
 author:
 - name: Julio Iturra-Sanhueza
   affiliation: Bremen International Graduate School of Social Sciences
@@ -173,7 +173,7 @@ To summarize, the current state of research has led us to establish two competin
 
 ## Data 
 
-Individual data from the International Social Survey Programme (ISSP) 2017, titled "Social Networks and Social Resources," is utilized [@issp_research_group_international_2019]. Established in 1984, the ISSP is a collaborative research project that conducts cross-national surveys on various topics related to social issues, attitudes, and values. Specifically, the ISSP 2017 survey includes questions on social ties and activities, evaluated through a position generator, as well as inquiries on social resources derived from network members. Additionally, respondents express their views on topics such as social trust and attitudes toward economic inequality. Initially, the dataset comprised 47,027 individual observations across 32 countries. However, Slovenia (SVN) was excluded from the analysis because the key dependent variable was not present in the questionnaire. Consequently, the present study comprises complete information on 31,191 individuals from 31 countries, representing a diverse range of economic, cultural, and institutional characteristics.
+Individual data from the International Social Survey Programme (ISSP) 2017, titled "Social Networks and Social Resources," is utilized [@issp_networks_2017]. Established in 1984, the ISSP is a collaborative research project that conducts cross-national surveys on various topics related to social issues, attitudes, and values. Specifically, the ISSP 2017 survey includes questions on social ties and activities, evaluated through a position generator, as well as inquiries on social resources derived from network members. Additionally, respondents express their views on topics such as social trust and attitudes toward economic inequality. Initially, the dataset comprised 47,027 individual observations across 32 countries. However, Slovenia (SVN) was excluded from the analysis because the key dependent variable was not present in the questionnaire. Consequently, the present study comprises complete information on 31,191 individuals from 31 countries, representing a group of diverse societies in terms of socio-economic and institutional arrangements.
 
 ## Variables 
 
@@ -1020,6 +1020,8 @@ grid.arrange(fig_homodiff_gini, nrow = 1)
 ```
 
 \pagebreak 
+# Additional analysis
+
 ## Income Inequality Ratios 
 
 ```{r tab2-ratio9010, results='asis', cache=TRUE}
@@ -1205,7 +1207,7 @@ ccoef <- list(homclass3_V_gc="Class-based network homogeneity (CWC)",
               "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):gini_disp" = "Homogeneity*Intermediate Class*Income Inequality",
               "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):gini_disp" = "Homogeneity*Working Class *Income Inequality")
 
-texreg(digclas1_macro,stars = c(0.001, 0.01, 0.05, 0.1),symbol = "+",scalebox = 0.60,
+texreg(digclas1_macro,stars = c(0.001, 0.01, 0.05, 0.1),symbol = "+",scalebox = 0.50,
        caption = "Multilevel models for Income Inequality, Network segregation and Redistributive Preferences",
        custom.note = "Note: Models include sampling weights and individual level controls centered within cluster (group mean). Standard errors in parentheses. %stars",
        caption.above = T,leading.zero = T,single.row = T,
@@ -1411,7 +1413,7 @@ ccoef <- list(homclass3_V_gc="Class-based network homogeneity (CWC)",
               "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):gini_disp" = "Homogeneity*Intermediate Class*Income Inequality",
               "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):gini_disp" = "Homogeneity*Working Class *Income Inequality")
 
-texreg(digclas1_macro,stars = c(0.001, 0.01, 0.05, 0.1),symbol = "+",scalebox = 0.60,
+texreg(digclas1_macro,stars = c(0.001, 0.01, 0.05, 0.1),symbol = "+",scalebox = 0.50,
        caption = "Multilevel models for Income Inequality, Network segregation and Redistributive Preferences",
        custom.note = "Note: Models include sampling weights and individual level controls centered within cluster (group mean). Standard errors in parentheses. %stars",
        caption.above = T,leading.zero = T,single.row = T,
@@ -1693,9 +1695,17 @@ df_pred_giniD_gc %>%
 
 \pagebreak
 
-# Social distance
+## Social distance
 
-**Social distance**: First, the average ISEI points for each occupation of the position generator are calculated. Second, the ISEI of the respondent (R's) is subtracted from the average ISEI points of the personal network. For example, if the R's has an ISEI of 80 and the network ISEI is 50, the social distance will be 30 (80 - 50), a "upward" social distance. Another case could be 50 (R's) minus 80 (network), and the average social distance will be - 30 or "downward" social distance. In addition, When the distance is 0, the network is entirely homogeneous.
+First, the average scores of the International Socio-Economic Index of Occupational Status (ISEI) [@ganzeboom_three_2003] for each occupation of the position generator are calculated. Second, the ISEI score of the respondent (R's) is subtracted from the average ISEI points of the personal network. For example, if the R's has an ISEI of 80 and the network ISEI is 50, the social distance will be 30 (80 - 50), a "upward" social distance. Another case could be 50 (R's) minus 80 (network), and the average social distance will be - 30 or "downward" social distance. In addition, When the distance is 0, the network is entirely homogeneous.
+
+To facilitate the interpretation of the indicator, we have calculated a homogeneity indicator based on social distance:
+
+1. The absolute values are calculated to represent the total distance to occupations respect to R's ISEI score.
+2. Since we have 0 values representing absolute homogeneity, we rescale the variable by adding 1.
+4. We have inverted the values to make higher values represent higher homogeneity.
+
+Thus, higher values represent greater homogeneity regarding R's ISEI score in contrast to the average network ISEI score.
 
 ```{r eval=FALSE, include=FALSE}
 set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
@@ -1754,8 +1764,7 @@ df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, N
 dfreg <- na.omit(dfreg)
 ```
 
-
-## Social Distance by Social Class
+### Social Distance by Social Class
 
 ```{r table1-socdistclass, echo=FALSE, results='asis'}
 set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
@@ -1805,13 +1814,26 @@ dfreg <- df1 %>% dplyr::select(
          homclass3_V_res=homclass3_V_res/10) %>%
   # filter(oecd == "OECD") %>%
   filter(country2 != "SVN")
-
 dfreg$dclass3spo_V <- car::recode(dfreg$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
 df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
 
 # sjPlot::tab_xtab(df1$dclass3spo_V,df1$PARTLIV)
 
 dfreg <- na.omit(dfreg)
+
+# Step 1: Calculate absolute values
+absolute_values <- abs(dfreg$homclass3_V_res)
+# hist(absolute_values);summary(absolute_values)
+
+# Step 2: Add 1 to all values to eliminate zeros
+modified_values <- absolute_values + 0.1
+# hist(modified_values);summary(modified_values)
+
+# Step 3: Reverse the order of the scale
+reversed_values <- max(modified_values) + 0.1 - modified_values
+# hist(reversed_values);summary(reversed_values) 
+
+dfreg$homclass3_V_res <- reversed_values
 
 ## Model -  EGP3 - DIGCLASS - V to Working -----------------------------
 digclas1_VW_1<- lmer(egal~1 + homclass3_V_res + female+agenum+age2 + partner + religion + (1|country2),data=dfreg,weights = WEIGHT)
@@ -1859,12 +1881,11 @@ texreg(digclas1_VW,stars = c(0.001, 0.01, 0.05, 0.1),
        use.packages = F)
 ```
 
-
 ```{r fig1-marg-socdistclass, echo=FALSE, fig.cap='Average Marginal Effects of Social Distance conditionated by Social Class on Redistributive Preferences', fig.dim=c(10,5), warning=FALSE}
 int_homo <- digclas1_VW_7
 plot_slopes(digclas1_VW_7, variables = "homclass3_V_res", condition = list("dclass3res_V"))+
 labs(caption = paste0("N=",nobs(int_homo),", Countries=",lme4::ngrps(int_homo)),
-       x="",y="Redistributive preferences")
+       x="Social Distance",y="Redistributive preferences")
 ```
 
 ```{r fig1-pred-socdistclass, echo=FALSE, fig.cap='Linear Predictions for Social distance on Redistributive Preferences by Social Class', fig.dim=c(10,5), warning=FALSE}
@@ -1890,7 +1911,6 @@ ggplot(aes(y =estimate,x=homclass3_V_res, fill=dclass3res_V, color=dclass3res_V,
        x="Social Distance",y="Redistributive preferences") +
   theme(legend.position = "none", legend.title = element_blank())
 ```
-
 
 \pagebreak
 
@@ -1955,6 +1975,21 @@ dfreg <- df1 %>% dplyr::select(
          homclass3_V_res=homclass3_V_res/10)
 
 dfreg$wstate2 <- scale(scale(dfreg$abs_red*100) + scale(dfreg$ilo_taxrev) + scale(dfreg$ilo_govspe))
+
+
+# Step 1: Calculate absolute values
+absolute_values <- abs(dfreg$homclass3_V_res)
+# hist(absolute_values);summary(absolute_values)
+
+# Step 2: Add 1 to all values to eliminate zeros
+modified_values <- absolute_values + 0.1
+# hist(modified_values);summary(modified_values)
+
+# Step 3: Reverse the order of the scale
+reversed_values <- max(modified_values) + 0.1 - modified_values
+# hist(reversed_values);summary(reversed_values) 
+
+dfreg$homclass3_V_res <- reversed_values
 
 # Variable Group-Centering ------------------------------------------------
 dfreg <-
@@ -2074,7 +2109,7 @@ ccoef <- list(homclass3_V_gc="Social distance (CWC)",
               wstate2="Size of the welfare state",
               "homclass3_V_gc:dclass3res_VIntermediate class (III+IV)" = "Distance*Intermediate Class",
               "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII)" = "Distance*Working Class",
-              "homclass3_V_gc:gini_disp"= "Homogeneity*Income Inequality",
+              "homclass3_V_gc:gini_disp"= "Distance*Income Inequality",
               "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):gini_disp" = "Distance*Intermediate Class*Income Inequality",
               "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):gini_disp" = "Distance*Working Class*Income Inequality")
 
@@ -2150,7 +2185,7 @@ df_pred_giniD_gc %>%
 
 \pagebreak
 
-## Social Distance by ISEI 
+### Social Distance by ISEI 
 
 ```{r table1-socdist, results='asis'}
 set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
@@ -2171,6 +2206,7 @@ dummy_df <- df1 %>% dplyr::select(id,
   ilo_govspe,d10d1=wid_p90p10,wid_p90p50,top10=wid_sharetop10,rgdpna,gdppercapita,
   oecd,country2, country, country3) %>%
   filter(country2 != "SVN") %>% 
+  # filter(oecd == "OECD") %>%
   na.omit() %>% 
   dplyr::select(id)
 
@@ -2218,6 +2254,20 @@ dfreg <- df1 %>% dplyr::select(id,
   filter(id %in% dummy_df$id)
 dfreg <- na.omit(dfreg)
 
+# Step 1: Calculate absolute values
+absolute_values <- abs(dfreg$homclass3_V_res)
+# hist(absolute_values);summary(absolute_values)
+
+# Step 2: Add 1 to all values to eliminate zeros
+modified_values <- absolute_values + 0.1
+# hist(modified_values);summary(modified_values)
+
+# Step 3: Reverse the order of the scale
+reversed_values <- max(modified_values) + 0.1 - modified_values
+# hist(reversed_values);summary(reversed_values) 
+dfreg$homclass3_V_res <- reversed_values
+
+
 ## Model -  EGP3 - DIGCLASS - V to Working -----------------------------
 digclas1_VW_1<- lmer(egal~1 + homclass3_V_res + female+agenum+age2 + partner + religion + (1|country2),data=dfreg,weights = WEIGHT)
 digclas1_VW_2<- update(digclas1_VW_1, . ~ . +know_total+socialtrust)
@@ -2260,6 +2310,8 @@ texreg(digclas1_VW,stars = c(0.001, 0.01, 0.05, 0.1),
        float.pos = "h!",
        use.packages = F)
 ```
+
+\newpage
 
 ```{r fig1-marg-socdist, fig.dim=c(10,5),fig.cap='Average Marginal Effects of Social Distance conditionated by ISEI on Redistributive Preferences',warning=FALSE}
 int_homo <- digclas1_VW_7
@@ -2307,7 +2359,7 @@ rm(list=ls())
 
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 
-# df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
+df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
 dummy_df <- df1 %>% dplyr::select(id,
   egal = egal2,dclass3res_V,dclass3spo_V,homclass3_V_res,know_total,socialtrust,
   Q03pcm,edyears,female,agenum,religion,partner,union,workst,WEIGHT,region,
@@ -2315,6 +2367,7 @@ dummy_df <- df1 %>% dplyr::select(id,
   ilo_govspe,d10d1=wid_p90p10,wid_p90p50,top10=wid_sharetop10,rgdpna,gdppercapita,
   oecd,country2, country, country3) %>%
   filter(country2 != "SVN") %>% 
+  # filter(oecd == "OECD") %>%
   na.omit() %>% 
   dplyr::select(id)
 
@@ -2364,9 +2417,24 @@ dfreg <- df1 %>% dplyr::select(id,
          gini_disp=scale(gini_disp),
          dclass3res_V=dclass3res_V/10,
          dclass3spo_V=dclass3spo_V/10,
-         homclass3_V_res=homclass3_V_res/10)
+         homclass3_V_res=homclass3_V_res/10) %>% 
+  filter(id %in% dummy_df$id)
 
 dfreg$wstate2 <- scale(scale(dfreg$abs_red*100) + scale(dfreg$ilo_taxrev) + scale(dfreg$ilo_govspe))
+# Step 1: Calculate absolute values
+absolute_values <- abs(dfreg$homclass3_V_res)
+# hist(absolute_values);summary(absolute_values)
+
+# Step 2: Add 1 to all values to eliminate zeros
+modified_values <- absolute_values + 0.1
+# hist(modified_values);summary(modified_values)
+
+# Step 3: Reverse the order of the scale
+reversed_values <- max(modified_values) + 0.1 - modified_values
+# hist(reversed_values);summary(reversed_values) 
+
+dfreg$homclass3_V_res <- reversed_values
+
 
 # Variable Group-Centering ------------------------------------------------
 dfreg <- 
@@ -2505,7 +2573,7 @@ ccoef <- list(homclass3_V_gc="Social Distance (CWC)",
               "homclass3_V_gc:dclass3res_V:gini_disp" = "Distance*Working Class*Income Inequality")
 
 texreg(digclas1_macro,stars = c(0.001, 0.01, 0.05, 0.1),symbol = "+",scalebox = 0.60,
-       caption = "Multilevel models for Income Inequality, Network segregation and Redistributive Preferences",
+       caption = "Multilevel models for Income Inequality, Social Distance and Redistributive Preferences",
        custom.note = "Note: Models include sampling weights and individual level controls centered within cluster (group mean). Standard errors in parentheses. %stars",
        caption.above = T,leading.zero = T,single.row = T,
        custom.coef.map = ccoef,
