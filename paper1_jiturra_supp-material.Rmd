@@ -89,7 +89,7 @@ header-includes:
 ```{r setup, include=FALSE}
 if (!require("pacman")) install.packages("pacman")  #si falta pacman, instalar
 if (!require("tinytex")) install.packages("tinytex")#si falta tinytex, instalar
-pacman::p_load(knitr, kableExtra, dplyr, ggplot2,sjmisc,texreg) # librerias
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal,texreg,MLMusingR,lme4)
 knitr::opts_chunk$set(warning = FALSE,  # mensaje de warning
                       message = FALSE,  # mensajes/avisos de librerias  
                       cache = F,    # cache de los chunks,usar analisis pesados
@@ -101,16 +101,12 @@ knitr::opts_chunk$set(warning = FALSE,  # mensaje de warning
 options(scipen=999) # notacion cientifica
 rm(list=ls())       # limpiar workspace
 options(knitr.kable.NA = '') # NA en kable = ''
+ggplot2::theme_set(ggplot2::theme_bw())
+ggplot2::theme_update(text=ggplot2::element_text(size=15,  family="serif"))
 ```
 \pagestyle{fancy}
 \fancyhead[R]{\thepage}
-\fancyhead[L]{Research Article Draft}
-
-\newpage
-
-`r if (knitr::is_latex_output()){ '\\appendix'}`
-
-`r if (knitr::is_latex_output()){ '\\section{Appendix}'}`
+\fancyhead[L]{Supplementary material}
 
 \pagebreak 
 # Additional analysis
@@ -789,8 +785,6 @@ texreg(digclas1_macro,stars = c(0.001, 0.01, 0.05, 0.1),symbol = "+",scalebox = 
 
 ## Social distance (OECD)
 
-**Social distance**: First, the average ISEI points for each occupation of the position generator are calculated. Second, the ISEI of the respondent (R's) is subtracted from the average ISEI points of the personal network. For example, if the R's has an ISEI of 80 and the network ISEI is 50, the social distance will be 30 (80 - 50), a "upward" social distance. Another case could be 50 (R's) minus 80 (network), and the average social distance will be - 30 or "downward" social distance. In addition, When the distance is 0, the network is entirely homogeneous.
-
 ```{r eval=FALSE, include=FALSE}
 set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
 options(ggplot2.discrete.fill = set1)
@@ -917,6 +911,7 @@ modified_values <- absolute_values + 0.1
 
 # Step 3: Reverse the order of the scale
 reversed_values <- max(modified_values) + 0.1 - modified_values
+dfreg$homclass3_V_res <- reversed_values
 
 
 ## Model -  EGP3 - DIGCLASS - V to Working -----------------------------
@@ -1070,6 +1065,7 @@ modified_values <- absolute_values + 0.1
 
 # Step 3: Reverse the order of the scale
 reversed_values <- max(modified_values) + 0.1 - modified_values
+dfreg$homclass3_V_res <- reversed_values
 
 # Variable Group-Centering ------------------------------------------------
 dfreg <-
@@ -1216,7 +1212,7 @@ texreg(digclas1_macro,stars = c(0.001, 0.01, 0.05, 0.1),symbol = "+",scalebox = 
        use.packages = F)
 ```
 
-```{r fig5-socdistclass, echo=FALSE, fig.cap='hree-way interaccion effects for Redistributive Preferences, Social Distance, Social Class and Income Inequality', fig.dim=c(12,7)}
+```{r fig5-socdistclass, echo=FALSE, fig.cap='Three-way interaccion effects for Redistributive Preferences, Social Distance, Social Class and Income Inequality', fig.dim=c(12,7)}
 ### Predicted values homo*class*GiniD ---------------------------------------
 # ginid_max<- round(max(dfreg$gini_disp) ,2)
 # ginid_min<- round(min(dfreg$gini_disp),2)
@@ -1343,6 +1339,8 @@ modified_values <- absolute_values + 0.1
 
 # Step 3: Reverse the order of the scale
 reversed_values <- max(modified_values) + 0.1 - modified_values
+
+dfreg$homclass3_V_res <- reversed_values
 
 
 ## Model -  EGP3 - DIGCLASS - V to Working -----------------------------
@@ -1506,6 +1504,7 @@ modified_values <- absolute_values + 0.1
 
 # Step 3: Reverse the order of the scale
 reversed_values <- max(modified_values) + 0.1 - modified_values
+dfreg$homclass3_V_res <- reversed_values
 
 # Variable Group-Centering ------------------------------------------------
 dfreg <- 
