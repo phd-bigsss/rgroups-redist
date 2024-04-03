@@ -2,8 +2,8 @@
 
 Author: Julio Iturra-Sanhueza
 
-Paper: https://phd-bigsss.github.io/rgroups-redist/paper1_jiturra.pdf 
-Supplementary material: https://phd-bigsss.github.io/rgroups-redist/paper1_jiturra_supp-material.pdf 
+- Paper: https://phd-bigsss.github.io/rgroups-redist/paper1_jiturra.pdf 
+- Supplementary material: https://phd-bigsss.github.io/rgroups-redist/paper1_jiturra_supp-material.pdf 
 
 ``
 git clone https://github.com/phd-bigsss/rgroups-redist.git
