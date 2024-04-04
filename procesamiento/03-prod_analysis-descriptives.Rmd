@@ -658,4 +658,71 @@ models <- list(homclass,rob1,int_homo)
 knitreg(list(homclass,full1,rob1,int_homo))
 ```
 
+```{r}
+set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
+options(ggplot2.discrete.fill = set1)
+options(ggplot2.discrete.colour = set1)
+ggplot2::theme_set(ggplot2::theme_bw())
+ggplot2::theme_update(text=ggplot2::element_text(size=15,  family="serif"))
+options(scipen=999)
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,ggplot2,haven,ggrepel,gridExtra)  
+rm(list=ls())
+
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
+
+
+df1$employed <- ifelse(df1$MAINSTAT==1,yes = 1,no = 0)
+df1$unemployed <- ifelse(df1$MAINSTAT==2,yes = 1,no = 0)
+
+# The unemployment rate for an occupation j was computed as [(number of people unemployed in j)/
+# (number of people unemployed in j + number of people employed in j)]*100
+
+
+df_employment_country <- df1 %>% 
+  group_by(country,country3,isco88r) %>% 
+  summarise(unemployed=mean(unemployed),employed=mean(employed),isei08=mean(isei08)) %>% 
+  mutate(unemrate=(unemployed/(unemployed+employed))*100)
+
+df_employment_country %>% ungroup() %>% 
+  select(unemployed,employed,isei08,unemrate) %>% 
+  sjPlot::tab_corr()
+
+
+
+dfreg <- df1 %>% dplyr::select(
+  egal = egal2,
+  dclass3res_V,
+  dclass3spo_V,
+  # homclass3_V_res,
+  know_total,
+  socialtrust,
+  Q03pcm,
+  edyears,
+  female,
+  agenum,
+  religion,
+  partner,
+  union,
+  workst,
+  WEIGHT,
+  region,
+  "gini_disp"=wid_gini_disp,
+  d10d1=wid_p90p10,
+  wid_p90p50,
+  top10=wid_sharetop10,
+  gdppercapita,
+  country2, country, country3,
+) %>%
+  # filter(oecd == "OECD") %>%
+  filter(country2 != "SVN") %>% 
+  na.omit() %>% 
+    mutate(loggdppercapita=scale(gdppercapita/1000),
+         edyears2 = edyears ^ 2,
+         age2 = agenum ^ 2, 
+         # gini_disp=scale(gini_disp),
+         )
+
+```
 

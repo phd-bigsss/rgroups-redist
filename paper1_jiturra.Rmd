@@ -296,6 +296,10 @@ ggplot()+
         legend.direction = "horizontal",
         axis.text.x=element_text(angle=45,hjust = 1,size=8),
         legend.title = element_blank())
+
+
+# ggsave(plot = last_plot(),filename = "slides-macro-redist.png",device = "png",
+#        path = here::here("output/images"),width = 2,height = 1,units = "cm",scale = 15)
 ```
 
 Figure \@ref(fig:fig1) depicts the distribution of redistributive preferences across countries and social classes. First, it is possible to notice that the United States has lower redistributive preferences, whereas Russia is a society where redistributive preferences are stronger among all social classes. As was expected, in most societies, the working class holds stronger redistributive preferences in contrast to the intermediate and services classes, with four exceptions where the differences are close to zero between both classes. However, it is also notable that there are some differences between the two extreme cases. For example, in the U.S., the working class held lower redistributive preferences (49.1) than the intermediate class (50.6), but still above the service class (46.8). In contrast, in Russia, the general pattern of higher preferences among the working class is maintained, with an escalated decrease in the working (85.5), intermediate (83.5), and service class (83.0). 
@@ -318,6 +322,9 @@ ggplot()+
         legend.direction = "horizontal",
         axis.text.x=element_text(angle=45,hjust = 1,size=8),
         legend.title = element_blank()) 
+
+# ggsave(plot = last_plot(),filename = "slides-macro-homogen.png",device = "png",
+#        path = here::here("output/images"),width = 2,height = 1,units = "cm",scale = 15)
 ```
 
 Regarding network segregation, Figure \@ref(fig:fig2) depicts the distribution of network homogeneity and social class across countries. In contrast to redistributive preferences, the distribution of network homogeneity is more scattered between countries and social classes. However, it is worth to mention at least two interesting findings. First, looking at the sample average (M = 0.36), we can notice that the variation between countries is low (SD = 0.03), with Thailand being the society with higher levels of network segregation (M = 0.42), and Iceland the one of the lowest (M = 0.31). Second, it is depicted that the working class network homogeneity drives the pattern of homogeneity. As noticed, in most cases observed, the general pattern is that the working class is highly homogeneous in their networks, except in the Philipines, where the intermediate class shows a slightly higher average homogeneity. In addition, the general pattern is that the service class is less segregated than the intermediate and working class. Besides, an interesting fact is that in some cases (e.g., Mexico), although the working class remains highly segregated (above 0.5), the middle and service classes are similar in their network homogeneity. Overall, one of the most substantial findings is that, without any exception, the working class is more segregated than the services class.
@@ -398,6 +405,9 @@ ggplot(aes(y=homclass3_V_res, x=gini_disp)) +
   labs(caption =paste("r = ",round(cor(homo_ineq$homclass3_V_res,
                                      homo_ineq$gini_disp, use='complete.obs'),digits = 2)),tag = "B")
 grid.arrange(fig_egal_homo,fig_homo_gini, nrow = 1)
+
+# ggsave(plot = arrangeGrob(fig_egal_homo,fig_homo_gini, nrow = 1),filename = "slides-bivar.png",device = "png",
+#        path = here::here("output/images"),width = 2,height = 1,units = "cm",scale = 15)
 ```
 
 Moving to the bivariate macro relationships, Figure \@ref(fig:fig3) depicts the correlation between network homogeneity, redistributive preferences, and income inequality, our main societal characteristic of interest. First, according to @cohen_statistical_1988, for effect size criteria, we observe a medium positive and significant association between network homogeneity and redistributive preferences in Panel A (_r_ = 0.45, _p_ <.001). In concordance with the previously depicted distribution, we know that higher levels of network homogeneity are driven by the highly segregated networks of the working classes; what makes it logical that in countries where network homogeneity is high, this might also reflect greater social isolation among the working classes and consequently drive higher redistributive preferences. Second, Panel B depicts a positive but relatively weak and nonsignificant association between income inequality and network homogeneity (_r_ = 0.28, _p_<.01). In other words, average homogeneity also tends to increase in societies with greater income gaps. However, the macro association only shows the general pattern between countries but does not allow us to look deeper into class differences according to the levels of inequality. 
@@ -494,7 +504,7 @@ ccoef <- list(homclass3_V_res="Class-based network homogeneity",
               "homclass3_V_res:dclass3res_VWorking Class (V+VI+VII)" = "Homogeneity*Working Class")
 
 
-texreg(digclas1_VW,stars = c(0.001, 0.01, 0.05, 0.1),
+texreg(digclas1_VW,stars = c(0.001, 0.01, 0.05, 0.1),single.row = T,
        caption = paste("(\\#tab:table1)","Multilevel models for Class-based network segregation and Redistributive Preferences"),
        custom.note = "Note: Models include sampling weights. Gender, age, marital status and religion are included as controls. Standard errors in parentheses. %stars",
        caption.above = T,leading.zero = T,
@@ -504,6 +514,7 @@ texreg(digclas1_VW,stars = c(0.001, 0.01, 0.05, 0.1),
       custom.gof.rows = list("Controls"=rep("Yes",6)),include.loglik = FALSE,include.aic = FALSE,
       custom.gof.names = c(NA,NA,"Num. groups","Var: Country (Intercept)","Var: Residual"),
        float.pos = "h!",
+      # file = "table1.html"
        use.packages = F)
 ```
 
@@ -537,6 +548,18 @@ ggplot(aes(y =estimate,x=homclass3_V_res, fill=dclass3res_V, color=dclass3res_V,
   labs(caption = paste0("N=",nobs(int_homo),", Countries=",lme4::ngrps(int_homo)),
        x="Network homogeneity",y="Redistributive preferences") +
   theme(legend.position = "none", legend.title = element_blank())
+
+# ggsave(plot = last_plot(),filename = "slides-predictions.png",device = "png",
+#        path = here::here("output/images"),width = 2,height = 1,units = "cm",scale = 15)
+
+# int_homo <- digclas1_VW_7
+# plot_slopes(digclas1_VW_7, variables = "homclass3_V_res", condition = list("dclass3res_V"))+
+# labs(caption = paste0("N=",nobs(int_homo),", Countries=",lme4::ngrps(int_homo)),
+#   geom_hline(yintercept = 0,color="red",linetype=2)+
+#        x="Social Class",y="Redistributive preferences",title = "Conditional Marginal Effects for Network Homogeneity")
+
+# ggsave(plot = last_plot(),filename = "slides-marginal.png",device = "png",
+#        path = here::here("output/images"),width = 2,height = 1,units = "cm",scale = 10)
 ```
 
 \newpage
@@ -744,6 +767,7 @@ texreg(digclas1_macro,stars = c(0.001, 0.01, 0.05, 0.1),symbol = "+",scalebox = 
                            "Cov: Country Homogeneity, Working Class",
                            "Cov: Country Intermediate Class, Working Class",
                            "Var: Residual"),
+        # file = "table2.html",
        use.packages = F)
 ```
 
@@ -799,6 +823,9 @@ df_pred_giniD_gc %>%
         legend.title = element_blank(),
         legend.background = element_blank(),
         legend.box.background = element_rect(colour = "black"))
+
+ggsave(plot = last_plot(),filename = "slides-predict-macro.png",device = "png",
+       path = here::here("output/images"),width = 2,height = 1,units = "cm",scale = 15)
 ```
 
 # Discussion and conclusion
@@ -956,7 +983,7 @@ dfreg <- df1 %>% dplyr::select(
   egal = egal2,
   dclass3res_V,
   dclass3spo_V,
-  homclass3_V_res,
+  # homclass3_V_res,
   know_total,
   socialtrust,
   Q03pcm,
@@ -1017,6 +1044,9 @@ ggplot(aes(y=diff_working_upper_homo, x=gini_disp)) +
                                      homo_ineq$gini_disp, use='complete.obs'),digits = 2)),tag = NULL)
 
 grid.arrange(fig_homodiff_gini, nrow = 1)
+
+# ggsave(plot = arrangeGrob(fig_homodiff_gini, nrow = 1),filename = "slides-bivar-homodiff.png",device = "png",
+#        path = here::here("output/images"),width = 1,height = 1,units = "cm",scale = 17)
 ```
 
 \pagebreak 
@@ -1884,6 +1914,7 @@ texreg(digclas1_VW,stars = c(0.001, 0.01, 0.05, 0.1),
 ```{r fig1-marg-socdistclass, echo=FALSE, fig.cap='Average Marginal Effects of Social Distance conditionated by Social Class on Redistributive Preferences', fig.dim=c(10,5), warning=FALSE}
 int_homo <- digclas1_VW_7
 plot_slopes(digclas1_VW_7, variables = "homclass3_V_res", condition = list("dclass3res_V"))+
+  geom_hline(yintercept = 0,color="red",linetype=2)+
 labs(caption = paste0("N=",nobs(int_homo),", Countries=",lme4::ngrps(int_homo)),
        x="Social Distance",y="Redistributive preferences")
 ```
