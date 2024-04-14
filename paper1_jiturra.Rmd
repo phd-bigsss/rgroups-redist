@@ -464,6 +464,7 @@ dfreg <- df1 %>% dplyr::select(
   # filter(oecd == "OECD") %>%
   filter(country2 != "SVN") 
 
+
 dfreg$dclass3spo_V <- car::recode(dfreg$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
 df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
 
