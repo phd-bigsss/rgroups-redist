@@ -1401,28 +1401,6 @@ sjlabelled::set_label(df1$isei_range) <- 'Range contact prestige'
 cor(df1[,c("isei_avg","isei_max","isei_range",
                  "know_total","n_high","n_middle","n_low",
                  "pct_high","pct_middle","pct_low")],use = "complete.obs")
-
-
-df1 <- df1 %>% group_by(country) %>% mutate(prop_high_mean=mean(pct_high,na.rm = T))
-df1 <- df1 %>% group_by(country) %>% mutate(prop_midd_mean=mean(pct_middle,na.rm = T))
-df1 <- df1 %>% group_by(country) %>% mutate(prop_low_mean=mean(pct_low,na.rm = T))
-
-summary(df1$prop_high_mean);hist.default(df1$prop_high_mean,breaks = 30)
-summary(df1$prop_midd_mean);hist.default(df1$prop_midd_mean,breaks =30)
-summary(df1$prop_low_mean);hist.default(df1$prop_low_mean,breaks =30)
-
-df1$pct_high_wt <-df1$n_high*df1$prop_high_mean 
-summary(df1$pct_high_wt);hist.default(df1$pct_high_wt,breaks = 30)
-df1[,c("n_high","prop_high_mean","pct_high_wt")]
-
-df1$pct_midd_wt <- df1$n_middle*df1$prop_midd_mean
-summary(df1$pct_midd_wt);hist.default(df1$pct_midd_wt,breaks = 30)
-df1[,c("n_middle","prop_midd_mean","pct_midd_wt")]
-
-df1$pct_low_wt  <- df1$n_low*df1$prop_low_mean
-summary(df1$pct_low_wt);hist.default(df1$pct_low_wt,breaks = 30)
-df1[,c("n_middle","prop_midd_mean","pct_midd_wt")]
-
 ```
 
 ```{r heterogeneity, eval=FALSE, include=FALSE}
@@ -1695,25 +1673,6 @@ df1$outgroup_res <- ifelse(df1$dclass3res_V=="Working Class (V+VI+VII)",rowSums(
 
 df1$homclass3_V_res <- as.numeric(df1$ingroup_res/df1$know_total)
 sjlabelled::set_label(df1$homclass3_V_res) <- "Class homogeneity (R's) (DIGCLASS - V to intermediate)";frq(df1$homclass3_V_res)
-
-## Using RESPONDENT Class for homogeneity (WEIGHTED) ---------------------------------------
-df1$ingroup_res <- NA 
-df1 %>% select(dclass3res_V,pct_high_wt,pct_midd_wt,pct_low_wt,ingroup_res)
-df1$ingroup_res <- ifelse(df1$dclass3res_V=="Service Class (I+II)",df1$pct_high_wt,df1$ingroup_res)
-df1$ingroup_res <- ifelse(df1$dclass3res_V=="Intermediate class (III+IV)",df1$pct_midd_wt,df1$ingroup_res)
-df1$ingroup_res <- ifelse(df1$dclass3res_V=="Working Class (V+VI+VII)",df1$pct_low_wt,df1$ingroup_res);frq(df1$ingroup_res)
-
-df1$outgroup_res <- NA 
-df1 %>% select(dclass3res_V,pct_high_wt,pct_midd_wt,pct_low_wt,ingroup_res)
-df1$outgroup_res <- ifelse(df1$dclass3res_V=="Service Class (I+II)",rowSums(df1[,c("pct_low_wt","pct_midd_wt")],na.rm = T),df1$outgroup_res)
-df1$outgroup_res <- ifelse(df1$dclass3res_V=="Intermediate class (III+IV)",rowSums(df1[,c("pct_low_wt","pct_high_wt")],na.rm = T),df1$outgroup_res)
-df1$outgroup_res <- ifelse(df1$dclass3res_V=="Working Class (V+VI+VII)",rowSums(df1[,c("pct_midd_wt","pct_high_wt")],na.rm=T),df1$outgroup_res);frq(df1$outgroup_res)
-
-
-df1$know_total_wt <- rowSums(df1[,c("pct_low_wt","pct_midd_wt","pct_high_wt")],na.rm = T)
-df1$homclass3_V_res_wt <- as.numeric(df1$ingroup_res/df1$know_total_wt)
-sjlabelled::set_label(df1$homclass3_V_res_wt) <- "Class homogeneity (R's) (DIGCLASS - V to intermediate - Weighted)";frq(df1$homclass3_V_res_wt)
-
 ```
 
 ```{r homogeneity-R-digclass-IIIb-working}

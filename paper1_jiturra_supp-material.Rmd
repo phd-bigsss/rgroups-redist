@@ -21,8 +21,6 @@ author:
 #   number: 1,2 
 # Nota: Autores que comparten filiacion, poner el mismo number y declarar filiación una sola vez.  
 # abstract: | 
-#   # | The escalating economic inequality and the current sanitary crisis have threatened social solidarity among citizens. However, these consequences have been unevenly experienced across the social structure where the upper and intermediate classes, benefiting from privileged access to social resources, have shown resilience. Conversely, working-class families have faced deteriorating material conditions, leading to a heightened sense of marginalization and increasing the demand for welfare support. Particularly, social resources through network ties have been suggested to have a direct link with an individual's welfare through instrumental and expressive outcomes, such as providing information or help in moments of need. Consequently, it has been argued that social isolation not only plays a role in terms of social resources, but higher levels of segregation can bolster opinions, suggesting that being isolated from other social classes can polarise attitudes mainly in the working and upper-middle classes. In this regard, based on the ISSP 2017 -  Social Networks (N=31,191),  multilevel estimations suggest that the influence of network homogeneity is conditional to social class, where the working and intermediate classes with high homogeneous networks hold higher redistributive preferences than the upper classes. Additionally, income inequality has been shown to decrease the polarizing effect of network segregation, mainly among the upper classes, when overall inequality is high. In sum, this study highlights the role of both social class and network segregation together to understand redistributive preferences, as well as their implications for policies and cohesion.
-#   # | 
 #   # | **Keywords**: network segregation, redistributive preferences, economic inequality
 output:
   bookdown::pdf_document2:
@@ -785,7 +783,7 @@ texreg(digclas1_macro,stars = c(0.001, 0.01, 0.05, 0.1),symbol = "+",scalebox = 
 
 ## Social distance (OECD)
 
-```{r eval=FALSE, include=FALSE}
+```{r desc-socdist,eval=FALSE, include=FALSE}
 set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
 options(ggplot2.discrete.fill = set1)
 options(ggplot2.discrete.colour = set1)
