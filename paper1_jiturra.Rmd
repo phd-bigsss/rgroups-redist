@@ -1722,6 +1722,165 @@ df_pred_giniD_gc %>%
         legend.box.background = element_rect(colour = "black"))
 ```
 
+\pagebreak
+
+## Income inequalty groups
+
+```{r table1-ineq-groups, results='asis'}
+set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
+options(ggplot2.discrete.fill = set1)
+options(ggplot2.discrete.colour = set1)
+ggplot2::theme_set(ggplot2::theme_bw())
+ggplot2::theme_update(text=ggplot2::element_text(size=15,  family="serif"))
+
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal,texreg,MLMusingR,lme4)  
+rm(list=ls())
+
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+dfreg <- df1 %>% dplyr::select(
+  egal = egal2,
+  dclass3res_V,
+  dclass3spo_V,
+  homclass3_V_res,
+  know_total,
+  socialtrust,
+  Q03pcm,
+  edyears,
+  female,
+  agenum,
+  partner,
+  religion,
+  union,
+  workst,
+  WEIGHT,
+  region,
+  "gini_disp"=wid_gini_disp,
+  "gini_mkt",
+  gv_spen,
+  rel_red,
+  d10d1=wid_p90p10,
+  wid_p90p50,
+  top10=wid_sharetop10,
+  rgdpna,
+  gdppercapita,
+  oecd,
+  country2, country, country3,
+) %>%
+  mutate(logrgdpna = log(rgdpna),
+         loggdppercapita=log(gdppercapita),
+         edyears2 = edyears ^ 2,
+         age2 = agenum ^ 2) %>%
+  # filter(oecd == "OECD") %>%
+  filter(country2 != "SVN") 
+
+
+dfreg$dclass3spo_V <- car::recode(dfreg$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
+df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
+
+# sjPlot::tab_xtab(df1$dclass3spo_V,df1$PARTLIV)
+
+dfreg <- na.omit(dfreg)
+tab_countries<- 
+  dfreg %>% 
+  group_by(country3) %>% 
+  summarise(gini_disp=mean(gini_disp)) %>% 
+  mutate(gini_q05=ntile(gini_disp,5),
+         gini_d10=ntile(gini_disp,10)) %>% as.data.frame() %>% 
+  arrange(gini_d10) %>% 
+  dplyr::select(-gini_disp)
+
+dfreg <- dfreg %>% left_join(tab_countries,by="country3")
+
+
+## Model -  EGP3 - DIGCLASS - V to Working -----------------------------
+
+library(estimatr)
+
+# Quintile 1 (low)
+digclas1_VW_1<- lm(egal~1 + homclass3_V_res +know_total+socialtrust +female+agenum+age2 + partner + religion + factor(country2),data=subset(dfreg,gini_q05==1),weights = WEIGHT)
+digclas1_VW_Q1_1 <- update(digclas1_VW_1, . ~ . + dclass3res_V+female+agenum+age2+edyears+ Q03pcm+workst+union+dclass3spo_V)
+digclas1_VW_Q1_2 <- update(digclas1_VW_Q1_1, . ~ . +dclass3res_V*homclass3_V_res)
+
+# Quintile 2 (mid-low)
+digclas1_VW_1<- lm(egal~1 + homclass3_V_res +know_total+socialtrust +female+agenum+age2 + partner + religion+ factor(country2),data=subset(dfreg,gini_q05==2),weights = WEIGHT)
+digclas1_VW_Q2_1 <- update(digclas1_VW_1, . ~ . + dclass3res_V+female+agenum+age2+edyears+ Q03pcm+workst+union+dclass3spo_V)
+digclas1_VW_Q2_2 <- update(digclas1_VW_Q2_1, . ~ . +dclass3res_V*homclass3_V_res)
+
+# Quintile 3 (middle)
+digclas1_VW_1<- lm(egal~1 + homclass3_V_res +know_total+socialtrust +female+agenum+age2 + partner + religion + factor(country2),data=subset(dfreg,gini_q05==3),weights = WEIGHT)
+digclas1_VW_Q03_1 <- update(digclas1_VW_1, . ~ . + dclass3res_V+female+agenum+age2+edyears+ Q03pcm+workst+union+dclass3spo_V)
+digclas1_VW_Q03_2 <- update(digclas1_VW_Q03_1, . ~ . +dclass3res_V*homclass3_V_res)
+
+# Quintile 4 (middle-high)
+digclas1_VW_1<- lm(egal~1 + homclass3_V_res +know_total+socialtrust +female+agenum+age2 + partner + religion + factor(country2),data=subset(dfreg,gini_q05==4),weights = WEIGHT)
+digclas1_VW_Q04_1 <- update(digclas1_VW_1, . ~ . + dclass3res_V+female+agenum+age2+edyears+ Q03pcm+workst+union+dclass3spo_V)
+digclas1_VW_Q04_2 <- update(digclas1_VW_Q04_1, . ~ . +dclass3res_V*homclass3_V_res)
+
+# Quintile 5 (high)
+digclas1_VW_1<- lm(egal~1 + homclass3_V_res +know_total+socialtrust +female+agenum+age2 + partner + religion + factor(country2),data=subset(dfreg,gini_q05==5),weights = WEIGHT)
+digclas1_VW_Q05_1 <- update(digclas1_VW_1, . ~ . + dclass3res_V+female+agenum+age2+edyears+ Q03pcm+workst+union+dclass3spo_V)
+digclas1_VW_Q05_2<- update(digclas1_VW_Q05_1, . ~ . +dclass3res_V*homclass3_V_res)
+
+digclas1_Q05 <- 
+list(digclas1_VW_Q1_1,digclas1_VW_Q1_2,digclas1_VW_Q2_1,digclas1_VW_Q2_2,
+     digclas1_VW_Q03_1,digclas1_VW_Q03_2,digclas1_VW_Q04_1,digclas1_VW_Q04_2,
+     digclas1_VW_Q05_1,digclas1_VW_Q05_2)
+
+ccoef <- list(homclass3_V_res="Class-based network homogeneity",
+              know_total="Network size",
+              socialtrust="Social Trust",
+              "dclass3res_VIntermediate class (III+IV)"="Intermediate Class",
+              "dclass3res_VWorking Class (V+VI+VII)"="Working Class",
+              # "femaleFemale"="Female (Ref. = Male)",
+              # "agenum"="Age",
+              # "age2"="Age2",
+              "edyears"="Year of Education",
+              "Q03pcmT02"="Income (T2)","Q03pcmT03"="Income (T3)","Q03pcmMissing"="Income (No information)",
+              "workstNot in paid work" = "Not in paid work (Ref. = In paid work)",
+              "unionYes" ="Union Membership (Ref. = Not Unionized)",
+              "dclass3spo_VIntermediate class (III+IV)" = "Intermediate Class (Partner)",
+              "dclass3spo_VWorking Class (V+VI+VII)" = "Working Class (Partner)",              
+              "dclass3spo_VNo information (Missing, No partner)" = "No information (Not available, No partner)",
+              "homclass3_V_res:dclass3res_VIntermediate class (III+IV)" = "Homogeneity*Intermediate Class",
+              "homclass3_V_res:dclass3res_VWorking Class (V+VI+VII)" = "Homogeneity*Working Class")
+
+
+header <- list("Q1"=1:2,"Q2"=3:4,"Q3"=5:6,"Q4"=7:8,"Q5"=9:10)
+texreg(digclas1_Q05,stars = c(0.001, 0.01, 0.05, 0.1),single.row = F,include.ci = FALSE,custom.header = header,
+       caption = paste("(\\#tab:table1-groups)","Fixed effects linear regression models for Class-based network segregation and Redistributive Preferences by Income Inequality Quintiles"),
+       custom.note = "Note: Models include sampling weights. Gender, age, marital status and religion are included as controls. Standard errors in parentheses. %stars",
+       caption.above = T,leading.zero = T,
+       custom.coef.map = ccoef,
+       symbol = "+",scalebox = 0.60,
+      groups = list("Social Class (Ref.= Service Class)" = 4:5, "Household Income (Ref.= Tertile I)"= 7:9,  "Partner's Social Class (Ref.= Service Class)" = 12:14, "Homogeneity x Social Class"=15:16),
+      custom.gof.rows = list("Country FE"=rep("Yes",10)),
+      # include.loglik = FALSE,include.aic = FALSE,
+      # custom.gof.names = c(NA,NA,"Num. groups","Var: Country (Intercept)","Var: Residual"),
+       float.pos = "h!",
+      # file = "table1.html"
+       use.packages = F)
+```
+
+
+```{r fig1-marg-ineqgrup, fig.dim=c(10,5),fig.cap='Average Marginal Effects of Network homogeneity conditionated by Social class on Redistributive Preferences by Income Inequality Groups',warning=FALSE}
+marginal <- bind_rows(
+plot_slopes(digclas1_VW_Q1_2, variables = "homclass3_V_res", by = "dclass3res_V",draw = F) %>% mutate(quintile=1),
+plot_slopes(digclas1_VW_Q2_2, variables = "homclass3_V_res", by = "dclass3res_V",draw = F)  %>% mutate(quintile=2),
+plot_slopes(digclas1_VW_Q03_2, variables = "homclass3_V_res", by = "dclass3res_V",draw = F) %>% mutate(quintile=3),
+plot_slopes(digclas1_VW_Q04_2, variables = "homclass3_V_res", by = "dclass3res_V",draw = F) %>% mutate(quintile=4),
+plot_slopes(digclas1_VW_Q05_2, variables = "homclass3_V_res", by = "dclass3res_V",draw = F) %>% mutate(quintile=5))
+marginal$quintile <- factor(marginal$quintile,labels = c("Q1","Q2","Q3","Q4","Q5"))
+
+ggplot(data=marginal,aes(x = dclass3res_V, y = estimate,ymin= conf.low, ymax=conf.high)) +
+  geom_point(size=2) + 
+  geom_errorbar(width=.2)+
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10))+
+  geom_hline(yintercept = 0,color="red") +
+  facet_grid(~quintile) +
+  labs(x=NULL,y="Redistributive preferences")  
+```
+
 
 \pagebreak
 
