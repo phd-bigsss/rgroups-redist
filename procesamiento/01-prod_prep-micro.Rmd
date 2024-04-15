@@ -1401,8 +1401,6 @@ sjlabelled::set_label(df1$isei_range) <- 'Range contact prestige'
 cor(df1[,c("isei_avg","isei_max","isei_range",
                  "know_total","n_high","n_middle","n_low",
                  "pct_high","pct_middle","pct_low")],use = "complete.obs")
-
-
 ```
 
 ```{r heterogeneity, eval=FALSE, include=FALSE}

@@ -47,7 +47,6 @@ https://wid.world/codes-dictionary#post-tax-income
 wid_gini <- haven::read_dta(here::here("input/data/original/wid_gini.dta"))
 wid_ratios <- haven::read_dta(here::here("input/data/original/wid_ratios.dta"))
 wid_shares <- haven::read_dta(here::here("input/data/original/wid_shares.dta"))
-
 # wid_gini_2018 <- wid_gini %>% filter(year==2018)
 # wid_gini_2018$year[wid_gini_2018$year==2018] <- 2016
 # wid_gini_2018$country_yr <- stringi::stri_replace_all(str = wid_gini_2018$country_yr,replacement = "2016",regex = "2018")
