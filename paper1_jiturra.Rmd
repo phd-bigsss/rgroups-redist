@@ -984,7 +984,7 @@ dfreg <- df1 %>% dplyr::select(
   egal = egal2,
   dclass3res_V,
   dclass3spo_V,
-  # homclass3_V_res,
+  homclass3_V_res,
   know_total,
   socialtrust,
   Q03pcm,
@@ -1853,7 +1853,7 @@ texreg(digclas1_Q05,stars = c(0.001, 0.01, 0.05, 0.1),single.row = F,include.ci 
        custom.note = "Note: Models include sampling weights. Gender, age, marital status and religion are included as controls. Standard errors in parentheses. %stars",
        caption.above = T,leading.zero = T,
        custom.coef.map = ccoef,
-       symbol = "+",scalebox = 0.60,
+       symbol = "+",scalebox = 0.55,
       groups = list("Social Class (Ref.= Service Class)" = 4:5, "Household Income (Ref.= Tertile I)"= 7:9,  "Partner's Social Class (Ref.= Service Class)" = 12:14, "Homogeneity x Social Class"=15:16),
       custom.gof.rows = list("Country FE"=rep("Yes",10)),
       # include.loglik = FALSE,include.aic = FALSE,
@@ -1864,7 +1864,7 @@ texreg(digclas1_Q05,stars = c(0.001, 0.01, 0.05, 0.1),single.row = F,include.ci 
 ```
 
 
-```{r fig1-marg-ineqgrup, fig.dim=c(10,5),fig.cap='Average Marginal Effects of Network homogeneity conditionated by Social class on Redistributive Preferences by Income Inequality Groups',warning=FALSE}
+```{r fig1-marg-ineqgrup, fig.dim=c(15,5),fig.cap='Average Marginal Effects of Network homogeneity conditionated by Social class on Redistributive Preferences by Income Inequality Groups',warning=FALSE}
 marginal <- bind_rows(
 plot_slopes(digclas1_VW_Q1_2, variables = "homclass3_V_res", by = "dclass3res_V",draw = F) %>% mutate(quintile=1),
 plot_slopes(digclas1_VW_Q2_2, variables = "homclass3_V_res", by = "dclass3res_V",draw = F)  %>% mutate(quintile=2),
@@ -1880,13 +1880,12 @@ ggplot(data=marginal,aes(x = dclass3res_V, y = estimate,ymin= conf.low, ymax=con
   scale_x_discrete(labels = function(x) str_wrap(x, width = 10))+
   geom_hline(yintercept = 0,color="red") +
   facet_grid(~quintile) +
-  labs(x=NULL,y="Redistributive preferences",
-       title = "Average Marginal Effects for Class-based network segregation on Redistributive preferences by Social Class and Income Inequality groups"
+  labs(x=NULL,y="Redistributive preferences"
+       # title = "Average Marginal Effects for Class-based network segregation on Redistributive preferences by Social Class and Income Inequality groups"
        )  
 
 
 ```
-
 
 \pagebreak
 
