@@ -1069,6 +1069,19 @@ df1$dclass3res_III_V <- car::recode(df1$egp11,as.factor = T,
                                  "c(1,2)='Service Class';c(3,5,6,7)='Intermediate class';c(4,8,9,10,11)='Working Class'")
 
 sjlabelled::set_label(df1$dclass3res_III_V) <- "Social Class 3 (R's) - (IIIb+V to Working Class - DIGCLASS)";frq(df1$dclass3res_III_V)
+
+# Class scheme 6 classes 
+df1$dclass6res <- car::recode(df1$egp11,as.factor = T,
+                                 levels =c('Upper Service class',
+                                           'Lower Service class',
+                                           'Routine nonmanual class',
+                                           'Self-employed',
+                                           'Skilled working class',
+                                           'Unskilled working class'), 
+                                 "1='Upper Service class';2='Lower Service class';c(3,4)='Routine nonmanual class';c(5,6,7)='Self-employed';
+                              c(8,9)='Skilled working class';c(10,11)='Unskilled working class'")
+
+sjlabelled::set_label(df1$dclass6res) <- "Social Class 6 (R's) - (DIGCLASS)";frq(df1$dclass6res)
 ```
 
 ```{r digclass-egp-spouse}
@@ -1673,7 +1686,44 @@ df1$outgroup_res <- ifelse(df1$dclass3res_V=="Working Class (V+VI+VII)",rowSums(
 
 df1$homclass3_V_res <- as.numeric(df1$ingroup_res/df1$know_total)
 sjlabelled::set_label(df1$homclass3_V_res) <- "Class homogeneity (R's) (DIGCLASS - V to intermediate)";frq(df1$homclass3_V_res)
+
+
+# Partner class as part of the position generator
+frq(df1$dclass3spo_V)
+df1$partner_hig <- car::recode(as.numeric(df1$dclass3spo_V),recodes = "1=1;2:3=0;4=NA");frq(df1$partner_hig)
+df1$partner_mid <- car::recode(as.numeric(df1$dclass3spo_V),recodes = "2=1;c(1,3)=0;4=NA");frq(df1$partner_mid)
+df1$partner_low <- car::recode(as.numeric(df1$dclass3spo_V),recodes = "3=1;c(1,2)=0;4=NA");frq(df1$partner_low)
+
+df1$n_low_partner<- rowSums(df1[,c("n_low","partner_low")],na.rm = T); sjlabelled::set_label(df1$n_low_partner) <- "Number of low status contacts + partner"
+df1$n_mid_partner<- rowSums(df1[,c("n_middle","partner_mid")],na.rm = T); sjlabelled::set_label(df1$n_mid_partner) <- "Number of middle status contacts + partner"
+df1$n_high_partner<- rowSums(df1[,c("n_high","partner_hig")],na.rm = T); sjlabelled::set_label(df1$n_high_partner) <- "Number of high status contacts + partner"
 ```
+
+```{r homogeneity-R-digclass-plus-partner}
+## Using RESPONDENT Class for homogeneity---------------------------------------
+df1$ingroup_res <- NA 
+df1 %>% select(dclass3res_V,n_high_partner,n_mid_partner,n_low_partner,ingroup_res)
+df1$ingroup_res <- ifelse(df1$dclass3res_V=="Service Class (I+II)",df1$n_high_partner,df1$ingroup_res)
+df1$ingroup_res <- ifelse(df1$dclass3res_V=="Intermediate class (III+IV)",df1$n_mid_partner,df1$ingroup_res)
+df1$ingroup_res <- ifelse(df1$dclass3res_V=="Working Class (V+VI+VII)",df1$n_low_partner,df1$ingroup_res);frq(df1$ingroup_res)
+
+df1$outgroup_res <- NA 
+df1 %>% select(dclass3res_V,n_high_partner,n_mid_partner,n_low_partner,outgroup_res)
+df1$outgroup_res <- ifelse(df1$dclass3res_V=="Service Class (I+II)",rowSums(df1[,c("n_low_partner","n_mid_partner")],na.rm = T),df1$outgroup_res)
+df1$outgroup_res <- ifelse(df1$dclass3res_V=="Intermediate class (III+IV)",rowSums(df1[,c("n_low_partner","n_high_partner")],na.rm = T),df1$outgroup_res)
+df1$outgroup_res <- ifelse(df1$dclass3res_V=="Working Class (V+VI+VII)",rowSums(df1[,c("n_mid_partner","n_high_partner")],na.rm=T),df1$outgroup_res);frq(df1$outgroup_res)
+
+df1$know_total_partner <- rowSums(df1[,c("n_high_partner","n_mid_partner","n_low_partner")],na.rm = T);sjlabelled::set_label(df1$know_total_partner) <- "Number of contacts + partner"
+
+df1$homclass3_V_res_part <- as.numeric(df1$ingroup_res/df1$know_total_partner)
+sjlabelled::set_label(df1$homclass3_V_res_part) <- "Class homogeneity (R's) + partner tie (DIGCLASS - V to intermediate)";frq(df1$homclass3_V_res_part)
+cor(df1$homclass3_V_res_part,df1$homclass3_V_res,use = "complete.obs")
+summary(df1$homclass3_V_res_part)
+summary(df1$homclass3_V_res)
+cor(df1$homclass3_V_res_part,df1$homclass3_V_res,use = "complete.obs")
+df1 %>% select(dclass3res_V,n_high_partner,n_mid_partner,n_low_partner,ingroup_res,outgroup_res,know_total_partner)
+```
+
 
 ```{r homogeneity-R-digclass-IIIb-working}
 # EI homophily index
