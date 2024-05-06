@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.16)  26 APR 2024 14:26
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.16)  2 MAY 2024 15:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -559,6 +559,9 @@ LaTeX Warning: Label `table:coefficients' multiply defined.
 LaTeX Warning: Label `table:coefficients' multiply defined.
 
 
+LaTeX Warning: Label `table:coefficients' multiply defined.
+
+
 LaTeX Warning: Label `tab:table2' multiply defined.
 
 
@@ -773,10 +776,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [13]
-<paper1_jiturra_files/figure-latex/fig1-1.pdf, id=394, 722.7pt x 361.35pt>
+<paper1_jiturra_files/figure-latex/fig1-1.pdf, id=370, 722.7pt x 361.35pt>
 File: paper1_jiturra_files/figure-latex/fig1-1.pdf Graphic file (type pdf)
 <use paper1_jiturra_files/figure-latex/fig1-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig1-1.pdf  used on input line 276.
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig1-1.pdf  used on input line 281.
 (pdftex.def)             Requested size: 452.96826pt x 226.48279pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -786,15 +789,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [14 <./paper1_jiturra_files/figure-latex/fig1-1.pdf>]
-<paper1_jiturra_files/figure-latex/fig2-1.pdf, id=411, 722.7pt x 361.35pt>
+<paper1_jiturra_files/figure-latex/fig2-1.pdf, id=388, 722.7pt x 361.35pt>
 File: paper1_jiturra_files/figure-latex/fig2-1.pdf Graphic file (type pdf)
 <use paper1_jiturra_files/figure-latex/fig2-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig2-1.pdf  used on input line 289.
-(pdftex.def)             Requested size: 452.96826pt x 226.48279pt.
-<paper1_jiturra_files/figure-latex/fig3-1.pdf, id=413, 722.7pt x 361.35pt>
-File: paper1_jiturra_files/figure-latex/fig3-1.pdf Graphic file (type pdf)
-<use paper1_jiturra_files/figure-latex/fig3-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig3-1.pdf  used on input line 300.
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig2-1.pdf  used on input line 294.
 (pdftex.def)             Requested size: 452.96826pt x 226.48279pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -804,9 +802,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [15 <./paper1_jiturra_files/figure-latex/fig2-1.pdf>]
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
+<paper1_jiturra_files/figure-latex/fig3-1.pdf, id=400, 722.7pt x 361.35pt>
+File: paper1_jiturra_files/figure-latex/fig3-1.pdf Graphic file (type pdf)
+<use paper1_jiturra_files/figure-latex/fig3-1.pdf>
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig3-1.pdf  used on input line 305.
+(pdftex.def)             Requested size: 452.96826pt x 226.48279pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -823,10 +823,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [17{c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
-<paper1_jiturra_files/figure-latex/fig4-1.pdf, id=457, 722.7pt x 361.35pt>
+<paper1_jiturra_files/figure-latex/fig4-1.pdf, id=434, 722.7pt x 361.35pt>
 File: paper1_jiturra_files/figure-latex/fig4-1.pdf Graphic file (type pdf)
 <use paper1_jiturra_files/figure-latex/fig4-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig4-1.pdf  used on input line 375.
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig4-1.pdf  used on input line 380.
 (pdftex.def)             Requested size: 452.96826pt x 226.48279pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -844,10 +844,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [19]
-<paper1_jiturra_files/figure-latex/fig5-1.pdf, id=482, 867.24pt x 505.89pt>
+<paper1_jiturra_files/figure-latex/fig5-1.pdf, id=458, 867.24pt x 505.89pt>
 File: paper1_jiturra_files/figure-latex/fig5-1.pdf Graphic file (type pdf)
 <use paper1_jiturra_files/figure-latex/fig5-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig5-1.pdf  used on input line 439.
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig5-1.pdf  used on input line 444.
 (pdftex.def)             Requested size: 452.96826pt x 264.2299pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -889,6 +889,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [24]
+Underfull \hbox (badness 1314) in paragraph at lines 708--710
+[]\T1/ptm/m/n/8 Otero, G., & Men-doza, M. (2023). The Power of Di-ver-sity: Class, Net-works and At-ti-tudes To-wards In-equal-ity. \T1/ptm/m/it/8 So-ci-ol-ogy\T1/ptm/m/n/8 ,
+ []
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -897,10 +901,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [25]
-Underfull \hbox (badness 1314) in paragraph at lines 733--735
-[]\T1/ptm/m/n/8 Otero, G., & Men-doza, M. (2023). The Power of Di-ver-sity: Class, Net-works and At-ti-tudes To-wards In-equal-ity. \T1/ptm/m/it/8 So-ci-ol-ogy\T1/ptm/m/n/8 ,
- []
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -925,10 +925,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [28]
-<paper1_jiturra_files/figure-latex/figapp1-1.pdf, id=688, 361.35pt x 361.35pt>
+<paper1_jiturra_files/figure-latex/figapp1-1.pdf, id=652, 361.35pt x 361.35pt>
 File: paper1_jiturra_files/figure-latex/figapp1-1.pdf Graphic file (type pdf)
 <use paper1_jiturra_files/figure-latex/figapp1-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/figapp1-1.pdf  used on input line 946.
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/figapp1-1.pdf  used on input line 915.
 (pdftex.def)             Requested size: 226.48413pt x 226.48279pt.
 
 Overfull \vbox (6.25847pt too high) has occurred while \output is active []
@@ -949,97 +949,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [30]
-Overfull \hbox (305.03381pt too wide) in paragraph at lines 1060--1070
-\T1/ptm/m/n/8 ========================================================================================================================================================================
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 1060--1070
-\T1/ptm/m/n/8 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- []
-
-LaTeX Font Info:    Trying to load font information for T1+pcr on input line 1071.
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/psnfss/t1pcr.fd
-File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
-)
-Overfull \hbox (315.03223pt too wide) in paragraph at lines 1076--1076
-[]\T1/pcr/m/n/8 Intermediate Class                     2.89 ***    -2.38 +       1.76 *      -1.92         0.10        -1.99         0.21         0.36        -0.09         0.39[] 
- []
-
-
-Overfull \hbox (319.83223pt too wide) in paragraph at lines 1076--1076
-[]                                      \T1/pcr/m/n/8 (0.72)       (1.44)       (0.70)       (1.26)       (0.82)       (1.38)       (0.70)       (1.28)       (0.82)       (1.38)[] 
- []
-
-
-Overfull \hbox (315.03223pt too wide) in paragraph at lines 1076--1076
-[]\T1/pcr/m/n/8 Working Class                          6.03 ***    -1.71         2.88 ***    -2.71 +       3.80 ***    -0.39         1.55 *       2.69 *       0.99        -0.09[] 
- []
-
-
-Overfull \hbox (319.83223pt too wide) in paragraph at lines 1076--1076
-[]                                      \T1/pcr/m/n/8 (0.85)       (1.70)       (0.82)       (1.43)       (0.92)       (1.50)       (0.74)       (1.17)       (0.87)       (1.37)[] 
- []
-
-
-Overfull \hbox (315.03223pt too wide) in paragraph at lines 1089--1089
-[]\T1/pcr/m/n/8 Income (T2)                           -3.90 ***    -3.74 ***    -1.77 *      -1.74 *      -3.14 ***    -3.04 ***    -0.18        -0.17        -0.29        -0.27[] 
- []
-
-
-Overfull \hbox (319.83223pt too wide) in paragraph at lines 1089--1089
-[]                                      \T1/pcr/m/n/8 (0.81)       (0.81)       (0.73)       (0.73)       (0.83)       (0.83)       (0.75)       (0.75)       (0.88)       (0.88)[] 
- []
-
-
-Overfull \hbox (324.63223pt too wide) in paragraph at lines 1089--1089
-[]\T1/pcr/m/n/8 Income (T3)                           -7.87 ***    -7.51 ***    -3.94 ***    -3.59 ***    -7.01 ***    -6.71 ***    -1.33 +      -1.38 +      -2.05 *      -2.00 *[] 
- []
-
-
-Overfull \hbox (319.83223pt too wide) in paragraph at lines 1089--1089
-[]                                      \T1/pcr/m/n/8 (0.84)       (0.84)       (0.77)       (0.78)       (0.85)       (0.86)       (0.76)       (0.77)       (0.91)       (0.91)[] 
- []
-
-
-Overfull \hbox (334.23224pt too wide) in paragraph at lines 1089--1089
-[]\T1/pcr/m/n/8 Income (No information)               -3.48 ***    -3.19 ***    -3.14 ***    -3.02 ***    -4.72 ***    -4.54 ***    -2.97 ***    -3.02 ***    -5.50 ***    -5.47 ***[] 
- []
-
-
-Overfull \hbox (319.83223pt too wide) in paragraph at lines 1089--1089
-[]                                      \T1/pcr/m/n/8 (0.85)       (0.85)       (0.79)       (0.79)       (0.99)       (0.99)       (0.87)       (0.87)       (0.88)       (0.88)[] 
- []
-
-
-Overfull \hbox (315.03223pt too wide) in paragraph at lines 1100--1100
-[]\T1/pcr/m/n/8 Homogeneity*Intermediate Class                     17.36 ***                 14.05 ***                  8.74 *                   -1.14                     -1.06[] 
- []
-
-
-Overfull \hbox (319.83223pt too wide) in paragraph at lines 1100--1100
-[]                                                   \T1/pcr/m/n/8 (3.89)                    (3.51)                    (3.63)                    (3.52)                    (3.82)[] 
- []
-
-
-Overfull \hbox (315.03223pt too wide) in paragraph at lines 1100--1100
-[]\T1/pcr/m/n/8 Homogeneity*Working Class                          20.55 ***                 16.27 ***                 12.69 ***                 -3.54                      2.85[] 
- []
-
-
-Overfull \hbox (319.83223pt too wide) in paragraph at lines 1100--1100
-[]                                                   \T1/pcr/m/n/8 (3.66)                    (3.18)                    (3.42)                    (2.95)                    (3.34)[] 
- []
-
-
-Overfull \hbox (305.03381pt too wide) in paragraph at lines 1104--1110
-\T1/ptm/m/n/8 ========================================================================================================================================================================
- []
-
-<paper1_jiturra_files/figure-latex/fig1-marg-ineqgrup-1.pdf, id=713, 1084.05pt x 361.35pt>
+<paper1_jiturra_files/figure-latex/fig1-marg-ineqgrup-1.pdf, id=678, 1084.05pt x 361.35pt>
 File: paper1_jiturra_files/figure-latex/fig1-marg-ineqgrup-1.pdf Graphic file (type pdf)
 <use paper1_jiturra_files/figure-latex/fig1-marg-ineqgrup-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig1-marg-ineqgrup-1.pdf  used on input line 1113.
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig1-marg-ineqgrup-1.pdf  used on input line 1082.
 (pdftex.def)             Requested size: 452.96826pt x 150.98853pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1049,10 +962,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [31 <./paper1_jiturra_files/figure-latex/fig1-marg-ineqgrup-1.pdf>]
-<paper1_jiturra_files/figure-latex/fig5-ocde-1.pdf, id=728, 867.24pt x 505.89pt>
+<paper1_jiturra_files/figure-latex/fig5-ocde-1.pdf, id=693, 867.24pt x 505.89pt>
 File: paper1_jiturra_files/figure-latex/fig5-ocde-1.pdf Graphic file (type pdf)
 <use paper1_jiturra_files/figure-latex/fig5-ocde-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig5-ocde-1.pdf  used on input line 1174.
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig5-ocde-1.pdf  used on input line 1143.
 (pdftex.def)             Requested size: 452.96826pt x 264.2299pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1070,15 +983,15 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [33]
-<paper1_jiturra_files/figure-latex/fig1-marg-socdist-1.pdf, id=757, 722.7pt x 361.35pt>
+<paper1_jiturra_files/figure-latex/fig1-marg-socdist-1.pdf, id=722, 722.7pt x 361.35pt>
 File: paper1_jiturra_files/figure-latex/fig1-marg-socdist-1.pdf Graphic file (type pdf)
 <use paper1_jiturra_files/figure-latex/fig1-marg-socdist-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig1-marg-socdist-1.pdf  used on input line 1251.
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig1-marg-socdist-1.pdf  used on input line 1220.
 (pdftex.def)             Requested size: 452.96826pt x 226.48279pt.
-<paper1_jiturra_files/figure-latex/fig1-pred-socdist-1.pdf, id=758, 722.7pt x 361.35pt>
+<paper1_jiturra_files/figure-latex/fig1-pred-socdist-1.pdf, id=723, 722.7pt x 361.35pt>
 File: paper1_jiturra_files/figure-latex/fig1-pred-socdist-1.pdf Graphic file (type pdf)
 <use paper1_jiturra_files/figure-latex/fig1-pred-socdist-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig1-pred-socdist-1.pdf  used on input line 1260.
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig1-pred-socdist-1.pdf  used on input line 1229.
 (pdftex.def)             Requested size: 452.96826pt x 226.48279pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1088,10 +1001,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [34 <./paper1_jiturra_files/figure-latex/fig1-marg-socdist-1.pdf> <./paper1_jiturra_files/figure-latex/fig1-pred-socdist-1.pdf>]
-<paper1_jiturra_files/figure-latex/fig2-socdist-1.pdf, id=778, 867.24pt x 505.89pt>
+<paper1_jiturra_files/figure-latex/fig2-socdist-1.pdf, id=743, 867.24pt x 505.89pt>
 File: paper1_jiturra_files/figure-latex/fig2-socdist-1.pdf Graphic file (type pdf)
 <use paper1_jiturra_files/figure-latex/fig2-socdist-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig2-socdist-1.pdf  used on input line 1308.
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig2-socdist-1.pdf  used on input line 1277.
 (pdftex.def)             Requested size: 452.96826pt x 264.2299pt.
 
 Package caption Warning: Unused \captionsetup[figure] on input line \caption@opt@figure@lineno .
@@ -1118,18 +1031,18 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 16103 strings out of 476004
- 266767 string characters out of 5788798
- 1974496 words of memory out of 5000000
- 37686 multiletter control sequences out of 15000+600000
- 632830 words of font info for 107 fonts, out of 8000000 for 9000
+ 16056 strings out of 476004
+ 265941 string characters out of 5788798
+ 1981496 words of memory out of 5000000
+ 37655 multiletter control sequences out of 15000+600000
+ 632209 words of font info for 105 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  83i,13n,93p,2409b,493s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi12.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy8.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper1_jiturra.pdf (35 pages, 363516 bytes).
+<c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi12.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy8.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on paper1_jiturra.pdf (35 pages, 348101 bytes).
 PDF statistics:
- 981 PDF objects out of 1000 (max. 8388607)
- 887 compressed objects within 9 object streams
- 235 named destinations out of 1000 (max. 500000)
+ 940 PDF objects out of 1000 (max. 8388607)
+ 848 compressed objects within 9 object streams
+ 224 named destinations out of 1000 (max. 500000)
  256 words of extra memory for PDF output out of 10000 (max. 10000000)
 
