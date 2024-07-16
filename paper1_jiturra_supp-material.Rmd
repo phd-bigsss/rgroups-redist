@@ -112,6 +112,7 @@ load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
 
 dfreg <- df1 %>% dplyr::select(
+  redist,prefineq,
   egal = egal2,
   # starts_with("class3"),
   # starts_with("digclass3"),
@@ -341,6 +342,7 @@ load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
 
 dfreg <- df1 %>% dplyr::select(
+  redist,prefineq,
   egal = egal2,
   # starts_with("class3"),
   # starts_with("digclass3"),
@@ -570,6 +572,7 @@ rm(list=ls())
 
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 dfreg <- df1 %>% dplyr::select(
+  redist,prefineq,
   egal = egal2,
   dclass3res_V,
   # dclass3spo_V,
@@ -738,6 +741,7 @@ load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
 
 dfreg <- df1 %>% dplyr::select(
+  redist,prefineq,
   egal = egal2,
   # starts_with("class3"),
   # starts_with("digclass3"),
@@ -1024,6 +1028,7 @@ rm(list=ls())
 
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 dfreg <- df1 %>% dplyr::select(
+  redist,prefineq,
   egal = egal2,
   dclass3res_V,
   dclass3spo_V,
@@ -1082,6 +1087,7 @@ load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
 
 dummy_df <- df1 %>% dplyr::select(id,
+                                  redist,prefineq,
   egal = egal2,dclass3res_V,
   # dclass3spo_V,
   homclass3_V_res,
@@ -1100,8 +1106,8 @@ dummy_df <- df1 %>% dplyr::select(id,
   na.omit() %>% 
   dplyr::select(id)
 
-df1$isei08sp <- car::recode(df1$isei08sp,"NA=0")
-df1$isei08 <- car::recode(df1$isei08,"NA=0")
+# df1$isei08sp <- car::recode(df1$isei08sp,"NA=0")
+# df1$isei08 <- car::recode(df1$isei08,"NA=0")
 
 dfreg <- df1 %>% dplyr::select(id,
   egal = egal2,
@@ -1251,7 +1257,7 @@ rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 
 df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
-dummy_df <- df1 %>% dplyr::select(id,
+dummy_df <- df1 %>% dplyr::select(id,redist,prefineq,
   egal = egal2,dclass3res_V,
   # dclass3spo_V,
   homclass3_V_res,know_total,
@@ -1270,7 +1276,7 @@ dummy_df <- df1 %>% dplyr::select(id,
   dplyr::select(id)
 
 df1$isei08sp <- car::recode(df1$isei08sp,"NA=0")
-dfreg <- df1 %>% dplyr::select(id,
+dfreg <- df1 %>% dplyr::select(id,redist,prefineq,
   egal = egal2,
   # starts_with("class3"),
   # starts_with("digclass3"),
@@ -1567,6 +1573,7 @@ rm(list=ls())
 
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 dfreg <- df1 %>% dplyr::select(
+  redist,prefineq,
   egal = egal2,
   dclass3res_V=dclass6res,
   # homclass3_V_res=homclass3_V_res_part,
