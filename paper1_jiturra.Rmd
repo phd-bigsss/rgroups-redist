@@ -2,7 +2,7 @@
 title: "Class-based network segregation, Economic Inequality and Redistributive Preferences across societies"
 css: "input/css/custom.css" # custom CSS para html
 fontsize: 12pt
-linestretch: '1.15'          # interlineado  
+linestretch: '1.5'          # interlineado  
 #linestretch: '2.0'          # interlineado 
 papersize: a4
 link-citations: yes         # citas linkeadas
@@ -103,7 +103,7 @@ wordcount$words
 
 # Introduction  
 
- the past decades, cross-national studies on redistributive preferences and social class have predominantly focused on individuals and households [@lindh_class_2020]. In contrast, less attention has been paid to the role of social networks on redistributive preferences. Sociologists have demonstrated that individuals tend to form segregated social networks according to social class [@mcpherson_birds_2001;@otero_lives_2022]. Additionally, attitudes toward economic inequality can be affected by class segregation, as it implies distance from other social classes'  economic conditions, lifestyles, and worldviews [@lindh_missing_2021;@lee_consider_2023;@paskov_crossclass_2022]. Therefore, focusing on social ties can improve the understanding of the relationship between social class and redistributive preferences, as it broadens the scrutiny of class relations in terms of internalization of shared norms, class identity formation, and collective solidarity. [@Svallfors2006;@goldthorpe_service_1982]. In this discussion, the first part of this study examines the micro-level relationship between class-based network segregation and redistributive preferences. Subsequently, I focus on how cross-national differences in income inequality can moderate the relation of network segregation and support for redistribution.
+ During the past decades, cross-national studies on redistributive preferences and social class have predominantly focused on individuals and households [@lindh_class_2020]. In contrast, less attention has been paid to the role of social networks on redistributive preferences. Sociologists have demonstrated that individuals tend to form segregated social networks according to social class [@mcpherson_birds_2001;@otero_lives_2022]. Additionally, attitudes toward economic inequality can be affected by class segregation, as it implies distance from other social classes'  economic conditions, lifestyles, and worldviews [@lindh_missing_2021;@lee_consider_2023;@paskov_crossclass_2022]. Therefore, focusing on social ties can improve the understanding of the relationship between social class and redistributive preferences, as it broadens the scrutiny of class relations in terms of internalization of shared norms, class identity formation, and collective solidarity. [@Svallfors2006;@goldthorpe_service_1982]. In this discussion, the first part of this study examines the micro-level relationship between class-based network segregation and redistributive preferences. Subsequently, I focus on how cross-national differences in income inequality can moderate the relation of network segregation and support for redistribution.
 
 While previous research has predominantly examined the impact of social class through an individualist lens, more attention has recently been paid to the role of social ties in class relations. This omission is especially surprising since social classes are rooted in social relations of production, which makes them inherently relational in their economic foundations and the power dynamics involved in distributive struggles [@wright_comparative_1989]. Moreover, the normative basis of class relations introduces the relevance of dimensions of solidarity and reciprocity, which are argued to provide the moral foundation for legitimacy and popular support for welfare schemes [@mau_moral_2003]. Thus, beyond the influence of individual class positions, recent efforts have highlighted that, while the class positions of network ties affect redistributive preferences, segregation in homogeneous class-based social settings can make attitudes even more pronounced [@otero_lives_2022].
 
@@ -180,11 +180,11 @@ I use two indicators to measure redistributive preferences. The first indicator 
 
 ### Independent variables - individual level {-}
 
-To measure social class, I employ the Erikson-Goldthorpe-Portocarrero (EGP) class scheme [@Erikson1992]. The EGP scheme is one of the most consistent and validated measures for social class positions in comparative research and has demonstrated its validity in both industrialized and late-industrialized societies [@evans_political_2013;@barozet_measurement_2021]. Therefore, information about occupations, self-employment status, and the number of employees is used to classify respondents into six class positions. Following previous research, a simplified version of the EGP class scheme that collapses three classes is employed [@sosnaud_class_2013;@edlund_influence_2003]. Specifically, this version distinguishes among the Service Class (higher and lower managerial and professionals), Intermediate Class (routine nonmanual workers and self-employed), and Working Class (manual supervisors, skilled and unskilled manual workers).
+To measure social class, I employ the Erikson-Goldthorpe-Portocarrero (EGP) class scheme [@Erikson1992]. The EGP scheme is one of the most consistent and validated measures for social class positions in comparative research and has demonstrated its validity in both industrialized and late-industrialized societies [@evans_political_2013;@barozet_measurement_2021]. Therefore, information about occupations, self-employment status, and the number of employees is used to classify respondents into six class positions. Following previous research, a simplified version of the EGP class scheme that collapses three classes is employed [@sosnaud_class_2013;@edlund_influence_2003]. Specifically, this version distinguishes among the Service Class (higher and lower managerial and professionals), Intermediate Class (routine nonmanual workers and self-employed), and Working Class (manual supervisors, skilled and unskilled manual workers) (see Table \@ref(tab:tab-an-classag) in the Appendix).
 
 I employed the position generator as the basis for the class-based network homogeneity measure. This instrument has been widely used in social capital studies and follows an ego-centered approach where is assumed that social ties to different hierarchical positions in the social structure provide access to social resources [@vandergaag_position_2008]. Here, a list of ten occupations is displayed and declared as a "Family or relative," "Close friend", "Someone else I know," or "No one." The first three categories are binary coded as "Knows" (1) and the rest as "Does not know" (0). Then, the sum of all occupations known represents the total number of ties per respondent.
 
-Subsequently, following @otero_differences_2023 I classify occupations into three status positions that resemble Goldthorpe's class positions based on the International Socio-Economic Index of Occupational Status (ISEI) [@ganzeboom_new_2010]. The classification is as follows: lawyer, executive of a large firm, and human resource manager are categorized as *higher* (ISEI range: 68-85); school teacher, police officer, and nurse are classified as *medium* (ISEI range: 48-63); and car mechanic, bus driver, hairdresser, and home or office cleaner are considered *lower* (ISEI range: 17-38) positions (see Table \@ref(tab:tab-an-postgen) in the Appendix). 
+Subsequently, following @otero_differences_2023 I classify occupations into three status positions that resemble Goldthorpe's class positions based on the International Socio-Economic Index of Occupational Status (ISEI) [@ganzeboom_new_2010]. The classification is as follows: lawyer, executive of a large firm, and human resource manager are categorized as *higher* positions (ISEI range: 68-85); school teacher, police officer, and nurse are classified as *medium* positions (ISEI range: 48-63); and car mechanic, bus driver, hairdresser, and home or office cleaner are considered *lower* positions (ISEI range: 17-38). 
 
 Given the above, I adopted established procedures in the literature for measuring homogeneity in ego-centered networks. For example, @volker_birds_2022 computes gender and educational network homogeneity by calculating the proportion of similar ties based on both respondent and network tie characteristics. Similarly, @otero_lives_2022 employed a comparable method by classifying occupations from the position generator into three class positions to compute the proportion of similar ties based on social class, thereby measuring class-based network homogeneity. In this research, I adopt the latter approach.
 
@@ -919,8 +919,6 @@ Future research should include more fined distinctions in measuring attitudes by
 \theendnotes
 \endgroup
 
-
-
 \newpage
 
 # References
@@ -933,7 +931,6 @@ Future research should include more fined distinctions in measuring attitudes by
 <div id="refs"> </div>  <!-- Although <div> is an HTML tag, this method also works for other output formats such as PDF. -->
 
 
-
 \newpage
 
 `r if (knitr::is_latex_output()){ '\\appendix'}`
@@ -942,302 +939,6 @@ Future research should include more fined distinctions in measuring attitudes by
 `r if (knitr::is_latex_output()){ '\\renewcommand{\\thetable}{A\\arabic{table}}'}`
 `r if (knitr::is_latex_output()){ '\\setcounter{figure}{0}'}`
 `r if (knitr::is_latex_output()){ '\\setcounter{table}{0}'}`
-
-```{r tab-an-postgen, echo=FALSE, cache=TRUE, results='asis'}
-if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,sjmisc,sjlabelled,haven,vtable)  
-rm(list=ls())
-load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
-df1$id <- 1:dim(df1)[[1]]
-dfreg <- df1 %>% dplyr::select(id,
-  redist,prefineq,
-  egal = egal2,
-  dclass3res_V,dclass6res,
-  # dclass3spo_V,
-  homclass3_V_res,
-  know_total,
-  # socialtrust,
-  Q03pcm,
-  edyears,
-  female,
-  agenum,
-  # religion,
-  partner,
-  # union,
-  workst,
-  "gini_disp"=wid_gini_disp,
-  abs_red,
-  ilo_taxrev,
-  ilo_govspe,
-  d10d1=wid_p90p10,
-  wid_p90p50,
-  top10=wid_sharetop10,
-  gdppercapita,
-  country2,country3,
-) %>%
-  # filter(oecd == "OECD") %>%
-  filter(country2 != "SVN") %>% 
-  na.omit() %>%
-    mutate(loggdppercapita=gdppercapita/1000,
-         edyears2 = edyears ^ 2,
-         age2 = agenum ^ 2, 
-         # gini_disp=scale(gini_disp)
-         )
-
-occup_prop <- df1 %>% 
-  filter(id %in% dfreg$id) %>% 
-  dplyr::select(hrmanager,ceo,lawyer,
-         nurse,police,teacher,
-         cleaner,hairbarber,busdriver,mechanic
-         ) %>% summarise_all(mean,na.rm=T)
-p <- t(round(occup_prop*100,1))[,1]
-pacman::p_load(dplyr,knitr,kableExtra)  
-# Create the data frame
-df <- data.frame(
-  # Item = c("c", "d", "a", "g", "h", "i", "j", "e", "b", "f"),
-  Occupation = c("Home or office cleaner", "Hairdresser/barber", "Bus/lory driver", "Car mechanic", 
-                 "Nurse", "Police officer", "School teacher", "Human resource manager", 
-                 "Executive of large firm", "Lawyer"),
-  "ISEI" = c(17, 32, 36, 38, 48, 54, 63, 68, 70, 85)
-) %>% 
-  arrange(-ISEI) %>% 
-  mutate("%"=p)
-kable(df,linesep = "",booktabs=TRUE,format='latex',caption = "ISEI scores assigned to occupations included in the position generator instrument") %>%
-  kable_styling(full_width = F,font_size = 10,latex_options = "HOLD_position") %>%
-  column_spec(1,width = "6cm") %>%
-  pack_rows("Higher-status positions", 1, 3) %>%
-  column_spec(2) %>% 
-  pack_rows("Medium-status positions", 4, 6) %>% 
-  pack_rows("Lower-status positions", 7, 10) %>% 
-  footnote(general = "N = 31,694",footnote_as_chunk = T)
-```
-
-
-```{r tab-an-desc, results='asis', cache=TRUE}
-set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
-options(ggplot2.discrete.fill = set1)
-options(ggplot2.discrete.colour = set1)
-ggplot2::theme_set(ggplot2::theme_bw())
-ggplot2::theme_update(text=ggplot2::element_text(size=15,  family="serif"))
-options(scipen=999)
-if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,sjmisc,sjlabelled,haven,vtable)  
-rm(list=ls())
-
-load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
-
-df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
-
-dfreg <- df1 %>% dplyr::select(
-  redist,prefineq,
-  egal = egal2,
-  dclass3res_V,dclass6res,
-  # dclass3spo_V,
-  homclass3_V_res,
-  know_total,
-  # socialtrust,
-  Q03pcm,
-  edyears,
-  female,
-  agenum,
-  # religion,
-  partner,
-  # union,
-  workst,
-  "gini_disp"=wid_gini_disp,
-  abs_red,
-  ilo_taxrev,
-  ilo_govspe,
-  d10d1=wid_p90p10,
-  wid_p90p50,
-  top10=wid_sharetop10,
-  gdppercapita,
-  country2,country3,country,
-) %>%
-  # filter(oecd == "OECD") %>%
-  filter(country2 != "SVN") %>% 
-  na.omit() %>% 
-    mutate(loggdppercapita=gdppercapita/1000,
-         edyears2 = edyears ^ 2,
-         age2 = agenum ^ 2, 
-         # gini_disp=scale(gini_disp)
-         )
-
-# dfreg$wstate2 <- scale(scale(dfreg$abs_red*100) + scale(dfreg$ilo_taxrev) + scale(dfreg$ilo_govspe))
-
-dfreg$wstate<- rowMeans(dfreg[,c("abs_red","ilo_taxrev","ilo_govspe")],na.rm = T)
-dfreg$wstate2 <- ((dfreg$wstate-min(dfreg$wstate,na.rm = T))/(max(dfreg$wstate,na.rm = T)-min(dfreg$wstate,na.rm = T)))*100
-
-dfreg1 <- dfreg %>% dplyr::select(
-  egal,
-  homclass3_V_res,
-  know_total,
-  # socialtrust,
-  dclass3res_V,
-  Q03pcm,
-  edyears,
-  # dclass3spo_V,  
-  workst,
-  # union,
-  female,
-  agenum,
-  # religion,
-  partner,
-  "gini_disp",
-  loggdppercapita,
-  wstate2,
-  abs_red,
-  ilo_taxrev,
-  ilo_govspe,
-  ) 
-```
-
-```{r tab-an-classag,results='asis', cache=TRUE}
-levels(dfreg$dclass6res) <- c("Upper Service","Lower Service","Routine nonmanual",
-                      "Self-employed","Skilled working","Unskilled working")
-levels(dfreg$dclass3res_V) <- c("Service","Intermediate","Working")
-
-left_join(
-dfreg %>% 
-  group_by(dclass6res,dclass3res_V) %>% summarise(N1=n()) %>% mutate(freq1 = (N1/ dim(dfreg)[[1]])*100),
-dfreg %>% 
-  group_by(dclass3res_V) %>% summarise(N2=n()) %>% mutate(freq2 = (N2 / dim(dfreg)[[1]])*100),by="dclass3res_V"
-) %>% 
-  dplyr::select("dclass6res","N1","freq1","dclass3res_V","N2","freq2") %>%
-  kable(booktabs = TRUE, format='latex',linesep = "",digits = 1,format.args = list(big.mark = ","),
-        caption = "Level of aggregation of social class",
-        col.names = c("EGP-6","N","%","EGP-3","N","%")) %>% 
-  kable_styling(full_width = F,latex_options = "HOLD_position") %>% 
-  collapse_rows(columns = c(4,5,6), valign = "middle") %>% 
-  footnote(general = "N = 31,694",footnote_as_chunk = T)
-```
-
-
-```{r tab-an-countries, echo=FALSE, results='asis'}
-dfreg$country <- countrycode::countrycode(sourcevar = dfreg$country2,origin = "iso3c",destination = "iso2c")
-dfreg$country3b <- paste0(dfreg$country3," (",dfreg$country,")")
-dfreg %>% 
-  group_by(country3b) %>% 
-  summarise(n=n(),
-            homclass=mean(x=homclass3_V_res),
-            gini_disp=mean(gini_disp),
-            loggdppercapita=mean(loggdppercapita),
-            wstate=mean(wstate2)) %>% 
-  arrange(homclass) %>% ungroup() %>% 
-  kable(digits = c(1,1,3,2,2,2),booktabs = TRUE,format = "latex", linesep = "",format.args = list(big.mark = ","),align = "lrccccc",
-        caption = "Values per country for the macro-social variables",
-        col.names = c("Country","N","Network Homogeneity","Income Inequality (Gini Index)","GDP/capita in $1000","Size of the Welfare State")) %>% 
-  kable_styling(full_width = F,latex_options = "scale_down") %>% 
-  column_spec(column = c(1), width = "4cm") %>%
-  column_spec(column = c(2:6), width = "3cm") %>%
-  footnote(general = "N = 31,694; Source: ISSP 2017, WID, WIID and ILO. Variables in original scale",
-           footnote_as_chunk = T)  
-# dfreg %>% 
-#   group_by(country3) %>% 
-#   summarise(gini_disp=mean(gini_disp),
-#             gdp_1000=mean(loggdppercapita),
-#             # wstate=mean(wstate2),
-#             abs_red=mean(abs_red),
-#             ilo_taxrev=mean(ilo_taxrev),
-#             ilo_govspe=mean(ilo_govspe)
-#             ) %>% ungroup() %>% 
-#   correlation::correlation() %>% 
-#   summary() %>% 
-#   correlation::print_md()
-```
-
-```{r fig-an1, fig.dim=c(9,9),out.width='80%',fig.cap='Relationship between income inequality and class differences in network homogeneity',warning=FALSE}
-set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
-options(ggplot2.discrete.fill = set1)
-options(ggplot2.discrete.colour = set1)
-ggplot2::theme_set(ggplot2::theme_bw())
-ggplot2::theme_update(text=ggplot2::element_text(size=15,  family="serif"))    
-options(scipen=999)
-if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,ggplot2,haven,ggrepel,gridExtra,grid)  
-rm(list=ls())
-
-load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
-df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
-
-dfreg <- df1 %>% dplyr::select(
-  redist,prefineq,
-  egal = egal2,
-  dclass3res_V,
-  # dclass3spo_V,
-  homclass3_V_res,
-  know_total,
-  # socialtrust,
-  Q03pcm,
-  edyears,
-  female,
-  agenum,
-  # religion,
-  partner,
-  # union,
-  workst,
-  WEIGHT,
-  region,
-  "gini_disp"=wid_gini_disp,
-  d10d1=wid_p90p10,
-  wid_p90p50,
-  top10=wid_sharetop10,
-  gdppercapita,
-  country2, country, country3,
-) %>%
-  # filter(oecd == "OECD") %>%
-  filter(country2 != "SVN") %>% 
-  na.omit() %>% 
-    mutate(loggdppercapita=scale(gdppercapita/1000),
-         edyears2 = edyears ^ 2,
-         age2 = agenum ^ 2, 
-         # gini_disp=scale(gini_disp),
-         )
-
-homo_ineq <- dfreg %>%
-  group_by(country2,country3) %>%
-  summarise_at(c("homclass3_V_res","egal","gini_disp"), mean, na.rm = TRUE) %>% 
-  as.data.frame()
-
-homo_class_diff <- dfreg %>%   
-  group_by(country2,country3,dclass3res_V) %>%
-  summarise_at(c("egal","homclass3_V_res"), mean, na.rm = TRUE) %>% 
-  as.data.frame() %>%
-  dplyr::select(country3,homclass3_V_res,dclass3res_V) %>% 
-  tidyr::pivot_wider(names_from = "dclass3res_V", values_from = "homclass3_V_res") %>% 
-  mutate(diff_working_upper_homo = `Working Class (V+VI+VII)` - `Service Class (I+II)`) %>% 
-  as.data.frame()
-
-# Dataset with class differences in network homogeneity
-homo_ineq <- homo_ineq %>% left_join(homo_class_diff)
-
-# Plot Homogeneity and redistributive preferences
-homo_ineq$country <- countrycode::countrycode(sourcevar = homo_ineq$country2,origin = "iso3c",destination = "iso2c")
-
-fig_homodiff_gini<- 
-homo_ineq %>%  
-ggplot(aes(y=diff_working_upper_homo, x=gini_disp)) +
-  geom_smooth(method = "lm",fullrange=TRUE, color="black",linetype = 2,size=1,se = T) +
-  # geom_text() +
-  geom_text_repel(label=as.character(homo_ineq$country)) +
-  xlab("Income Inequality") +
-  ylab("Class Differences in Network homogeneity \n (Working Class - Service Class)") +
-  labs(caption =paste("r = ",round(cor(homo_ineq$diff_working_upper_homo,
-                                     homo_ineq$gini_disp, use='complete.obs'),digits = 2)),tag = NULL)
-
-#cor.test(homo_ineq$diff_working_upper_homo,
-#                                    homo_ineq$gini_disp, use='complete.obs')
-
-grid.arrange(fig_homodiff_gini, nrow = 1, 
- bottom =textGrob("Source: International Social Survey 2017; descriptive statistics; figure report country level pearson correlation; the line is the fitted values; CI at 95%",
- gp = gpar(fontface = 1, fontsize = 9),hjust = 1,x = 1
-  ))
-
-
-ggsave(plot = arrangeGrob(fig_homodiff_gini, nrow = 1),filename = "slides-bivar-homodiff.png",device = "png",
-       path = here::here("output/images"),width = 1,height = 1,units = "cm",scale = 17)
-```
-
 
 ```{r tab-an-full, results='asis'}
 set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
@@ -1346,3 +1047,305 @@ texreg(digclas1_VW,stars = c(0.001, 0.01, 0.05, 0.1),single.row = F,symbol = "."
 # performance::check_model(digclas1_VW_5,check="vif")
 # performance::icc(digclas1_VW_5)
 ```
+
+```{r fig-an1, fig.dim=c(9,9),out.width='80%',fig.cap='Relationship between income inequality and class differences in network homogeneity',warning=FALSE}
+set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
+options(ggplot2.discrete.fill = set1)
+options(ggplot2.discrete.colour = set1)
+ggplot2::theme_set(ggplot2::theme_bw())
+ggplot2::theme_update(text=ggplot2::element_text(size=15,  family="serif"))    
+options(scipen=999)
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,ggplot2,haven,ggrepel,gridExtra,grid)  
+rm(list=ls())
+
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
+
+dfreg <- df1 %>% dplyr::select(
+  redist,prefineq,
+  egal = egal2,
+  dclass3res_V,
+  # dclass3spo_V,
+  homclass3_V_res,
+  know_total,
+  # socialtrust,
+  Q03pcm,
+  edyears,
+  female,
+  agenum,
+  # religion,
+  partner,
+  # union,
+  workst,
+  WEIGHT,
+  region,
+  "gini_disp"=wid_gini_disp,
+  d10d1=wid_p90p10,
+  wid_p90p50,
+  top10=wid_sharetop10,
+  gdppercapita,
+  country2, country, country3,
+) %>%
+  # filter(oecd == "OECD") %>%
+  filter(country2 != "SVN") %>% 
+  na.omit() %>% 
+    mutate(loggdppercapita=scale(gdppercapita/1000),
+         edyears2 = edyears ^ 2,
+         age2 = agenum ^ 2, 
+         # gini_disp=scale(gini_disp),
+         )
+
+homo_ineq <- dfreg %>%
+  group_by(country2,country3) %>%
+  summarise_at(c("homclass3_V_res","egal","gini_disp"), mean, na.rm = TRUE) %>% 
+  as.data.frame()
+
+homo_class_diff <- dfreg %>%   
+  group_by(country2,country3,dclass3res_V) %>%
+  summarise_at(c("egal","homclass3_V_res"), mean, na.rm = TRUE) %>% 
+  as.data.frame() %>%
+  dplyr::select(country3,homclass3_V_res,dclass3res_V) %>% 
+  tidyr::pivot_wider(names_from = "dclass3res_V", values_from = "homclass3_V_res") %>% 
+  mutate(diff_working_upper_homo = `Working Class (V+VI+VII)` - `Service Class (I+II)`) %>% 
+  as.data.frame()
+
+# Dataset with class differences in network homogeneity
+homo_ineq <- homo_ineq %>% left_join(homo_class_diff)
+
+# Plot Homogeneity and redistributive preferences
+homo_ineq$country <- countrycode::countrycode(sourcevar = homo_ineq$country2,origin = "iso3c",destination = "iso2c")
+
+fig_homodiff_gini<- 
+homo_ineq %>%  
+ggplot(aes(y=diff_working_upper_homo, x=gini_disp)) +
+  geom_smooth(method = "lm",fullrange=TRUE, color="black",linetype = 2,size=1,se = T) +
+  # geom_text() +
+  geom_text_repel(label=as.character(homo_ineq$country)) +
+  xlab("Income Inequality") +
+  ylab("Class Differences in Network homogeneity \n (Working Class - Service Class)") +
+  labs(caption =paste("r = ",round(cor(homo_ineq$diff_working_upper_homo,
+                                     homo_ineq$gini_disp, use='complete.obs'),digits = 2)),tag = NULL)
+
+#cor.test(homo_ineq$diff_working_upper_homo,
+#                                    homo_ineq$gini_disp, use='complete.obs')
+
+grid.arrange(fig_homodiff_gini, nrow = 1, 
+ bottom =textGrob("Source: International Social Survey 2017; descriptive statistics; figure report country level pearson correlation; the line is the fitted values; CI at 95%",
+ gp = gpar(fontface = 1, fontsize = 9),hjust = 1,x = 1
+  ))
+
+
+ggsave(plot = arrangeGrob(fig_homodiff_gini, nrow = 1),filename = "slides-bivar-homodiff.png",device = "png",
+       path = here::here("output/images"),width = 1,height = 1,units = "cm",scale = 17)
+```
+
+```{r tab-an-postgen, echo=FALSE, cache=TRUE, results='asis'}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,sjlabelled,haven,vtable)  
+rm(list=ls())
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+df1$id <- 1:dim(df1)[[1]]
+dfreg <- df1 %>% dplyr::select(id,
+  redist,prefineq,
+  pct_low,pct_middle,pct_high,
+  egal = egal2,
+  dclass3res_V,dclass6res,
+  # dclass3spo_V,
+  homclass3_V_res,
+  know_total,
+  # socialtrust,
+  Q03pcm,
+  edyears,
+  female,
+  agenum,
+  # religion,
+  partner,
+  # union,
+  workst,
+  "gini_disp"=wid_gini_disp,
+  abs_red,
+  ilo_taxrev,
+  ilo_govspe,
+  d10d1=wid_p90p10,
+  wid_p90p50,
+  top10=wid_sharetop10,
+  gdppercapita,
+  country2,country3,
+) %>%
+  # filter(oecd == "OECD") %>%
+  filter(country2 != "SVN") %>% 
+  na.omit() %>%
+    mutate(loggdppercapita=gdppercapita/1000,
+         edyears2 = edyears ^ 2,
+         age2 = agenum ^ 2, 
+         # gini_disp=scale(gini_disp)
+         )
+
+occup_prop <- df1 %>% 
+  filter(id %in% dfreg$id) %>% 
+  dplyr::select(hrmanager,ceo,lawyer,
+         nurse,police,teacher,
+         cleaner,hairbarber,busdriver,mechanic
+         ) %>% summarise_all(mean,na.rm=T)
+
+status_prop <- df1 %>% 
+  filter(id %in% dfreg$id) %>% 
+  dplyr::select(pct_high,pct_middle,pct_low,
+         ) %>% summarise_all(mean,na.rm=T)
+
+p <- t(round(occup_prop*100,1))[,1]
+pacman::p_load(dplyr,knitr,kableExtra)  
+# Create the data frame
+df <- data.frame(
+  # Item = c("c", "d", "a", "g", "h", "i", "j", "e", "b", "f"),
+  Occupation = c("Home or office cleaner", "Hairdresser/barber", "Bus/lory driver", "Car mechanic", 
+                 "Nurse", "Police officer", "School teacher", "Human resource manager", 
+                 "Executive of large firm", "Lawyer"),
+  "ISEI" = c(17, 32, 36, 38, 48, 54, 63, 68, 70, 85)
+) %>% 
+  arrange(-ISEI) %>% 
+  mutate("%"=p)
+kable(df,linesep = "",booktabs=TRUE,format='html',caption = "ISEI scores assigned to occupations included in the position generator instrument") %>%
+  kable_styling(full_width = F,font_size = 10,latex_options = "HOLD_position") %>%
+  column_spec(1,width = "6cm") %>%
+  pack_rows("Higher-status positions", 1, 3) %>%
+  column_spec(2) %>% 
+  pack_rows("Medium-status positions", 4, 6) %>% 
+  pack_rows("Lower-status positions", 7, 10) %>% 
+  footnote(general = "N = 31,694",footnote_as_chunk = T)
+```
+
+```{r tab-an-desc, results='asis', cache=TRUE}
+set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
+options(ggplot2.discrete.fill = set1)
+options(ggplot2.discrete.colour = set1)
+ggplot2::theme_set(ggplot2::theme_bw())
+ggplot2::theme_update(text=ggplot2::element_text(size=15,  family="serif"))
+options(scipen=999)
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,sjlabelled,haven,vtable)  
+rm(list=ls())
+
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+
+df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
+
+dfreg <- df1 %>% dplyr::select(
+  redist,prefineq,
+  egal = egal2,
+  dclass3res_V,dclass6res,
+  # dclass3spo_V,
+  homclass3_V_res,
+  know_total,
+  # socialtrust,
+  Q03pcm,
+  edyears,
+  female,
+  agenum,
+  # religion,
+  partner,
+  # union,
+  workst,
+  "gini_disp"=wid_gini_disp,
+  abs_red,
+  ilo_taxrev,
+  ilo_govspe,
+  d10d1=wid_p90p10,
+  wid_p90p50,
+  top10=wid_sharetop10,
+  gdppercapita,
+  country2,country3,country,
+) %>%
+  # filter(oecd == "OECD") %>%
+  filter(country2 != "SVN") %>% 
+  na.omit() %>% 
+    mutate(loggdppercapita=gdppercapita/1000,
+         edyears2 = edyears ^ 2,
+         age2 = agenum ^ 2, 
+         # gini_disp=scale(gini_disp)
+         )
+
+# dfreg$wstate2 <- scale(scale(dfreg$abs_red*100) + scale(dfreg$ilo_taxrev) + scale(dfreg$ilo_govspe))
+
+dfreg$wstate<- rowMeans(dfreg[,c("abs_red","ilo_taxrev","ilo_govspe")],na.rm = T)
+dfreg$wstate2 <- ((dfreg$wstate-min(dfreg$wstate,na.rm = T))/(max(dfreg$wstate,na.rm = T)-min(dfreg$wstate,na.rm = T)))*100
+
+dfreg1 <- dfreg %>% dplyr::select(
+  egal,
+  homclass3_V_res,
+  know_total,
+  # socialtrust,
+  dclass3res_V,
+  Q03pcm,
+  edyears,
+  # dclass3spo_V,  
+  workst,
+  # union,
+  female,
+  agenum,
+  # religion,
+  partner,
+  "gini_disp",
+  loggdppercapita,
+  wstate2,
+  abs_red,
+  ilo_taxrev,
+  ilo_govspe,
+  ) 
+```
+
+```{r tab-an-classag,results='asis', cache=TRUE}
+levels(dfreg$dclass6res) <- c("Upper Service","Lower Service","Routine nonmanual",
+                      "Self-employed","Skilled working","Unskilled working")
+levels(dfreg$dclass3res_V) <- c("Service","Intermediate","Working")
+
+left_join(
+dfreg %>% 
+  group_by(dclass6res,dclass3res_V) %>% summarise(N1=n()) %>% mutate(freq1 = (N1/ dim(dfreg)[[1]])*100),
+dfreg %>% 
+  group_by(dclass3res_V) %>% summarise(N2=n()) %>% mutate(freq2 = (N2 / dim(dfreg)[[1]])*100),by="dclass3res_V"
+) %>% 
+  dplyr::select("dclass6res","N1","freq1","dclass3res_V","N2","freq2") %>%
+  kable(booktabs = TRUE, format='latex',linesep = "",digits = 1,format.args = list(big.mark = ","),
+        caption = "Level of aggregation of social class",
+        col.names = c("EGP-6","N","%","EGP-3","N","%")) %>% 
+  kable_styling(full_width = F,font_size = 10,latex_options = c("HOLD_position")) %>% 
+  collapse_rows(columns = c(4,5,6), valign = "middle") %>% 
+  footnote(general = "N = 31,694",footnote_as_chunk = T)
+```
+
+```{r tab-an-countries, echo=FALSE, results='asis'}
+dfreg$country <- countrycode::countrycode(sourcevar = dfreg$country2,origin = "iso3c",destination = "iso2c")
+dfreg$country3b <- paste0(dfreg$country3," (",dfreg$country,")")
+dfreg %>% 
+  group_by(country3b) %>% 
+  summarise(n=n(),
+            homclass=mean(x=homclass3_V_res),
+            gini_disp=mean(gini_disp),
+            loggdppercapita=mean(loggdppercapita),
+            wstate=mean(wstate2)) %>% 
+  arrange(homclass) %>% ungroup() %>% 
+  kable(digits = c(1,1,3,2,2,2),booktabs = TRUE,format = "latex", linesep = "",format.args = list(big.mark = ","),align = "lrccccc",
+        caption = "Values per country for the macro-social variables",
+        col.names = c("Country","N","Network Homogeneity","Income Inequality (Gini Index)","GDP/capita in $1000","Size of the Welfare State")) %>% 
+  kable_styling(full_width = F,latex_options = "scale_down") %>% 
+  column_spec(column = c(1), width = "4cm") %>%
+  column_spec(column = c(2:6), width = "3cm") %>%
+  footnote(general = "N = 31,694; Source: ISSP 2017, WID, WIID and ILO. Variables in original scale",
+           footnote_as_chunk = T)  
+# dfreg %>% 
+#   group_by(country3) %>% 
+#   summarise(gini_disp=mean(gini_disp),
+#             gdp_1000=mean(loggdppercapita),
+#             # wstate=mean(wstate2),
+#             abs_red=mean(abs_red),
+#             ilo_taxrev=mean(ilo_taxrev),
+#             ilo_govspe=mean(ilo_govspe)
+#             ) %>% ungroup() %>% 
+#   correlation::correlation() %>% 
+#   summary() %>% 
+#   correlation::print_md()
+```
+
+
