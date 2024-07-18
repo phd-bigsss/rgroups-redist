@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.7.1)  17 JUL 2024 14:26
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.7.9)  18 JUL 2024 13:37
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -6,9 +6,9 @@ entering extended mode
 (./paper1_jiturra.tex
 LaTeX2e <2024-06-01> patch level 2
 L3 programming layer <2024-05-27>
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/article.cls
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2024/02/08 v1.4n Standard LaTeX document class
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/size12.clo
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/size12.clo
 File: size12.clo 2024/02/08 v1.4n Standard LaTeX file (size option)
 )
 \c@part=\count194
@@ -22,20 +22,20 @@ File: size12.clo 2024/02/08 v1.4n Standard LaTeX file (size option)
 \abovecaptionskip=\skip49
 \belowcaptionskip=\skip50
 \bibindent=\dimen141
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amsmath.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amsmath.sty
 Package: amsmath 2024/05/23 v2.17q AMS math features
 \@mathmargin=\skip51
 For additional information on amsmath, use the `?' option.
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amstext.sty
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amstext.sty
 Package: amstext 2021/08/26 v2.01 AMS text
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0 generic functions
 \@emptytoks=\toks17
 \ex@=\dimen142
-)) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.sty
+)) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d Bold Symbols
 \pmbraise@=\dimen143
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.sty
 Package: amsopn 2022/04/08 v2.04 operator names
 )
 \inf@bad=\count268
@@ -85,16 +85,16 @@ LaTeX Info: Redefining \Relbar on input line 970.
 \mathdisplay@stack=\toks21
 LaTeX Info: Redefining \[ on input line 2953.
 LaTeX Info: Redefining \] on input line 2954.
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/amssymb.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/amssymb.sty
 Package: amssymb 2013/01/14 v3.01 AMS font symbols
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/amsfonts.sty
 Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
 \symAMSa=\mathgroup4
 \symAMSb=\mathgroup5
 LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
 LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
-)) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/lmodern.sty
+)) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/lmodern.sty
 Package: lmodern 2015/05/01 v1.6.1 Latin Modern Fonts
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/cmr/m/n --> OT1/lmr/m/n on input line 22.
@@ -128,44 +128,44 @@ LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
 (Font)                  OT1/cmr/bx/it --> OT1/lmr/bx/it on input line 37.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 (Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 38.
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/setspace/setspace.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/setspace/setspace.sty
 Package: setspace 2022/12/04 v6.7b set line spacing
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty
 Package: iftex 2022/02/03 v1.0f TeX engine tests
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/fontenc.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/fontenc.sty
 Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
 LaTeX Font Info:    Trying to load font information for T1+lmr on input line 116.
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/inputenc.sty
+)) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/inputenc.sty
 Package: inputenc 2024/02/08 v1.3d Input encoding file
 \inpenc@prehook=\toks22
 \inpenc@posthook=\toks23
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/textcomp.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/textcomp.sty
 Package: textcomp 2024/04/24 v2.1b Standard LaTeX package
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/parskip/parskip.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/parskip/parskip.sty
 Package: parskip 2021-03-14 v2.0h non-zero parskip adjustments
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty
 Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/keyval.sty
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/keyval.sty
 Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
 \KV@toks@=\toks24
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
 Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty
 Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
-)) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+)) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty
 Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
 \etb@tempcnta=\count280
-)) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/xcolor/xcolor.sty
+)) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/xcolor/xcolor.sty
 Package: xcolor 2023/11/15 v3.01 LaTeX color extensions (UK)
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg
 File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
 Package xcolor Info: Driver file: pdftex.def on input line 274.
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def
 File: pdftex.def 2024/04/13 v1.2c Graphics/color driver for pdftex
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)
 Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1350.
 Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1354.
 Package xcolor Info: Model `RGB' extended on input line 1366.
@@ -175,53 +175,53 @@ Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1370.
 Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1371.
 Package xcolor Info: Model `Gray' substituted by `gray' on input line 1372.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1373.
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/dvipsnam.def
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/dvipsnam.def
 File: dvipsnam.def 2016/06/17 v3.0m Driver-dependent file (DPC,SPQR)
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/xcolor/svgnam.def
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/xcolor/svgnam.def
 File: svgnam.def 2023/11/15 v3.01 Predefined colors according to SVG 1.1 (UK)
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/xcolor/x11nam.def
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/xcolor/x11nam.def
 File: x11nam.def 2023/11/15 v3.01 Predefined colors according to Unix/X11 (UK)
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/bookmark/bookmark.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/bookmark/bookmark.sty
 Package: bookmark 2023-12-10 v1.31 PDF bookmarks (HO)
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty
 Package: hyperref 2024-07-10 v7.01j Hypertext links for LaTeX
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty
 Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty
 Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
 Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO)
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty
 Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
 )
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
 Package pdftexcmds Info: \pdfdraftmode found.
-)) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty
+)) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty
 Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2023-11-26 v2.56 Cross-referencing by name of section
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty
 Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count281
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/stringenc/stringenc.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/stringenc/stringenc.sty
 Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO)
 )
 \@linkdim=\dimen151
 \Hy@linkcounter=\count282
 \Hy@pagecounter=\count283
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def
 File: pd1enc.def 2024-07-10 v7.01j Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
 ... no UTF-8 mapping file for font encoding PD1
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty
 Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
 )
 \Hy@SavedSpaceFactor=\count284
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def
 File: puenc.def 2024-07-10 v7.01j Hyperref: PDF Unicode definition (HO)
 Now handling font encoding PU ...
 ... no UTF-8 mapping file for font encoding PU
@@ -235,15 +235,15 @@ Package hyperref Info: Backreferencing OFF on input line 4177.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4424.
 \c@Hy@tempcnt=\count285
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/url/url.sty
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip18
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 LaTeX Info: Redefining \url on input line 4763.
 \XeTeXLinkMargin=\dimen152
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty
 Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty
 Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO)
 ))
 \Fld@menulength=\count286
@@ -256,7 +256,7 @@ Package hyperref Info: backreferencing OFF on input line 6057.
 Package hyperref Info: Link coloring OFF on input line 6062.
 Package hyperref Info: Link coloring with OCG OFF on input line 6067.
 Package hyperref Info: PDF/A mode OFF on input line 6072.
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/atbegshi-ltx.sty
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/atbegshi-ltx.sty
 Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
 package with kernel methods
 )
@@ -265,30 +265,30 @@ package with kernel methods
 \c@Hfootnote=\count289
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def
 File: hpdftex.def 2024-07-10 v7.01j Hyperref driver for pdfTeX
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/atveryend-ltx.sty
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/atveryend-ltx.sty
 Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend package
 with kernel methods
 )
 \Fld@listcount=\count290
 \c@bookmark@seq@number=\count291
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
 Package: rerunfilecheck 2022-07-10 v1.10 Rerun checks for auxiliary files (HO)
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
 Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 )
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 285.
 )
 \Hy@SectionHShift=\skip54
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/bookmark/bkm-pdftex.def
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/bookmark/bkm-pdftex.def
 File: bkm-pdftex.def 2023-12-10 v1.31 bookmark driver for pdfTeX and luaTeX (HO)
 \BKM@id=\count292
 ))
 Package hyperref Info: Option `colorlinks' set `true' on input line 51.
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/geometry/geometry.sty
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/geometry/geometry.sty
 Package: geometry 2020/01/02 v5.9 Page Geometry
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/iftex/ifvtex.sty
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/iftex/ifvtex.sty
 Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 )
 \Gm@cnth=\count293
@@ -303,7 +303,7 @@ Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 \Gm@layouthoffset=\dimen161
 \Gm@layoutvoffset=\dimen162
 \Gm@dimlist=\toks25
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/longtable.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/longtable.sty
 Package: longtable 2024-04-26 v4.20 Multi-page Table package (DPC)
 \LTleft=\skip55
 \LTright=\skip56
@@ -321,7 +321,7 @@ Package: longtable 2024-04-26 v4.20 Multi-page Table package (DPC)
 \c@LT@tables=\count299
 \c@LT@chunks=\count300
 \LT@p@ftn=\toks26
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/booktabs/booktabs.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/booktabs/booktabs.sty
 Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \heavyrulewidth=\dimen164
 \lightrulewidth=\dimen165
@@ -340,7 +340,7 @@ Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \@thisruleclass=\count303
 \@lastruleclass=\count304
 \@thisrulewidth=\dimen176
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/array.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/array.sty
 Package: array 2024/06/14 v2.6d Tabular extension package (FMi)
 \col@sep=\dimen177
 \ar@mcellbox=\box59
@@ -349,7 +349,7 @@ Package: array 2024/06/14 v2.6d Tabular extension package (FMi)
 \extratabsurround=\skip59
 \backup@length=\skip60
 \ar@cellbox=\box60
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/calc.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/calc.sty
 Package: calc 2023/07/08 v4.3 Infix arithmetic (KKT,FJ)
 \calc@Acount=\count305
 \calc@Bcount=\count306
@@ -361,20 +361,20 @@ LaTeX Info: Redefining \setlength on input line 80.
 LaTeX Info: Redefining \addtolength on input line 81.
 \calc@Ccount=\count307
 \calc@Cskip=\skip63
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/mdwtools/footnote.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/mdwtools/footnote.sty
 Package: footnote 1997/01/28 1.13 Save footnotes around boxes
 \fn@notes=\box61
 \fn@width=\dimen181
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/psnfss/times.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/psnfss/times.sty
 Package: times 2020/03/25 PSNFSS-v9.3 (SPQR) 
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/endnotes/endnotes.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/endnotes/endnotes.sty
 Package: endnotes 2020-01-02 endnotes package
 \c@endnote=\count308
 \endnotesep=\dimen182
 \@enotes=\write3
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/caption/caption.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/caption/caption.sty
 Package: caption 2023/08/05 v3.6o Customizing captions (AR)
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/caption/caption3.sty
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/caption/caption3.sty
 Package: caption3 2023/07/31 v2.4d caption3 kernel (AR)
 \caption@tempdima=\dimen183
 \captionmargin=\dimen184
@@ -390,57 +390,57 @@ Package caption Info: Standard document class detected.
 \c@continuedfloat=\count310
 Package caption Info: hyperref package is loaded.
 Package caption Info: longtable package is loaded.
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/caption/ltcaption.sty
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/caption/ltcaption.sty
 Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
-)) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/graphicx.sty
+)) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/graphics.sty
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/graphics.sty
 Package: graphics 2024/05/23 v1.4g Standard LaTeX Graphics (DPC,SPQR)
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/trig.sty
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/trig.sty
 Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 106.
 )
 \Gin@req@height=\dimen191
 \Gin@req@width=\dimen192
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/float/float.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \c@float@type=\count311
 \float@exts=\toks28
 \float@box=\box62
 \@float@everytoks=\toks29
 \@floatcapt=\box63
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/multirow/multirow.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/multirow/multirow.sty
 Package: multirow 2021/03/15 v2.8 Span multiple rows of a table
 \multirow@colwidth=\skip64
 \multirow@cntb=\count312
 \multirow@dima=\skip65
 \bigstrutjot=\dimen193
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/wrapfig/wrapfig.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/wrapfig/wrapfig.sty
 \wrapoverhang=\dimen194
 \WF@size=\dimen195
 \c@WF@wrappedlines=\count313
 \WF@box=\box64
 \WF@everypar=\toks30
 Package: wrapfig 2003/01/31  v 3.6
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/colortbl/colortbl.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/colortbl/colortbl.sty
 Package: colortbl 2024/07/06 v1.0i Color table columns (DPC)
 \everycr=\toks31
 \minrowclearance=\skip66
 \rownum=\count314
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/pdflscape/pdflscape.sty
 Package: pdflscape 2022-10-27 v0.13 Display of landscape pages in PDF
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty
 Package: pdflscape-nometadata 2022-10-28 v0.13 Display of landscape pages in PDF (HO)
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/lscape.sty
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/lscape.sty
 Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
 )
 Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
-)) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tabu/tabu.sty
+)) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tabu/tabu.sty
 Package: tabu 2019/01/11 v2.9 - flexible LaTeX tabulars (FC+tabu-fixed)
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/varwidth/varwidth.sty
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/varwidth/varwidth.sty
 Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
 \@vwid@box=\box65
 \sift@deathcycles=\count315
@@ -469,10 +469,10 @@ Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
 \tabu@hleads=\box68
 \tabu@vleads=\box69
 \tabu@cellskip=\skip67
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/threeparttable/threeparttable.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/threeparttable/threeparttable.sty
 Package: threeparttable 2003/06/13  v 3.0
 \@tempboxb=\box70
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
 Package: fancyhdr 2024/04/23 v4.2 Extensive control of page headers and footers
 \f@nch@headwidth=\skip68
 \f@nch@O@elh=\skip69
@@ -483,21 +483,45 @@ Package: fancyhdr 2024/04/23 v4.2 Extensive control of page headers and footers
 \f@nch@O@erf=\skip74
 \f@nch@O@olf=\skip75
 \f@nch@O@orf=\skip76
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel/babel.sty
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/threeparttablex/threeparttablex.sty
+Package: threeparttablex 2013/07/23 v0.3 by daleif
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/environ/environ.sty
+Package: environ 2014/05/04 v0.3 A new way to define environments
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/trimspaces/trimspaces.sty
+Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
+))
+\TPTL@width=\skip77
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/ulem/ulem.sty
+\UL@box=\box71
+\UL@hyphenbox=\box72
+\UL@skip=\skip78
+\UL@hook=\toks34
+\UL@height=\dimen263
+\UL@pe=\count322
+\UL@pixel=\dimen264
+\ULC@box=\box73
+Package: ulem 2019/11/18
+\ULdepth=\dimen265
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/makecell/makecell.sty
+Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
+\rotheadsize=\dimen266
+\c@nlinenum=\count323
+\TeXr@lab=\toks35
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel/babel.sty
 Package: babel 2024/06/26 v24.7 The Babel package
-\babel@savecnt=\count322
-\U@D=\dimen263
+\babel@savecnt=\count324
+\U@D=\dimen267
 \l@unhyphenated=\language8
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel/txtbabel.def)
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel/txtbabel.def)
 \bbl@readstream=\read2
-\bbl@dirlevel=\count323
+\bbl@dirlevel=\count325
 Package babel Info: Main language set with 'main='. Except if you have
 (babel)             problems, prefer the default mechanism for setting
 (babel)             the main language, ie, as the last declared.
 (babel)             Reported on input line 4180.
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel-english/american.ldf
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel-english/american.ldf
 Language: american 2017/06/06 v3.3r English support from the babel system
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel-english/english.ldf
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel-english/english.ldf
 Language: english 2017/06/06 v3.3r English support from the babel system
 Package babel Info: Hyphen rules for 'canadian' set to \l@english
 (babel)             (\language0). Reported on input line 102.
@@ -505,27 +529,27 @@ Package babel Info: Hyphen rules for 'australian' set to \l@ukenglish
 (babel)             (\language5). Reported on input line 105.
 Package babel Info: Hyphen rules for 'newzealand' set to \l@ukenglish
 (babel)             (\language5). Reported on input line 108.
-))) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel/locale/en/babel-american.tex
+))) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel/locale/en/babel-american.tex
 Package babel Info: Importing font and identification data for american
 (babel)             from babel-en-US.ini. Reported on input line 11.
 )
-\cslhangindent=\skip77
-\csllabelwidth=\skip78
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/preprint/authblk.sty
+\cslhangindent=\skip79
+\csllabelwidth=\skip80
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/preprint/authblk.sty
 Package: authblk 2001/02/27 1.3 (PWD)
-\affilsep=\skip79
-\@affilsep=\skip80
-\c@Maxaffil=\count324
-\c@authors=\count325
-\c@affil=\count326
+\affilsep=\skip81
+\@affilsep=\skip82
+\c@Maxaffil=\count326
+\c@authors=\count327
+\c@affil=\count328
 )
-LaTeX Font Info:    Trying to load font information for T1+ptm on input line 133.
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/psnfss/t1ptm.fd
+LaTeX Font Info:    Trying to load font information for T1+ptm on input line 147.
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/psnfss/t1ptm.fd
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
-) (c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+) (c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count327
-\l__pdf_internal_box=\box71
+\l__color_backend_stack_int=\count329
+\l__pdf_internal_box=\box74
 ) (./paper1_jiturra.aux
 
 LaTeX Warning: Label `table:coefficients' multiply defined.
@@ -536,31 +560,31 @@ LaTeX Warning: Label `table:coefficients' multiply defined.
 )
 \openout1 = `paper1_jiturra.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 133.
-LaTeX Font Info:    ... okay on input line 133.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 133.
-LaTeX Font Info:    ... okay on input line 133.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 133.
-LaTeX Font Info:    ... okay on input line 133.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 133.
-LaTeX Font Info:    ... okay on input line 133.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 133.
-LaTeX Font Info:    ... okay on input line 133.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 133.
-LaTeX Font Info:    ... okay on input line 133.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 133.
-LaTeX Font Info:    ... okay on input line 133.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 133.
-LaTeX Font Info:    ... okay on input line 133.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 133.
-LaTeX Font Info:    ... okay on input line 133.
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 147.
+LaTeX Font Info:    ... okay on input line 147.
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-Package hyperref Info: Link coloring ON on input line 133.
+Package hyperref Info: Link coloring ON on input line 147.
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -600,51 +624,51 @@ Package caption Info: float package is loaded.
 Package caption Info: threeparttable package is loaded.
 Package caption Info: wrapfig package is loaded.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 134.
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 148.
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 134.
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 148.
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 134.
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 148.
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 134.
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 148.
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 134.
+(Font)              <12> on input line 148.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 134.
+(Font)              <8> on input line 148.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 134.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 134.
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
+(Font)              <6> on input line 148.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 148.
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 134.
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
+LaTeX Font Info:    Trying to load font information for U+msb on input line 148.
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 134.
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/psnfss/ts1ptm.fd
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 148.
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 134.
+(Font)              <10> on input line 148.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 134.
+(Font)              <7> on input line 148.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 134.
+(Font)              <5> on input line 148.
 
 
 [1
 
-{c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}]
+{c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}]
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -747,14 +771,14 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [12]
-LaTeX Font Info:    Trying to load font information for T1+pcr on input line 269.
-(c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/psnfss/t1pcr.fd
+LaTeX Font Info:    Trying to load font information for T1+pcr on input line 283.
+(c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 )
-<paper1_jiturra_files/figure-latex/fig1-1.pdf, id=294, 722.7pt x 361.35pt>
+<paper1_jiturra_files/figure-latex/fig1-1.pdf, id=292, 722.7pt x 361.35pt>
 File: paper1_jiturra_files/figure-latex/fig1-1.pdf Graphic file (type pdf)
 <use paper1_jiturra_files/figure-latex/fig1-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig1-1.pdf  used on input line 279.
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig1-1.pdf  used on input line 293.
 (pdftex.def)             Requested size: 452.96826pt x 226.48279pt.
 
 
@@ -766,10 +790,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [13]
-<paper1_jiturra_files/figure-latex/fig2-1.pdf, id=312, 722.7pt x 361.35pt>
+<paper1_jiturra_files/figure-latex/fig2-1.pdf, id=310, 722.7pt x 361.35pt>
 File: paper1_jiturra_files/figure-latex/fig2-1.pdf Graphic file (type pdf)
 <use paper1_jiturra_files/figure-latex/fig2-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig2-1.pdf  used on input line 290.
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig2-1.pdf  used on input line 304.
 (pdftex.def)             Requested size: 452.96826pt x 226.48279pt.
 
 
@@ -781,10 +805,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [14 <./paper1_jiturra_files/figure-latex/fig1-1.pdf>]
-<paper1_jiturra_files/figure-latex/fig3-1.pdf, id=327, 722.7pt x 361.35pt>
+<paper1_jiturra_files/figure-latex/fig3-1.pdf, id=325, 722.7pt x 361.35pt>
 File: paper1_jiturra_files/figure-latex/fig3-1.pdf Graphic file (type pdf)
 <use paper1_jiturra_files/figure-latex/fig3-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig3-1.pdf  used on input line 301.
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig3-1.pdf  used on input line 315.
 (pdftex.def)             Requested size: 452.96826pt x 226.48279pt.
 
 
@@ -809,10 +833,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [16 <./paper1_jiturra_files/figure-latex/fig3-1.pdf>]
-<paper1_jiturra_files/figure-latex/fig4-1.pdf, id=360, 722.7pt x 361.35pt>
+<paper1_jiturra_files/figure-latex/fig4-1.pdf, id=358, 722.7pt x 361.35pt>
 File: paper1_jiturra_files/figure-latex/fig4-1.pdf Graphic file (type pdf)
 <use paper1_jiturra_files/figure-latex/fig4-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig4-1.pdf  used on input line 354.
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig4-1.pdf  used on input line 368.
 (pdftex.def)             Requested size: 452.96826pt x 226.48279pt.
 
 
@@ -823,7 +847,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[17{c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
+[17{c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -842,10 +866,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [19]
-<paper1_jiturra_files/figure-latex/fig5-1.pdf, id=399, 867.24pt x 505.89pt>
+<paper1_jiturra_files/figure-latex/fig5-1.pdf, id=397, 867.24pt x 505.89pt>
 File: paper1_jiturra_files/figure-latex/fig5-1.pdf Graphic file (type pdf)
 <use paper1_jiturra_files/figure-latex/fig5-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig5-1.pdf  used on input line 425.
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig5-1.pdf  used on input line 439.
 (pdftex.def)             Requested size: 452.96826pt x 264.2299pt.
 
 
@@ -920,10 +944,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [27]
-<paper1_jiturra_files/figure-latex/fig-an1-1.pdf, id=560, 650.43pt x 650.43pt>
+<paper1_jiturra_files/figure-latex/fig-an1-1.pdf, id=558, 650.43pt x 650.43pt>
 File: paper1_jiturra_files/figure-latex/fig-an1-1.pdf Graphic file (type pdf)
 <use paper1_jiturra_files/figure-latex/fig-an1-1.pdf>
-Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig-an1-1.pdf  used on input line 791.
+Package pdftex.def Info: paper1_jiturra_files/figure-latex/fig-an1-1.pdf  used on input line 805.
 (pdftex.def)             Requested size: 362.37598pt x 362.38239pt.
 
 
@@ -961,7 +985,16 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[30] (./paper1_jiturra.aux)
+[30]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[31] (./paper1_jiturra.aux)
  ***********
 LaTeX2e <2024-06-01> patch level 2
 L3 programming layer <2024-05-27>
@@ -971,18 +1004,18 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 15826 strings out of 475484
- 260480 string characters out of 5773660
- 1978908 words of memory out of 5000000
- 38006 multiletter control sequences out of 15000+600000
- 635607 words of font info for 108 fonts, out of 8000000 for 9000
+ 16179 strings out of 475484
+ 265751 string characters out of 5773866
+ 1973908 words of memory out of 5000000
+ 38339 multiletter control sequences out of 15000+600000
+ 632910 words of font info for 107 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 83i,14n,93p,2481b,503s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi12.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi6.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy8.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/Users/jiturra/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on paper1_jiturra.pdf (30 pages, 267095 bytes).
+ 83i,14n,93p,2476b,503s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi12.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi6.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy8.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><c:/Users/Julio/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on paper1_jiturra.pdf (31 pages, 266966 bytes).
 PDF statistics:
- 740 PDF objects out of 1000 (max. 8388607)
- 665 compressed objects within 7 object streams
+ 743 PDF objects out of 1000 (max. 8388607)
+ 667 compressed objects within 7 object streams
  172 named destinations out of 1000 (max. 500000)
  191 words of extra memory for PDF output out of 10000 (max. 10000000)
 
