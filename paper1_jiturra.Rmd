@@ -544,22 +544,32 @@ texreg(digclas1_VW,stars = c(0.001, 0.01, 0.05, 0.1),single.row = T,symbol = "."
        caption.above = T,leading.zero = T,
        custom.coef.map = ccoef,scalebox = 0.7,
       groups = list("Social Class (Ref.= Service Class)" = 3:4, 
-                    # "Household Income (Ref.= Tertile I)"= 6:8,
-                    # "Partner's Social Class (Ref.= Service Class)" = 12:14,
       "Homogeneity x Social Class"=5:6),
       custom.gof.rows = list("Controls"=c("No",rep("Yes",3))),include.loglik = FALSE,include.aic = FALSE,
       custom.gof.names = c(NA,NA,"Num. groups","Var: Country (Intercept)","Var: Residual"),
        float.pos = "h!",
-      # file = "table1.html",
-       use.packages = F) 
+       use.packages = F)
+
+htmlreg(digclas1_VW,stars = c(0.001, 0.01, 0.05, 0.1),single.row = T,symbol = ".",
+       caption = paste("Multilevel models for network homogeneity and redistributive preferences"),
+       custom.note = "Note: Models include sampling weights. Standard errors in parentheses. %stars",
+       threeparttable = T,
+       caption.above = T,leading.zero = T,
+       custom.coef.map = ccoef,
+      groups = list("Social Class (Ref.= Service Class)" = 3:4,
+      "Homogeneity x Social Class"=5:6),
+      custom.gof.rows = list("Controls"=c("No",rep("Yes",3))),include.loglik = FALSE,include.aic = FALSE,
+      custom.gof.names = c(NA,NA,"Num. groups","Var: Country (Intercept)","Var: Residual"),
+      file = "output/tables/table01.doc"
+      )
 # performance::check_collinearity(digclas1_VW_5)
 # performance::check_model(digclas1_VW_5,check="vif")
 # performance::icc(digclas1_VW_5)
 ```
 
-The multilevel analysis results are shown in Table \@ref(tab:table1). On the one hand, I expected that network homogeneity has a weak direct association with redistributive preferences as it reveals only the overall segregation without distinction between classes. In this matter, Model 1 integrates network homogeneity and as it is previously noted in the macro associations, individuals with more homogeneous networks tend to exhibit stronger redistributive preferences. Then, this association is robust to network size, sociodemographic characteristics, and socioeconomic status in Model 2. However, after including individual social class in Model 3, the association between homogeneity and redistributive preferences loses its strength. Regarding this, I expected that the inclusion of class suppresses the association of network homogeneity as it is anchored in class position. Despite this, the focus of this study is not on the _direct_ association of network homogeneity but I hypothesized the association of homogeneity, and redistributive preferences is conditional to social class. 
+The multilevel analysis results are shown in Table \@ref(tab:table1). On the one hand, I expected that network homogeneity has a weak direct association with redistributive preferences as it reveals only the overall segregation without distinction between classes. In this matter, Model 1 integrates network homogeneity and as it is previously noted in the macro associations, more homogeneous networks tend to exhibit higher redistributive preferences. Then, the association is robust to network size, sociodemographic characteristics, and socioeconomic status in Model 2. However, after including individual social class in Model 3, the association between homogeneity and redistributive preferences loses its strength. Regarding this, I expected that the inclusion of class suppresses the association of network homogeneity as it is anchored in class position. Despite this, the focus of this study is not on the _direct_ association of network homogeneity but I hypothesized the association of homogeneity, and redistributive preferences is conditional to social class. 
 
-Thus, the interaction terms of network homogeneity and social class in Model 4 show that compared to the service class, homogeneity increases redistributive preferences in the working and intermediate classes. To illustrate this result further, Figure \@ref(fig:fig4) depicts that the increasing redistributive preferences in homogenous working and intermediate class networks are quite mild, where the differences in redistributive preferences go from 69.8 to 72.8 and from 69.4 to 70.47, respectively. In contrast, the decreasing redistributive preferences in homogeneous services class networks are more pronounced, changing from 70 when homogeneity is at its lowest point to 62.8 in fully homogeneous networks. Altogether, these results provide evidence in favor of the segregation hypothesis (H1), where the class divide in redistributive preferences becomes stronger for individuals with more homogeneous social networks.
+Thus, the interaction terms of network homogeneity and social class in Model 4 show that compared to the service class, homogeneity increases redistributive preferences in the working and intermediate classes. To illustrate this result further, Figure \@ref(fig:fig4) depicts that the changes in redistributive preferences from low to high homogenous working and intermediate class networks are quite mild, where the differences in redistributive preferences go from 69.8 to 72.8 and from 69.4 to 70.47, respectively. In contrast, the changes in redistributive preferences in homogeneous services class networks are more pronounced, changing from 70 when homogeneity is at its lowest point to 62.8 in fully homogeneous networks. Altogether, these results provide evidence in favor of the segregation hypothesis (H1), where the class differences in redistributive preferences become wider as network homogeneity increases.
 
 <!-- estimate std.error  statistic            p.value  conf.low conf.high -->
 <!--  2.976180 0.8970721  3.3176597 0.0009077501054860  1.217951  4.734409 -->
@@ -589,7 +599,7 @@ ggplot(aes(y =estimate,x=homclass3_V_res, fill=dclass3res_V, color=dclass3res_V,
        x="Network homogeneity",y="Redistributive preferences (0 - 100)") +
   theme(legend.position = "none", legend.title = element_blank())
 
-ggsave(plot = last_plot(),filename = "slides-predictions.png",device = "png",
+ggsave(plot = last_plot(),filename = "figure04.png",device = "png",
        path = here::here("output/images"),width = 2,height = 1,units = "cm",scale = 15)
 # int_homo <- digclas1_VW_7
 # plot_slopes(digclas1_VW_7, variables = "homclass3_V_res", condition = list("dclass3res_V"),draw = T)+
@@ -834,11 +844,33 @@ texreg(digclas1_macro,stars = c(0.001, 0.01, 0.05, 0.1),scalebox = 0.7,symbol = 
                            "Var: Residual"),
         # file = "table2.html",
        use.packages = F)
+
+
+htmlreg(digclas1_macro,stars = c(0.001, 0.01, 0.05, 0.1),scalebox = 0.7,symbol = ".",
+       caption = paste("Multilevel models for income inequality, network homogeneity and redistributive preferences"),
+       custom.note = " Note: Models include sampling weights and individual level controls centered within cluster (group mean).  Standard errors in parentheses. %stars",
+       caption.above = T,leading.zero = T,single.row = T,threeparttable = T,
+       custom.coef.map = ccoef,
+      groups = list("Social Class (Ref.= Service Class)" = 2:3,"Macro-level factors"=4:6, "Homogeneity x Social Class"=7:8, "Homogeneity x Social Class x Income Inequality"=10:11),
+      custom.gof.rows = list("Controls"=rep("Yes",4)),include.loglik = FALSE,include.aic = FALSE,
+      custom.gof.names = c(NA,NA,"Num. groups",
+                           "Var: Country (Intercept)",
+                           "Var: Country Homogeneity",
+                           "Var: Country Intermediate Class ",
+                           "Var: Country Working Class",
+                           "Cov: Country (Intercept), Homogeneity",
+                           "Cov: Country (Intercept), Intermediate Class ",
+                           "Cov: Country (Intercept), Working Class",
+                           "Cov: Country Homogeneity, Intermediate Class",
+                           "Cov: Country Homogeneity, Working Class",
+                           "Cov: Country Intermediate Class, Working Class",
+                           "Var: Residual"),
+        file = "output/tables/table02.doc")
 ```
 
 Table \@ref(tab:table2) presents the results of the multilevel models for income inequality. In the first place, Model 1 shows that there are no substantial differences in redistributive preferences between societies with different levels of income inequality. Subsequently, it can be seen in Model 2 that in societies with higher economic prosperity, redistributive preferences are lower regardless of the differences in income inequality between countries. At the same time, Model 3 indicates that in countries with more encompassing welfare states, redistributive preferences are higher, independently of income inequality and economic prosperity. More simply, higher redistributive preferences are observed in countries with more generous welfare states.
 
-Finally, Model 4 incorporates a three-way interaction to determine whether the conditional association of network homogeneity to social class on redistributive preferences is moderated by income inequality. At the micro level, the findings for the segregation hypothesis remain robust. At the macro level, the three-way interaction suggests that higher economic inequality weakens the interaction of network homogeneity and social class. To better illustrate this result, Figure \@ref(fig:fig5) depicts how the relationship between network homogeneity and social class is gradually mitigated as income inequality increases. In this regard, the left panel in Figure \@ref(fig:fig5) illustrates that under conditions of lower income inequality, the conditional association of network homogeneity and social class on redistributive preferences is more pronounced than in the center and left panels that respectively represent contexts of middle and higher income inequality. 
+Finally, Model 4 incorporates a three-way interaction to determine whether the conditional association of network homogeneity to social class on redistributive preferences is moderated by income inequality. At the micro level, the findings for the segregation hypothesis remain robust. At the macro level, the three-way interaction suggests that higher economic inequality weakens the interaction of network homogeneity and social class. To better illustrate this result, Figure \@ref(fig:fig5) depicts how the interaction of network homogeneity and social class is gradually mitigated as income inequality increases. In this regard, the left panel in Figure \@ref(fig:fig5) illustrates that when inequality is low, the conditional association of network homogeneity and social class on redistributive preferences is more pronounced than in the center and left panels that respectively represent contexts of middle and higher income inequality. 
 
 When taking a closer look, the differences in redistributive preferences between the working and service classes are smaller when network homogeneity is low, regardless of income inequality. Besides, higher network homogeneity is associated with larger class differences in redistributive preferences when inequality is low but progressively becomes smaller as income inequality increases. These results resonate with previous studies that have argued that the upper classes are more sensitive to income inequality, whereas the working class shows relatively stable attitudes regardless of the contextual levels of income inequality. Here, the results jointly suggest that network segregation matters in contexts of low and middle economic inequality but loses relevance in contexts of high inequality. Overall, the results presented above support the claims of the _mitigation_ hypothesis (H2), where the wider class divide in redistributive preferences in homogeneous class-based networks weakens as income inequality increases. 
 
@@ -895,13 +927,15 @@ ggsave(plot = last_plot(),filename = "slides-predict-macro.png",device = "png",
 
 <!-- _Dicussion_  Luego de la presentación de los resultados, acá se comienza a volver a los argumentos del trabajo y se relaciona cada hipótesis con los resultados. Se sugiere ir por orden, y un párrafo para cada hipótesis. -->
 
-This research examines how class-based network segregation is associated with redistributive preferences and how income inequality mitigates this relationship from a cross-national perspective. [@lindh_missing_2021;@paskov_crossclass_2022]. Despite the claimed detrimental direct association of network segregation on attachment to society [@otero_lives_2022], my first finding suggests that network segregation is rather conditional to social class in the case of redistributive preferences than directly detrimental. Here, I evidenced that higher network homogeneity in the working class increases redistributive preferences, while homogeneous networks in the service class reduce support for redistribution. 
+This research examines how class-based network segregation is associated with redistributive preferences and how income inequality mitigates this relationship from a cross-national perspective [@lindh_missing_2021;@paskov_crossclass_2022]. In contrast, to the claimed detrimental direct association of network segregation on attachment to society [@otero_lives_2022], my first finding suggests that network segregation is rather conditional to social class in the case of redistributive preferences than directly prejudicial. Here, I evidenced that higher network homogeneity in the working class increases redistributive preferences, while homogeneous networks in the service class reduce support for redistribution. 
 
-In theory, my first hypothesis was that the class divide in redistributive preferences should consider individual class positions and the structure of social networks as sources of preference formation. Hence, my finding supports the claims that social influence and particularly segregation in interpersonal networks strengthen class differences in redistributive preferences [@lee_consider_2023;@lindh_missing_2021]. Also, these results support the idea that low cross-class connections can reduce social integration and solidarity as they limit awareness about the lives of other classes [@blau_macrosociological_1977;@otero_lives_2022]. Furthermore, the 'empathy gulf' is evident in how the service class is less willing to act against inequality as a collective commitment when they are highly segregated in homogeneous upper-class environments, in contrast to the increasing redistributive pressures of the marginalized working class [@otero_power_2023;@sachweh_moral_2012]. 
+In theory, my first hypothesis was that the study of class differences in redistributive preferences should not only consider individual class positions, but the structure of social networks as sources of preference formation. Hence, my finding supports the claims that social influence and particularly segregation in interpersonal networks strengthen class differences in redistributive preferences [@lee_consider_2023;@lindh_missing_2021]. Also, these results support the idea that low cross-class connections can reduce social integration and solidarity as they limit awareness about the lives of other classes [@blau_macrosociological_1977;@otero_lives_2022]. Furthermore, the claimed 'empathy gulf' is more evident in how the service class is less willing to act against inequality as a collective commitment when they are highly segregated in homogeneous upper-class environments, in contrast to the increasing redistributive demands of the marginalized working class [@otero_power_2023;@sachweh_moral_2012]. 
 
-Besides the micro-level findings, my second hypothesis was that economic inequality moderates the conditional association of network homogeneity by social class and redistributive preferences. The results from the multilevel models indicate that income inequality _mitigates_ this relationship. In other words, the role of network segregation observed in the interaction of homogeneity and class is less pronounced in highly unequal societies. Particularly, the most notable differences in redistributive preferences are observed in homogeneous service class networks. Comparatively, preferences in working class homogeneous networks are relatively unaffected by inequality. 
+Besides the micro-level findings, my second hypothesis was that economic inequality mitigates the conditional association of network homogeneity by social class and redistributive preferences. The results from the multilevel models indicate that income inequality indeed _mitigates_ this relationship. In other words, the role of network segregation observed in the interaction of homogeneity and class is less pronounced in highly unequal societies. Particularly, the most notable differences in redistributive preferences are observed in homogeneous service class networks. In contrast, preferences in homogeneous working class networks are relatively unaffected by inequality. 
 
-Theoretically, I understand economic inequality establishes the field for class relations and conflict that are consequently crystallized in attitudes toward redistribution [@edlund_democratic_2015]. Also, I conceive class relations as networks of social connections between social classes [@blau_macrosociological_1977]. In this approach, social influence is linked to redistributive preferences as it represents the driving social force that makes class interests and values more salient as segregation increases [@lindh_missing_2021]. However, I evidenced that this prevails in societies with low and middle levels of income inequality. Hence, I interpret the observed weaker interaction between class and homogeneity in unequal countries in two non-exclusive ways. First, social networks become more stratified as inequality increases, increasing the cross-class contacts and lowering network homogeneity in the upper class. Second, an alternative explanation is that class homogeneity can reinforce the class divide in contexts where social classes have a stronger political meaning reflected in wider class differences in redistributive preferences. Thus, as class relations become segregated, so do redistributive preferences. However, I evidenced that unequal societies have weaker class differences mainly because of the higher redistributive preferences in the upper classes. Therefore, the consequences of segregated class relations on redistributive preferences become mild as the class divide in political attitudes also loses strength in unequal societies.
+Theoretically, I understand economic inequality establishes the field for class relations and conflict that are consequently crystallized in attitudes toward redistribution [@edlund_democratic_2015]. Also, I conceive class relations as networks of social connections between social classes [@blau_macrosociological_1977]. In this approach, social influence is linked to redistributive preferences as it represents the driving social force that makes class positions more salient as segregation increases [@lindh_missing_2021]. However, I evidenced that this prevails mostly in societies with low and middle levels of income inequality. 
+
+In this regard, I interpret the observed weaker interaction between homogeneity and class in unequal countries in two non-exclusive ways. First, social networks become more stratified as inequality increases, increasing the cross-class contacts and lowering network homogeneity mainly in the upper class. Here, it could be possible that higher social integration through social ties towards the intermediate and lower class positions can increase empathy and motivate solidarity towards other social classes and express greater support for redistribution. Second, an additional possible explanation could be that class homogeneity reinforces the class divide in contexts where social classes have a stronger political meaning reflected in wider class differences in redistributive preferences. In this way, as class relations become more segregated, so does the class divide in redistributive preferences. Besides, an important related fact is that unequal societies have smaller class differences mainly because of the higher redistributive preferences in the upper classes. Thus, the consequences of segregated class relations on redistributive preferences become mild as the class divide in political attitudes also loses strength in unequal societies.
 
 <!-- _conclusion_-->
 
@@ -940,7 +974,7 @@ Future research should include more fined distinctions in measuring attitudes by
 `r if (knitr::is_latex_output()){ '\\setcounter{figure}{0}'}`
 `r if (knitr::is_latex_output()){ '\\setcounter{table}{0}'}`
 
-```{r tab-an-full, results='asis'}
+```{r tab-an-1, results='asis'}
 set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
 options(ggplot2.discrete.fill = set1)
 options(ggplot2.discrete.colour = set1)
@@ -1206,7 +1240,7 @@ df <- data.frame(
 ) %>% 
   arrange(-ISEI) %>% 
   mutate("%"=p)
-kable(df,linesep = "",booktabs=TRUE,format='html',caption = "ISEI scores assigned to occupations included in the position generator instrument") %>%
+kable(df,linesep = "",booktabs=TRUE,format='latex',caption = "ISEI scores assigned to occupations included in the position generator instrument") %>%
   kable_styling(full_width = F,font_size = 10,latex_options = "HOLD_position") %>%
   column_spec(1,width = "6cm") %>%
   pack_rows("Higher-status positions", 1, 3) %>%

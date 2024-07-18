@@ -1,0 +1,229 @@
+<table class="texreg" style="margin: 10px auto;border-collapse: collapse;border-spacing: 0px;color: #000000;border-top: 2px solid #000000;">
+<caption>Multilevel models for income inequality, network homogeneity and redistributive preferences</caption>
+<thead>
+<tr>
+<th style="padding-left: 5px;padding-right: 5px;">&nbsp;</th>
+<th style="padding-left: 5px;padding-right: 5px;">Model 1</th>
+<th style="padding-left: 5px;padding-right: 5px;">Model 2</th>
+<th style="padding-left: 5px;padding-right: 5px;">Model 3</th>
+<th style="padding-left: 5px;padding-right: 5px;">Model 4</th>
+</tr>
+</thead>
+<tbody>
+<tr style="border-top: 1px solid #000000;">
+<td style="padding-left: 5px;padding-right: 5px;">Class-based network homogeneity (CWC)</td>
+<td style="padding-left: 5px;padding-right: 5px;">-0.79 (1.05)</td>
+<td style="padding-left: 5px;padding-right: 5px;">-0.79 (1.05)</td>
+<td style="padding-left: 5px;padding-right: 5px;">-0.83 (1.05)</td>
+<td style="padding-left: 5px;padding-right: 5px;">-6.29 (1.12)<sup>&#42;&#42;&#42;</sup></td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">Social Class (Ref.= Service Class)</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Intermediate Class</td>
+<td style="padding-left: 5px;padding-right: 5px;">1.53 (0.51)<sup>&#42;&#42;</sup></td>
+<td style="padding-left: 5px;padding-right: 5px;">1.53 (0.51)<sup>&#42;&#42;</sup></td>
+<td style="padding-left: 5px;padding-right: 5px;">1.53 (0.51)<sup>&#42;&#42;</sup></td>
+<td style="padding-left: 5px;padding-right: 5px;">1.97 (0.47)<sup>&#42;&#42;&#42;</sup></td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Working Class</td>
+<td style="padding-left: 5px;padding-right: 5px;">3.25 (0.76)<sup>&#42;&#42;&#42;</sup></td>
+<td style="padding-left: 5px;padding-right: 5px;">3.23 (0.76)<sup>&#42;&#42;&#42;</sup></td>
+<td style="padding-left: 5px;padding-right: 5px;">3.23 (0.76)<sup>&#42;&#42;&#42;</sup></td>
+<td style="padding-left: 5px;padding-right: 5px;">3.07 (0.69)<sup>&#42;&#42;&#42;</sup></td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">Macro-level factors</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Income inequality (Gini index)</td>
+<td style="padding-left: 5px;padding-right: 5px;">0.73 (1.46)</td>
+<td style="padding-left: 5px;padding-right: 5px;">-2.52 (1.96)</td>
+<td style="padding-left: 5px;padding-right: 5px;">2.12 (3.05)</td>
+<td style="padding-left: 5px;padding-right: 5px;">4.78 (3.20)</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GDP/capita</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">-4.36 (2.05)<sup>&#42;</sup></td>
+<td style="padding-left: 5px;padding-right: 5px;">-4.97 (1.93)<sup>&#42;</sup></td>
+<td style="padding-left: 5px;padding-right: 5px;">-4.71 (1.96)<sup>&#42;</sup></td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Size of the welfare state</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">6.91 (2.74)<sup>&#42;</sup></td>
+<td style="padding-left: 5px;padding-right: 5px;">6.19 (2.79)<sup>&#42;</sup></td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">Homogeneity x Social Class</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Homogeneity*Intermediate Class</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">7.65 (1.64)<sup>&#42;&#42;&#42;</sup></td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Homogeneity*Working Class</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">10.05 (1.49)<sup>&#42;&#42;&#42;</sup></td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">Homogeneity x Income Inequality</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">6.50 (1.13)<sup>&#42;&#42;&#42;</sup></td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">Homogeneity x Social Class x Income Inequality</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Homogeneity*Intermediate Class*Income Inequality</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">-8.81 (1.67)<sup>&#42;&#42;&#42;</sup></td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Homogeneity*Working Class*Income Inequality</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">&nbsp;</td>
+<td style="padding-left: 5px;padding-right: 5px;">-8.78 (1.47)<sup>&#42;&#42;&#42;</sup></td>
+</tr>
+<tr style="border-top: 1px solid #000000;">
+<td style="padding-left: 5px;padding-right: 5px;">Controls</td>
+<td style="padding-left: 5px;padding-right: 5px;">Yes</td>
+<td style="padding-left: 5px;padding-right: 5px;">Yes</td>
+<td style="padding-left: 5px;padding-right: 5px;">Yes</td>
+<td style="padding-left: 5px;padding-right: 5px;">Yes</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">BIC</td>
+<td style="padding-left: 5px;padding-right: 5px;">289374.39</td>
+<td style="padding-left: 5px;padding-right: 5px;">289377.58</td>
+<td style="padding-left: 5px;padding-right: 5px;">289379.85</td>
+<td style="padding-left: 5px;padding-right: 5px;">289355.90</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">Num. obs.</td>
+<td style="padding-left: 5px;padding-right: 5px;">31694</td>
+<td style="padding-left: 5px;padding-right: 5px;">31694</td>
+<td style="padding-left: 5px;padding-right: 5px;">31694</td>
+<td style="padding-left: 5px;padding-right: 5px;">31694</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">Num. groups</td>
+<td style="padding-left: 5px;padding-right: 5px;">31</td>
+<td style="padding-left: 5px;padding-right: 5px;">31</td>
+<td style="padding-left: 5px;padding-right: 5px;">31</td>
+<td style="padding-left: 5px;padding-right: 5px;">31</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">Var: Country (Intercept)</td>
+<td style="padding-left: 5px;padding-right: 5px;">84.92</td>
+<td style="padding-left: 5px;padding-right: 5px;">79.63</td>
+<td style="padding-left: 5px;padding-right: 5px;">87.78</td>
+<td style="padding-left: 5px;padding-right: 5px;">76.22</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">Var: Country Homogeneity</td>
+<td style="padding-left: 5px;padding-right: 5px;">20.24</td>
+<td style="padding-left: 5px;padding-right: 5px;">20.59</td>
+<td style="padding-left: 5px;padding-right: 5px;">20.63</td>
+<td style="padding-left: 5px;padding-right: 5px;">0.18</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">Var: Country Intermediate Class</td>
+<td style="padding-left: 5px;padding-right: 5px;">4.48</td>
+<td style="padding-left: 5px;padding-right: 5px;">4.50</td>
+<td style="padding-left: 5px;padding-right: 5px;">4.41</td>
+<td style="padding-left: 5px;padding-right: 5px;">2.61</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">Var: Country Working Class</td>
+<td style="padding-left: 5px;padding-right: 5px;">13.35</td>
+<td style="padding-left: 5px;padding-right: 5px;">13.38</td>
+<td style="padding-left: 5px;padding-right: 5px;">13.43</td>
+<td style="padding-left: 5px;padding-right: 5px;">9.69</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">Cov: Country (Intercept), Homogeneity</td>
+<td style="padding-left: 5px;padding-right: 5px;">11.79</td>
+<td style="padding-left: 5px;padding-right: 5px;">12.04</td>
+<td style="padding-left: 5px;padding-right: 5px;">16.34</td>
+<td style="padding-left: 5px;padding-right: 5px;">3.67</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">Cov: Country (Intercept), Intermediate Class</td>
+<td style="padding-left: 5px;padding-right: 5px;">-3.56</td>
+<td style="padding-left: 5px;padding-right: 5px;">-6.21</td>
+<td style="padding-left: 5px;padding-right: 5px;">-12.51</td>
+<td style="padding-left: 5px;padding-right: 5px;">-6.57</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">Cov: Country (Intercept), Working Class</td>
+<td style="padding-left: 5px;padding-right: 5px;">-13.27</td>
+<td style="padding-left: 5px;padding-right: 5px;">-15.15</td>
+<td style="padding-left: 5px;padding-right: 5px;">-21.49</td>
+<td style="padding-left: 5px;padding-right: 5px;">-14.22</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">Cov: Country Homogeneity, Intermediate Class</td>
+<td style="padding-left: 5px;padding-right: 5px;">-5.64</td>
+<td style="padding-left: 5px;padding-right: 5px;">-5.56</td>
+<td style="padding-left: 5px;padding-right: 5px;">-5.60</td>
+<td style="padding-left: 5px;padding-right: 5px;">-0.32</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">Cov: Country Homogeneity, Working Class</td>
+<td style="padding-left: 5px;padding-right: 5px;">-7.78</td>
+<td style="padding-left: 5px;padding-right: 5px;">-7.85</td>
+<td style="padding-left: 5px;padding-right: 5px;">-7.83</td>
+<td style="padding-left: 5px;padding-right: 5px;">-0.68</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">Cov: Country Intermediate Class, Working Class</td>
+<td style="padding-left: 5px;padding-right: 5px;">7.22</td>
+<td style="padding-left: 5px;padding-right: 5px;">7.22</td>
+<td style="padding-left: 5px;padding-right: 5px;">7.19</td>
+<td style="padding-left: 5px;padding-right: 5px;">4.18</td>
+</tr>
+<tr style="border-bottom: 2px solid #000000;">
+<td style="padding-left: 5px;padding-right: 5px;">Var: Residual</td>
+<td style="padding-left: 5px;padding-right: 5px;">480.42</td>
+<td style="padding-left: 5px;padding-right: 5px;">480.41</td>
+<td style="padding-left: 5px;padding-right: 5px;">480.42</td>
+<td style="padding-left: 5px;padding-right: 5px;">479.67</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td style="font-size: 0.8em;" colspan="5"> Note: Models include sampling weights and individual level controls centered within cluster (group mean).  Standard errors in parentheses. <sup>&#42;&#42;&#42;</sup>p &lt; 0.001; <sup>&#42;&#42;</sup>p &lt; 0.01; <sup>&#42;</sup>p &lt; 0.05; <sup>.</sup>p &lt; 0.1</td>
+</tr>
+</tfoot>
+</table>
