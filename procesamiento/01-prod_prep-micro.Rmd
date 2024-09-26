@@ -57,7 +57,8 @@ dfTR <- dfTR %>% rename(SEX=sex,
                         SPWRKSUP=spwrksup,
                         ATTEND=attend, 
                         RELIGGRP=religgrp,
-                        MARITAL=marital)
+                        MARITAL=marital,
+                        WRKHRS=wrkhrs)
 
 dfES$c_alphan <- NULL
 dfTR$c_alphan <- NULL
