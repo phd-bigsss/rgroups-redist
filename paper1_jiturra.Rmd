@@ -1399,9 +1399,6 @@ kable(df,linesep = "",booktabs=TRUE,format=tabformat,caption = "ISEI scores assi
 # iscotab %>% filter(ISCO08==5140) # VI
 # iscotab %>% filter(ISCO08==9111) # VII
 
-
-
-
 ```
 
 ```{r tab-an-desc, results='asis', cache=TRUE}
@@ -1476,11 +1473,38 @@ dfreg1 <- dfreg %>% dplyr::select(
   partner,
   "gini_disp",
   loggdppercapita,
-  wstate2,
-  abs_red,
-  ilo_taxrev,
-  ilo_govspe,
+  wstate2
   ) 
+
+names(dfreg1)
+varlab <- 
+c("Redistributive preferences","Class-based network homogeneity",
+  "Network size","Social class",
+  "Household Income","Education in years","Labor market status",
+  "Gender","Age in years","Has partner",
+  "Income Inequality - Gini Index",
+  "GDP/capita ",
+  "Size of the welfare state")
+
+sjlabelled::set_label(dfreg1) <- varlab
+# names(dfreg) <- varlab
+
+
+st(dfreg1,labels=T,
+   title="Descriptive Statistics for Study Variables",
+   out = "viewer",
+   digits = 2, 
+   factor.counts = F,
+   factor.numeric = F,
+   summ = list(
+     c('notNA(x)','mean(x)','sd(x)','min(x)','max(x)'),
+     c('notNA(x)','mean(x)')
+   ),
+   summ.names = list(
+     c('N','Mean','SD','Min','Max'),
+     c('Count','Percent')   
+   ))
+
 ```
 
 
