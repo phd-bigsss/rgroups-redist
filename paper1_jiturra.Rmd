@@ -15,16 +15,8 @@ lang: en-US
 #   email: jiturra@uni-bremen.de
 # abstract: | 
 #   | Rising economic inequality has increased attention on the link between class-based networks and redistributive preferences in contemporary societies. Previous research has shown that class differences in redistributive preferences tend to narrow in more unequal societies, primarily due to higher redistributive preferences within the service class. However, little is known about how economic inequality affects the relationship between class-based networks and redistributive preferences. Moreover, income inequality can reinforce the role of social class in shaping social networks, highlighting how the lower class becomes increasingly segregated from other classes. Experiencing homogeneous class-based networks leads to segregated lifeworlds, which widen the gap between social classes and reduce awareness of the living conditions and worldviews of others. Empirically, I expect that homogeneous upper-class networks may reduce empathy and solidarity toward those in need, resulting in lower support for redistribution. Conversely, homogeneous working-class networks increase marginalization and strengthen the demand for redistribution. At the country level, I anticipate that in more unequal societies, the relationship between class-based network segregation and redistributive preferences weakens, due to the narrower differences between the upper and lower classes. This study examines the relationship between class-based network segregation and redistributive preferences and how it is moderated by economic inequality, utilizing cross-national data from 31,694 individuals across 31 societies. In line with these expectations, the findings suggest that social class shapes the association between network homogeneity and redistributive preferences: working-class homogeneity drives stronger redistributive preferences, while greater upper-class homogeneity reduces support for redistribution. Additionally, the conditional relationship between network segregation and social class weakens as inequality increases, particularly in the service class. The implications for studying class-based networks and political attitudes are also discussed.
-#   | 
 #   | **Keywords**: social networks, segregation, social class, income inequality, redistributive preferences 
 output:
-  bookdown::pdf_document2:
-    template: null
-    toc: false
-    keep_tex: false
-    number_sections: true
-    pandoc_args:
-      - --template=input/mytemplate.tex #custom template para usar autores con afiliacion  
   bookdown::html_document2:
     toc: false
     code_folding: hide
@@ -32,6 +24,13 @@ output:
     toc_float:
       collapsed: false
       smooth_scroll: false
+  bookdown::pdf_document2:
+    template: null
+    toc: false
+    keep_tex: false
+    number_sections: true
+    pandoc_args:
+      - --template=input/mytemplate.tex #custom template para usar autores con afiliacion  
   bookdown::word_document2:
     reference_docx: "input/mytemplate.docx"
     toc: false
@@ -50,10 +49,8 @@ editor_options:
 geometry: "left=2.54cm,right=2.54cm,top=2.54cm,bottom=2.54cm" # márgenes de página
 header-includes:
   - \usepackage{times}   # Times New Roman
-  # - \usepackage{helvet}
   - \usepackage{endnotes}
   - \let\footnote=\endnote 
-  # - \renewcommand{\familydefault}{\sfdefault}
   - \usepackage{caption}
   - \captionsetup[figure, table]{labelfont={bf},labelformat={default},labelsep=period}
   - \usepackage{graphicx}
@@ -331,7 +328,7 @@ ggplot()+
                  ),size=3, alpha=2) +
   scale_shape_manual(values = c(4,17, 15, 16)) +
   scale_color_manual(values = c("black","#000000","#666666","#999999")) +
-  labs(x=NULL,y="Redistributive Preferences",caption="Source: International Social Survey 2017; weighted descriptive statistics; figure report country averages in redistributive preferences by social class") +
+  labs(x=NULL,y="Redistributive Preferences",caption="Source: International Social Survey 2017; descriptive statistics; figure report country averages in redistributive preferences by social class") +
   theme(legend.position = "bottom",
         legend.direction = "horizontal",
         axis.text.x=element_text(angle=45,hjust = 1,size=8),
@@ -358,7 +355,7 @@ ggplot()+
   scale_shape_manual(values = c(4,17, 15, 16)) +
   scale_color_manual(values = c("black","#000000","#666666","#999999")) +
   scale_y_continuous(limits = c(0,0.7))+
-  labs(x=NULL,y="Network homogeneity",caption="Source: International Social Survey 2017; weighted descriptive statistics; figure report country averages in network homogeneity by social class") +
+  labs(x=NULL,y="Network homogeneity",caption="Source: International Social Survey 2017; descriptive statistics; figure report country averages in network homogeneity by social class") +
   theme(legend.position = "bottom",
         legend.direction = "horizontal",
         axis.text.x=element_text(angle=45,hjust = 1,size=8),
@@ -611,7 +608,7 @@ ggplot(aes(y =estimate,x=homclass3_V_res, fill=dclass3res_V, color=dclass3res_V,
   scale_fill_manual(values=c("#323232","#989898","#CCCCCC"))+
   scale_color_manual(values=c("#323232","#989898","#CCCCCC"))+
   scale_y_continuous(limits = c(55,80))+
-  labs(caption = paste0("Source: N (individuals) = ",nobs(int_homo),"; N (countries) = ",lme4::ngrps(int_homo),". Predictive estimates with 95% confidence intervals"),
+  labs(caption = paste0("Note: N (individuals) = ",nobs(int_homo),"; N (countries) = ",lme4::ngrps(int_homo),". Predictive estimates with 95% confidence intervals"),
        x="Network homogeneity",y="Redistributive preferences (0 - 100)") +
   theme(legend.position = "none", legend.title = element_blank())
 
@@ -822,10 +819,13 @@ homo_V_gini_full2 <-
          gini_disp + 
          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
 
+
+
 digclas1_macro <- list(homo_V_gini,
                        homo_V_gini_gdp,
                        homo_V_gini_gdp_wstate2,
                        homo_V_gini_full2)
+
 
 ccoef <- list(homclass3_V_gc="Class-based network homogeneity (CWC)",
               "dclass3res_VIntermediate class (III+IV)"="Intermediate Class",
@@ -924,7 +924,7 @@ df_pred_giniD_gc %>%
   facet_wrap(~gini_disp) +
   labs(y = "Redistributive preferences (0 - 100)",
        x="Network homogeneity (CWC)",
-       caption = paste0("Source: N (Individuals) = ",nobs(homo_V_gini_full2),"; N (Countries) = ",lme4::ngrps(homo_V_gini_full2),
+       caption = paste0("Note: N (Individuals) = ",nobs(homo_V_gini_full2),"; N (Countries) = ",lme4::ngrps(homo_V_gini_full2),
                         ". Predictive estimates with 95% confidence intervals")) +
   scale_x_continuous(sec.axis = sec_axis(~ . , name = "Income inequality (post-tax) \n ", breaks = NULL, labels = NULL),
                      ) +
@@ -1104,8 +1104,10 @@ htmlreg(digclas1_VW,stars = c(0.001, 0.01, 0.05, 0.1),single.row = T,symbol = ".
        threeparttable = T,
        caption.above = T,leading.zero = T,
        custom.coef.map = ccoef,
-      groups = list("Social Class (Ref.= Service Class)" = 3:4,
-      "Homogeneity x Social Class"=5:6),
+      groups = list("Household Income (Ref.= Tertile I)"= 6:8,
+                    "Social Class (Ref.= Service Class)" = 11:12, 
+                    # "Partner's Social Class (Ref.= Service Class)" = 12:14,
+                    "Homogeneity x Social Class"=13:14),
       custom.gof.rows = list("Controls"=c("No",rep("Yes",3))),include.loglik = FALSE,include.aic = FALSE,
       custom.gof.names = c(NA,NA,"Num. groups","Var: Country (Intercept)","Var: Residual"),
       file = "output/tables/tableA1.doc"
