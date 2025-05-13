@@ -666,8 +666,8 @@ dfreg <- df1 %>% dplyr::select(
   workst,
   WEIGHT,
   region,
-  # "gini_disp"=wid_gini_disp,
-  "gini_disp"=difclass,
+  "gini_disp"=wid_gini_disp,
+  # "gini_disp"=difclass,
   "gini_mkt",
   gv_spen,
   rel_red,
@@ -740,14 +740,10 @@ homo_V_gini <-
   lmer(egal~ 
          homclass3_V_gc+
          know_total_gc+
-         # socialtrust_gc+
          dclass3res_V+
-         # dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
          female_gc+agenum_gc+
-         # age2_gc+
          partner_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
-         # union_gc+
          workst_gc+
          gini_disp +
          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
@@ -756,14 +752,10 @@ homo_V_gini_gdp <-
   lmer(egal~ 
          homclass3_V_gc+
          know_total_gc+
-         # socialtrust_gc+
          dclass3res_V+
-         # dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
          female_gc+agenum_gc+
-         # age2_gc+
          partner_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
-         # union_gc+
          workst_gc+
          gini_disp +loggdppercapita +
          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
@@ -772,14 +764,10 @@ homo_V_gini_gdp_wstate2 <-
   lmer(egal~ 
          homclass3_V_gc+
          know_total_gc+
-         # socialtrust_gc+
          dclass3res_V+
-         # dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
          female_gc+agenum_gc+
-         # age2_gc+
          partner_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
-         # union_gc+
          workst_gc+
          gini_disp +loggdppercapita + wstate2+
          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
@@ -788,14 +776,10 @@ homo_V_gini_gdp_controls <-
   lmer(egal~
          homclass3_V_gc+
          know_total_gc+
-         # socialtrust_gc+
          dclass3res_V+
-         # dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
          female_gc+agenum_gc+
-         # age2_gc+
          partner_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
-         # union_gc+
          workst_gc+
          gini_disp +loggdppercapita + wstate2 +
          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
@@ -804,14 +788,10 @@ homo_V_gini_full2 <-
   lmer(egal~ 
          homclass3_V_gc+
          know_total_gc+
-         # socialtrust_gc+
          dclass3res_V+
-         # dclass3spo_V_2_gc+dclass3spo_V_3_gc+dclass3spo_V_NA_gc+
          female_gc+agenum_gc+
-         # age2_gc+
          partner_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
-         # union_gc+
          workst_gc+
          gini_disp +loggdppercapita + wstate2+
          homclass3_V_gc*
@@ -819,13 +799,26 @@ homo_V_gini_full2 <-
          gini_disp + 
          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
 
-
+homo_V_gini_full3 <- 
+  lmer(egal~ 
+         homclass3_V_gc+
+         know_total_gc+
+         dclass3res_V+
+         female_gc+agenum_gc+
+         partner_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         workst_gc+
+         gini_disp +loggdppercapita + wstate2+
+         homclass3_V_gc*
+         dclass3res_V*
+         wstate2 +
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
 
 digclas1_macro <- list(homo_V_gini,
                        homo_V_gini_gdp,
                        homo_V_gini_gdp_wstate2,
-                       homo_V_gini_full2)
-
+                       homo_V_gini_full2,homo_V_gini_full3)
+screenreg(digclas1_macro)
 
 ccoef <- list(homclass3_V_gc="Class-based network homogeneity (CWC)",
               "dclass3res_VIntermediate class (III+IV)"="Intermediate Class",

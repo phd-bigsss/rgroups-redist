@@ -1,0 +1,36 @@
+{
+  "chart": {
+    "title": "Share of the population that were born in another country",
+    "citation": "United Nations Department of Economic and Social Affairs (2024)",
+    "originalChartUrl": "https://ourworldindata.org/grapher/migrant-stock-share?v=1&csvType=full&useColumnShortNames=false",
+    "selection": [
+      "United States",
+      "United Kingdom",
+      "South Korea",
+      "South Africa",
+      "France",
+      "Argentina"
+    ]
+  },
+  "columns": {
+    "Share of the population that was born in another country": {
+      "titleShort": "Share of the population that was born in another country",
+      "titleLong": "Share of the population that was born in another country",
+      "descriptionShort": "Immigrants as a share of the total population.",
+      "descriptionProcessing": "- Regional aggregates (such as continents, income groups and the worldwide aggregate) are based on [our definition of the continents](https://ourworldindata.org/world-region-map-definitions#our-world-in-data) and the [World Bank definition of income groups](https://ourworldindata.org/grapher/world-bank-income-groups), unless otherwise indicated. They might differ from the definitions used by the United Nations.",
+      "shortUnit": "%",
+      "unit": "%",
+      "timespan": "1990-2024",
+      "type": "Numeric",
+      "owidVariableId": 1015603,
+      "shortName": "immigrant_share_of_dest_population_all",
+      "lastUpdated": "2025-03-12",
+      "nextUpdate": "2027-03-12",
+      "citationShort": "United Nations Department of Economic and Social Affairs (2024) – with minor processing by Our World in Data",
+      "citationLong": "United Nations Department of Economic and Social Affairs (2024) – with minor processing by Our World in Data. “Share of the population that was born in another country” [dataset]. United Nations Department of Economic and Social Affairs, “International Migrant Stock 2024 - POP/DB/MIG/Stock/Rev.2024” [original data].",
+      "fullMetadata": "https://api.ourworldindata.org/v1/indicators/1015603.metadata.json"
+    }
+  },
+  "dateDownloaded": "2025-05-12",
+  "activeFilters": {}
+}

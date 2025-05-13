@@ -1,0 +1,36 @@
+{
+  "chart": {
+    "title": "Unemployment rate",
+    "subtitle": "Unemployment refers to the share of the labor force that is without work but available for and seeking employment.",
+    "citation": "International Labour Organization (via World Bank) (2025)",
+    "originalChartUrl": "https://ourworldindata.org/grapher/unemployment-rate?v=1&csvType=full&useColumnShortNames=false",
+    "selection": [
+      "Central African Republic",
+      "Netherlands",
+      "Bangladesh",
+      "United States",
+      "Canada",
+      "Colombia",
+      "Sweden",
+      "China"
+    ]
+  },
+  "columns": {
+    "Unemployment, total (% of total labor force) (modeled ILO estimate)": {
+      "titleShort": "Unemployment, total (% of total labor force) (modeled ILO estimate)",
+      "titleLong": "Unemployment, total (% of total labor force) (modeled ILO estimate)",
+      "unit": "modeled ILO estimate",
+      "timespan": "1991-2023",
+      "type": "Numeric",
+      "owidVariableId": 1008905,
+      "shortName": "sl_uem_totl_zs",
+      "lastUpdated": "2025-01-24",
+      "nextUpdate": "2026-01-24",
+      "citationShort": "International Labour Organization (via World Bank) (2025) – processed by Our World in Data",
+      "citationLong": "International Labour Organization (via World Bank) (2025) – processed by Our World in Data. “Unemployment, total (% of total labor force) (modeled ILO estimate)” [dataset]. International Labour Organization (via World Bank), “World Development Indicators” [original data].",
+      "fullMetadata": "https://api.ourworldindata.org/v1/indicators/1008905.metadata.json"
+    }
+  },
+  "dateDownloaded": "2025-05-12",
+  "activeFilters": {}
+}

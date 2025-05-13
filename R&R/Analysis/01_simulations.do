@@ -4,7 +4,7 @@
 * It stores the estimated Gini effect and whether it was statistically significant
 *************************************************************
 
-program drop mlsim3
+*program drop mlsim3, clear
 program define mlsim3, rclass
     version 11
     syntax [, obs(integer 20) ]
@@ -71,13 +71,34 @@ clear
 save power_sim_gini.dta, emptyok replace
 
 set seed 7654321
-foreach n in 31 {
+foreach n in 90 {
     di "Running simulation for `n' countries..."
 
-    simulate pval=r(pval) detected=r(detected) effect=r(effect), reps(10): ///
+    simulate pval=r(pval) detected=r(detected) effect=r(effect), reps(1000): ///
         mlsim2, obs(`n')
 
     gen ncountries = `n'
     append using power_sim_gini.dta
-    save power_sim_gini.dta, replace
+    save power_sim_gini_90.dta, replace
 }
+
+
+*************************************************************
+* PLOT: POWER AS A FUNCTION OF ESTIMATED EFFECT SIZE
+* - Bins the estimated Gini effect sizes
+* - Calculates proportion of significant results per bin
+* - Plots power curves for each sample size
+*************************************************************
+
+use power_sim_gini.dta, clear
+gen effect_bin = round(effect, 0.05)
+collapse (mean) power=detected, by(effect_bin ncountries)
+
+twoway ///
+(line power effect_bin if ncountries==31, lcolor(gs6) lpattern(solid)) ///
+(line power effect_bin if ncountries==31, lcolor(blue) lpattern(dash)), ///
+legend(order(1 "31 countries (solid)" 2 "31 countries (dash)")) ///
+title("Power to Detect Gini Effect (31 Countries)") ///
+xtitle("Estimated Gini Coefficient") ///
+ytitle("Power (Proportion Significant)")
+
