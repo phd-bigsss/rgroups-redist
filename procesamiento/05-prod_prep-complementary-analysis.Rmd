@@ -38,7 +38,7 @@ ggplot2::theme_update(text=ggplot2::element_text(size=15,  family="serif"))
 
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal,texreg,MLMusingR,lme4)  
-rm(list=ls())
+# rm(list=ls())
 
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 dfreg <- df1 %>% dplyr::select(
@@ -112,8 +112,9 @@ ccoef <- list(homclass3_V_res="Class-based network homogeneity",
               "dclass3res_VWorking Class (V+VI+VII):n_high"= "Working x Tie to Service class"
               )
 
-screenreg(digclas1_VW,stars = c(0.001, 0.01, 0.05, 0.1),single.row = F,symbol = ".",
-       caption = paste("Multilevel models for network homogeneity and redistributive preferences"),
+htmlreg(digclas1_VW,stars = c(0.001, 0.01, 0.05, 0.1),single.row = F,symbol = ".",
+       file = "output/tables/tableSX.html",
+       caption = paste("Table SX: Multilevel models for class-based profiles, social classs and redistributive preferences"),
        custom.note = "Note: Standard errors in parentheses. %stars",
        threeparttable = T,
        caption.above = T,leading.zero = T,
@@ -130,11 +131,19 @@ screenreg(digclas1_VW,stars = c(0.001, 0.01, 0.05, 0.1),single.row = F,symbol = 
 
 # Country-level
 
-```{r}
+```{r data-prep}
+set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
+options(ggplot2.discrete.fill = set1)
+options(ggplot2.discrete.colour = set1)
+ggplot2::theme_set(ggplot2::theme_bw())
+ggplot2::theme_update(text=ggplot2::element_text(size=15,  family="serif"))
+
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal,texreg,MLMusingR,lme4)  
+# rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 data_corruption <- xlsx::read.xlsx("input/data/original/coruption-data/CPI2017_Full_DataSet-1801.xlsx",sheetIndex = 1)
 data_corruption$year <- 2017
-
 data_unionden <- haven::read_dta("input/data/original/union-density/union-density.dta") 
 data_migration <- data.table::fread("input/data/original/migration/migrant-stock-share.csv")
 data_unemployment <- data.table::fread("input/data/original/unemployment-world-bank/unemployment-rate.csv")
@@ -170,18 +179,17 @@ data_unemployment %>%
 
 democracy <- 
 data_qog %>% 
-  dplyr::select(country=cname,year=year,van_index,p_polity2) %>% 
+  dplyr::select(country=cname,year=year,van_index,p_polity2,fe_etfra) %>% 
   mutate(ccode=countrycode::countrycode(country,origin = "country.name",destination = "iso3n"),
          country=countrycode::countrycode(ccode,origin = "iso3n",destination = "country.name"),
          year=as.numeric(year)) 
 
 vdem <- 
 data_vdem %>% 
-  dplyr::select(country=country_name,year=year,v2x_delibdem,v2x_polyarchy,v2x_egal) %>% 
+  dplyr::select(country=country_name,year=year,v2x_delibdem,v2x_polyarchy,v2x_egal,v2catrauni) %>% 
   mutate(ccode=countrycode::countrycode(country,origin = "country.name",destination = "iso3n"),
          country=countrycode::countrycode(ccode,origin = "iso3n",destination = "country.name"),
          year=as.numeric(year)) 
-
 
 additional_macro <- 
 union_den %>% 
@@ -214,7 +222,9 @@ additional_macro_2000to2018 %>%
             p_polity2=mean(p_polity2,na.rm=T),            
             v2x_delibdem=mean(v2x_delibdem ,na.rm=T),
             v2x_polyarchy=mean(v2x_polyarchy ,na.rm=T),
-            v2x_egal = mean(v2x_egal,na.rm=T)
+            v2x_egal = mean(v2x_egal,na.rm=T),
+            fe_etfra = mean(fe_etfra,na.rm=T),
+            v2catrauni = mean(v2catrauni,na.rm=T)
             )
 summary(additional_macro_avg)
 save(additional_macro_avg,file ="input/data/proc/additional_macro_avg.RData")
@@ -234,9 +244,42 @@ pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,s
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 load(file ="input/data/proc/additional_macro_avg.RData")
 
+df1$idnum <- rownames(df1)
+
+dfid <- df1 %>% dplyr::select(
+  idnum,
+  redist,prefineq,
+  egal = egal2,
+  dclass3res_V,
+  homclass3_V_res,
+  know_total,
+  Q03pcm,
+  edyears,
+  female,
+  agenum,
+  partner,
+  workst,
+  WEIGHT,
+  region,
+  "gini_disp"=wid_gini_disp,
+  "gini_mkt",
+  gv_spen,
+  rel_red,
+  abs_red,
+  ilo_taxrev,
+  ilo_govspe,
+  d10d1=wid_p90p10,
+  wid_p90p50,
+  top10=wid_sharetop10,
+  rgdpna,
+  gdppercapita,
+  country2, country, country3,
+) %>% na.omit()
+
 # Merge new macro-data
 df1 <- df1 %>% left_join(.,additional_macro_avg,by ="ccode")
 dfreg <- df1 %>% dplyr::select(
+  idnum,
   redist,prefineq,
   egal = egal2,
   dclass3res_V,
@@ -263,7 +306,11 @@ dfreg <- df1 %>% dplyr::select(
   rgdpna,
   gdppercapita,
   cpi,
-  mig_share,union_den,van_index,v2x_delibdem,v2x_polyarchy,v2x_egal,p_polity2,
+  mig_share,
+  union_den,
+  v2x_polyarchy,
+  unemployment_rate,
+  v2catrauni,
   country2, country, country3,
 ) %>%
   filter(country2 != "SVN") %>% 
@@ -271,7 +318,8 @@ dfreg <- df1 %>% dplyr::select(
     mutate(loggdppercapita=scale(gdppercapita/1000),
          edyears2 = edyears ^ 2,
          age2 = agenum ^ 2, 
-         gini_disp=scale(gini_disp))
+         gini_disp=scale(gini_disp)) %>% 
+  filter(idnum %in%  dfid$idnum)
 
 dfreg$wstate2 <- scale(scale(dfreg$abs_red) + scale(dfreg$ilo_taxrev) + scale(dfreg$ilo_govspe))
 
@@ -303,33 +351,6 @@ dfreg <- dplyr::select(dfreg,-c(female_1,female_2,
                                 ))
 
 ## Model -  EGP3 - DIGCLASS - V to Working -----------------------------$
-homo_V_gini <- 
-  lmer(egal~ 
-         homclass3_V_gc+
-         know_total_gc+
-         dclass3res_V+
-         female_gc+agenum_gc+
-         partner_gc+
-         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
-         workst_gc+
-         gini_disp +
-         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
-
-screenreg(homo_V_gini)
-homo_V_gini_gdp <- 
-  lmer(egal~ 
-         homclass3_V_gc+
-         know_total_gc+
-         dclass3res_V+
-         female_gc+agenum_gc+
-         partner_gc+
-         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
-         workst_gc+
-         gini_disp +loggdppercapita +
-         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
-
-screenreg(homo_V_gini_gdp)
-
 homo_V_gini_gdp_wstate2 <- 
   lmer(egal~ 
          homclass3_V_gc+
@@ -341,8 +362,6 @@ homo_V_gini_gdp_wstate2 <-
          workst_gc+
          gini_disp +loggdppercapita + wstate2+
          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
-
-screenreg(homo_V_gini_gdp_wstate2)
 
 homo_V_gini_gdp_cpi <-
   lmer(egal~
@@ -356,8 +375,6 @@ homo_V_gini_gdp_cpi <-
          gini_disp +loggdppercapita + wstate2 + cpi +
          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
 
-screenreg(homo_V_gini_gdp_cpi)
-
 homo_V_gini_gdp_mig <-
   lmer(egal~
          homclass3_V_gc+
@@ -369,8 +386,6 @@ homo_V_gini_gdp_mig <-
          workst_gc+
          gini_disp +loggdppercapita + wstate2 + mig_share +
          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
-
-screenreg(homo_V_gini_gdp_mig)
 
 homo_V_gini_gdp_union <-
   lmer(egal~
@@ -384,9 +399,7 @@ homo_V_gini_gdp_union <-
          gini_disp +loggdppercapita + wstate2 +union_den + 
          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
 
-screenreg(homo_V_gini_gdp_union)
-
-homo_V_gini_gdp_van_index <-
+homo_V_gini_gdp_unempl <-
   lmer(egal~
          homclass3_V_gc+
          know_total_gc+
@@ -395,22 +408,9 @@ homo_V_gini_gdp_van_index <-
          partner_gc+
          edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          workst_gc+
-         gini_disp +loggdppercapita + wstate2 + van_index +
+         gini_disp +loggdppercapita + wstate2 +unemployment_rate + 
          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
-screenreg(homo_V_gini_gdp_van_index)
 
-homo_V_gini_gdp_v2x_delibdem <-
-  lmer(egal~
-         homclass3_V_gc+
-         know_total_gc+
-         dclass3res_V+
-         female_gc+agenum_gc+
-         partner_gc+
-         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
-         workst_gc+
-         gini_disp +loggdppercapita + wstate2 + v2x_delibdem +
-         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
-screenreg(homo_V_gini_gdp_v2x_delibdem)
 homo_V_gini_gdp_v2x_polyarchy <-
   lmer(egal~
          homclass3_V_gc+
@@ -423,34 +423,6 @@ homo_V_gini_gdp_v2x_polyarchy <-
          gini_disp +loggdppercapita + wstate2 + v2x_polyarchy +
          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
 
-homo_V_gini_gdp_v2x_egal <-
-  lmer(egal~
-         homclass3_V_gc+
-         know_total_gc+
-         dclass3res_V+
-         female_gc+agenum_gc+
-         partner_gc+
-         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
-         workst_gc+
-         gini_disp +loggdppercapita + wstate2 + v2x_egal +
-         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
-
-screenreg(homo_V_gini_gdp_v2x_egal)
-
-homo_V_gini_gdp_p_polity2 <-
-  lmer(egal~
-         homclass3_V_gc+
-         know_total_gc+
-         dclass3res_V+
-         female_gc+agenum_gc+
-         partner_gc+
-         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
-         workst_gc+
-         gini_disp +loggdppercapita + wstate2 + p_polity2 +
-         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
-
-screenreg(homo_V_gini_gdp_p_polity2)
-
 homo_V_gini_full2 <- 
   lmer(egal~ 
          homclass3_V_gc+
@@ -458,34 +430,13 @@ homo_V_gini_full2 <-
          dclass3res_V+
          female_gc+agenum_gc+
          partner_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+         
          workst_gc+
          gini_disp +loggdppercapita + wstate2+
          homclass3_V_gc*
          dclass3res_V*
          gini_disp + 
          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
-
-screenreg(homo_V_gini_full2)
-
-homo_V_gini_full2.1 <- 
-  lmer(egal~ 
-         homclass3_V_gc+
-         know_total_gc+
-         dclass3res_V+
-         female_gc+agenum_gc+
-         partner_gc+
-         workst_gc+
-         gini_disp +loggdppercapita + wstate2+
-         homclass3_V_gc*
-         dclass3res_V*
-         gini_disp + 
-         homclass3_V_gc*
-         dclass3res_V*
-         wstate2 +          
-         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
-
-screenreg(homo_V_gini_full2.1)
-
 
 homo_V_gini_full3 <- 
   lmer(egal~ 
@@ -494,13 +445,312 @@ homo_V_gini_full3 <-
          dclass3res_V+
          female_gc+agenum_gc+
          partner_gc+
-         # edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
          workst_gc+
          gini_disp +loggdppercapita + wstate2+
          homclass3_V_gc*
          dclass3res_V*
-         gini_disp + mig_share + union_den + p_polity2 + cpi+ 
+         gini_disp + mig_share + union_den +unemployment_rate + v2x_polyarchy + cpi+ 
          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
-screenreg(homo_V_gini_full3)
+
+models_macro <- list(homo_V_gini_gdp_wstate2,
+                     homo_V_gini_gdp_cpi,
+                     homo_V_gini_gdp_mig,
+                     homo_V_gini_gdp_union,
+                     homo_V_gini_gdp_unempl,
+                     homo_V_gini_gdp_v2x_polyarchy,
+                     homo_V_gini_full2,
+                     homo_V_gini_full3
+                     )
+
+screenreg(models_macro)
+
+ccoef <- list(homclass3_V_gc="Class-based network homogeneity (CWC)",
+              "dclass3res_VIntermediate class (III+IV)"="Intermediate Class",
+              "dclass3res_VWorking Class (V+VI+VII)"="Working Class",
+              "gini_disp" = "Income inequality (Gini index)",
+              loggdppercapita = "GDP/capita",
+              wstate2="Size of the welfare state",
+              cpi = "Corruption Index",
+              mig_share = "Migration (pop %)",
+              union_den = "Union density",
+              unemployment_rate = "Unemployment rate",
+              v2x_polyarchy = "Democracy (polyarchy index)",
+              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV)" = "Homogeneity*Intermediate Class",
+              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII)" = "Homogeneity*Working Class",
+              "homclass3_V_gc:gini_disp"= "Homogeneity x Income Inequality",
+              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):gini_disp" = "Homogeneity*Intermediate Class*Income Inequality",
+              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):gini_disp" = "Homogeneity*Working Class*Income Inequality")
+
+htmlreg(models_macro,stars = c(0.001, 0.01, 0.05, 0.1),scalebox = 0.7,symbol = ".",
+       file = "output/tables/tableSXX.html",
+       caption = paste("Table SX: Robustness analysis of the multilevel models for income inequality, network homogeneity and redistributive preferences"),
+       custom.note = " Note: All individual level controls centered within cluster (group mean).  Standard errors in parentheses. %stars",
+       caption.above = T,leading.zero = T,single.row = F,threeparttable = T,
+       custom.coef.map = ccoef,
+      # groups = list("Social Class (Ref.= Service Class)" = 2:3,"Homogeneity x Social Class"=7:8),
+      # custom.gof.rows = list("Controls"=rep("Yes",4)),
+      include.loglik = FALSE,include.aic = FALSE,
+      custom.gof.names = c(NA,NA,"Num. groups",
+                           "Var: Country (Intercept)",
+                           "Var: Country Homogeneity",
+                           "Var: Country Intermediate Class ",
+                           "Var: Country Working Class",
+                           "Cov: Country (Intercept), Homogeneity",
+                           "Cov: Country (Intercept), Intermediate Class ",
+                           "Cov: Country (Intercept), Working Class",
+                           "Cov: Country Homogeneity, Intermediate Class",
+                           "Cov: Country Homogeneity, Working Class",
+                           "Cov: Country Intermediate Class, Working Class",
+                           "Var: Residual")
+      )
+
 ```
+
+```{r}
+homo_V_wstate_full2 <- 
+  lmer(egal~ 
+         homclass3_V_gc+
+         know_total_gc+
+         dclass3res_V+
+         female_gc+agenum_gc+
+         partner_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+         
+         workst_gc+
+         gini_disp +loggdppercapita + wstate2+
+         homclass3_V_gc*
+         dclass3res_V*
+         wstate2 + 
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+
+homo_V_gini_wstate <- 
+  lmer(egal~ 
+         homclass3_V_gc+
+         know_total_gc+
+         dclass3res_V+
+         female_gc+agenum_gc+
+         partner_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+         
+         workst_gc+
+         gini_disp +loggdppercapita + wstate2+
+         homclass3_V_gc*dclass3res_V*gini_disp + 
+         homclass3_V_gc*dclass3res_V*wstate2 + 
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+
+models_interactions<- list(homo_V_gini_full2,
+               homo_V_wstate_full2,
+               homo_V_gini_wstate)
+
+
+ccoef <- list(homclass3_V_gc="Class-based network homogeneity (CWC)",
+              "dclass3res_VIntermediate class (III+IV)"="Intermediate Class",
+              "dclass3res_VWorking Class (V+VI+VII)"="Working Class",
+              "gini_disp" = "Income inequality (Gini index)",
+              loggdppercapita = "GDP/capita",
+              wstate2="Size of the welfare state",
+              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV)" = "Homogeneity*Intermediate Class",
+              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII)" = "Homogeneity*Working Class",
+              "homclass3_V_gc:gini_disp"= "Homogeneity x Income Inequality",
+              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):gini_disp" = "Homogeneity*Intermediate Class*Income Inequality",
+              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):gini_disp" = "Homogeneity*Working Class*Income Inequality",
+              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV)" = "Homogeneity*Intermediate Class",
+              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII)" = "Homogeneity*Working Class",
+              "homclass3_V_gc:wstate2"= "Homogeneity x Welfare State",
+              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):wstate2" = "Homogeneity*Intermediate Class*Welfare State",
+              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):wstate2" = "Homogeneity*Working Class*Welfare State")
+
+htmlreg(models_interactions,stars = c(0.001, 0.01, 0.05, 0.1),scalebox = 0.7,symbol = ".",
+       file = "output/tables/tableSXXX.html",
+       caption = paste("Table SX: Robustness analysis of the multilevel models for income inequality, network homogeneity and redistributive preferences"),
+       custom.note = " Note: All individual level controls centered within cluster (group mean).  Standard errors in parentheses. %stars",
+       caption.above = T,leading.zero = T,single.row = F,threeparttable = T,
+       custom.coef.map = ccoef,
+      # groups = list("Social Class (Ref.= Service Class)" = 2:3,"Homogeneity x Social Class"=7:8),
+      # custom.gof.rows = list("Controls"=rep("Yes",4)),
+      include.loglik = FALSE,include.aic = FALSE,
+      custom.gof.names = c(NA,NA,"Num. groups",
+                           "Var: Country (Intercept)",
+                           "Var: Country Homogeneity",
+                           "Var: Country Intermediate Class ",
+                           "Var: Country Working Class",
+                           "Cov: Country (Intercept), Homogeneity",
+                           "Cov: Country (Intercept), Intermediate Class ",
+                           "Cov: Country (Intercept), Working Class",
+                           "Cov: Country Homogeneity, Intermediate Class",
+                           "Cov: Country Homogeneity, Working Class",
+                           "Cov: Country Intermediate Class, Working Class",
+                           "Var: Residual")
+      )
+```
+
+# Power analysis 
+
+```{r}
+set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
+options(ggplot2.discrete.fill = set1)
+options(ggplot2.discrete.colour = set1)
+ggplot2::theme_set(ggplot2::theme_bw())
+ggplot2::theme_update(text=ggplot2::element_text(size=15,  family="serif"))
+options(scipen=999)
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal,texreg,MLMusingR,lme4)  
+# rm(list=ls()) 
+
+load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
+load(file ="input/data/proc/additional_macro_avg.RData")
+
+df1$idnum <- rownames(df1)
+
+dfid <- df1 %>% dplyr::select(
+  idnum,
+  redist,prefineq,
+  egal = egal2,
+  dclass3res_V,
+  homclass3_V_res,
+  know_total,
+  Q03pcm,
+  edyears,
+  female,
+  agenum,
+  partner,
+  workst,
+  WEIGHT,
+  region,
+  "gini_disp"=wid_gini_disp,
+  "gini_mkt",
+  gv_spen,
+  rel_red,
+  abs_red,
+  ilo_taxrev,
+  ilo_govspe,
+  d10d1=wid_p90p10,
+  wid_p90p50,
+  top10=wid_sharetop10,
+  rgdpna,
+  gdppercapita,
+  country2, country, country3,
+) %>% na.omit()
+
+# Merge new macro-data
+df1 <- df1 %>% left_join(.,additional_macro_avg,by ="ccode")
+dfreg <- df1 %>% dplyr::select(
+  idnum,
+  redist,prefineq,
+  egal = egal2,
+  dclass3res_V,
+  homclass3_V_res,
+  know_total,
+  Q03pcm,
+  edyears,
+  female,
+  agenum,
+  partner,
+  workst,
+  WEIGHT,
+  region,
+  "gini_disp"=wid_gini_disp,
+  "gini_mkt",
+  gv_spen,
+  rel_red,
+  abs_red,
+  ilo_taxrev,
+  ilo_govspe,
+  d10d1=wid_p90p10,
+  wid_p90p50,
+  top10=wid_sharetop10,
+  rgdpna,
+  gdppercapita,
+  cpi,
+  mig_share,
+  union_den,
+  v2x_polyarchy,
+  unemployment_rate,
+  v2catrauni,
+  country2, country, country3,
+) %>%
+  filter(country2 != "SVN") %>% 
+  # na.omit() %>%
+    mutate(loggdppercapita=scale(gdppercapita/1000),
+         edyears2 = edyears ^ 2,
+         age2 = agenum ^ 2, 
+         gini_disp=scale(gini_disp)) %>% 
+  filter(idnum %in%  dfid$idnum)
+
+dfreg$wstate2 <- scale(scale(dfreg$abs_red) + scale(dfreg$ilo_taxrev) + scale(dfreg$ilo_govspe))
+
+library(simr)
+
+homo_V_gini_gdp_wstate2 <- 
+  lmer(egal~ 
+         gini_disp +
+         homclass3_V_gc+
+         know_total_gc+
+         dclass3res_V+
+         female_gc+agenum_gc+
+         partner_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         workst_gc+
+         gini_disp +loggdppercapita + wstate2+
+         (1|country2),data=dfreg,weights = WEIGHT)
+
+coef<- summary(homo_V_gini_gdp_wstate2)$coef[,"Estimate"]
+fixed<- as.numeric(coef)
+varcomp<- as.data.frame(lme4::VarCorr(homo_V_gini_gdp_wstate2))
+varcomp$vcov[1] # var country
+varcomp$sdcor[2] # var individual
+
+# fixed intercept and slope
+fixed <- fixed
+# random intercept and slope variance-covariance matrix
+# For class
+rand <- varcomp$vcov[1]
+
+# Exrtact the residual sd
+s <- varcomp$sdcor[2] 
+
+model <- makeLmer(egal~
+         gini_disp +            
+         homclass3_V_gc+
+         know_total_gc+
+         dclass3res_V+
+         female_gc+agenum_gc+
+         partner_gc+
+         edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+
+         workst_gc+
+         loggdppercapita + wstate2+ (1|country2), fixef=fixed, VarCorr=rand, sigma=s, data=dfreg)
+model
+
+
+# For a range of effects sizes 2.2, + 1SD, +2SD, -1SD, -2 SD 
+
+
+model_ext_country <- extend(model, along = "country2", n =200)
+
+p_sim_gini_disp <- 
+powerSim(model_ext_country, 
+         test=fixed("gini_disp",method = c("t")),
+         # along="country2",
+         # breaks = c(10,20,30,40,50,60,70,90,100),
+         nsim=1,
+         alpha=.05,
+         progress=TRUE);p_sim_gini_disp
+
+
+
+p_curve_gini_disp <- powerCurve(model_ext_country, 
+                            test=fixed("gini_disp",method = c("t")), 
+                            along="country2",
+                            breaks = c(10,20,30,40,50,60,70,90,100),
+                            nsim=5*60,
+                            alpha=.05,
+                            progress=TRUE)
+```
+
+
+- determine effect sizes (small, medium, high)
+- determine number of clusters
+- Simulate with 1000, 5000 and 10.000 reps
+
 
