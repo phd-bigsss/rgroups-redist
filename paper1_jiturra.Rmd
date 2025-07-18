@@ -513,7 +513,9 @@ dfreg <- df1 %>% dplyr::select(
          age2 = agenum ^ 2) %>%
   # filter(oecd == "OECD") %>%
   filter(country2 != "SVN") 
+dfreg$egal <- as.numeric(scale(dfreg$egal))
 
+                                                                    
 # dfreg$dclass3spo_V <- car::recode(dfreg$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
 # df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
 # sjPlot::tab_xtab(df1$dclass3spo_V,df1$PARTLIV)
@@ -528,7 +530,7 @@ digclas1_VW_3 <- update(digclas1_VW_1, . ~ . + dclass3res_V)
 
 digclas1_VW_7 <- update(digclas1_VW_3, . ~ . +dclass3res_V*homclass3_V_res)
 digclas1_VW <- list(digclas1_VW_0,digclas1_VW_1,
-                    # digclas1_VW_3,
+                    digclas1_VW_3,
                     # digclas1_VW_4,
                     #digclas1_VW_5,
                     # digclas1_VW_6,
@@ -552,7 +554,7 @@ ccoef <- list(homclass3_V_res="Class-based network homogeneity",
               "homclass3_V_res:dclass3res_VIntermediate class (III+IV)" = "Homogeneity*Intermediate Class",
               "homclass3_V_res:dclass3res_VWorking Class (V+VI+VII)" = "Homogeneity*Working Class")
 
-
+screenreg(digclas1_VW)
 texreg(digclas1_VW,stars = c(0.001, 0.01, 0.05, 0.1),single.row = T,symbol = ".",
        caption = paste("(\\#tab:table1)","Multilevel models for network homogeneity and redistributive preferences"),
        custom.note = "\\item Note: Models include sampling weights. \\item Standard errors in parentheses. %stars",threeparttable = T,
@@ -594,8 +596,10 @@ These results confirm previous findings on how social influence processes throug
 int_homo <- digclas1_VW_7
 df_pred1 <- 
   predictions(int_homo, condition = c("homclass3_V_res","dclass3res_V"),
-              newdata = datagrid(homclass3_V_res = seq(min(dfreg$homclass3_V_res), max(dfreg$homclass3_V_res), by= 0.1),
-                                 dclass3res_V = levels(dfreg$dclass3res_V)))
+              newdata = datagrid(homclass3_V_res = seq(min(dfreg$homclass3_V_res),
+                                                       max(dfreg$homclass3_V_res), by= 0.2),
+                                 dclass3res_V = levels(dfreg$dclass3res_V),
+                                 know_total = mean(dfreg$know_total)))
 # names(df_pred1) 
 df_pred1 %>% 
 ggplot(aes(y =estimate,x=homclass3_V_res, fill=dclass3res_V, color=dclass3res_V,ymin=conf.low, ymax=conf.high)) +
@@ -607,9 +611,9 @@ ggplot(aes(y =estimate,x=homclass3_V_res, fill=dclass3res_V, color=dclass3res_V,
                      c("Working Class","Intermediate Class","Service Class"))) +
   scale_fill_manual(values=c("#323232","#989898","#CCCCCC"))+
   scale_color_manual(values=c("#323232","#989898","#CCCCCC"))+
-  scale_y_continuous(limits = c(55,80))+
+  # scale_y_continuous(limits = c(55,80))+
   labs(caption = paste0("Note: N (individuals) = ",nobs(int_homo),"; N (countries) = ",lme4::ngrps(int_homo),". Predictive estimates with 95% confidence intervals"),
-       x="Network homogeneity",y="Redistributive preferences (0 - 100)") +
+       x="Network homogeneity (z-score)",y="Redistributive preferences (z-score)") +
   theme(legend.position = "none", legend.title = element_blank())
 
 ggsave(plot = last_plot(),filename = "figure04.png",device = "png",
@@ -652,22 +656,17 @@ dfreg <- df1 %>% dplyr::select(
   # starts_with("dclass3"),
   # starts_with("homclass"),
   dclass3res_V,
-  # dclass3spo_V, 
   homclass3_V_res,
   know_total,
-  # socialtrust,
   Q03pcm,
   edyears,
   female,
   agenum,
-  # religion,
   partner,
-  # union,
   workst,
   WEIGHT,
   region,
   "gini_disp"=wid_gini_disp,
-  # "gini_disp"=difclass,
   "gini_mkt",
   gv_spen,
   rel_red,
@@ -682,15 +681,19 @@ dfreg <- df1 %>% dplyr::select(
   oecd,
   country2, country, country3,
 ) %>%
-  # filter(oecd == "OECD") %>%
   filter(country2 != "SVN") %>% 
   na.omit() %>% 
     mutate(loggdppercapita=scale(gdppercapita/1000),
-         edyears2 = edyears ^ 2,
          age2 = agenum ^ 2, 
          gini_disp=scale(gini_disp))
 
 dfreg$wstate2 <- scale(scale(dfreg$abs_red) + scale(dfreg$ilo_taxrev) + scale(dfreg$ilo_govspe))
+dfreg$egal <- as.numeric(scale(dfreg$egal))
+# dfreg$homclass3_V_res <- as.numeric(scale(dfreg$homclass3_V_res))
+# dfreg$know_total <- as.numeric(scale(dfreg$know_total))
+# dfreg$agenum <- as.numeric(scale(dfreg$agenum))
+# dfreg$edyears <- as.numeric(scale(dfreg$edyears))
+
 
 # Variable Group-Centering ------------------------------------------------$
 dfreg <- 
@@ -818,6 +821,7 @@ digclas1_macro <- list(homo_V_gini,
                        homo_V_gini_gdp,
                        homo_V_gini_gdp_wstate2,
                        homo_V_gini_full2,homo_V_gini_full3)
+
 screenreg(digclas1_macro)
 
 ccoef <- list(homclass3_V_gc="Class-based network homogeneity (CWC)",
@@ -1279,9 +1283,6 @@ ggsave(plot = arrangeGrob(fig_homo_gini,fig_egal_homo,
 
 ggsave(plot = arrangeGrob(fig_homodiff_gini, nrow = 1),filename = "slides-bivar-homodiff.png",device = "png",
        path = here::here("output/images"),width = 1,height = 1,units = "cm",scale = 17)
-
-
-
 ```
 
 ```{r tab-an-postgen, echo=FALSE, cache=TRUE, results='asis'}
