@@ -74,7 +74,6 @@ dfreg <- df1 %>% dplyr::select(
 dfreg <- na.omit(dfreg)
 dfreg$egal <- scale(dfreg$egal)
 
-
 dfreg$n_low <- dfreg$n_low/4 
 dfreg$n_middle <- dfreg$n_middle/3
 dfreg$n_high <- dfreg$n_high/3
@@ -118,9 +117,8 @@ ggplot(aes(y =estimate,x=n_low, fill=dclass3res_V, color=dclass3res_V,ymin=conf.
   scale_y_continuous(limits = c(-0.5,0.5))+
   labs(
     # caption = paste0("Note: N (individuals) = ",nobs(digclas1_VW_11),"; N (countries) = ",lme4::ngrps(digclas1_VW_11),". Predictive estimates with 95% confidence intervals"),
-       x="Class-profile low",y="Redistributive preferences",,tag = "A") +
+       x="Ties to Working Class",y="Redistributive preferences",,tag = "A") +
   theme(legend.position = "none", legend.title = element_blank())
-
 plot_mid<- 
 fit_mid %>% 
 ggplot(aes(y =estimate,x=n_middle, fill=dclass3res_V, group=dclass3res_V,ymin=conf.low, ymax=conf.high)) +
@@ -138,7 +136,7 @@ ggplot(aes(y =estimate,x=n_middle, fill=dclass3res_V, group=dclass3res_V,ymin=co
   scale_y_continuous(limits = c(-0.5,0.5))+
   labs(
     # caption = paste0("Note: N (individuals) = ",nobs(digclas1_VW_11),"; N (countries) = ",lme4::ngrps(digclas1_VW_11),". Predictive estimates with 95% confidence intervals"),
-      x="Class-profile Middle",y="Redistributive preferences",tag = "B") +
+      x="Ties to Intermediate Class",y="Redistributive preferences",tag = "B") +
   theme(legend.position = "none", legend.title = element_blank())
 
 plot_hig <- 
@@ -158,7 +156,7 @@ ggplot(aes(y =estimate,x=n_high, fill=dclass3res_V, group=dclass3res_V,ymin=conf
   scale_y_continuous(limits = c(-0.5,0.5))+
   labs(
     # caption = paste0("Note: N (individuals) = ",nobs(digclas1_VW_11),"; N (countries) = ",lme4::ngrps(digclas1_VW_11),". Predictive estimates with 95% confidence intervals",),
-       x="Class-profile High",y="Redistributive preferences",tag = "C") +
+       x="Ties to Service Class",y="Redistributive preferences",tag = "C") +
   theme(legend.position = "none", legend.title = element_blank())
 
 set.seed(123)
@@ -408,13 +406,9 @@ dfreg$wstate2 <- ((dfreg$wstate-min(dfreg$wstate,na.rm = T))/(max(dfreg$wstate,n
 dfreg$wstate2 <- as.numeric(scale(dfreg$wstate2))
 
 dfreg$socx<- as.numeric(scale(dfreg$socx))
-
 dfreg$gini_disp <- as.numeric(scale(dfreg$gini_disp))
-
-
 dfreg$ilo_taxrev <- as.numeric(scale(dfreg$ilo_taxrev))
 dfreg$ilo_govspe <- as.numeric(scale(dfreg$ilo_govspe))
-
 dfreg$cpi <- as.numeric(scale(dfreg$cpi))
 dfreg$mig_share <- as.numeric(scale(dfreg$mig_share))
 dfreg$union_den <- as.numeric(scale(dfreg$union_den))
@@ -431,8 +425,6 @@ dfreg$female_gc = group_center(dfreg$female_2, grp = dfreg$country2)
 dfreg$agenum_gc = group_center(dfreg$agenum, grp = dfreg$country2)
 dfreg$homclass3_V_gc <-group_center(dfreg$homclass3_V_res, grp = dfreg$country2)
 dfreg$know_total_gc = group_center(dfreg$know_total, grp = dfreg$country2)
-
-
 
 ## Model -  EGP3 - DIGCLASS - V to Working -----------------------------$
 homo_V_gini_gdp_wstate2 <- 
@@ -744,11 +736,9 @@ options(ggplot2.discrete.fill = set1)
 options(ggplot2.discrete.colour = set1)
 ggplot2::theme_set(ggplot2::theme_bw())
 ggplot2::theme_update(text=ggplot2::element_text(size=15,  family="serif"))
-
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal,texreg,MLMusingR,lme4)  
 rm(list=ls())
-
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 dfreg <- df1 %>% dplyr::select(
   prefineq,redist,
@@ -783,7 +773,6 @@ dfreg <- df1 %>% dplyr::select(
   mutate(logrgdpna = log(rgdpna),
          loggdppercapita=log(gdppercapita)
          ) %>%
-  # filter(oecd == "OECD") %>%
   filter(country2 != "SVN") 
 dfreg$egal <- as.numeric(scale(dfreg$egal))
 dfreg <- na.omit(dfreg)
@@ -795,12 +784,8 @@ dfreg$wstate2 <- ((dfreg$wstate-min(dfreg$wstate,na.rm = T))/(max(dfreg$wstate,n
 ## Model -  EGP3 - DIGCLASS - V to Working -----------------------------$ 
 digclas1_VW_0<- lmer(egal~1 + homclass3_V_res + (1|country2),data=dfreg,weights = WEIGHT)
 digclas1_VW_1<- lmer(egal~1 + homclass3_V_res+know_total +female+agenum+(1|country2),data=dfreg,weights = WEIGHT)
-# digclas1_VW_2<- update(digclas1_VW_1, . ~ . +know_total) 
 digclas1_VW_3 <- update(digclas1_VW_1, . ~ . + dclass6res)
-# digclas1_VW_5 <- update(digclas1_VW_3, . ~ . + edyears+ Q03pcm+workst)
-
 digclas1_VW_7 <- update(digclas1_VW_3, . ~ . +dclass6res*homclass3_V_res)
-
 digclas1_VW_8 <- update(digclas1_VW_3, . ~ . +dclass6res*homclass3_V_res*gini_disp)
 
 digclas1_VW <- list(digclas1_VW_0,digclas1_VW_1,
@@ -850,9 +835,6 @@ int_xlvl_gini <-
          know_total_gc+
          dclass6res+
          female_gc+agenum_gc+
-         # partner_gc+
-         # edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+         
-         # workst_gc+
          homclass3_V_gc*
          dclass6res*
          gini_disp + 
@@ -864,9 +846,6 @@ int_xlvl_wstate <-
          know_total_gc+
          dclass6res+
          female_gc+agenum_gc+
-         # partner_gc+
-         # edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+         
-         # workst_gc+
          gini_disp +
          homclass3_V_gc*
          dclass6res*
@@ -880,9 +859,6 @@ int_xlvl_gini_taxrev <-
          know_total_gc+
          dclass6res+
          female_gc+agenum_gc+
-         # partner_gc+
-         # edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+         
-         # workst_gc+
          homclass3_V_gc*dclass6res*gini_disp + 
          homclass3_V_gc*dclass6res*ilo_taxrev + 
          (homclass3_V_gc+dclass6res|country2),data=dfreg,weights = WEIGHT)
@@ -894,9 +870,6 @@ int_xlvl_gini_govspe <-
          know_total_gc+
          dclass6res+
          female_gc+agenum_gc+
-         # partner_gc+
-         # edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+         
-         # workst_gc+
          homclass3_V_gc*dclass6res*gini_disp + 
          homclass3_V_gc*dclass6res*ilo_govspe + 
          (homclass3_V_gc+dclass6res|country2),data=dfreg,weights = WEIGHT)
@@ -907,9 +880,6 @@ int_xlvl_gini_redist <-
          know_total_gc+
          dclass6res+
          female_gc+agenum_gc+
-         # partner_gc+
-         # edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+         
-         # workst_gc+
          homclass3_V_gc*dclass6res*gini_disp + 
          homclass3_V_gc*dclass6res*abs_red + 
          (homclass3_V_gc+dclass6res|country2),data=dfreg,weights = WEIGHT)
@@ -921,9 +891,6 @@ int_xlvl_gini_wstate <-
          know_total_gc+
          dclass6res+
          female_gc+agenum_gc+
-         # partner_gc+
-         # edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+         
-         # workst_gc+
          homclass3_V_gc*dclass6res*gini_disp + 
          homclass3_V_gc*dclass6res*wstate2 + 
          (homclass3_V_gc+dclass6res|country2),data=dfreg,weights = WEIGHT)
@@ -936,9 +903,6 @@ int_xlvl_gini_gdp<-
          know_total_gc+
          dclass6res+
          female_gc+agenum_gc+
-         # partner_gc+
-         # edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+         
-         # workst_gc+
          homclass3_V_gc*dclass6res*gini_disp + 
          homclass3_V_gc*dclass6res*loggdppercapita +
          (homclass3_V_gc+dclass6res|country2),data=dfreg,weights = WEIGHT)

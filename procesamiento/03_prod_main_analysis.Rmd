@@ -221,7 +221,6 @@ pacman::p_load(dplyr,ggplot2,haven,ggrepel,gridExtra,grid)
 rm(list=ls())
 
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
-df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
 
 dfreg <- df1 %>% dplyr::select(
   redist,prefineq,
@@ -321,7 +320,7 @@ ggplot(aes(y=homclass3_V_res, x=gini_disp)) +
                                      homo_ineq$gini_disp, use='complete.obs'),digits = 2)),tag = "A")
 
 
-setseed(1234)
+set.seed(1234)
 ggsave(plot = arrangeGrob(fig_homo_gini,fig_egal_homo,
                           fig_homodiff_gini,fig_homodiff_redist,
              nrow = 2, 
@@ -366,7 +365,6 @@ dfreg <- df1 %>% dplyr::select(
   region,
   "gini_disp"=wid_gini_disp,
   "gini_mkt",
-  gv_spen,
   rel_red,
   d10d1=wid_p90p10,
   wid_p90p50,
@@ -477,8 +475,6 @@ rm(list=ls())
 
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 
-df1$dclass3spo_V <- car::recode(df1$dclass3spo_V,"NA='No information (Missing, No partner)'",levels = c("Service Class (I+II)","Intermediate class (III+IV)","Working Class (V+VI+VII)","No information (Missing, No partner)"))
-
 dfreg <- df1 %>% dplyr::select(
   redist,prefineq,
   egal = egal2,
@@ -495,7 +491,6 @@ dfreg <- df1 %>% dplyr::select(
   region,
   "gini_disp"=wid_gini_disp,
   "gini_mkt",
-  gv_spen,
   rel_red,
   abs_red,
   ilo_taxrev,
@@ -521,7 +516,6 @@ fit_gov<- psych::pca(dfreg[,c("ilo_taxrev","ilo_govspe","abs_red")])
 dfreg$wstate<- as.numeric(fit_gov$scores)
 dfreg$wstate2 <- ((dfreg$wstate-min(dfreg$wstate,na.rm = T))/(max(dfreg$wstate,na.rm = T)-min(dfreg$wstate,na.rm = T)))*100
 dfreg$wstate2 <- as.numeric(scale(dfreg$wstate2))
-
 dfreg$egal <- as.numeric(scale(dfreg$egal))
 
 # Variable Group-Centering -----------------------------------------------------
@@ -678,7 +672,6 @@ dfreg <- df1 %>% dplyr::select(
   region,
   "gini_disp"=wid_gini_disp,
   "gini_mkt",
-  gv_spen,
   rel_red,
   d10d1=wid_p90p10,
   wid_p90p50,
@@ -748,7 +741,6 @@ tabformat = if(is_html_output()) {"html"} else if(is_latex_output()) {"latex"}
 df1$id <- 1:dim(df1)[[1]]
 dfreg <- df1 %>% dplyr::select(id,
   redist,prefineq,
-  pct_low,pct_middle,pct_high,
   egal = egal2,
   dclass3res_V,dclass6res,
   homclass3_V_res,
@@ -782,11 +774,6 @@ occup_prop <- df1 %>%
          cleaner,hairbarber,busdriver,mechanic
          ) %>% summarise_all(mean,na.rm=T)
 
-status_prop <- df1 %>% 
-  filter(id %in% dfreg$id) %>% 
-  dplyr::select(pct_high,pct_middle,pct_low,
-         ) %>% summarise_all(mean,na.rm=T)
-
 p <- t(round(occup_prop*100,1))[,1]
 pacman::p_load(dplyr,knitr,kableExtra)  
 # Create the data frame
@@ -800,7 +787,7 @@ df <- data.frame(
   mutate("%"=p)
 tab_an_posgen <- 
 kable(df,linesep = "",booktabs=TRUE,format=tabformat,caption = "Table A2: Occupations included in the position generator instrument") %>%
-  kable_classic(full_width = F,font_size = 15,latex_options = "HOLD_position",,html_font = "sans") %>%
+  kable_classic(full_width = F,font_size = 15,latex_options = "HOLD_position",html_font = "sans") %>%
   column_spec(1,width = "6cm") %>%
   pack_rows("Higher-status positions", 1, 3) %>%
   column_spec(2) %>% 
