@@ -1,5 +1,5 @@
 ---
-title: "Data preparation"
+title: "Data preparation - country"
 date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
 output: 
   html_document: 
@@ -21,8 +21,8 @@ knitr::opts_chunk$set(warning = FALSE,
                       message = FALSE, 
                       echo = TRUE 
                       )
-options(scipen=9999) # desactivar notacion cientifica
-if (!require("pacman")) install.packages("pacman") # instalar pacman
+options(scipen=9999)
+if (!require("pacman")) install.packages("pacman") 
 load(here::here("input/data/proc/study1.RData"))
 pacman::p_load(dplyr,sjmisc,sjPlot,sjlabelled,tidyverse,haven,MLMusingR)
 ```
@@ -38,10 +38,6 @@ countries$ccode <- as.numeric(countries$country)
 countries$countryname <- as_character(countries$country)
 ```
 
-
-Revisar:
-
-https://wid.world/codes-dictionary#post-tax-income
 
 ```{r}
 wid_gini <- haven::read_dta(here::here("input/data/original/wid_gini.dta"))
@@ -133,7 +129,6 @@ wiid %>%
 ```
 
 
-
 **Solt SWDIID**
 
 ```{r Solt}
@@ -149,16 +144,6 @@ solt_2017 <-  solt %>% filter(ccode %in% countries$ccode) %>%
 solt_2017$abs_red <- solt_2017$gini_mkt - solt_2017$gini_disp 
 solt_2017$rel_red <- solt_2017$abs_red/solt_2017$gini_mkt
 summary(solt_2017)
-```
-
-**Otero et.al (2023)**
-
-```{r otero23}
-otero <- 
-  read.csv(file = here::here("input/data/original/otero23.csv"),sep = ";")
-otero$ccode <- countrycode::countrycode(sourcevar = otero$iso3n,origin = "iso2c",destination = "iso3n")
-otero$gdp <- gsub('\\,', '',otero$gdp) 
-otero<- otero %>% select(ccode,gv_spen,individualism)
 ```
 
 **ILO Data**
@@ -197,28 +182,7 @@ long_ilo_spe <- ilo_spe %>%
 long_ilo_spe$ilo_govspe <- as.numeric(long_ilo_spe$ilo_govspe)
 
 ilo_df <- left_join(long_ilo_tax,long_ilo_spe) %>% filter(year==2016)
-
-# long_ilo_spe$country <- countrycode::countrycode(sourcevar = long_ilo_spe$ccode,origin = "iso3n",destination = "iso3c") 
-
-# Plot points connected by a line representing time
-# ggplot(long_ilo_spe, aes(x = factor(year), y = govspe, group = factor(country), color = factor(country))) +
-#   geom_line() +
-#   geom_point(size = 3) +
-#   labs(title = "Points Connected by a Line Representing Time", x = "Year", y = "Value") +
-#   # scale_x_discrete(labels = c("2016", "2017", "2018")) +
-#   theme_minimal()
-# 
-# 
-# # Plot points connected by a line representing time
-# ggplot(long_ilo_tax, aes(x = factor(year), y = taxrev, group = factor(country), color = factor(country))) +
-#   geom_line() +
-#   geom_point(size = 3) +
-#   labs(title = "Points Connected by a Line Representing Time", x = "Year", y = "Value") +
-#   # scale_x_discrete(labels = c("2016", "2017", "2018")) +
-#   theme_minimal()
-
 ```
-
 
 
 **GDP: PEN data**
@@ -237,275 +201,15 @@ ocde$ccode <- countrycode::countrycode(sourcevar = ocde$iso3n,origin = "iso3c",d
 ocde <- ocde[,c("ccode","oecd")]
 ```
 
-
-# Class inequality 
-
-<!-- We calculated this statistic through a simple earnings regression controlling for age, age squared, and occupation (ISCO 2-digits) in large samples (EU-SILC), or directly for each class in smaller samples (ISSP, EU-EQ), based on the weighted individual data from the IDS; we made these calculations separately for men and women. Based on predicted wage rates, we calculated average hourly wages for each class and took the ratio thereof for different OD class pairs in order to obtain the between-class wage inequality measure. In order to minimize the role of yearly fluctuations (or the 2007-2008 financial crisis), we took the average of yearly ratios available over the first decade of the 21st century. -->
-
-<!-- First, determine the total number of hours worked by multiplying the hours per week by the number of weeks in a year (52). Next, divide this number from the annual salary. For example, if an employee has a salary of $50,000 and works 40 hours per week, the hourly rate is $50,000/2,080 (40 x 52) = $24.04. -->
-
-```{r classineq-data}
-summary(df1$incomer)
-summary(df1$egp11)
-library(DIGCLASS)
-frq(df1$WRKHRS)
-df1$weekhour <- car::recode(df1$WRKHRS,"c(0,95,96,98,99)=NA")
-summary(df1$weekhour); hist(df1$weekhour)
-# weekhour * 4 =  monthly worked hours
-df1$monthhour <- df1$weekhour*4
-countries <- unique(countrycode::countrycode(df1$country,"iso3n","iso3c"))
-df1$hhincome <- as.numeric(df1$income/sqrt(df1$hhpop)) # Ingreso per capita del hogar
-summary(df1$hhincome)
-# Wages for Males
-males<- df1%>% 
-  filter(female=="Male" & agenum %in% c(18:55)) %>% 
-  mutate(country3=countrycode::countrycode(country,"iso3n","iso3c")) %>% 
-  select(id,incomer=hhincome,agenum,isco88r,WEIGHT,country3) %>% 
-  mutate(isco88_2=factor(isco88_swap(isco88r,from = 4,to = 2)),
-         age2=agenum*agenum) %>% na.omit()
-
-# Step 1: Model wages: income regressed age, age squared and occupation
-wages_male <- list() 
-for (i in countries) {
-wages_male[[i]] <-  lm(incomer~agenum+age2+isco88_2,data = males,subset = (country3==i),weights = WEIGHT)
-}
-
-# Step 2: predicted wages 
-
-predicted_male <- list()
-for (i in countries) {
-  predicted_male[[i]] <- data.frame(wages=predict.lm(wages_male[[i]]),country=i)
-  }
-# Step 3: save predicted values
-wages_male_df<- bind_rows(predicted_male);dim(wages_male_df)
-males$wages_male<- wages_male_df$wages
-summary(males$wages_male);hist(males$wages_male)
-table(males$wages_male>=0)
-
-# Wages for Females
-females<- df1 %>% 
-  filter(female=="Female" & agenum %in% c(18:55)) %>%
-  mutate(country3=countrycode::countrycode(country,"iso3n","iso3c")) %>%   
-  select(id,incomer,agenum,isco88r,WEIGHT,country3) %>% 
-  mutate(isco88_2=factor(isco88_swap(isco88r,from = 4,to = 2)),
-         age2=agenum*agenum) %>% na.omit() 
-# Step 1: Model wages: income regressed on education, age age squared and occupation
-wages_female <- list() 
-for (i in countries) {
-wages_female[[i]] <-  lm(incomer~agenum+age2+isco88_2,data = females,subset = (country3==i),weights = WEIGHT)
-}
-
-# Step 2: predicted wages 
-predicted_female <- list()
-for (i in countries) {
-  predicted_female[[i]] <- data.frame(wages=predict(wages_female[[i]]),country=i)
-  }
-# Step 3: save predicted values
-wages_female_df<- bind_rows(predicted_female)
-females$wages_female<- wages_female_df$wages
-summary(females$wages_female);hist(females$wages_female)
-table(females$wages_female>=0)
-
-# Step 4 create the wage, male female dataset to merge to the main data
-wages_df<- 
-bind_rows(
-females %>% select(id,wages=wages_female),
-males %>% select(id,wages=wages_male)
-)
-#Step 5 merge predicted wages to currentdataset
-df1 <- left_join(df1,wages_df,"id")
-
-#Step 6: calculate the weekly per hour wage
-df1$wageratio <- df1$wages/df1$monthhour
-summary(df1$wageratio);hist(df1$wageratio)
-table(df1$wageratio>=0)
-df1$wageratio[df1$wageratio<0] <- NA # wage ratio per hour lower than 0 is NA
-summary(df1$wageratio);hist(df1$wageratio)
-
-# Final: create the dataset for the 6 classes and respective income, education and wage averages
-
-df_hhincome <- 
-df1 %>%   
-  group_by(country,dclass6res) %>%
-  summarise(
-    n=n(),
-    "incomer"=mean(hhincome,na.rm = TRUE)) %>% 
-  as.data.frame() %>% 
-  na.omit()
-
-df_education <- 
-df1 %>%   
-  filter(agenum %in% c(18:64)) %>% 
-  group_by(country,dclass6res) %>%
-  summarise("ednum"=mean(edyears,na.rm = TRUE)) %>%
-  ungroup() %>% 
-  # select(-country,-dclass6res) %>%
-  as.data.frame() %>% 
-  na.omit()
-
-df_wages <- 
-df1 %>%   
-  group_by(country,dclass6res) %>%
-  summarise("wageratio"=mean(wageratio,na.rm = TRUE)) %>%
-  ungroup() %>% 
-  # select(-country,-dclass6res) %>%
-  as.data.frame() %>% 
-  na.omit()
-
-table(df_hhincome$country)
-table(df_education$country)
-table(df_wages$country)
-
-df_class3_ineq<- bind_cols(df_hhincome,df_education %>% select(ednum),df_wages %>% select(wageratio))
-df_class3_ineq$country <- countrycode::countrycode(df_class3_ineq$country,"iso3n","iso3c") 
-summary(df_class3_ineq)
-```
-
-```{r template, eval=FALSE, include=FALSE}
-# Step 1: Create the vector of average incomes
-average_incomes <- c(upper = 1000, routine = 700, self_employed = 900, working = 500)
-
-# Step 2: Create the matrix of ratios
-income_diff_matrix <- outer(average_incomes, average_incomes, FUN = function(x, y) y/x)
-
-# Step 3: Set the diagonal to 0
-diag(income_diff_matrix) <- 0
-
-# Step 4: Flatten the matrix, excluding the diagonal
-income_diff_vector <- income_diff_matrix[lower.tri(income_diff_matrix, diag = FALSE)] # Extract lower triangular matrix
-# income_diff_vector <- c(income_diff_vector, income_diff_matrix[upper.tri(income_diff_matrix, diag = FALSE)]) # Add upper triangular matrix
-
-# Step 5: Calculate the mean of the differences
-average_value <- mean(income_diff_vector)
-
-# Display the average value
-print(average_value)
-```
-
-```{r class-inq-income}
-# Step 0: prepare the data
-countries<- unique(df_class3_ineq$country)
-
-# Step 1: Create the vector of average incomes
-average_incomes <- df_class3_ineq %>% select(country,dclass6res,incomer)
-
-# Step 2: Create the matrix of ratios
-matrix_incomer <- list()
-for (i in countries) {
-  matrix_incomer[[i]] <- outer(subset(average_incomes,country==i)$incomer,subset(average_incomes,country==i)$incomer, FUN = function(x, y) y/x)
-}
-# Step 3: Set the diagonal to 0
-for (i in countries) {
-  diag(matrix_incomer[[i]]) <- 0
-}
-# Step 4: Flatten the matrix, excluding the diagonal
-for (i in countries) {
-  matrix_incomer[[i]] <- matrix_incomer[[i]][lower.tri(matrix_incomer[[i]], diag = FALSE)] # Extract lower triangular matrix
-}
-# Step 5: Calculate the mean of the differences
-average_incomeratio <- list()
-for (i in countries) {
-  average_incomeratio[[i]] <- mean(matrix_incomer[[i]])
-}
-
-# Display the average value
-print(average_incomeratio)
-```
-
-```{r class-inq-education}
-# Step 0: prepare the data
-countries<- unique(df_class3_ineq$country)
-
-# Step 1: Create the vector of average incomes
-average_education <- df_class3_ineq %>% select(country,dclass6res,ednum)
-
-# Step 2: Create the matrix of ratios
-matrix_education <- list()
-for (i in countries) {
-  matrix_education[[i]] <- outer(subset(average_education,country==i)$ednum,subset(average_education,country==i)$ednum, FUN = function(x, y) y/x)
-}
-# Step 3: Set the diagonal to 0
-for (i in countries) {
-  diag(matrix_education[[i]]) <- 0
-}
-# Step 4: Flatten the matrix, excluding the diagonal
-for (i in countries) {
-  matrix_education[[i]] <- matrix_education[[i]][lower.tri(matrix_education[[i]], diag = FALSE)] # Extract lower triangular matrix
-}
-# Step 5: Calculate the mean of the differences
-average_educratio <- list()
-for (i in countries) {
-  average_educratio[[i]] <- mean(matrix_education[[i]])
-}
-
-# Display the average value
-print(average_educratio)
-```
-
-```{r class-inq-wages}
-# Step 0: prepare the data
-countries<- unique(df_class3_ineq$country)
-
-# Step 1: Create the vector of average incomes
-average_wages <- df_class3_ineq %>% select(country,dclass6res,wageratio)
-
-# Step 2: Create the matrix of ratios
-matrix_wages <- list()
-for (i in countries) {
-  matrix_wages[[i]] <- outer(subset(average_wages,country==i)$wageratio,subset(average_wages,country==i)$wageratio, FUN = function(x, y) y/x)
-}
-# Step 3: Set the diagonal to 0
-for (i in countries) {
-  diag(matrix_wages[[i]]) <- 0
-}
-# Step 4: Flatten the matrix, excluding the diagonal
-for (i in countries) {
-  matrix_wages[[i]] <- matrix_wages[[i]][lower.tri(matrix_wages[[i]], diag = FALSE)] # Extract lower triangular matrix
-}
-# Step 5: Calculate the mean of the differences
-average_wageratio <- list()
-for (i in countries) {
-  average_wageratio[[i]] <- mean(matrix_wages[[i]])
-}
-
-# Display the average value
-print(average_wageratio)
-```
-
-
-```{r}
-df_classdiff<- data.frame(t(bind_rows(average_wageratio,average_incomeratio,average_educratio)))
-df_classdiff <- 
-df_classdiff %>% 
-  mutate(country= row.names(df_classdiff),
-         ccode= countrycode::countrycode(country, origin = "iso3c",destination = "iso3n")) %>% 
-  select(ccode,difclass_wage=X1,difclass_income=X2,difclass_educ=X3) 
-
-
-psych::alpha(x = df_classdiff[,c("difclass_wage","difclass_income","difclass_educ")])
-psych::fa(df_classdiff[,c("difclass_wage","difclass_income","difclass_educ")])
-model1 <- 'classineq=~difclass_wage+difclass_income+difclass_educ'
-fit1<- lavaan::cfa(model = model1,data = df_classdiff)
-lavaan::summary(fit1,standardized=T,fit.measures=T)
-
-df_classdiff$difclass <- df_classdiff$difclass_wage + df_classdiff$difclass_income + df_classdiff$difclass_educ
-skimr::skim(df_classdiff)
-```
-
-
 ```{r merge}
 macro_data <- 
   left_join(wiid_2017,solt_2017) %>%
   left_join(pen_2017) %>% 
-  left_join(otero) %>%
   left_join(ocde) %>% 
   left_join(wid_df1) %>% 
-  left_join(ilo_df) %>% 
-  left_join(df_classdiff)
+  left_join(ilo_df) 
 
-correlation::correlation(macro_data)
 save(macro_data,file = here::here("input/data/proc/study1_macro_data.RData"))
-
 df1$ccode <- as.numeric(df1$country)
 df2 <- left_join(df1,macro_data,by="ccode")
 df2 <- 
@@ -515,9 +219,7 @@ df2 %>% mutate(country2=countrycode::countrycode(sourcevar = ccode,origin = "iso
   select(ccode,country2,country3,everything())
 ```
 
-
 ```{r save}
 save(df2,file = here::here("input/data/proc/study1_country.RData"))
-# haven::write_dta(data = df2,path = here::here("input/data/proc/study1_country.dta"))
 sjPlot::view_df(df2,file =here::here("input/data/proc/codebook-s1.html") )
 ```

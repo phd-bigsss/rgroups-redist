@@ -1,5 +1,5 @@
 ---
-title: "Data preparation"
+title: "Data preparation - individual"
 date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
 output: 
   html_document: 
@@ -58,6 +58,11 @@ df1<- bind_rows(df1,df2)
 # Inequality perceptions
 
 ```{r}
+df1$redist <- car::recode(df1$v13,recodes = "c(0,8,9)=NA")
+df1$redist <- set_na(df1$redist,na = c(0,8,9))
+df1$redist <- sjmisc::rec(x = df1$redist,rec = "rev")
+sjlabelled::set_label(df1$redist) <- "Preferences goverment redistribution"
+
 df1$prefineq <- car::recode(df1$v12,recodes = "c(0,8,9)=NA")
 df1$prefineq <- set_na(df1$prefineq,na = c(0,8,9))
 df1$prefineq <- sjmisc::rec(x = df1$prefineq,rec = "rev")
@@ -447,6 +452,128 @@ frq(df1$n_employees_spo)
 
 # Social Class
 
+```{r digclass-egp}
+# install.packages("devtools") 
+# devtools::install_git("https://code.europa.eu/digclass/digclass.git")
+library("DIGCLASS")
+df1 <- 
+df1 %>% 
+mutate(egp11 = isco88_to_egp(isco88r, self_employed, n_employees, label = F,to_factor = T),
+       egp11spo = isco88_to_egp(isco88spo, self_employed_spo, n_employees_spo, label = F,to_factor = T))
+
+frq(df1$egp11)
+df1$egp11 <- as_numeric(df1$egp11)
+frq(df1$egp11)
+
+frq(df1$egp11spo)
+df1$egp11spo <- as_numeric(df1$egp11spo)
+frq(df1$egp11spo)
+
+#if NA in class of respondent, replace with spouse
+df1$dclass11 <- ifelse(is.na(df1$egp11),df1$egp11spo,df1$egp11)
+
+frq(df1$dclass11)
+#0.1 label respondent egp11 classes
+df1$egp11 <- 
+  sjlabelled::set_labels(df1$egp11,
+                         levels = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11),
+                         labels =  c("I", "II", "IIIa","IIIb", "IVa", "IVb", 
+                                     "IVc", "V", "VI", "VIIa", "VIIb")) 
+
+#0.2 label spouse egp11 classes
+df1$egp11spo <- 
+  sjlabelled::set_labels(df1$egp11spo,
+                         levels = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11),
+                         labels =  c("I", "II", "IIIa","IIIb", "IVa", "IVb", 
+                                     "IVc", "V", "VI", "VIIa", "VIIb")) 
+
+# if NA in respondents it is assumed to be lower than spouse
+# now, with the cases in we have information for respondent and spouse
+# we replace the value by the highest one, just for those
+
+# Replace the highest class by dominance criteria 
+# Keep the highest of two values:
+df1$dclass11d <- pmax(df1$egp11, #social class respondent + spouse vs:
+                     df1$egp11spo,#social class spouse
+                     na.rm = T) # if NA, do nothing
+frq(df1$dclass11d)
+df1$dclass11d <- as_numeric(df1$dclass11d)
+frq(df1$dclass11d)
+
+df1$dclass11d <- 
+  sjlabelled::set_labels(df1$dclass11d,
+                         levels = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11),
+                         labels =  c("I", "II", "IIIa","IIIb", "IVa", "IVb", 
+                                     "IVc", "V", "VI", "VIIa", "VIIb")) 
+
+sjlabelled::set_label(df1$dclass11d) <- "Social Class 11 Dominance (EGP11 -  DIGICLASS)";frq(df1$dclass11d)
+
+# Class scheme using dominance-------------------------------------------------
+# # Class Scheme 3 classes -  V to intermediate class
+df1$dclass3 <- car::recode(df1$dclass11d,as.factor = T,
+                            levels =c('Service Class (I+II)',
+                                      'Intermediate class (III+IV+V)',
+                                      'Working Class (VI+VII)'), 
+                            "1:2='Service Class (I+II)';
+                             3:8='Intermediate class (III+IV+V)';
+                             9:11='Working Class (VI+VII)'")
+
+sjlabelled::set_label(df1$dclass3) <- "Social Class 3 Dominance (V to Intermediate Class-  DIGICLASS)";frq(df1$dclass3)
+
+# Class Scheme 3 classes -  V to working class
+df1$dclass3_V <- car::recode(df1$dclass11d,as.factor = T,
+                            levels =c('Service Class (I+II)',
+                                      'Intermediate class (III+IV)',
+                                      'Working Class (V+VI+VII)'), 
+                            "1:2='Service Class (I+II)';
+                             3:7='Intermediate class (III+IV)';
+                             8:11='Working Class (V+VI+VII)'")
+
+sjlabelled::set_label(df1$dclass3_V) <- "Social Class 3 Dominance (V to Working Class - DIGCLASS)";frq(df1$dclass3_V)
+
+
+# Class Scheme 3 classes -  IIIb to working class
+df1$dclass3_III <- car::recode(df1$dclass11d,as.factor = T,
+                            levels =c('Service Class',
+                                      'Intermediate class',
+                                      'Working Class'), 
+                            "c(1,2)='Service Class';c(3,5,6,7,8)='Intermediate class';c(4,9,10,11)='Working Class'")
+
+sjlabelled::set_label(df1$dclass3_III) <- "Social Class 3 Dominance (IIIb to Working Class - DIGCLASS)";frq(df1$dclass3_III)
+
+# Class Scheme 3 classes -  IIIb and V to working class
+df1$dclass3_III_V <- car::recode(df1$dclass11d,as.factor = T,
+                            levels =c('Service Class',
+                                      'Intermediate class',
+                                      'Working Class'), 
+                            "c(1,2)='Service Class';c(3,5,6,7)='Intermediate class';c(4,8,9,10,11)='Working Class'")
+
+sjlabelled::set_label(df1$dclass3_III_V) <- "Social Class 3 Dominance (IIIb+V to Working Class - DIGCLASS)";frq(df1$dclass3_III)
+
+# Class Scheme 6 classes
+df1$dclass6 <- car::recode(
+  df1$dclass11d,
+  as.factor = T,
+  levels = c(
+    'Service class (I - higher grade)',
+    'Service class (II - lower grade)',
+    'Routine non-manual (IIIa+b)',
+    'Petty-bourgeoise (IVa+b+c)',
+    'Skilled manual workers and supv. (V+VI)',
+    'Non-skilled manual workers (VIIa+b)'
+  ),
+  "1='Service class (I - higher grade)';
+   2='Service class (II - lower grade)';
+   3:4='Routine non-manual (IIIa+b)';
+   5:7='Petty-bourgeoise (IVa+b+c)';
+   8:9='Skilled manual workers and supv. (V+VI)';
+   10:11='Non-skilled manual workers (VIIa+b)'"
+)
+
+sjlabelled::set_label(df1$dclass6) <- "Social Class 6 Dominance (DIGCLASS)"
+```
+
+
 
 ```{r digclass-egp-respondent}
 # Class scheme using Respondent-------------------------------------------------
@@ -676,17 +803,6 @@ df1$outgroup_res <- ifelse(df1$dclass3res_V=="Working Class (V+VI+VII)",rowSums(
 
 df1$homclass3_V_res <- as.numeric(df1$ingroup_res/df1$know_total)
 sjlabelled::set_label(df1$homclass3_V_res) <- "Class homogeneity (R's) (DIGCLASS - V to intermediate)";frq(df1$homclass3_V_res)
-
-
-# Partner class as part of the position generator
-frq(df1$dclass3spo_V)
-df1$partner_hig <- car::recode(as.numeric(df1$dclass3spo_V),recodes = "1=1;2:3=0;4=NA");frq(df1$partner_hig)
-df1$partner_mid <- car::recode(as.numeric(df1$dclass3spo_V),recodes = "2=1;c(1,3)=0;4=NA");frq(df1$partner_mid)
-df1$partner_low <- car::recode(as.numeric(df1$dclass3spo_V),recodes = "3=1;c(1,2)=0;4=NA");frq(df1$partner_low)
-
-df1$n_low_partner<- rowSums(df1[,c("n_low","partner_low")],na.rm = T); sjlabelled::set_label(df1$n_low_partner) <- "Number of low status contacts + partner"
-df1$n_mid_partner<- rowSums(df1[,c("n_middle","partner_mid")],na.rm = T); sjlabelled::set_label(df1$n_mid_partner) <- "Number of middle status contacts + partner"
-df1$n_high_partner<- rowSums(df1[,c("n_high","partner_hig")],na.rm = T); sjlabelled::set_label(df1$n_high_partner) <- "Number of high status contacts + partner"
 ```
 
 ```{r homogeneity-isei, include=FALSE}
@@ -738,6 +854,6 @@ frq(df1$partner)
 
 # Save
 
-```{r}
+```{r svae}
 save(df1,file = here::here("input/data/proc/study1.RData"))
 ```

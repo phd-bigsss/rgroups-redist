@@ -216,7 +216,6 @@ ggplot2::theme_update(text=ggplot2::element_text(size=15,  family="serif"))
 
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal,texreg,MLMusingR,lme4)  
-# rm(list=ls())
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 data_corruption <- xlsx::read.xlsx("input/data/original/coruption-data/CPI2017_Full_DataSet-1801.xlsx",sheetIndex = 1)
 data_corruption$year <- 2017
@@ -225,10 +224,7 @@ data_migration <- data.table::fread("input/data/original/migration/migrant-stock
 data_unemployment <- data.table::fread("input/data/original/unemployment-world-bank/unemployment-rate.csv")
 data_qog <- haven::read_dta("input/data/original/QOG/qog_std_ts_jan25.dta") 
 data_vdem <- haven::read_dta("input/data/original/QOG/V-Dem-CY-Full+Others-v15.dta") 
-
-# data_socx <- data.table::fread("input/data/original/ocde-socx/ocde-socx.csv")
 data_socx <- data.table::fread("input/data/original/ocde-socx/ocde-socspen.csv")
-
 
 socx <- 
 data_socx %>% 
@@ -292,7 +288,6 @@ union_den %>%
 summary(additional_macro)
 
 country_code<- as.numeric(levels(as.factor(as.character(df1$ccode))))
-
 
 additional_macro_2000to2018 <- 
   additional_macro %>% 

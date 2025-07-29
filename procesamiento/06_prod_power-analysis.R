@@ -248,7 +248,9 @@ save(p_sim_gini_disp_600,file ="p_sim_gini_disp_600.RData")
 # Visualization Power analysis for main effect of Gini--------------------------
 
 pacman::p_load(simr,dplyr,ggplot2)  
-load(here::here("output/tables/p_sim_gini_disp_60.RData"))
+
+
+load(here::here("output/tables/p_sim_gini_disp_50.RData"))
 load(here::here("output/tables/p_sim_gini_disp_100.RData"))
 load(here::here("output/tables/p_sim_gini_disp_150.RData"))
 load(here::here("output/tables/p_sim_gini_disp_200.RData"))
@@ -282,7 +284,7 @@ all_pwcurve_s = p_sim_gini_disp_100_small
 all_pwcurve_l = p_sim_gini_disp_100_large
 
 # Combine results
-all_pwcurve$ps = c(p_sim_gini_disp_60$ps[1],
+all_pwcurve$ps = c(p_sim_gini_disp_50$ps[1],
                    p_sim_gini_disp_100$ps[1],
                    p_sim_gini_disp_150$ps[1],
                    p_sim_gini_disp_200$ps[1],                   
@@ -292,7 +294,7 @@ all_pwcurve$ps = c(p_sim_gini_disp_60$ps[1],
                    p_sim_gini_disp_500$ps[1],
                    p_sim_gini_disp_600$ps[1])
 # Combine the different numbers of levels.
-all_pwcurve$xval = c(p_sim_gini_disp_60$nlevels,
+all_pwcurve$xval = c(p_sim_gini_disp_50$nlevels,
                      p_sim_gini_disp_100$nlevels,
                      p_sim_gini_disp_150$nlevels,
                      p_sim_gini_disp_200$nlevels,                     
@@ -403,7 +405,7 @@ df_psim_s %>%
   labs(title = "Power for predictor Gini (post-tax and transfers) on redistributive preferences",
        x = 'Number of clusters (countries)', 
        # subtitle = "β = 0.09 (observed effect)",
-       caption = "Note: Based on 500 Monte Carlo replications of a multilevel model including the cross-level interaction. The simulations correspond to the\nobserved effect: 0.09. Each point represents the proportion of statistically significant p-values (< .05). Confidence intervals are at 95%..") + 
+       caption = "Note: Based on 500 Monte Carlo replications of a multilevel model including the cross-level interaction. The simulations correspond to the\nobserved effect: 0.05. Each point represents the proportion of statistically significant p-values (< .05). Confidence intervals are at 95%..") + 
   theme(axis.title.x = element_text(size = 12, margin = margin(t = 8)), 
         axis.title.y = element_text(size = 12, margin = margin(r = 7)), 
         axis.ticks = element_line(colour = 'grey50'),
@@ -429,7 +431,7 @@ df_psim_l %>%
   labs(title = "Power for predictor Gini (post-tax and transfers) on redistributive preferences",
        x = 'Number of clusters (countries)', 
        # subtitle = "β = 0.09 (observed effect)",
-       caption = "Note: Based on 500 Monte Carlo replications of a multilevel model including the cross-level interaction. The simulations correspond to the\nobserved effect: 0.09. Each point represents the proportion of statistically significant p-values (< .05). Confidence intervals are at 95%..") + 
+       caption = "Note: Based on 500 Monte Carlo replications of a multilevel model including the cross-level interaction. The simulations correspond to the\nobserved effect: 0.20. Each point represents the proportion of statistically significant p-values (< .05). Confidence intervals are at 95%..") + 
   theme(axis.title.x = element_text(size = 12, margin = margin(t = 8)), 
         axis.title.y = element_text(size = 12, margin = margin(r = 7)), 
         axis.ticks = element_line(colour = 'grey50'),
