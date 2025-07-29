@@ -136,20 +136,36 @@ model <- makeLmer(egal_sd~
                     (1|country2), 
                   fixef=fixed, VarCorr=rand, sigma=s, data=dfreg)
 summary(model)
+# Save the baseline model with the (i) coefficients and (ii) variance structure (between-within countries)
 save(model,file = here::here("output/tables/model_psim_gini.RData"))
+################################################################################.
+# Simulation section ------------------------------------------------------
+################################################################################.
 
-
-
-# Simulation seccion ------------------------------------------------------
 # Load the model object previously created:
-load(here::here("output/tables/model_psim_gini.RData"))
+load(here::here("output/tables/model_psim_gini.RData")) # load the baseline model
 pacman::p_load(simr,dplyr)  
-# Create the simulated data for a maximum of 600 clusters 
+# Using the baseline model, create the simulated data for a maximum of 600 clusters 
 set.seed(12345)
-model_ext_country <- extend(model, along = "country2", n =600)
+model_ext_country <- extend(model, along = "country2", n =600) 
+# Save the simulated data (extended - 'ext') based on the model - this is the data used in  the power analysis
 save(model_ext_country,file = here::here("output/tables/model_ext_country.RData"))
-n_sim <- 500
-# fixef(model)['treatintervention:time1'] <- 0.091169 # Original effect size
+
+# Repeat for a Large effect size (0.2 SD)
+model_large <- model
+fixef(model_large)['gini_disp'] <- 0.2
+model_ext_country <- extend(model_large, along = "country2", n =600)
+save(model_ext_country,file =  here::here("output/tables/model_ext_country_large.RData"))
+
+# Repeat for a Small effect size (0.05 SD)
+model_small <- model
+fixef(model_small)['gini_disp'] <- 0.05
+model_ext_country <- extend(model_small, along = "country2", n =600)
+save(model_ext_country,file =  here::here("output/tables/model_ext_country_small.RData"))
+
+n_sim <- 500 # set the number of repetitions
+
+# Simulation MAIN effect size --------------------------------------------------
 ## Model with 60 clusters --------------------------------------------------
 p_sim_gini_disp_50 <- 
   powerCurve(model_ext_country, 
@@ -245,10 +261,17 @@ p_sim_gini_disp_600 <-
 save(p_sim_gini_disp_600,file ="p_sim_gini_disp_600.RData")
 
 
+
+# Simulation main SMALL effect size --------------------------------------------------
+
+# {HERE DE CODE FOR THE SIMULATIONS IS MISSING !!!!!!!!!!!!!}
+
+# Simulation main LARGE effect size --------------------------------------------------
+
+# {HERE DE CODE FOR THE SIMULATIONS IS MISSING !!!!!!!!!!!!!}
+
 # Visualization Power analysis for main effect of Gini--------------------------
-
 pacman::p_load(simr,dplyr,ggplot2)  
-
 
 load(here::here("output/tables/p_sim_gini_disp_50.RData"))
 load(here::here("output/tables/p_sim_gini_disp_100.RData"))

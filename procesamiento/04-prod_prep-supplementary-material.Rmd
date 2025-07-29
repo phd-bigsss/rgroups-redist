@@ -1,5 +1,5 @@
 ---
-title: "Complementary analysis"
+title: "Supplementary Analyses"
 date: "`r format(Sys.time(), '%A %d %B %Y %X')`"
 output: 
   html_document: 
@@ -48,12 +48,8 @@ dfreg <- df1 %>% dplyr::select(
   n_middle,n_low,n_high,
   homclass3_V_res,
   know_total,
-  # Q03pcm,
-  # edyears,
   female,
   agenum,
-  # partner,
-  # workst, 
   WEIGHT,
   region,
   "gini_disp"=wid_gini_disp,
@@ -102,7 +98,6 @@ fit_hig$n_high <- as.numeric(as.character(fit_hig$n_high))
 plot_low <- 
 fit_low %>% 
 ggplot(aes(y =estimate,x=n_low, fill=dclass3res_V, color=dclass3res_V,ymin=conf.low, ymax=conf.high,group=dclass3res_V)) +
-  # geom_errorbar(alpha=0.8,size=0.5,linetype="solid",color="black") +
   geom_ribbon(alpha=0.8,size=1,linetype="solid",color="black") +
   geom_line(size=1,color="black") +
   geom_point(size=2,color="black") +
@@ -116,8 +111,7 @@ ggplot(aes(y =estimate,x=n_low, fill=dclass3res_V, color=dclass3res_V,ymin=conf.
   labels = c("0", "0.25", "0.50", "0.75", "1"))+
   scale_y_continuous(limits = c(-0.5,0.5))+
   labs(
-    # caption = paste0("Note: N (individuals) = ",nobs(digclas1_VW_11),"; N (countries) = ",lme4::ngrps(digclas1_VW_11),". Predictive estimates with 95% confidence intervals"),
-       x="Ties to Working Class",y="Redistributive preferences",,tag = "A") +
+       x="Ties to Working Class",y="Redistributive preferences",tag = "A") +
   theme(legend.position = "none", legend.title = element_blank())
 plot_mid<- 
 fit_mid %>% 
@@ -135,7 +129,6 @@ ggplot(aes(y =estimate,x=n_middle, fill=dclass3res_V, group=dclass3res_V,ymin=co
   labels = c("0", "0.25", "0.50", "0.75", "1"))+
   scale_y_continuous(limits = c(-0.5,0.5))+
   labs(
-    # caption = paste0("Note: N (individuals) = ",nobs(digclas1_VW_11),"; N (countries) = ",lme4::ngrps(digclas1_VW_11),". Predictive estimates with 95% confidence intervals"),
       x="Ties to Intermediate Class",y="Redistributive preferences",tag = "B") +
   theme(legend.position = "none", legend.title = element_blank())
 
@@ -155,7 +148,6 @@ ggplot(aes(y =estimate,x=n_high, fill=dclass3res_V, group=dclass3res_V,ymin=conf
   labels = c("0", "0.25", "0.50", "0.75", "1"))+
   scale_y_continuous(limits = c(-0.5,0.5))+
   labs(
-    # caption = paste0("Note: N (individuals) = ",nobs(digclas1_VW_11),"; N (countries) = ",lme4::ngrps(digclas1_VW_11),". Predictive estimates with 95% confidence intervals",),
        x="Ties to Service Class",y="Redistributive preferences",tag = "C") +
   theme(legend.position = "none", legend.title = element_blank())
 
@@ -569,9 +561,6 @@ int_xlvl_gini <-
          know_total_gc+
          dclass3res_V+
          female_gc+agenum_gc+
-         # partner_gc+
-         # edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+         
-         # workst_gc+
          homclass3_V_gc*
          dclass3res_V*
          gini_disp + 
@@ -583,9 +572,6 @@ int_xlvl_wstate <-
          know_total_gc+
          dclass3res_V+
          female_gc+agenum_gc+
-         # partner_gc+
-         # edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+         
-         # workst_gc+
          gini_disp +
          homclass3_V_gc*
          dclass3res_V*
@@ -599,9 +585,6 @@ int_xlvl_gini_taxrev <-
          know_total_gc+
          dclass3res_V+
          female_gc+agenum_gc+
-         # partner_gc+
-         # edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+         
-         # workst_gc+
          homclass3_V_gc*dclass3res_V*gini_disp + 
          homclass3_V_gc*dclass3res_V*ilo_taxrev + 
          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
@@ -613,9 +596,6 @@ int_xlvl_gini_govspe <-
          know_total_gc+
          dclass3res_V+
          female_gc+agenum_gc+
-         # partner_gc+
-         # edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+         
-         # workst_gc+
          homclass3_V_gc*dclass3res_V*gini_disp + 
          homclass3_V_gc*dclass3res_V*ilo_govspe + 
          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
@@ -626,9 +606,6 @@ int_xlvl_gini_redist <-
          know_total_gc+
          dclass3res_V+
          female_gc+agenum_gc+
-         # partner_gc+
-         # edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+         
-         # workst_gc+
          homclass3_V_gc*dclass3res_V*gini_disp + 
          homclass3_V_gc*dclass3res_V*abs_red + 
          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
@@ -641,9 +618,6 @@ int_xlvl_gini_wstate <-
          dclass3res_V+
          female_gc+agenum_gc+
          loggdppercapita+
-         # partner_gc+
-         # edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+         
-         # workst_gc+
          homclass3_V_gc*dclass3res_V*gini_disp + 
          homclass3_V_gc*dclass3res_V*wstate2 + 
          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
@@ -656,9 +630,6 @@ int_xlvl_gini_gdp<-
          know_total_gc+
          dclass3res_V+
          female_gc+agenum_gc+
-         # partner_gc+
-         # edyears_gc+Q03pcm_2_gc+Q03pcm_3_gc+Q03pcm_NA_gc+         
-         # workst_gc+
          homclass3_V_gc*dclass3res_V*gini_disp + 
          homclass3_V_gc*dclass3res_V*loggdppercapita +
          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
@@ -744,18 +715,10 @@ dfreg <- df1 %>% dplyr::select(
   prefineq,redist,
   egal = egal2,
   dclass3res_V,
-  # dclass3spo_V,
   homclass3_V_res,dclass6res,
   know_total,
-  # socialtrust,
-  # Q03pcm,
-  # edyears,
   female,
   agenum,
-  # partner,
-  # religion,
-  # union,
-  # workst, 
   WEIGHT,
   region,
   "gini_disp"=wid_gini_disp,
