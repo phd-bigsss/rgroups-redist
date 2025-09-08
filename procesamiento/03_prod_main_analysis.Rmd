@@ -383,50 +383,41 @@ dfreg$egal <- as.numeric(scale(dfreg$egal))
 dfreg <- na.omit(dfreg)
 
 ## Model -  EGP3 - DIGCLASS - V to Working -----------------------------$ 
-digclas1_VW_0<- lmer(egal~1 + homclass3_V_res + (1|country2),data=dfreg,weights = WEIGHT)
-digclas1_VW_1<- lmer(egal~1 + homclass3_V_res+know_total +female+agenum+(1|country2),data=dfreg,weights = WEIGHT)
+digclas1_VW_0<- lmer(egal~1 + dclass3res_V + female+agenum+know_total+(1|country2),data=dfreg,weights = WEIGHT)
+# digclas1_VW_1<- lmer(egal~1 + homclass3_V_res+know_total +female+agenum+(1|country2),data=dfreg,weights = WEIGHT)
 # digclas1_VW_2<- update(digclas1_VW_1, . ~ . +know_total) 
 digclas1_VW_3 <- update(digclas1_VW_1, . ~ . + dclass3res_V)
 # digclas1_VW_5 <- update(digclas1_VW_3, . ~ . + edyears+ Q03pcm+workst)
 
-digclas1_VW_7 <- update(digclas1_VW_3, . ~ . +dclass3res_V*homclass3_V_res)
-digclas1_VW <- list(digclas1_VW_0,digclas1_VW_1,
-                    digclas1_VW_3,
+digclas1_VW_7 <- update(digclas1_VW_0, . ~ . +dclass3res_V*homclass3_V_res+know_total)
+digclas1_VW <- list(digclas1_VW_0,
+                    # digclas1_VW_1,
+                    # digclas1_VW_3,
                     # digclas1_VW_4,
                     #digclas1_VW_5,
                     # digclas1_VW_6,
                     digclas1_VW_7)
 
-ccoef <- list(homclass3_V_res="Class-based network homogeneity",
-              know_total="Network size",
-              # socialtrust="Social Trust",
-              "dclass3res_VIntermediate class (III+IV)"="Intermediate Class",
+ccoef <- list("(Intercept)"= "(Intercept)",
+  "dclass3res_VIntermediate class (III+IV)"="Intermediate Class",
               "dclass3res_VWorking Class (V+VI+VII)"="Working Class",
-              # "femaleFemale"="Female (Ref. = Male)",
-              # "agenum"="Age",
-              # "age2"="Age2",
-             # "edyears"="Year of Education",
-             # "Q03pcmT02"="Income (T2)","Q03pcmT03"="Income (T3)","Q03pcmMissing"="Income (No information)",
-             # "workstNot in paid work" = "Not in paid work (Ref. = In paid work)",
-              # "unionYes" ="Union Membership (Ref. = Not Unionized)",
-              # "dclass3spo_VIntermediate class (III+IV)" = "Intermediate Class (Partner)",
-              # "dclass3spo_VWorking Class (V+VI+VII)" = "Working Class (Partner)",              
-              # "dclass3spo_VNo information (Missing, No partner)" = "No information (Not available, No partner)",
-              "homclass3_V_res:dclass3res_VIntermediate class (III+IV)" = "Homogeneity × Intermediate Class",
-              "homclass3_V_res:dclass3res_VWorking Class (V+VI+VII)" = "Homogeneity × Working Class")
+              homclass3_V_res="Class-based network homogeneity",
+              "dclass3res_VIntermediate class (III+IV):homclass3_V_res" = "Intermediate Class × Homogeneity",
+              "dclass3res_VWorking Class (V+VI+VII):homclass3_V_res" = "Working Class × Homogeneity"
+)
 
 screenreg(digclas1_VW)
 
 htmlreg(digclas1_VW,stars = c(0.001, 0.01, 0.05, 0.1),single.row = T,symbol = ".",
-       caption = paste("Table 1: Multilevel models for network homogeneity and redistributive preferences"),
+       caption = paste("Table 1: Multilevel models for social class, network homogeneity and redistributive preferences"),
        custom.note = "Note: Standard errors in parentheses. %stars",
        threeparttable = T,
        caption.above = T,leading.zero = T,
        custom.coef.map = ccoef,
-       groups = 
-         list("Social Class (Ref.= Service Class)" = 3:4,
-              "Homogeneity × Social Class"=5:6),
-      custom.gof.rows = list("Controls"=c("No",rep("Yes",3))),include.loglik = FALSE,include.aic = FALSE,
+       groups =
+         list("Social Class (Ref.= Service Class)" = 2:3,
+              "Social Class × Homogeneity"=5:6),
+      custom.gof.rows = list("Controls"=c(rep("Yes",2))),include.loglik = FALSE,include.aic = FALSE,
       custom.gof.names = c(NA,NA,"Num. groups","Var: Country (Intercept)","Var: Residual"),
       file = here::here("output/tables/table001.html")
       )
@@ -555,32 +546,29 @@ homo_V_gini_int <-
 digclas1_macro <- list(homo_V_gini,homo_V_gini_int)
 screenreg(digclas1_macro)
 
-ccoef <- list(homclass3_V_gc="Class-based network homogeneity",
-              "dclass3res_VIntermediate class (III+IV)"="Intermediate Class",
+ccoef <- list("dclass3res_VIntermediate class (III+IV)"="Intermediate Class",
               "dclass3res_VWorking Class (V+VI+VII)"="Working Class",
+              homclass3_V_gc="Class-based network homogeneity",
+              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV)" = "Intermediate Class × Homogeneity",
+              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII)" = "Working Class × Homogeneity",
               "gini_disp" = "Income inequality (Gini index)",
               loggdppercapita = "GDP/capita",
               wstate2="Size of the welfare state",
-              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV)" = "Homogeneity × Intermediate Class",
-              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII)" = "Homogeneity × Working Class",
-              
               "homclass3_V_gc:gini_disp"= "Homogeneity × Income Inequality",
-              
               "dclass3res_VIntermediate class (III+IV):gini_disp" = "Intermediate Class × Income Inequality",
               "dclass3res_VWorking Class (V+VI+VII):gini_disp" = "Working Class × Income Inequality",
-              
-              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):gini_disp" = "Homogeneity × Intermediate Class × Income Inequality",
-              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):gini_disp" = "Homogeneity × Working Class × Income Inequality")
+              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):gini_disp" = "Intermediate Class × Homogeneity × Income Inequality",
+              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):gini_disp" = "Working Class × Homogeneity × Income Inequality")
 
 htmlreg(digclas1_macro,stars = c(0.001, 0.01, 0.05, 0.1),scalebox = 0.7,symbol = ".",
-       caption = paste("Table 2: Multilevel models for income inequality, network homogeneity and redistributive preferences"),
+       caption = paste("Table 2: Multilevel models for income inequality, social class, network homogeneity and redistributive preferences"),
        custom.note = " Note: Individual level variables are centered within cluster (group mean).Standard errors in parentheses. %stars",
        caption.above = T,leading.zero = T,single.row = T,threeparttable = T,
        custom.coef.map = ccoef,
-      groups = list("Social Class (Ref.= Service Class)" = 2:3,
-                    "Homogeneity × Social Class"=5:6, 
+      groups = list("Social Class (Ref.= Service Class)" = 1:2,
+                    "Social Class × Homogeneity"=4:5,
                     "Class × Income Inequality" = 8:9 ,
-                    "Homogeneity × Social Class × Income Inequality"=10:11),
+                    "Social Class × Homogeneity × Income Inequality"=10:11),
       custom.gof.rows = list("Controls"=rep("Yes",2)),
       include.loglik = FALSE,include.aic = FALSE,
       custom.gof.names = c(NA,NA,"Num. groups",
@@ -657,15 +645,15 @@ rm(list=ls())
 
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
 dfreg <- df1 %>% dplyr::select(
-  redist,prefineq,
+   prefineq,redist,
   egal = egal2,
   dclass3res_V,
   homclass3_V_res,
   know_total,
-  Q03pcm,
-  edyears,
   female,
   agenum,
+  Q03pcm,
+  edyears,
   partner,
   workst,
   WEIGHT,
@@ -682,38 +670,43 @@ dfreg <- df1 %>% dplyr::select(
   country2, country, country3,
 ) %>%
   mutate(logrgdpna = log(rgdpna),
-         loggdppercapita=log(gdppercapita),
-         edyears2 = edyears ^ 2,
-         age2 = agenum ^ 2) %>%
+         loggdppercapita=log(gdppercapita)
+         ) %>%
   filter(country2 != "SVN") 
-dfreg <- na.omit(dfreg)
 dfreg$egal <- as.numeric(scale(dfreg$egal))
-## Model -  EGP3 - DIGCLASS - V to Working -----------------------------$ 
-digclas1_VW_0<- lmer(egal~1 + homclass3_V_res + (1|country2),data=dfreg,weights = WEIGHT)
-digclas1_VW_1<- lmer(egal~1 + homclass3_V_res+know_total +female+agenum+partner+edyears+Q03pcm+workst+(1|country2),data=dfreg,weights = WEIGHT)
-digclas1_VW_3 <- update(digclas1_VW_1, . ~ . + dclass3res_V)
-digclas1_VW_7 <- update(digclas1_VW_3, . ~ . +dclass3res_V*homclass3_V_res)
-digclas1_VW <- list(digclas1_VW_0,digclas1_VW_1,digclas1_VW_3,
-digclas1_VW_7)
+dfreg_1 <- na.omit(dfreg %>% dplyr::select(prefineq,redist,
+  egal,
+  dclass3res_V,
+  homclass3_V_res,
+  know_total,
+  female,
+  agenum,
+  WEIGHT,
+  region,country2)
+  )
 
-ccoef <- list(homclass3_V_res="Class-based network homogeneity",
+## Model -  EGP3 - DIGCLASS - V to Working -----------------------------$ 
+digclas1_VW_0<- lmer(egal~1 + (1|country2),data=dfreg_1,weights = WEIGHT)
+digclas1_VW_2 <- update(digclas1_VW_0, . ~ . + dclass3res_V)
+digclas1_VW_3 <- update(digclas1_VW_2, . ~ . + dclass3res_V+homclass3_V_res+female+agenum+know_total)
+digclas1_VW_7 <- update(digclas1_VW_3, . ~ . +dclass3res_V*homclass3_V_res)
+#Include additional controls
+digclas1_VW_8 <- update(digclas1_VW_7, . ~ . + edyears+Q03pcm+partner+workst,data=na.omit(dfreg))
+digclas1_VW <- list(digclas1_VW_2,digclas1_VW_3,digclas1_VW_7,digclas1_VW_8)
+
+ccoef <- list("dclass3res_VIntermediate class (III+IV)"="Intermediate Class",
+             "dclass3res_VWorking Class (V+VI+VII)"="Working Class",
+              homclass3_V_res="Class-based network homogeneity",
               know_total="Network size",
-              # socialtrust="Social Trust",
-              "femaleFemale"="Female (Ref. = Male)",
-              "agenum"="Age",
-              # "age2"="Age2",
+              "dclass3res_VIntermediate class (III+IV):homclass3_V_res" = "Intermediate Class × Homogeneity",
+              "dclass3res_VWorking Class (V+VI+VII):homclass3_V_res" = "Working Class × Homogeneity",
              "edyears"="Year of Education",
              "Q03pcmT02"="Income (T2)","Q03pcmT03"="Income (T3)","Q03pcmMissing"="Income (No information)",
              "workstNot in paid work" = "Not in paid work (Ref. = In paid work)",
              "partnerHas a partner" = "Has partner (Ref.= No partner)",
-                           "dclass3res_VIntermediate class (III+IV)"="Intermediate Class",
-              "dclass3res_VWorking Class (V+VI+VII)"="Working Class",
-              # "unionYes" ="Union Membership (Ref. = Not Unionized)",
-              # "dclass3spo_VIntermediate class (III+IV)" = "Intermediate Class (Partner)",
-              # "dclass3spo_VWorking Class (V+VI+VII)" = "Working Class (Partner)",              
-              # "dclass3spo_VNo information (Missing, No partner)" = "No information (Not available, No partner)",
-              "homclass3_V_res:dclass3res_VIntermediate class (III+IV)" = "Homogeneity × Intermediate Class",
-              "homclass3_V_res:dclass3res_VWorking Class (V+VI+VII)" = "Homogeneity × Working Class")
+             "femaleFemale"="Female (Ref. = Male)",
+             "agenum"="Age"
+             )
 
 htmlreg(digclas1_VW,stars = c(0.001, 0.01, 0.05, 0.1),single.row = T,symbol = ".",
        caption = paste("Table A1: Multilevel models for network homogeneity and redistributive preferences"),
@@ -721,11 +714,11 @@ htmlreg(digclas1_VW,stars = c(0.001, 0.01, 0.05, 0.1),single.row = T,symbol = ".
        threeparttable = T,
        caption.above = T,leading.zero = T,
        custom.coef.map = ccoef,
-      groups = list("Household Income (Ref.= Tertile I)"= 6:8,
-                    "Social Class (Ref.= Service Class)" = 11:12, 
-                    # "Partner's Social Class (Ref.= Service Class)" = 12:14,
-                    "Homogeneity x Social Class"=13:14),
-      custom.gof.rows = list("Controls"=c("No",rep("Yes",3))),include.loglik = FALSE,include.aic = FALSE,
+      groups = list("Social Class (Ref.= Service Class)" = 1:2,
+                    "Social Class × Homogeneity"=5:6,
+                    "Household Income (Ref.= Tertile I)"= 8:10
+                    ),
+      custom.gof.rows = list("Controls"=c(rep("Yes",4))),include.loglik = FALSE,include.aic = FALSE,
       custom.gof.names = c(NA,NA,"Num. groups","Var: Country (Intercept)","Var: Residual"),
       file = here::here("output/tables/tableA1.html")
       )

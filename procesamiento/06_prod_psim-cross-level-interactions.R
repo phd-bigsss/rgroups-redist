@@ -330,8 +330,8 @@ bind_rows(df_psim,df_psim_int) %>%
                      labels = c('0%', '20%', '40%', '60%', '80%', '100%')) +
   guides(color = guide_legend(title = NULL)) +
   labs(
-    title = "Statistical Power for Cross-Level Interaction",
-    subtitle = "Observed effect of Class × Homogeneity × Gini on redistributive preferences",
+    # title = "Statistical Power for Cross-Level Interaction",
+    # subtitle = "Observed effect of Class × Homogeneity × Gini on redistributive preferences",
     x = "Number of clusters (countries)",
     y = "Share significant",
     caption = "Note: Based on 500 Monte Carlo replications of the multilevel model including the cross-level interactions. The simulations correspond to the observed\neffects: −0.109 (Working Class × Homogeneity × Gini) and −0.248 (Intermediate Class × Homogeneity × Gini). Each point represents the proportion of statistically\nsignificant p-values (< .05). Confidence intervals are at 95%."

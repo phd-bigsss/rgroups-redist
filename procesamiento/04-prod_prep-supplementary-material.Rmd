@@ -29,7 +29,7 @@ pacman::p_load(dplyr,sjmisc,sjPlot,sjlabelled,tidyverse,haven,MLMusingR)
 
 # Individual-level
 
-```{r tableS1, results='asis'}
+```{r tableS2, results='asis'}
 set1 <-  RColorBrewer::brewer.pal(n = 8, name = "Set1")
 options(ggplot2.discrete.fill = set1)
 options(ggplot2.discrete.colour = set1)
@@ -509,9 +509,10 @@ models_macro <- list(homo_V_gini_gdp_wstate2,
 
 screenreg(models_macro)
 
-ccoef <- list(homclass3_V_gc="Class-based network homogeneity (CWC)",
+ccoef <- list(
               "dclass3res_VIntermediate class (III+IV)"="Intermediate Class",
               "dclass3res_VWorking Class (V+VI+VII)"="Working Class",
+              homclass3_V_gc="Class-based network homogeneity (CWC)",
               "gini_disp" = "Income inequality (Gini index)",
               loggdppercapita = "GDP/capita",
               wstate2="Size of the welfare state",
@@ -520,18 +521,20 @@ ccoef <- list(homclass3_V_gc="Class-based network homogeneity (CWC)",
               mig_share = "Migration (pop %)",
               union_den = "Union density",
               unemployment_rate = "Unemployment rate",
-              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV)" = "Homogeneity*Intermediate Class",
-              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII)" = "Homogeneity*Working Class",
+              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV)" = "Intermediate Class × Homogeneity",
+              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII)" = "Working Class × Homogeneity",
               "homclass3_V_gc:gini_disp"= "Homogeneity x Income Inequality",
-              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):gini_disp" = "Homogeneity*Intermediate Class*Income Inequality",
-              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):gini_disp" = "Homogeneity*Working Class*Income Inequality")
+              "dclass3res_VIntermediate class (III+IV):gini_disp" = "Intermediate Class × Income Inequality",
+              "dclass3res_VWorking Class (V+VI+VII):gini_disp" = "Working Class × Income Inequality",
+              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):gini_disp" = "Intermediate Class × Homogeneity × Income Inequality",
+              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):gini_disp" = "Working Class × Homogeneity × Income Inequality")
 
 htmlreg(models_macro,stars = c(0.001, 0.01, 0.05, 0.1),scalebox = 0.7,symbol = ".",
        file = here::here("output/tables/tableS02.html"),
        caption = paste("Table S2: Multilevel models for country-level factors,
                        income inequality, network homogeneity and redistributive preferences"),
        custom.note = " Note: All individual level controls centered within cluster (group mean).  Standard errors in parentheses. %stars. The depedent variable and country-level variables are in standardized (z-score)",
-       caption.above = T,leading.zero = T,single.row = F,threeparttable = T,
+       caption.above = T,leading.zero = T,single.row = T,threeparttable = T,
        custom.coef.map = ccoef,
       # groups = list("Social Class (Ref.= Service Class)" = 2:3,"Homogeneity x Social Class"=7:8),
       # custom.gof.rows = list("Controls"=rep("Yes",4)),
@@ -617,7 +620,6 @@ int_xlvl_gini_wstate <-
          know_total_gc+
          dclass3res_V+
          female_gc+agenum_gc+
-         loggdppercapita+
          homclass3_V_gc*dclass3res_V*gini_disp + 
          homclass3_V_gc*dclass3res_V*wstate2 + 
          (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
@@ -637,46 +639,65 @@ int_xlvl_gini_gdp<-
 
 models_interactions<- list(int_xlvl_gini,int_xlvl_gini_taxrev,int_xlvl_gini_govspe,int_xlvl_gini_redist,int_xlvl_gini_wstate,int_xlvl_gini_gdp)
 
-ccoef <- list(homclass3_V_gc="Class-based network homogeneity (CWC)",
-              "dclass3res_VIntermediate class (III+IV)"="Intermediate Class",
-              "dclass3res_VWorking Class (V+VI+VII)"="Working Class",
-              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV)" = "Homogeneity × Intermediate Class",
-              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII)" = "Homogeneity × Working Class",
-              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV)" = "Homogeneity × Intermediate Class",
-              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII)" = "Homogeneity × Working Class",
-              
-              gini_disp = "Income inequality (Gini index)",
-              ilo_taxrev="(i) Tax revenue",
-              ilo_govspe="(ii) Gov. Spending",
-              abs_red="(iii) Redistribution",              
-              wstate2="(i,ii,iii) Size of the welfare state",
-              loggdppercapita = "GDP/capita",              
-              
-              "homclass3_V_gc:gini_disp"= "Homogeneity × Income Inequality",
-              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):gini_disp" = "Homogeneity × Intermediate Class × Income Inequality",
-              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):gini_disp" = "Homogeneity × Working Class × Income Inequality",
-            
-              "homclass3_V_gc:ilo_taxrev"= "Homogeneity × (Tax revenue)",
-              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):ilo_taxrev" = "Homogeneity × Intermediate Class × (Tax revenue)",
-              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):ilo_taxrev" = "Homogeneity × Working Class × (Tax revenue) ",
-              
-              "homclass3_V_gc:ilo_govspe"= "Homogeneity × Welfare State (Gov. Spending)",
-              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):ilo_govspe" = "Homogeneity × Intermediate Class × (Gov. Spending)",
-              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):ilo_govspe" = "Homogeneity × Working Class × (Gov. Spending)",      
+ccoef <- list(
+  # Class
+  "dclass3res_VIntermediate class (III+IV)" = "Intermediate Class",
+  "dclass3res_VWorking Class (V+VI+VII)" = "Working Class",
+  
+  # Homogeneity
+  homclass3_V_gc = "Class-Based Network Homogeneity (CWC)",
+  
+  # Class × Homogeneity
+  "homclass3_V_gc:dclass3res_VIntermediate class (III+IV)" = "Intermediate Class × Homogeneity",
+  "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII)" = "Working Class × Homogeneity",
 
-              "homclass3_V_gc:abs_red"= "Homogeneity × Welfare State (Redistribution)",
-              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):abs_red" = "Homogeneity × Intermediate Class × (Redistribution)",
-              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):abs_red" = "Homogeneity × Working Class × (Redistribution)",                               
-              
-              "homclass3_V_gc:wstate2"= "Homogeneity × Welfare State",
-              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):wstate2" = "Homogeneity × Intermediate Class × Welfare State",
-              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):wstate2" = "Homogeneity × Working Class × Welfare State",
-              
-              "homclass3_V_gc:loggdppercapita"= "Homogeneity × GDP",
-              "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):loggdppercapita" = "Homogeneity × Intermediate Class × GDP",
-              "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):loggdppercapita" = "Homogeneity × Working Class × GDP"              
-              )
+  # Macro variables
+  gini_disp = "Income Inequality (Gini Index)",
+  ilo_taxrev = "Tax Revenue (% of GDP)",
+  ilo_govspe = "Government Spending (% of GDP)",
+  abs_red = "Redistribution",
+  wstate2 = "Welfare State Size",
+  loggdppercapita = "GDP per Capita (Log)",
+  
+  # Homogeneity × Macro
+  "homclass3_V_gc:gini_disp" = "Homogeneity × Income Inequality",
+  "dclass3res_VIntermediate class (III+IV):gini_disp" = "Intermediate Class × Income Inequality",
+  "dclass3res_VWorking Class (V+VI+VII):gini_disp" = "Working Class × Income Inequality",
+  "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):gini_disp" = "Intermediate Class × Homogeneity × Income Inequality",
+  "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):gini_disp" = "Working Class × Homogeneity × Income Inequality",
+  
+  "homclass3_V_gc:ilo_taxrev" = "Homogeneity × Tax Revenue",
+  "dclass3res_VIntermediate class (III+IV):ilo_taxrev" = "Intermediate Class × Tax Revenue",
+  "dclass3res_VWorking Class (V+VI+VII):ilo_taxrev" = "Working Class × Tax Revenue",  
+  "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):ilo_taxrev" = "Intermediate Class × Homogeneity × Tax Revenue",
+  "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):ilo_taxrev" = "Working Class × Homogeneity × Tax Revenue",
+  
+  "homclass3_V_gc:ilo_govspe" = "Homogeneity × Government Spending",
+  "dclass3res_VIntermediate class (III+IV):ilo_govspe" = "Intermediate Class × Government Spending",
+  "dclass3res_VWorking Class (V+VI+VII):ilo_govspe" = "Working Class × Government Spending",  
+  "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):ilo_govspe" = "Intermediate Class × Homogeneity × Government Spending",
+  "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):ilo_govspe" = "Working Class × Homogeneity × Government Spending",
+  
+  "homclass3_V_gc:abs_red" = "Homogeneity × Redistribution",
+  "dclass3res_VIntermediate class (III+IV):abs_red" = "Intermediate Class × Redistribution",
+  "dclass3res_VWorking Class (V+VI+VII):abs_red" = "Working Class × Redistribution",    
+  "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):abs_red" = "Intermediate Class × Homogeneity × Redistribution",
+  "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):abs_red" = "Working Class × Homogeneity × Redistribution",
+  
+  "homclass3_V_gc:wstate2" = "Homogeneity × Welfare State Size",
+  "dclass3res_VIntermediate class (III+IV):wstate2" = "Intermediate Class × Welfare State Size",
+  "dclass3res_VWorking Class (V+VI+VII):wstate2" = "Working Class × Welfare State Size",    
+  "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):wstate2" = "Intermediate Class × Homogeneity × Welfare State Size",
+  "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):wstate2" = "Working Class × Homogeneity × Welfare State Size",
+  
+  "homclass3_V_gc:loggdppercapita" = "Homogeneity × GDP per Capita",
+  "dclass3res_VIntermediate class (III+IV):loggdppercapita" = "Intermediate Class × GDP per Capita",
+  "dclass3res_VWorking Class (V+VI+VII):loggdppercapita" = "Working Class × GDP per Capita",      
+  "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):loggdppercapita" = "Intermediate Class × Homogeneity × GDP per Capita",
+  "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):loggdppercapita" = "Working Class × Homogeneity × GDP per Capita"
+)
 
+screenreg(models_interactions)
 htmlreg(models_interactions,stars = c(0.001, 0.01, 0.05, 0.1),scalebox = 0.7,symbol = ".",
        file = here::here("output/tables/tableS03.html"),
        caption = paste("Table S3: Robustness analysis of the multilevel models for income inequality, network homogeneity and redistributive preferences"),
@@ -745,12 +766,11 @@ dfreg$wstate<- as.numeric(fit_gov$scores)
 dfreg$wstate2 <- ((dfreg$wstate-min(dfreg$wstate,na.rm = T))/(max(dfreg$wstate,na.rm = T)-min(dfreg$wstate,na.rm = T)))*100
 
 ## Model -  EGP3 - DIGCLASS - V to Working -----------------------------$ 
-digclas1_VW_0<- lmer(egal~1 + homclass3_V_res + (1|country2),data=dfreg,weights = WEIGHT)
-digclas1_VW_1<- lmer(egal~1 + homclass3_V_res+know_total +female+agenum+(1|country2),data=dfreg,weights = WEIGHT)
+digclas1_VW_0<- lmer(egal~1 + dclass6res + female+agenum+(1|country2),data=dfreg,weights = WEIGHT)
+digclas1_VW_1<- lmer(egal~1 + homclass3_V_res+know_total+(1|country2),data=dfreg,weights = WEIGHT)
 digclas1_VW_3 <- update(digclas1_VW_1, . ~ . + dclass6res)
 digclas1_VW_7 <- update(digclas1_VW_3, . ~ . +dclass6res*homclass3_V_res)
 digclas1_VW_8 <- update(digclas1_VW_3, . ~ . +dclass6res*homclass3_V_res*gini_disp)
-
 digclas1_VW <- list(digclas1_VW_0,digclas1_VW_1,
                     digclas1_VW_3,
                     # digclas1_VW_4,
@@ -758,18 +778,18 @@ digclas1_VW <- list(digclas1_VW_0,digclas1_VW_1,
                     # digclas1_VW_6,
                     digclas1_VW_7)
 
-ccoef <- list(homclass3_V_res="Class-based network homogeneity",
-              know_total="Network size",
-              "dclass6resLower Service class"="Lower Service",
+ccoef <- list("dclass6resLower Service class"="Lower Service",
               "dclass6resRoutine nonmanual class" = "Routine nonmanual",                 
               "dclass6resSelf-employed" = "Self-employed",                           
               "dclass6resSkilled working class" = "Skilled working",
               "dclass6resUnskilled working class" = "Unskilled working",
-              "homclass3_V_res:dclass6resLower Service class" = "Homogeneity × Lower Service",
-              "homclass3_V_res:dclass6resRoutine nonmanual class" = "Homogeneity × Routine nonmanual",
-              "homclass3_V_res:dclass6resSelf-employed"= "Homogeneity × Self-employed",
-              "homclass3_V_res:dclass6resSkilled working class" = "Homogeneity × Skilled working class",
-              "homclass3_V_res:dclass6resUnskilled working class" = "Homogeneity × Skilled working class" 
+              homclass3_V_res="Class-based network homogeneity",
+              know_total="Network size",              
+              "homclass3_V_res:dclass6resLower Service class" = "Lower Service × Homogeneity",
+              "homclass3_V_res:dclass6resRoutine nonmanual class" = "Routine nonmanual × Homogeneity",
+              "homclass3_V_res:dclass6resSelf-employed"= "Self-employed × Homogeneity",
+              "homclass3_V_res:dclass6resSkilled working class" = "Skilled working class × Homogeneity",
+              "homclass3_V_res:dclass6resUnskilled working class" = "Unskilled working class × Homogeneity" 
               )
 
 screenreg(digclas1_VW)
@@ -781,14 +801,13 @@ htmlreg(digclas1_VW,stars = c(0.001, 0.01, 0.05, 0.1),single.row = T,symbol = ".
        caption.above = T,leading.zero = T,
        custom.coef.map = ccoef,
        groups =
-         list("Social Class (Ref.= Upper Service)" = 3:7,
-              "Homogeneity × Social Class"=8:11),
-      custom.gof.rows = list("Controls"=c("No",rep("Yes",3))),include.loglik = FALSE,include.aic = FALSE,
+         list("Social Class (Ref.= Upper Service)" = 1:5,
+              "Social Class × Homogeneity"=8:12),
+      custom.gof.rows = list("Controls"=c("Yes",rep("Yes",3))),include.loglik = FALSE,include.aic = FALSE,
       custom.gof.names = c(NA,NA,"Num. groups","Var: Country (Intercept)","Var: Residual"),
       file = here::here("output/tables/tableS04.html")
       )
 ```
-
 
 ```{r tableS5}
 # Main cross-level interaction for Income Inequality---------------------------
@@ -884,7 +903,7 @@ ccoef <- list(homclass3_V_gc="Class-based network homogeneity",
               "homclass3_V_gc:dclass6resRoutine nonmanual class" = "Homogeneity × Routine nonmanual",
               "homclass3_V_gc:dclass6resSelf-employed"= "Homogeneity × Self-employed",
               "homclass3_V_gc:dclass6resSkilled working class" = "Homogeneity × Skilled working class",
-              "homclass3_V_gc:dclass6resUnskilled working class" = "Homogeneity × Skilled working class",
+              "homclass3_V_gc:dclass6resUnskilled working class" = "Homogeneity × Unskilled working class",
               
               gini_disp = "Income inequality (Gini index)",
               ilo_taxrev="(i) Tax revenue",
@@ -894,6 +913,12 @@ ccoef <- list(homclass3_V_gc="Class-based network homogeneity",
               loggdppercapita = "GDP/capita",
               
               # 3-way interactions: × Gini
+              "homclass3_V_gc:gini_disp" = "Homogeneity × Gini",
+              "dclass6resLower Service class:gini_disp"     = "Lower Service × Gini",
+              "dclass6resRoutine nonmanual class:gini_disp" = "Routine Nonmanual × Gini",
+              "dclass6resSelf-employed:gini_disp"           = "Self-employed × Gini",
+              "dclass6resSkilled working class:gini_disp"   = "Skilled Working Class × Gini",
+              "dclass6resUnskilled working class:gini_disp" = "Unskilled Working Class × Gini",
               "homclass3_V_gc:dclass6resLower Service class:gini_disp"         = "Homogeneity × Lower Service × Gini",
               "homclass3_V_gc:dclass6resRoutine nonmanual class:gini_disp"     = "Homogeneity × Routine Nonmanual × Gini",
               "homclass3_V_gc:dclass6resSelf-employed:gini_disp"               = "Homogeneity × Self-employed × Gini",
@@ -901,6 +926,12 @@ ccoef <- list(homclass3_V_gc="Class-based network homogeneity",
               "homclass3_V_gc:dclass6resUnskilled working class:gini_disp"     = "Homogeneity × Unskilled Working Class × Gini",
   
               # 3-way interactions: × Tax Revenue
+              "homclass3_V_gc:ilo_taxrev" = "Homogeneity × Tax Revenue",
+              "dclass6resLower Service class:ilo_taxrev"     = "Lower Service × Tax Revenue",
+              "dclass6resRoutine nonmanual class:ilo_taxrev" = "Routine Nonmanual × Tax Revenue",
+              "dclass6resSelf-employed:ilo_taxrev"           = "Self-employed × Tax Revenue",
+              "dclass6resSkilled working class:ilo_taxrev"   = "Skilled Working Class × Tax Revenue",
+              "dclass6resUnskilled working class:ilo_taxrev" = "Unskilled Working Class × Tax Revenue",              
               "homclass3_V_gc:dclass6resLower Service class:ilo_taxrev"         = "Homogeneity × Lower Service × Tax Revenue",
               "homclass3_V_gc:dclass6resRoutine nonmanual class:ilo_taxrev"     = "Homogeneity × Routine Nonmanual × Tax Revenue",
               "homclass3_V_gc:dclass6resSelf-employed:ilo_taxrev"               = "Homogeneity × Self-employed × Tax Revenue",
@@ -908,6 +939,12 @@ ccoef <- list(homclass3_V_gc="Class-based network homogeneity",
               "homclass3_V_gc:dclass6resUnskilled working class:ilo_taxrev"     = "Homogeneity × Unskilled Working Class × Tax Revenue",
               
               # 3-way interactions: × Government Spending
+              "homclass3_V_gc:ilo_govspe" = "Homogeneity × Gov. Spending",
+              "dclass6resLower Service class:ilo_govspe"     = "Lower Service × Gov. Spending",
+              "dclass6resRoutine nonmanual class:ilo_govspe" = "Routine Nonmanual × Gov. Spending",
+              "dclass6resSelf-employed:ilo_govspe"           = "Self-employed × Gov. Spending",
+              "dclass6resSkilled working class:ilo_govspe"   = "Skilled Working Class × Gov. Spending",
+              "dclass6resUnskilled working class:ilo_govspe" = "Unskilled Working Class × Gov. Spending",                
               "homclass3_V_gc:dclass6resLower Service class:ilo_govspe"         = "Homogeneity × Lower Service × Gov. Spending",
               "homclass3_V_gc:dclass6resRoutine nonmanual class:ilo_govspe"     = "Homogeneity × Routine Nonmanual × Gov. Spending",
               "homclass3_V_gc:dclass6resSelf-employed:ilo_govspe"               = "Homogeneity × Self-employed × Gov. Spending",
@@ -915,6 +952,12 @@ ccoef <- list(homclass3_V_gc="Class-based network homogeneity",
               "homclass3_V_gc:dclass6resUnskilled working class:ilo_govspe"     = "Homogeneity × Unskilled Working Class × Gov. Spending",
   
               # 3-way interactions: × Redistribution
+              "homclass3_V_gc:abs_red" = "Homogeneity × Redistribution",
+              "dclass6resLower Service class:abs_red"     = "Lower Service × Redistribution",
+              "dclass6resRoutine nonmanual class:abs_red" = "Routine Nonmanual × Redistribution",
+              "dclass6resSelf-employed:abs_red"           = "Self-employed × Redistribution",
+              "dclass6resSkilled working class:abs_red"   = "Skilled Working Class × Redistribution",
+              "dclass6resUnskilled working class:abs_red" = "Unskilled Working Class × Redistribution",                
               "homclass3_V_gc:dclass6resLower Service class:abs_red"         = "Homogeneity × Lower Service × Redistribution",
               "homclass3_V_gc:dclass6resRoutine nonmanual class:abs_red"     = "Homogeneity × Routine Nonmanual × Redistribution",
               "homclass3_V_gc:dclass6resSelf-employed:abs_red"               = "Homogeneity × Self-employed × Redistribution",
@@ -922,12 +965,24 @@ ccoef <- list(homclass3_V_gc="Class-based network homogeneity",
               "homclass3_V_gc:dclass6resUnskilled working class:abs_red"     = "Homogeneity × Unskilled Working Class × Redistribution",
   
               # 3-way interactions: × Welfare State
+              "homclass3_V_gc:wstate2" = "Homogeneity × Welfare State",
+              "dclass6resLower Service class:wstate2"     = "Lower Service × Welfare State",
+              "dclass6resRoutine nonmanual class:wstate2" = "Routine Nonmanual × Welfare State",
+              "dclass6resSelf-employed:wstate2"           = "Self-employed × Welfare State",
+              "dclass6resSkilled working class:wstate2"   = "Skilled Working Class × Welfare State",
+              "dclass6resUnskilled working class:wstate2" = "Unskilled Working Class × Welfare State",                   
               "homclass3_V_gc:dclass6resLower Service class:wstate2"         = "Homogeneity × Lower Service × Welfare State",
               "homclass3_V_gc:dclass6resRoutine nonmanual class:wstate2"     = "Homogeneity × Routine Nonmanual × Welfare State",
               "homclass3_V_gc:dclass6resSelf-employed:wstate2"               = "Homogeneity × Self-employed × Welfare State",
               "homclass3_V_gc:dclass6resSkilled working class:wstate2"       = "Homogeneity × Skilled Working Class × Welfare State",
               "homclass3_V_gc:dclass6resUnskilled working class:wstate2"     = "Homogeneity × Unskilled Working Class × Welfare State",
               # 3-way interactions: × GDP
+              "homclass3_V_gc:loggdppercapita" = "Homogeneity × GDP",
+              "dclass6resLower Service class:loggdppercapita"     = "Lower Service × GDP",
+              "dclass6resRoutine nonmanual class:loggdppercapita" = "Routine Nonmanual × GDP",
+              "dclass6resSelf-employed:loggdppercapita"           = "Self-employed × GDP",
+              "dclass6resSkilled working class:loggdppercapita"   = "Skilled Working Class × GDP",
+              "dclass6resUnskilled working class:loggdppercapita" = "Unskilled Working Class × GDP",               
               "homclass3_V_gc:dclass6resLower Service class:loggdppercapita"         = "Homogeneity × Lower Service × GDP",
               "homclass3_V_gc:dclass6resRoutine nonmanual class:loggdppercapita"     = "Homogeneity × Routine Nonmanual × GDP",
               "homclass3_V_gc:dclass6resSelf-employed:loggdppercapita"               = "Homogeneity × Self-employed × GDP",
@@ -985,3 +1040,138 @@ htmlreg(models_interactions,stars = c(0.001, 0.01, 0.05, 0.1),scalebox = 0.7,sym
 )
       )
 ```
+
+```{r tableS6}
+dfreg$d10d1 <- as.numeric(scale(dfreg$d10d1))
+dfreg$wid_p90p50 <- as.numeric(scale(dfreg$wid_p90p50))
+int_xlvl_r9010 <- 
+  lmer(egal~ 
+         homclass3_V_gc+
+         know_total_gc+
+         dclass3res_V+
+         female_gc+agenum_gc+
+         homclass3_V_gc*
+         dclass3res_V*
+         d10d1 + 
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+int_xlvl_wid_p90p50 <- 
+  lmer(egal~ 
+         homclass3_V_gc+
+         know_total_gc+
+         dclass3res_V+
+         female_gc+agenum_gc+
+         homclass3_V_gc*
+         dclass3res_V*
+         wid_p90p50 + 
+         (homclass3_V_gc+dclass3res_V|country2),data=dfreg,weights = WEIGHT)
+
+
+
+
+screenreg(list(int_xlvl_r9010,int_xlvl_wid_p90p50))
+
+ccoef <- list(
+  "dclass3res_VIntermediate class (III+IV)" = "Intermediate Class",
+  "dclass3res_VWorking Class (V+VI+VII)" = "Working Class",
+  
+  homclass3_V_gc = "Class-Based Network Homogeneity (CWC)",
+  
+  "homclass3_V_gc:dclass3res_VIntermediate class (III+IV)" = "Intermediate Class × Homogeneity",
+  "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII)" = "Working Class × Homogeneity",
+  
+  d10d1 = "Inequality (Ratio 90/10)",
+  "homclass3_V_gc:d10d1" = "Homogeneity × Inequality (R90/10)",
+  "dclass3res_VIntermediate class (III+IV):d10d1" = "Intermediate Class × Inequality (R90/10)",
+  "dclass3res_VWorking Class (V+VI+VII):d10d1" = "Working Class × Inequality (R90/10)",  
+  "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):d10d1" = "Intermediate Class × Homogeneity × Inequality (R90/10)",
+  "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):d10d1" = "Working Class × Homogeneity × Inequality (R90/10)",
+  
+  wid_p90p50 = "Inequality (Ratio 90/50)",
+  "homclass3_V_gc:wid_p90p50" = "Homogeneity × Inequality (R90/50)",
+  "dclass3res_VIntermediate class (III+IV):wid_p90p50" = "Intermediate Class × Inequality (R90/50)",
+  "dclass3res_VWorking Class (V+VI+VII):wid_p90p50" = "Working Class × Inequality (R90/50)",   
+  "homclass3_V_gc:dclass3res_VIntermediate class (III+IV):wid_p90p50" = "Intermediate Class × Homogeneity × Inequality (R90/50)",
+  "homclass3_V_gc:dclass3res_VWorking Class (V+VI+VII):wid_p90p50" = "Working Class × Homogeneity × Inequality (R90/50)"
+)
+
+htmlreg(list(int_xlvl_r9010,int_xlvl_wid_p90p50),stars = c(0.001, 0.01, 0.05, 0.1),scalebox = 0.7,symbol = ".",
+       file = here::here("output/tables/tableS06.html"),
+       caption = paste("Table S6: Robustness analysis of the multilevel models for income inequality ratios, network homogeneity and redistributive preferences"),
+       custom.note = " Note: All individual level controls centered within cluster (group mean).  Standard errors in parentheses. %stars",
+       caption.above = T,leading.zero = T,single.row = T,threeparttable = T,
+       custom.coef.map = ccoef,
+      # groups = list("Social Class (Ref.= Service Class)" = 2:3,"Homogeneity x Social Class"=7:8),
+      custom.gof.rows = list("Controls"=rep("Yes",2)),
+      include.loglik = FALSE,include.aic = FALSE,
+      custom.gof.names = c(NA,NA,"Num. groups",
+                           "Var: Country (Intercept)",
+                           "Var: Country Homogeneity",
+                           "Var: Country Intermediate Class ",
+                           "Var: Country Working Class",
+                           "Cov: Country (Intercept), Homogeneity",
+                           "Cov: Country (Intercept), Intermediate Class ",
+                           "Cov: Country (Intercept), Working Class",
+                           "Cov: Country Homogeneity, Intermediate Class",
+                           "Cov: Country Homogeneity, Working Class",
+                           "Cov: Country Intermediate Class, Working Class",
+                           "Var: Residual")
+      )
+
+```
+
+```{r tableS7}
+tab_countries<- 
+  dfreg %>% 
+  group_by(country3) %>% 
+  summarise(gini_disp=mean(gini_disp)) %>% 
+  mutate(gini_q05=ntile(gini_disp,5),
+         gini_d10=ntile(gini_disp,10)) %>% as.data.frame() %>% 
+  arrange(gini_d10) %>% 
+  dplyr::select(-gini_disp)
+
+dfreg <- dfreg %>% left_join(tab_countries,by="country3")
+
+
+## Model -  EGP3 - DIGCLASS - V to Working -----------------------------$
+
+library(estimatr)
+
+# Quintile 1 (low)
+digclas1_VW_Q1<- lm(egal~1 + dclass3res_V*homclass3_V_res +know_total+female+agenum+factor(country2),data=subset(dfreg,gini_q05==1),weights = WEIGHT)
+
+# Quintile 2 (mid-low)
+digclas1_VW_Q2<- lm(egal~1 + dclass3res_V*homclass3_V_res +know_total+female+agenum+ factor(country2),data=subset(dfreg,gini_q05==2),weights = WEIGHT)
+
+# Quintile 3 (middle)
+digclas1_VW_Q3<- lm(egal~1 + dclass3res_V*homclass3_V_res +know_total+female+agenum+ factor(country2),data=subset(dfreg,gini_q05==3),weights = WEIGHT)
+
+# Quintile 4 (middle-high)
+digclas1_VW_Q4<- lm(egal~1 + dclass3res_V*homclass3_V_res +know_total+female+agenum +factor(country2),data=subset(dfreg,gini_q05==4),weights = WEIGHT)
+
+# Quintile 5 (high)
+digclas1_VW_Q5<- lm(egal~1 + dclass3res_V*homclass3_V_res +know_total+female+agenum+ factor(country2),data=subset(dfreg,gini_q05==5),weights = WEIGHT)
+
+digclas1_Q05 <- list("Q1"=digclas1_VW_Q1,"Q2"=digclas1_VW_Q2,"Q3"=digclas1_VW_Q3,"Q4"=digclas1_VW_Q4,"Q5"=digclas1_VW_Q5)
+
+ccoef <- list("(Intercept)" = "(Intercept)",
+              "dclass3res_VIntermediate class (III+IV)"="Intermediate Class",
+              "dclass3res_VWorking Class (V+VI+VII)"="Working Class",
+              homclass3_V_res="Class-based network homogeneity",
+              "dclass3res_VIntermediate class (III+IV):homclass3_V_res" = "Intermediate Class × Homogeneity",
+              "dclass3res_VWorking Class (V+VI+VII):homclass3_V_res" = "Working Class × Homogeneity")
+# header <- list("Q1"=1:2,"Q2"=3:4,"Q3"=5:6,"Q4"=7:8,"Q5"=9:10)
+htmlreg(digclas1_Q05,stars = c(0.001, 0.01, 0.05, 0.1),single.row = T,include.ci = FALSE,
+        file = here::here("output/tables/tableS07.html"),
+        caption = "Table S7: Fixed effects linear regression models for Class-based network segregation and Redistributive Preferences by Income Inequality Quintiles",
+        custom.note = "Note: Standard errors in parentheses. %stars",
+        caption.above = T,leading.zero = T,
+        custom.coef.map = ccoef,
+      groups = list("Social Class (Ref.= Service Class)" = 2:3,
+                    "Social Class × Homogeneity"=5:6),
+      custom.gof.rows = list("Country FE"=rep("Yes",5)),
+      # include.loglik = FALSE,include.aic = FALSE,
+      # custom.gof.names = c(NA,NA,"Num. groups","Var: Country (Intercept)","Var: Residual")
+      )
+```
+

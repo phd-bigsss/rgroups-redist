@@ -9,9 +9,7 @@ if (!require("pacman")) install.packages("pacman")
 pacman::p_load(simr,dplyr,sjmisc,ggplot2,interplot,marginaleffects,sjlabelled,haven,stringr,ordinal,texreg,MLMusingR,lme4)  
 rm(list=ls())
 
-# load("study1_country.RData");df1 <- df2
 load(here::here("input/data/proc/study1_country.RData"));df1 <- df2
-# load("additional_macro_avg.RData")
 load(here::here("input/data/proc/additional_macro_avg.RData"))
 
 df1$idnum <- rownames(df1)
@@ -647,7 +645,8 @@ bind_rows(df_psim_s,df_psim,df_psim_l) %>%
   scale_y_continuous(name = 'Share of significant', limits = c(0, 1), 
                      breaks = c(0, .2, .4, .6, .8, 1),
                      labels = c('0%', '20%', '40%', '60%', '80%', '100%')) +
-  labs(title = "Statistical Power for the coefficient of Gini (post-tax and transfers) on redistributive preferences",
+  labs(
+    # title = "Statistical Power for the coefficient of Gini (post-tax and transfers) on redistributive preferences",
        x = 'Number of clusters (countries)', 
        caption = "Note: Based on 500 Monte Carlo replications of a multilevel model. Each point represents the proportion of statistically significant p-values (< .05).\nConfidence intervals are at 95%.") + 
   theme(axis.title.x = element_text(size = 12, margin = margin(t = 8)), 
