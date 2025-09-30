@@ -3,6 +3,7 @@
 .RData
 .Ruserdata
 
+to-ignore/
 input/data/original/QOG/V-Dem-CY-Full+Others-v15.dta
 input/data/original/QOG/qog_bas_cs_jan25.dta
 input/data/original/QOG/qog_std_cs_jan25.dta
