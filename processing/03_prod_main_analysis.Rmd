@@ -182,8 +182,8 @@ ggplot()+
         axis.text.x=element_text(angle=45,hjust = 1,size=8),
         legend.title = element_blank())
 
-ggsave(plot = last_plot(),filename = "figure002.png",device = "png",
-       path = here::here("output/images"),width = 2,height = 1,units = "cm",scale = 15)
+ggsave(plot = last_plot(),filename = "figure002.png",device = "tiff",
+       path = here::here("output/images"),width = 2,height = 1,units = "cm",scale = 15,dpi = 500)
 ```
 
 
@@ -204,8 +204,8 @@ ggplot()+
         legend.direction = "horizontal",
         axis.text.x=element_text(angle=45,hjust = 1,size=8),
         legend.title = element_blank())  
-ggsave(plot = last_plot(),filename = "figure003.png",device = "png",
-       path = here::here("output/images"),width = 2,height = 1,units = "cm",scale = 15)
+ggsave(plot = last_plot(),filename = "figure003.png",device = "tiff",
+       path = here::here("output/images"),width = 2,height = 1,units = "cm",scale = 15,dpi = 500)
 ```
 
 
@@ -327,8 +327,8 @@ ggsave(plot = arrangeGrob(fig_homo_gini,fig_egal_homo,
  bottom =textGrob("Source: International Social Survey 2017; descriptive statistics; figure report country level pearson correlation; the line is the fitted values; CI at 95%",
  gp = gpar(fontface = 1, fontsize = 9),hjust = 1,x = 1
   )),
- filename = "figure004.png",device = "png",
- path = here::here("output/images"),width = 1,height = 1,units = "cm",scale = 26)
+ filename = "figure004.png",device = "tiff",
+ path = here::here("output/images"),width = 1,height = 1,units = "cm",scale = 26,dpi = 500)
 ```
 
 ## The segregation hypothesis on redistributive preferences
@@ -386,7 +386,7 @@ dfreg <- na.omit(dfreg)
 digclas1_VW_0<- lmer(egal~1 + dclass3res_V + female+agenum+know_total+(1|country2),data=dfreg,weights = WEIGHT)
 # digclas1_VW_1<- lmer(egal~1 + homclass3_V_res+know_total +female+agenum+(1|country2),data=dfreg,weights = WEIGHT)
 # digclas1_VW_2<- update(digclas1_VW_1, . ~ . +know_total) 
-digclas1_VW_3 <- update(digclas1_VW_1, . ~ . + dclass3res_V)
+digclas1_VW_3 <- update(digclas1_VW_0, . ~ . + dclass3res_V)
 # digclas1_VW_5 <- update(digclas1_VW_3, . ~ . + edyears+ Q03pcm+workst)
 
 digclas1_VW_7 <- update(digclas1_VW_0, . ~ . +dclass3res_V*homclass3_V_res+know_total)
@@ -447,8 +447,8 @@ ggplot(aes(y =estimate,x=homclass3_V_res, fill=dclass3res_V, color=dclass3res_V,
        x="Network homogeneity",y="Redistributive preferences (z-score)") +
   theme(legend.position = "none", legend.title = element_blank())
 
-ggsave(plot = last_plot(),filename = "figure005.png",device = "png",
-       path = here::here("output/images"),width = 2,height = 1,units = "cm",scale = 15)
+ggsave(plot = last_plot(),filename = "figure005.png",device = "tiff",
+       path = here::here("output/images"),width = 2,height = 1,units = "cm",scale = 15,dpi = 500)
 ```
 
 ## The mitigation hypothesis on network segregation and redistributive preferences
@@ -628,8 +628,8 @@ df_pred_giniD_gc %>%
         legend.background = element_blank(),
         legend.box.background = element_rect(colour = "black"))
 
-ggsave(plot = last_plot(),filename = "figure006.png",device = "png",
-       path = here::here("output/images"),width = 2,height = 1,units = "cm",scale = 15)
+ggsave(plot = last_plot(),filename = "figure006.png",device = "tiff",
+       path = here::here("output/images"),width = 2,height = 1,units = "cm",scale = 15,dpi = 500)
 ```
 
 ```{r tableA1, results='asis'}

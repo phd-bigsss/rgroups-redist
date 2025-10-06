@@ -661,7 +661,7 @@ bind_rows(df_psim_s,df_psim,df_psim_l) %>%
         plot.caption = element_text(size = rel(0.8), hjust = 0, vjust = 1, margin = margin(t = 10)))
 
 ggsave(plot = last_plot(),filename = "figureS02.png",device = "png",
-       path = here::here("output/images"),width = 2,height = 1.5,units = "cm",scale = 15)
+       path = here::here("output/images"),width = 2,height = 1.5,units = "cm",scale = 15,dpi = 500)
 
 
 

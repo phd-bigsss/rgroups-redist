@@ -350,6 +350,6 @@ bind_rows(df_psim,df_psim_int) %>%
         )
 
 ggsave(plot = last_plot(),filename = "figureS01.png",device = "png",
-       path = here::here("output/images"),width = 2,height = 1.5,units = "cm",scale = 15)
+       path = here::here("output/images"),width = 2,height = 1.5,units = "cm",scale = 15,dpi = 500)
 
 
